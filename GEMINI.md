@@ -36,11 +36,17 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/playground/access`** | `AccessControlLab.tsx` | Dynamic ABAC/RBAC engine evaluating department, device, and network. |
 | **`/playground/ldap`** | `LDAPTreeSimulator.tsx` | AD directory tree simulator. Searches objects dynamically using LDAP filters. |
 | **`/playground/zta`** | `ZTAPlanner.tsx` | Zero Trust risk controller based on NIST SP 800-207. |
+| **`/playground/ai-threat-lab`** | `AIThreatLab.tsx` | Simulates voice deepfake attacks against legacy MFA and verifies FIDO2 hardware bounds. |
+| **`/playground/zkp-wallet`** | `ZKPWallet.tsx` | Generates mathematical zero-knowledge age proofs without exposing raw birthdates. |
+| **`/playground/ambient-trust`** | `AmbientTrust.tsx` | Tracks continuous, ambient biometric telemetry and decays session trust scores. |
+| **`/playground/workload-mesh`** | `WorkloadMesh.tsx` | Demonstrates SPIFFE/SPIRE attestations and X.509 SVID credentials. |
+| **`/explore/matchmaker`** | `AuthMatchmaker.tsx` | Startup Auth Matchmaker wizard with copyable boilerplates. |
 | **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts and downloadable SVG roadmaps. |
 | **`/explore`** | `Explore.tsx` | Landscape Directory. Product blueprints with copyable integration code blocks. |
 | **`/assistant`** | `Assistant.tsx` | AI Architect Chat. Simulated RAG chatbot delivering JSON policies and Rego scripts. |
 | **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 35 categorized standard terms with analogies and specs. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. |
+| **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards and interactive forms. |
 
 ---
 
@@ -71,38 +77,33 @@ We mandate the inclusion of Vitest unit tests for all state mutations, mathemati
 
 ---
 
-## 3.6. Next-Generation Traffic Enhancements (Phase 7 Roadmap)
+## 4. Next-Generation Traffic Enhancements (Operational)
 
-To maximize organic developer traffic (SEO, Hacker News, Twitter, and LinkedIn), we will expand the platform with five high-impact, futuristic playgrounds exploring deepfakes, cryptography, and decentralized wallets:
+To maximize organic developer traffic (SEO, Hacker News, Twitter, and LinkedIn), we feature five high-impact, futuristic playgrounds exploring deepfakes, cryptography, and decentralized wallets:
 
 ### 1. The "AI vs. Identity" Threat Lab (`/playground/ai-threat-lab`)
-- **What (Objective):** An interactive simulation explaining how Generative AI voice clones and real-time face deepfakes easily bypass traditional Voice MFA and Video KYC.
-- **How (Interaction):** Render a mock smartphone authentication gateway. Users toggle "Trigger AI Voice Deepfake" to see how the system is compromised, and toggle "FIDO2 / WebAuthn Shield" to witness how cryptographic hardware-bound credentials block the attack natively by verifying physical key possession.
-- **Where (Implementation):** Create page `src/pages/Playgrounds/AIThreatLab.tsx` and register the route `/playground/ai-threat-lab`.
+- **Purpose:** An interactive simulation explaining how Generative AI voice clones and real-time face deepfakes bypass traditional Voice MFA and Video KYC.
+- **Handshake:** Models an active biometric phone lock screen. If FIDO2 hardware verification is disabled, the AI clone breaches the system. Enabling FIDO2 blocks the attack natively by verifying physical key possession.
 
 ### 2. The Zero-Knowledge Proof (ZKP) Wallet Playground (`/playground/zkp-wallet`)
-- **What (Objective):** A browser-native decentralized wallet sandbox showing how privacy-first Self-Sovereign Identity (SSI) is managed.
-- **How (Interaction):** Users issue themselves a cryptographically signed Verifiable Credential (e.g., a digital driver's license containing raw name, address, and birthdate claims). To access a mock restricted area, they generate and present a **Zero-Knowledge Proof (ZKP)** proving they are "over 21 years old" without transmitting or revealing their raw age or name.
-- **Where (Implementation):** Create page `src/pages/Playgrounds/ZKPWallet.tsx` and register the route `/playground/zkp-wallet`.
+- **Purpose:** A browser-native decentralized wallet sandbox showing how privacy-first Self-Sovereign Identity (SSI) is managed.
+- **Handshake:** Users issue themselves a cryptographically signed Verifiable Credential. To access a mock restricted area, they generate and present a **Zero-Knowledge Proof (ZKP)** proving they are "over 21 years old" without transmitting or revealing their raw age or name.
 
 ### 3. The Continuous Biometric Trust Decayer (`/playground/ambient-trust`)
-- **What (Objective):** A high-concept visualizer modeling the future of ambient, continuous authentication in post-2030 systems.
-- **How (Interaction):** Render a live telemetry dashboard tracking mock biometric feeds (keystroke dynamics, smartwatch gait, AR gaze tracking) alongside a decaying **"Trust Curve"** line graph. As typing speed or wrist movements drift, trust decays, triggering a seamless biometric step-up audit in real-time.
-- **Where (Implementation):** Create page `src/pages/Playgrounds/AmbientTrust.tsx` and register the route `/playground/ambient-trust`.
+- **Purpose:** A high-concept visualizer modeling the future of ambient, continuous authentication in post-2030 systems.
+- **Handshake:** Implements a live telemetry dashboard tracking mock biometric feeds (keystroke dynamics, smartwatch gait, AR gaze tracking) alongside a decaying **"Trust Curve"** line graph. If typing cadences drift, trust decays, triggering a biometric step-up audit.
 
 ### 4. Non-Human Identity (NHI) Workload Mesh (`/playground/workload-mesh`)
-- **What (Objective):** An interactive DevSecOps lab detailing service-to-service SPIFFE/SPIRE authentication across multi-cloud networks.
-- **How (Interaction):** Build an interactive node canvas mapping microservices, cron jobs, and database brokers. Users trigger a SPIRE Workload Attestation to see how nodes dynamically prove their platform state and obtain short-lived X.509 SVID certificates to authenticate calls without shared static secrets.
-- **Where (Implementation):** Create page `src/pages/Playgrounds/WorkloadMesh.tsx` and register the route `/playground/workload-mesh`.
+- **Purpose:** An interactive DevSecOps lab detailing service-to-service SPIFFE/SPIRE authentication across multi-cloud networks.
+- **Handshake:** Maps microservices, agents, and servers. Users trigger a SPIRE Workload Attestation to see how nodes dynamically prove their platform state and obtain short-lived X.509 SVID credentials to authenticate calls.
 
 ### 5. The "IAM Auth Matchmaker" (`/explore/matchmaker`)
-- **What (Objective):** An evergreen SEO lead magnet designed to capture massive developer traffic by matching startups with their ideal Auth provider (Keycloak, Auth0, Clerk, Authentik, Entra).
-- **How (Interaction):** Build a 4-step consultative survey capturing tech stacks (React, Go, Django), hosting models (SaaS vs. Self-hosted), compliance needs (SOC2, HIPAA), and budget. Renders a personalized **"Perfect Auth Match Card"** with copyable integration boilerplates.
-- **Where (Implementation):** Create page `src/pages/Playgrounds/AuthMatchmaker.tsx` and register the route `/explore/matchmaker`.
+- **Purpose:** An evergreen SEO lead magnet designed to capture massive developer traffic by matching startups with their ideal Auth provider.
+- **Handshake:** Captures hosting models, compliance needs, and tech stacks. Renders a personalized **"Perfect Auth Match Card"** with copyable integration boilerplates.
 
 ---
 
-## 4. Developer Maintenance & Extension Playbook
+## 5. Developer Maintenance & Extension Playbook
 
 AboutIAM is designed to be highly modular. Follow these simple guides to easily extend the platform's information base:
 
@@ -135,7 +136,7 @@ To add a new cyber-attack profile or historic case study to the **Vulnerability 
   remediation: 'Detailed, code-level explanation of the modern defensive fix.'
 }
 ```
-*The sidebar timeline slider will dynamically add and scale the new node instantly!*
+*The timeline slider will dynamically add the new node instantly!*
 
 ### 🎓 C. How to Add a New Course Track to the Academy
 To add a new learning track or module to the **IAM Academy**, open `src/pages/Learn.tsx` and append a new `Track` object to the `tracks` array. Enforce six sub-modules per track to maintain the global graduation progress bar ratios.

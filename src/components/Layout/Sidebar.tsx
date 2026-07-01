@@ -112,7 +112,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
   }
 
   return (
-    <div className="hidden lg:block w-64 shrink-0 h-full fixed top-0 bottom-0 left-0">
+    <div className="hidden lg:block w-64 shrink-0 h-full fixed top-0 bottom-0 left-0 z-20">
       <SidebarContent />
     </div>
   )

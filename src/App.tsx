@@ -27,6 +27,7 @@ import WallOfShame from './pages/WallOfShame'
 import CheatSheets from './pages/CheatSheets'
 import BeginnerPrimer from './pages/BeginnerPrimer'
 import Contributors from './pages/Contributors'
+import Roadmap from './pages/Roadmap'
 
 // Phase 7: Next-Gen Modules
 import AIThreatLab from './pages/Playgrounds/AIThreatLab'
@@ -64,6 +65,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/primer" element={<BeginnerPrimer />} />
+              <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/learn" element={<Learn />} />
               <Route path="/playground" element={<PlaygroundCatalog />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />

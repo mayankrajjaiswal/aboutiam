@@ -22,7 +22,7 @@ export default function SAMLWorkbench() {
     </ds:Signature>
   </saml:Assertion>
   
-  <!-- ATTACKER INJECTS A DUPLICATE, SPROOFED ASSERTION AT THE END -->
+  <!-- ATTACKER INJECTS A DUPLICATE, SPOOFED ASSERTION AT THE END -->
   <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="_spoofedAssert">
     <saml:Subject><saml:NameID>admin@company.com</saml:NameID></saml:Subject>
     <saml:AttributeStatement>

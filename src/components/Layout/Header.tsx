@@ -12,6 +12,8 @@ export default function Header() {
   const getPageTitle = () => {
     const path = location.pathname
     if (path === '/') return 'Overview Dashboard'
+    if (path === '/primer') return "Layman's Onboarding Portal"
+    if (path === '/roadmap') return 'Zero-to-Hero Learning Pathway'
     if (path.startsWith('/learn')) return 'IAM Academy Curriculum'
     if (path === '/playground') return 'Simulators & Playgrounds'
     if (path === '/playground/jwt') return 'JWT Studio & Exploit Arena'

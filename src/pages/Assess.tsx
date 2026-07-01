@@ -125,7 +125,7 @@ export default function Assess() {
       ]
     },
     {
-      dimension: 'Zero Trust & Dynamic Risk',
+      dimension: 'Zero Trust and Dynamic Risk',
       title: 'Session Verification Engine',
       q: 'How is user authorization evaluated after initial login has occurred?',
       options: [
@@ -192,8 +192,9 @@ export default function Assess() {
 
   // Generate downloadable SVG roadmap dynamically
   const triggerDownload = () => {
-    const tierText = maturityTier.label
-    const scoreText = `Maturity: ${percentage}% (Avg: ${averageScore}/5.0)`
+    const escapeXml = (str: string) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    const tierText = escapeXml(maturityTier.label)
+    const scoreText = escapeXml(`Maturity: ${percentage}% (Avg: ${averageScore}/5.0)`)
     
     // Construct inline SVG document as string
     const svgContent = `

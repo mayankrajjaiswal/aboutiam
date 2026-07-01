@@ -1,0 +1,98 @@
+import { Link } from 'react-router-dom'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw } from 'lucide-react'
+
+export default function PlaygroundCatalog() {
+  const playgrounds = [
+    {
+      title: "OAuth 2.0 & OIDC Flow Visualizer",
+      desc: "Visualize real-time authorization code, implicit, device, and PKCE handshakes step-by-step with live HTTP parameters.",
+      icon: RefreshCw,
+      link: "/playground/oauth",
+      badge: "Priority v1",
+    },
+    {
+      title: "JWT Studio & Exploit Arena",
+      desc: "Decode, sign, and verify JSON Web Tokens, and run interactive simulations showcasing the none-algorithm exploit or JWKS spoofing.",
+      icon: Key,
+      link: "/playground/jwt",
+      badge: "Priority v1",
+    },
+    {
+      title: "SAML XML Workbench",
+      desc: "Build Assertion packages and run XML signature verifications inside an interactive mock Service Provider (SP) and Identity Provider (IdP).",
+      icon: Lock,
+      link: "/playground",
+      badge: "Phase 2",
+    },
+    {
+      title: "FIDO2 / WebAuthn & Passkeys Lab",
+      desc: "Simulate credential creation and assertions, and view raw clientDataJSON and authenticatorData payloads parsed directly in-browser.",
+      icon: Fingerprint,
+      link: "/playground",
+      badge: "Phase 2",
+    },
+    {
+      title: "Access Control Lab (OPA WASM)",
+      desc: "Build RBAC directories, configure attribute matrices (ABAC), and compile custom Rego policies using WebAssembly Open Policy Agent.",
+      icon: Shield,
+      link: "/playground",
+      badge: "Phase 3",
+    },
+    {
+      title: "LDAP Tree Simulator",
+      desc: "Visualize nested organizational units (OUs), group members, and query a mock Active Directory using standard LDAP search string syntax.",
+      icon: Server,
+      link: "/playground",
+      badge: "Phase 2",
+    }
+  ]
+
+  return (
+    <div className="space-y-10 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="space-y-3 max-w-3xl">
+        <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">
+          <Cpu className="w-3.5 h-3.5" /> Interactive Sandboxes
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
+          Identity Playground Catalog
+        </h2>
+        <p className="text-text-secondary">
+          No cloud tokens or configuration hassles. Run full cryptographic handshakes, decode payloads, and simulate common security exploits natively client-side.
+        </p>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {playgrounds.map((pg, i) => (
+          <div key={i} className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 hover:shadow-md transition-all flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                  <pg.icon className="w-5 h-5" />
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
+                  pg.badge.includes('v1') 
+                    ? 'bg-status-success/10 border-status-success/20 text-status-success' 
+                    : 'bg-text-muted/10 border-border-subtle text-text-secondary'
+                }`}>
+                  {pg.badge}
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                {pg.title}
+              </h4>
+              <p className="text-sm text-text-secondary leading-relaxed">{pg.desc}</p>
+            </div>
+            <div className="pt-6 border-t border-border-subtle/50 mt-6">
+              <Link
+                to={pg.link}
+                className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-bg-sidebar hover:bg-accent-glow hover:text-accent-primary text-text-primary text-sm font-semibold transition-colors border border-border-subtle group"
+              >
+                Launch Sandbox <Play className="w-3.5 h-3.5 fill-current transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

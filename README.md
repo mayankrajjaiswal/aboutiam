@@ -10,7 +10,7 @@
   <a href="https://github.com/mayankrajjaiswal/aboutiam/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/mayankrajjaiswal/aboutiam?color=blue" alt="License MIT" />
   </a>
-  <img src="https://img.shields.io/github/workflow/status/mayankrajjaiswal/aboutiam/Deploy%20to%20GitHub%20Pages?label=deployment" alt="Build Status" />
+  <img src="https://img.shields.io/github/actions/workflow/status/mayankrajjaiswal/aboutiam/deploy.yml?branch=main&label=deployment" alt="Build Status" />
   <img src="https://img.shields.io/badge/react-19-blue" alt="React 19" />
   <img src="https://img.shields.io/badge/tailwind-v4-teal" alt="Tailwind v4" />
 </p>

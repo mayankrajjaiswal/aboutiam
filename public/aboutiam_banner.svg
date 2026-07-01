@@ -23,11 +23,11 @@
   <!-- Title Text -->
   <g transform="translate(240, 140)">
     <text x="0" y="0" fill="#f8fafc" font-size="44" font-weight="900" letter-spacing="1">
-      About<tspan fill="#3b82f6">ID</tspan>
+      About<tspan fill="#3b82f6">IAM</tspan>
     </text>
     <!-- Glowing text shadow effect -->
     <text x="0" y="0" fill="#3b82f6" font-size="44" font-weight="900" letter-spacing="1" opacity="0.3" filter="blur(4px)">
-      AboutID
+      AboutIAM
     </text>
     
     <text x="0" y="32" fill="#94a3b8" font-size="16" font-weight="bold" letter-spacing="0.5">

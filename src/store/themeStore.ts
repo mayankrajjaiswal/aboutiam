@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 export type ThemeType = 'light' | 'dark' | 'system'
 
@@ -52,7 +52,7 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: 'aboutiam-theme-preference',
-      storage: typeof window !== 'undefined' ? window.localStorage : undefined, // SSR Defensive
+      storage: typeof window !== 'undefined' ? createJSONStorage(() => window.localStorage) : undefined, // SSR-Safe Zustand Persist
     }
   )
 )

@@ -77,33 +77,7 @@ We mandate the inclusion of Vitest unit tests for all state mutations, mathemati
 
 ---
 
-## 4. Next-Generation Traffic Enhancements (Operational)
-
-To maximize organic developer traffic (SEO, Hacker News, Twitter, and LinkedIn), we feature five high-impact, futuristic playgrounds exploring deepfakes, cryptography, and decentralized wallets:
-
-### 1. The "AI vs. Identity" Threat Lab (`/playground/ai-threat-lab`)
-- **Purpose:** An interactive simulation explaining how Generative AI voice clones and real-time face deepfakes bypass traditional Voice MFA and Video KYC.
-- **Handshake:** Models an active biometric phone lock screen. If FIDO2 hardware verification is disabled, the AI clone breaches the system. Enabling FIDO2 blocks the attack natively by verifying physical key possession.
-
-### 2. The Zero-Knowledge Proof (ZKP) Wallet Playground (`/playground/zkp-wallet`)
-- **Purpose:** A browser-native decentralized wallet sandbox showing how privacy-first Self-Sovereign Identity (SSI) is managed.
-- **Handshake:** Users issue themselves a cryptographically signed Verifiable Credential. To access a mock restricted area, they generate and present a **Zero-Knowledge Proof (ZKP)** proving they are "over 21 years old" without transmitting or revealing their raw age or name.
-
-### 3. The Continuous Biometric Trust Decayer (`/playground/ambient-trust`)
-- **Purpose:** A high-concept visualizer modeling the future of ambient, continuous authentication in post-2030 systems.
-- **Handshake:** Implements a live telemetry dashboard tracking mock biometric feeds (keystroke dynamics, smartwatch gait, AR gaze tracking) alongside a decaying **"Trust Curve"** line graph. If typing cadences drift, trust decays, triggering a biometric step-up audit.
-
-### 4. Non-Human Identity (NHI) Workload Mesh (`/playground/workload-mesh`)
-- **Purpose:** An interactive DevSecOps lab detailing service-to-service SPIFFE/SPIRE authentication across multi-cloud networks.
-- **Handshake:** Maps microservices, agents, and servers. Users trigger a SPIRE Workload Attestation to see how nodes dynamically prove their platform state and obtain short-lived X.509 SVID credentials to authenticate calls.
-
-### 5. The "IAM Auth Matchmaker" (`/explore/matchmaker`)
-- **Purpose:** An evergreen SEO lead magnet designed to capture massive developer traffic by matching startups with their ideal Auth provider.
-- **Handshake:** Captures hosting models, compliance needs, and tech stacks. Renders a personalized **"Perfect Auth Match Card"** with copyable integration boilerplates.
-
----
-
-## 5. Developer Maintenance & Extension Playbook
+## 4. Developer Maintenance & Extension Playbook
 
 AboutIAM is designed to be highly modular. Follow these simple guides to easily extend the platform's information base:
 

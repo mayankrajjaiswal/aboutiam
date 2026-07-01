@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers } from 'lucide-react'
+import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -18,6 +18,26 @@ export default function Home() {
         <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto font-normal">
           An open-source, interactive playground and curriculum designed for both developers and architects. Deconstruct OAuth handshakes, debug JWTs, and test access policies completely in your browser.
         </p>
+
+        {/* Onboarding card banner specifically for absolute beginners/laymen */}
+        <div className="p-4 rounded-xl bg-accent-glow/5 border border-accent-primary/20 max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3 text-left">
+            <div className="w-10 h-10 rounded-lg bg-accent-primary text-white flex items-center justify-center shrink-0">
+              <GraduationCap className="w-5 h-5 animate-pulse-slow" />
+            </div>
+            <div className="space-y-0.5">
+              <span className="text-xs font-bold text-text-primary">New to Identity Security?</span>
+              <p className="text-[11px] text-text-secondary font-medium">Read our layman-friendly bouncer analogy guide, perfect for interns and students!</p>
+            </div>
+          </div>
+          <Link
+            to="/primer"
+            className="w-full sm:w-auto text-center px-4 py-2 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shrink-0 shadow"
+          >
+            Start Layman Primer →
+          </Link>
+        </div>
+
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <Link
             to="/playground"

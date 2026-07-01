@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare } from 'lucide-react'
+import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare, GraduationCap } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
 interface SidebarProps {
@@ -13,6 +13,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
 
   const coreItems = [
     { name: 'Overview Dashboard', path: '/', icon: Home },
+    { name: "Beginner's Primer", path: '/primer', icon: GraduationCap },
     { name: 'IAM Academy', path: '/learn', icon: BookOpen },
     { name: 'Interactive Playgrounds', path: '/playground', icon: Cpu },
   ]

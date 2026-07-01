@@ -20,6 +20,7 @@ import Assistant from './pages/Assistant'
 import Encyclopedia from './pages/Encyclopedia'
 import WallOfShame from './pages/WallOfShame'
 import CheatSheets from './pages/CheatSheets'
+import BeginnerPrimer from './pages/BeginnerPrimer'
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
@@ -49,6 +50,7 @@ export default function App() {
           <main className="flex-grow pt-20 pb-12 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto transition-all">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/primer" element={<BeginnerPrimer />} />
               <Route path="/learn" element={<Learn />} />
               <Route path="/playground" element={<PlaygroundCatalog />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />

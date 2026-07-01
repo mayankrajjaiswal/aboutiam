@@ -10,17 +10,17 @@ interface ThemeState {
 }
 
 const applyTheme = (theme: ThemeType) => {
+  if (typeof document === 'undefined') return
   const root = document.documentElement
   root.classList.remove('dark', 'light')
   
   let activeTheme = theme
   if (theme === 'system') {
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const systemDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
     activeTheme = systemDark ? 'dark' : 'light'
   }
   
   root.classList.add(activeTheme)
-  // Ensure background transitions don't flicker on load
   root.style.colorScheme = activeTheme
 }
 
@@ -36,6 +36,8 @@ export const useThemeStore = create<ThemeState>()(
         const theme = get().theme
         applyTheme(theme)
         
+        if (typeof window === 'undefined') return () => {}
+        
         // Setup media query listener for system theme shifts
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
         const handleChange = () => {
@@ -50,6 +52,7 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: 'aboutiam-theme-preference',
+      storage: typeof window !== 'undefined' ? window.localStorage : undefined, // SSR Defensive
     }
   )
 )

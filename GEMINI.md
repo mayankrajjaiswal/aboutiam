@@ -141,32 +141,32 @@ To guarantee AboutIAM is the definitive, uncontested global resource for identit
 
 ## 4. Phase-by-Phase Roadmap
 
-### Phase 1: Foundation & Core Playgrounds (ACTIVE DEVELOPMENT FOCUS)
-- [ ] Initialize the Vite + React 19 + TypeScript + Tailwind project structure.
-- [ ] Create layout architecture (Header, Sidebar Navigation, Footer, Dark Mode toggle).
-- [ ] Establish State Management skeleton (Zustand) for user progress and preferences.
-- [ ] Implement **IAM Academy (`/learn`)** navigation with initial core modules (Foundations & OAuth).
-- [ ] Build **JWT Studio** (JWT decode/encode, RS256/HS256 generation, signature verification).
-- [ ] Build **OAuth 2.0 / OIDC Flow Visualizer** (Authorization Code flow step-by-step).
+### Phase 1: Foundation & Core Playgrounds (COMPLETE)
+- [x] Initialize the Vite + React 19 + TypeScript + Tailwind project structure.
+- [x] Create layout architecture (Header, Sidebar Navigation, Footer, Dark Mode toggle).
+- [x] Establish State Management skeleton (Zustand) for user progress and preferences.
+- [x] Implement **IAM Academy (`/learn`)** navigation with initial core modules (Foundations & OAuth).
+- [x] Build **JWT Studio** (JWT decode/encode, RS256/HS256 generation, signature verification).
+- [x] Build **OAuth 2.0 / OIDC Flow Visualizer** (Authorization Code flow step-by-step).
 
-### Phase 2: Encyclopedia, Advanced Protocols & Directory Services
-- [ ] Build **Master IAM Glossary & Encyclopedia** (A-Z searchable directory with interactive SVG definitions).
-- [ ] Build **FIDO2 / WebAuthn & Passkeys Lab** (Visualizing physical/platform key challenges, responses, and signature validations).
-- [ ] Build **SAML 2.0 XML Workbench** (AuthnRequest/Response generator and signed assertion verification).
-- [ ] Implement **Directory Services LDAP Tree Simulator** (LDAP structure visualization and query runner).
-- [ ] Expand **IAM Academy** modules to cover Directory Services, SAML, and FIDO2.
+### Phase 2: Encyclopedia, Advanced Protocols & Directory Services (COMPLETE)
+- [x] Build **Master IAM Glossary & Encyclopedia** (A-Z searchable directory with interactive SVG definitions).
+- [x] Build **FIDO2 / WebAuthn & Passkeys Lab** (Visualizing physical/platform key challenges, responses, and signature validations).
+- [x] Build **SAML 2.0 XML Workbench** (AuthnRequest/Response generator and signed assertion verification).
+- [x] Implement **Directory Services LDAP Tree Simulator** (LDAP structure visualization and query runner).
+- [x] Expand **IAM Academy** modules to cover Directory Services, SAML, and FIDO2.
 
-### Phase 3: Access Control, GRC & Maturity Assessments
-- [ ] Build **Access Control Lab** (Interactive RBAC and ABAC sandboxes).
-- [ ] Integrate official **OPA (Open Policy Agent) WASM** compiled engine for client-side Rego testing.
-- [ ] Build **IAM Maturity Assessment Wizard** (dynamic multi-step surveyor, interactive charts, and PDF/SVG roadmap exporter).
-- [ ] Implement **Zero Trust Architecture (ZTA) Planner**.
+### Phase 3: Access Control, GRC & Maturity Assessments (COMPLETE)
+- [x] Build **Access Control Lab** (Interactive RBAC and ABAC sandboxes).
+- [x] Integrate official **OPA (Open Policy Agent) WASM** compiled engine for client-side Rego testing.
+- [x] Build **IAM Maturity Assessment Wizard** (dynamic multi-step surveyor, interactive charts, and PDF/SVG roadmap exporter).
+- [x] Implement **Zero Trust Architecture (ZTA) Planner**.
 
-### Phase 4: Landscape, AI Architect & Refinement
-- [ ] Create **IAM Landscape Directory (`/explore`)** (interactive product catalog with comparative matrices and filters).
-- [ ] Build **IAM AI Architect (`/assistant`)** using client-side RAG (MiniSearch) and Gemini SDK / WebLLM.
-- [ ] Comprehensive unit, integration, and E2E testing (Vitest and Playwright).
-- [ ] Performance optimization (lazy loading components, tree-shaking crypto libraries, pre-compiling WASM).
+### Phase 4: Landscape, AI Architect & Refinement (COMPLETE)
+- [x] Create **IAM Landscape Directory (`/explore`)** (interactive product catalog with comparative matrices and filters).
+- [x] Build **IAM AI Architect (`/assistant`)** using client-side RAG (MiniSearch) and Gemini SDK / WebLLM.
+- [x] Comprehensive unit, integration, and E2E testing (Vitest and Playwright).
+- [x] Performance optimization (lazy loading components, tree-shaking crypto libraries, pre-compiling WASM).
 
 ---
 

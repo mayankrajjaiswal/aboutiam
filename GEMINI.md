@@ -168,13 +168,13 @@ To guarantee AboutIAM is the definitive, uncontested global resource for identit
 - [x] Comprehensive unit, integration, and E2E testing (Vitest and Playwright).
 - [x] Performance optimization (lazy loading components, tree-shaking crypto libraries, pre-compiling WASM).
 
-### Phase 6: Historical Evolution & Security Breach Museum (FUTURE STATE)
-- [ ] **The "Evolution of IAM" Visual Timeline:** Create an interactive, highly visual corridor charting the 5 computing eras of identity (Mainframe terminals, Directory LDAP trees, Web SSO/SAML, Cloud/Mobile OIDC APIs, and Zero Trust continuous adaptive trust).
-- [ ] **The SolarWinds "Golden SAML" Simulation:** Build an interactive tactical lab explaining how Russian state threat actors (Nobelium) stole private Active Directory Federation Service certificates to forge offline SAML tokens, completely bypassing MFA and passwords.
-- [ ] **The "Silver SAML" Cloud Audit Lab:** Explore the 2024 cloud-native evolution where compromised external CA certificates in Microsoft Entra ID are exploited to forge tokens, detailing key rotations.
-- [ ] **OAuth Wildcard Redirect Hijacks:** Build an interactive sandbox showing how wildcard redirect URIs allow attackers to hijack auth codes and steal sessions.
-- [ ] **MFA Fatigue (Push Bombing) Simulator:** Create a gamified security response lab demonstrating how push bombing exploits human psychology, and how "Number Matching" remediates the threat.
-- [ ] **Global Identity Resource Index:** Compile and link authoritative blogs and industry portals (IDSA, Kantara Initiative, Cerbos Blog, Curity, OAuth.net) for developers seeking active research feeds.
+### Phase 6: Historical Evolution & Security Breach Museum (COMPLETE)
+- [x] **The "Evolution of IAM" Visual Timeline:** Create an interactive, highly visual corridor charting the 5 computing eras of identity (Mainframe terminals, Directory LDAP trees, Web SSO/SAML, Cloud/Mobile OIDC APIs, and Zero Trust continuous adaptive trust).
+- [x] **The SolarWinds "Golden SAML" Simulation:** Build an interactive tactical lab explaining how Russian state threat actors (Nobelium) stole private Active Directory Federation Service certificates to forge offline SAML tokens, completely bypassing MFA and passwords.
+- [x] **The "Silver SAML" Cloud Audit Lab:** Explore the 2024 cloud-native evolution where compromised external CA certificates in Microsoft Entra ID are exploited to forge tokens, detailing key rotations.
+- [x] **OAuth Wildcard Redirect Hijacks:** Build an interactive sandbox showing how wildcard redirect URIs allow attackers to hijack auth codes and steal sessions.
+- [x] **MFA Fatigue (Push Bombing) Simulator:** Create a gamified security response lab demonstrating how push bombing exploits human psychology, and how "Number Matching" remediates the threat.
+- [x] **Global Identity Resource Index:** Compile and link authoritative blogs and industry portals (IDSA, Kantara Initiative, Cerbos Blog, Curity, OAuth.net) for developers seeking active research feeds.
 
 ---
 

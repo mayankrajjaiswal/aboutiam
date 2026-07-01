@@ -12,6 +12,11 @@ import Learn from './pages/Learn'
 import PlaygroundCatalog from './pages/PlaygroundCatalog'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
+import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
+import FIDO2Lab from './pages/Playgrounds/FIDO2Lab'
+import AccessControlLab from './pages/Playgrounds/AccessControlLab'
+import LDAPTreeSimulator from './pages/Playgrounds/LDAPTreeSimulator'
+import ZTAPlanner from './pages/Playgrounds/ZTAPlanner'
 import Assess from './pages/Assess'
 import Explore from './pages/Explore'
 import Assistant from './pages/Assistant'
@@ -55,6 +60,11 @@ export default function App() {
               <Route path="/playground" element={<PlaygroundCatalog />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
+              <Route path="/playground/saml" element={<SAMLWorkbench />} />
+              <Route path="/playground/fido2" element={<FIDO2Lab />} />
+              <Route path="/playground/access" element={<AccessControlLab />} />
+              <Route path="/playground/ldap" element={<LDAPTreeSimulator />} />
+              <Route path="/playground/zta" element={<ZTAPlanner />} />
               <Route path="/assess" element={<Assess />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />

@@ -126,6 +126,19 @@ An exhaustive catalog of the IAM ecosystem, allowing users to compare options:
 
 ---
 
+## 3.5. Advanced Ecosystem Enhancements (Phase 5 Roadmap)
+
+To guarantee AboutIAM is the definitive, uncontested global resource for identity engineering, we will expand the core modules with the following advanced interactive utilities:
+
+1. **The Interactive "IAM Wall of Shame" (Vulnerability Lab):** An animated timeline of infamous identity breaches (e.g., Okta MFA fatigue, Equifax API leaks). Users step through the attack vectors using visual packet-injections and view side-by-side terminal patches for the remediation.
+2. **Master IAM Glossary & Encyclopedia:** A deeply linked, searchable A-Z encyclopedia. Every term (from "ABAC" to "Zero Trust") features a beginner-friendly analogy, an expert specification, and an interactive SVG component (e.g., an animated JWT when searching "JWT").
+3. **Standard-Specific Cheat Sheets:** Interactive developer checklists (e.g., "SPA Session Security", "SAML to OIDC Migration"). As developers check off remediation steps, a visual gauge calculates their security posture in real-time.
+4. **Visual Architecture Blueprints:** Expandable network diagrams detailing standard deployments (Workforce AD+SAML setups, B2B Multi-Tenant CIAM hubs, and Serverless M2M Workloads) with interactive component tooltips.
+5. **Interactive RFC Index & Search:** A developer-friendly translation layer over core RFCs (6749, 7636, 7519, 8693). Replaces 100-page dry manuals with 1-page visual summaries, alert boxes, and copyable token payloads.
+6. **IAM Certification Readiness Quizzes:** A gamified test portal (CISSP/CCSP/Okta standards) tracking scores in \`localStorage\` and awarding downloadable vector badges upon mastery.
+
+---
+
 ## 4. Phase-by-Phase Roadmap
 
 ### Phase 1: Foundation & Core Playgrounds (ACTIVE DEVELOPMENT FOCUS)
@@ -136,7 +149,8 @@ An exhaustive catalog of the IAM ecosystem, allowing users to compare options:
 - [ ] Build **JWT Studio** (JWT decode/encode, RS256/HS256 generation, signature verification).
 - [ ] Build **OAuth 2.0 / OIDC Flow Visualizer** (Authorization Code flow step-by-step).
 
-### Phase 2: Advanced Protocols & Directory Services
+### Phase 2: Encyclopedia, Advanced Protocols & Directory Services
+- [ ] Build **Master IAM Glossary & Encyclopedia** (A-Z searchable directory with interactive SVG definitions).
 - [ ] Build **FIDO2 / WebAuthn & Passkeys Lab** (Visualizing physical/platform key challenges, responses, and signature validations).
 - [ ] Build **SAML 2.0 XML Workbench** (AuthnRequest/Response generator and signed assertion verification).
 - [ ] Implement **Directory Services LDAP Tree Simulator** (LDAP structure visualization and query runner).

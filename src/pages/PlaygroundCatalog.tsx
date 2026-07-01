@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network } from 'lucide-react'
 
 export default function PlaygroundCatalog() {
   const playgrounds = [
@@ -51,6 +51,34 @@ export default function PlaygroundCatalog() {
       icon: RefreshCw,
       link: "/playground/zta",
       badge: "Active (Complete)",
+    },
+    {
+      title: "AI vs Identity Threat Lab",
+      desc: "Simulate Generative AI voice deepfake attacks against legacy MFA and witness how FIDO2 hardware bounds defeat synthetic cloning.",
+      icon: Bot,
+      link: "/playground/ai-threat-lab",
+      badge: "Phase 7 (Next-Gen)",
+    },
+    {
+      title: "Zero-Knowledge Proof (ZKP) Wallet",
+      desc: "Explore decentralized Self-Sovereign Identity. Generate mathematical proofs confirming your age without exposing your raw birthdate.",
+      icon: Wallet,
+      link: "/playground/zkp-wallet",
+      badge: "Phase 7 (Next-Gen)",
+    },
+    {
+      title: "Continuous Ambient Trust Decayer",
+      desc: "Visualize post-2030 systems where real-time biometric telemetry (keystrokes, location) constantly decays or fortifies session trust.",
+      icon: Activity,
+      link: "/playground/ambient-trust",
+      badge: "Phase 7 (Next-Gen)",
+    },
+    {
+      title: "NHI Workload Mesh (SPIFFE)",
+      desc: "Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.",
+      icon: Network,
+      link: "/playground/workload-mesh",
+      badge: "Phase 7 (Next-Gen)",
     }
   ]
 

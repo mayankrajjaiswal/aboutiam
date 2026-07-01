@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { 
-  Search, X, Copy, CheckCircle2, ExternalLink, Terminal, Layers, Check
+  Search, X, Copy, CheckCircle2, ExternalLink, Terminal, Layers, Check, Wand2
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface Product {
   name: string
@@ -194,6 +195,25 @@ vault write auth/oidc/role/developer \\
         <p className="text-text-secondary">
           Browse and compare leading Open Source Identity Servers, Enterprise SaaS vendors, PAM proxies, and Secret Engines. Study license details and retrieve sample integration scripts.
         </p>
+      </div>
+
+      {/* SEO Lead Magnet Banner */}
+      <div className="p-4 rounded-xl bg-accent-glow/5 border border-accent-primary/20 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3 text-left">
+          <div className="w-10 h-10 rounded-lg bg-accent-primary text-white flex items-center justify-center shrink-0">
+            <Wand2 className="w-5 h-5 animate-pulse-slow" />
+          </div>
+          <div className="space-y-0.5">
+            <span className="text-xs font-bold text-text-primary">Not sure which Identity Provider to choose?</span>
+            <p className="text-[11px] text-text-secondary font-medium">Use our interactive 3-step consultative wizard to calculate your perfect architectural match.</p>
+          </div>
+        </div>
+        <Link
+          to="/explore/matchmaker"
+          className="w-full sm:w-auto text-center px-5 py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shrink-0 shadow"
+        >
+          Launch Auth Matchmaker →
+        </Link>
       </div>
 
       {/* Control Filters */}

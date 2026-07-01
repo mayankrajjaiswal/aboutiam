@@ -28,6 +28,13 @@ import CheatSheets from './pages/CheatSheets'
 import BeginnerPrimer from './pages/BeginnerPrimer'
 import Contributors from './pages/Contributors'
 
+// Phase 7: Next-Gen Modules
+import AIThreatLab from './pages/Playgrounds/AIThreatLab'
+import ZKPWallet from './pages/Playgrounds/ZKPWallet'
+import AmbientTrust from './pages/Playgrounds/AmbientTrust'
+import WorkloadMesh from './pages/Playgrounds/WorkloadMesh'
+import AuthMatchmaker from './pages/Playgrounds/AuthMatchmaker'
+
 export default function App() {
   const { initializeTheme } = useThemeStore()
 
@@ -66,6 +73,14 @@ export default function App() {
               <Route path="/playground/access" element={<AccessControlLab />} />
               <Route path="/playground/ldap" element={<LDAPTreeSimulator />} />
               <Route path="/playground/zta" element={<ZTAPlanner />} />
+              
+              {/* Phase 7 Paths */}
+              <Route path="/playground/ai-threat-lab" element={<AIThreatLab />} />
+              <Route path="/playground/zkp-wallet" element={<ZKPWallet />} />
+              <Route path="/playground/ambient-trust" element={<AmbientTrust />} />
+              <Route path="/playground/workload-mesh" element={<WorkloadMesh />} />
+              <Route path="/explore/matchmaker" element={<AuthMatchmaker />} />
+
               <Route path="/assess" element={<Assess />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />

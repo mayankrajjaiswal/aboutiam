@@ -6,7 +6,7 @@ import { useThemeStore } from './store/themeStore'
 import Sidebar from './components/Layout/Sidebar'
 import Header from './components/Layout/Header'
 
-// Core Stub Pages
+// Core Pages
 import Home from './pages/Home'
 import Learn from './pages/Learn'
 import PlaygroundCatalog from './pages/PlaygroundCatalog'
@@ -15,6 +15,11 @@ import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import Assess from './pages/Assess'
 import Explore from './pages/Explore'
 import Assistant from './pages/Assistant'
+
+// Advanced Ecosystem Modules
+import Encyclopedia from './pages/Encyclopedia'
+import WallOfShame from './pages/WallOfShame'
+import CheatSheets from './pages/CheatSheets'
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
@@ -51,6 +56,9 @@ export default function App() {
               <Route path="/assess" element={<Assess />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />
+              <Route path="/encyclopedia" element={<Encyclopedia />} />
+              <Route path="/wall-of-shame" element={<WallOfShame />} />
+              <Route path="/cheat-sheets" element={<CheatSheets />} />
               {/* Fallback Redirection */}
               <Route path="*" element={<Home />} />
             </Routes>

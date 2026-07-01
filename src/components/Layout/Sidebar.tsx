@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookOpen, Cpu, Award, Compass, Bot, X, Home } from 'lucide-react'
+import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
 interface SidebarProps {
@@ -11,13 +11,22 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
   const location = useLocation()
   const { isMobileSidebarOpen, setMobileSidebarOpen } = useLayoutStore()
 
-  const navItems = [
-    { name: 'Home', path: '/', icon: Home },
+  const coreItems = [
+    { name: 'Overview Dashboard', path: '/', icon: Home },
     { name: 'IAM Academy', path: '/learn', icon: BookOpen },
-    { name: 'Playgrounds', path: '/playground', icon: Cpu },
+    { name: 'Interactive Playgrounds', path: '/playground', icon: Cpu },
+  ]
+  
+  const ecosystemItems = [
+    { name: 'Master Encyclopedia', path: '/encyclopedia', icon: Book },
+    { name: 'Vulnerability Lab', path: '/wall-of-shame', icon: ShieldAlert },
+    { name: 'Developer Playbooks', path: '/cheat-sheets', icon: CheckSquare },
+  ]
+
+  const exploreItems = [
     { name: 'Maturity Assessments', path: '/assess', icon: Award },
     { name: 'Landscape Directory', path: '/explore', icon: Compass },
-    { name: 'AI Architect', path: '/assistant', icon: Bot },
+    { name: 'AI Architect Chat', path: '/assistant', icon: Bot },
   ]
 
   const isActive = (path: string) => {
@@ -32,6 +41,34 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
       setMobileSidebarOpen(false)
     }
   }
+
+  const NavGroup = ({ title, items }: { title: string, items: any[] }) => (
+    <div className="py-3">
+      <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-text-muted mb-2 block">{title}</span>
+      <div className="space-y-1">
+        {items.map((item) => {
+          const active = isActive(item.path)
+          return (
+            <Link
+              key={item.name}
+              to={item.path}
+              onClick={handleLinkClick}
+              className={`flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg text-sm font-semibold transition-all group ${
+                active
+                  ? 'bg-accent-glow text-accent-primary shadow-sm shadow-accent-primary/5'
+                  : 'text-text-secondary hover:bg-bg-card hover:text-text-primary border border-transparent hover:border-border-subtle/50'
+              }`}
+            >
+              <item.icon className={`w-4 h-4 shrink-0 transition-colors ${
+                active ? 'text-accent-primary' : 'text-text-muted group-hover:text-text-primary'
+              }`} />
+              {item.name}
+            </Link>
+          )
+        })}
+      </div>
+    </div>
+  )
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-bg-sidebar border-r border-border-subtle">
@@ -51,27 +88,12 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
       </div>
 
       {/* Navigation List */}
-      <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-        {navItems.map((item) => {
-          const active = isActive(item.path)
-          return (
-            <Link
-              key={item.name}
-              to={item.path}
-              onClick={handleLinkClick}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all group ${
-                active
-                  ? 'bg-accent-glow text-accent-primary border-l-4 border-accent-primary shadow-sm shadow-accent-primary/5'
-                  : 'text-text-secondary hover:bg-bg-card hover:text-text-primary'
-              }`}
-            >
-              <item.icon className={`w-4 h-4 shrink-0 transition-colors ${
-                active ? 'text-accent-primary' : 'text-text-muted group-hover:text-text-primary'
-              }`} />
-              {item.name}
-            </Link>
-          )
-        })}
+      <nav className="flex-1 py-4 overflow-y-auto custom-scrollbar">
+        <NavGroup title="Core Platform" items={coreItems} />
+        <div className="mx-6 border-t border-border-subtle/50 my-1"></div>
+        <NavGroup title="Advanced Ecosystem" items={ecosystemItems} />
+        <div className="mx-6 border-t border-border-subtle/50 my-1"></div>
+        <NavGroup title="Governance & Tools" items={exploreItems} />
       </nav>
 
       {/* Footer Branding */}

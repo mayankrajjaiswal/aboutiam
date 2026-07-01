@@ -100,6 +100,23 @@ export default function PlaygroundCatalog() {
           </div>
         ))}
       </div>
+
+      {/* Exploit Spotlight Banner */}
+      <div className="p-6 rounded-2xl bg-status-danger/5 border border-status-danger/20 flex flex-col sm:flex-row items-center justify-between gap-6 font-sans mt-8 shadow-sm">
+        <div className="space-y-1">
+          <span className="text-[10px] font-black uppercase text-status-danger tracking-wider block">Vulnerability Alert</span>
+          <h4 className="text-base font-bold text-text-primary">Test Real-World Identity Exploits Natively</h4>
+          <p className="text-xs text-text-secondary font-medium">
+            Our playgrounds aren't just empty forms. Open the <strong>JWT Studio</strong> to trigger none-algorithm signature bypasses, or launch the <strong>SAML Workbench</strong> to run XML Signature Wrapping (SSW) injections.
+          </p>
+        </div>
+        <Link
+          to="/wall-of-shame"
+          className="w-full sm:w-auto text-center px-4 py-2.5 bg-status-danger hover:bg-status-danger/90 text-white text-xs font-black uppercase rounded-lg shadow-md shadow-status-danger/10 transition-all shrink-0"
+        >
+          Enter Breach Museum →
+        </Link>
+      </div>
     </div>
   )
 }

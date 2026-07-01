@@ -73,7 +73,7 @@ export default function Header() {
 
         {/* GitHub Repository Reference Link */}
         <a
-          href="https://github.com/pqctoday-org/pqctoday-hub" // Replaced with user's core PQCToday template reference or future repos
+          href="https://github.com/mayankrajjaiswal/aboutiam"
           target="_blank"
           rel="noreferrer"
           className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none"

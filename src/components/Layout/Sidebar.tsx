@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare, GraduationCap } from 'lucide-react'
+import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare, GraduationCap, Users } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
 interface SidebarProps {
@@ -28,6 +28,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
     { name: 'Maturity Assessments', path: '/assess', icon: Award },
     { name: 'Landscape Directory', path: '/explore', icon: Compass },
     { name: 'AI Architect Chat', path: '/assistant', icon: Bot },
+    { name: 'Team & Contact', path: '/contributors', icon: Users },
   ]
 
   const isActive = (path: string) => {

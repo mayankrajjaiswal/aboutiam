@@ -26,6 +26,7 @@ import Encyclopedia from './pages/Encyclopedia'
 import WallOfShame from './pages/WallOfShame'
 import CheatSheets from './pages/CheatSheets'
 import BeginnerPrimer from './pages/BeginnerPrimer'
+import Contributors from './pages/Contributors'
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
@@ -71,6 +72,7 @@ export default function App() {
               <Route path="/encyclopedia" element={<Encyclopedia />} />
               <Route path="/wall-of-shame" element={<WallOfShame />} />
               <Route path="/cheat-sheets" element={<CheatSheets />} />
+              <Route path="/contributors" element={<Contributors />} />
               {/* Fallback Redirection */}
               <Route path="*" element={<Home />} />
             </Routes>

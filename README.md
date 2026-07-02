@@ -49,7 +49,12 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **LDAP Tree Simulator:** Renders a nested Active Directory domain schema. Typing standard LDAP filters (e.g. `(memberOf=cn=Admins)`) dynamically matches and highlights nodes.
 * **Zero Trust Planner:** Models NIST SP 800-207 trust algorithms, calculating access risk scores based on real-time parameters.
 
-### 🏛️ C. Advanced Ecosystem & Governance
+### 🛠️ C. Security Tools (`/tools`)
+* **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. 12 of 19 planned tools are live: JWT Decoder & Generator, Base64/Base64URL Encoder-Decoder, SHA-256 & Hash Generator, HMAC Generator & Verifier, UUID/ULID Generator, Password Generator, OAuth PKCE Generator, TOTP Generator & Verifier, LDAP Filter Builder, SCIM Payload Validator, and a Basic/Bearer Auth Header Decoder.
+* Every tool page pairs a **beginner analogy** with an **expert technical specification** (RFC/spec-referenced), matching the Encyclopedia's teaching pattern, plus its own SEO-optimized route, meta tags, and JSON-LD structured data for search discoverability.
+* Remaining backlog (bcrypt, JWK↔PEM, X.509/CSR decoder, SAML decoder, SD-JWT, WebAuthn, and `did:key` generator) is tracked in `FIXED_TODO.md`.
+
+### 🏛️ D. Advanced Ecosystem & Governance
 * **Master A-Z Encyclopedia (`Encyclopedia.tsx`):** Searchable glossary packed with **35 standard identity terms**. Details analogies and strict technical specifications.
 * **Vulnerability Lab & Identity Museum (`WallOfShame.tsx`):** Interactive corridor charting the 5 historic eras of identity. Houses detailed steppers explaining the SolarWinds **Golden SAML** exploit, **Silver SAML** threats, and **MFA Fatigue push bombing**.
 * **Developer Playbooks (`CheatSheets.tsx`):** Checklist compliance audits for SPAs and M2M credentials that update dynamic posture gauges.

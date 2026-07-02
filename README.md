@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://mayankrajjaiswal.github.io/aboutiam/aboutiam_banner.svg" alt="AboutIAM Widescreen Banner" width="800" />
+  <img src="https://www.aboutiam.com/aboutiam_banner.svg" alt="AboutIAM Widescreen Banner" width="800" />
 </p>
 
 <p align="center">
@@ -100,7 +100,7 @@ npm run test
 
 This repository is equipped with a fully automated CI/CD pipeline inside `.github/workflows/deploy.yml`:
 - Every time you run `git push origin main`, GitHub Actions automatically boots up an Ubuntu runner, installs Node.js, compiles your TypeScript code, bundles assets, and deploys them directly to **GitHub Pages**.
-- Your live website is served statically at: **[https://mayankrajjaiswal.github.io/aboutiam/](https://mayankrajjaiswal.github.io/aboutiam/)**
+- Your live website is served statically at: **[https://www.aboutiam.com/](https://www.aboutiam.com/)**
 
 ---
 

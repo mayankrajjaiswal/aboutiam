@@ -109,6 +109,42 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/tools/jwk-pem-converter/</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/x509-certificate-decoder/</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/saml-decoder/</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/sd-jwt-decoder/</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/webauthn-decoder/</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/did-key-generator/</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/playground/jwt/</loc>
     <lastmod>2026-07-02</lastmod>
     <changefreq>monthly</changefreq>

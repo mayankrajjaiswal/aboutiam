@@ -24,6 +24,12 @@ import TotpGenerator from './pages/Tools/TotpGenerator'
 import LdapFilterBuilder from './pages/Tools/LdapFilterBuilder'
 import ScimPayloadValidator from './pages/Tools/ScimPayloadValidator'
 import BasicAuthDecoder from './pages/Tools/BasicAuthDecoder'
+import JwkPemConverter from './pages/Tools/JwkPemConverter'
+import X509CertificateDecoder from './pages/Tools/X509CertificateDecoder'
+import SamlDecoder from './pages/Tools/SamlDecoder'
+import SdJwtDecoder from './pages/Tools/SdJwtDecoder'
+import WebauthnDecoder from './pages/Tools/WebauthnDecoder'
+import DidKeyGenerator from './pages/Tools/DidKeyGenerator'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
@@ -96,6 +102,12 @@ export default function App() {
               <Route path="/tools/ldap-filter-builder" element={<LdapFilterBuilder />} />
               <Route path="/tools/scim-payload-validator" element={<ScimPayloadValidator />} />
               <Route path="/tools/basic-auth-decoder" element={<BasicAuthDecoder />} />
+              <Route path="/tools/jwk-pem-converter" element={<JwkPemConverter />} />
+              <Route path="/tools/x509-certificate-decoder" element={<X509CertificateDecoder />} />
+              <Route path="/tools/saml-decoder" element={<SamlDecoder />} />
+              <Route path="/tools/sd-jwt-decoder" element={<SdJwtDecoder />} />
+              <Route path="/tools/webauthn-decoder" element={<WebauthnDecoder />} />
+              <Route path="/tools/did-key-generator" element={<DidKeyGenerator />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />

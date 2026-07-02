@@ -32,7 +32,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/roadmap`** | `Roadmap.tsx` | Zero-to-Hero Learning Pathway. Chronological guide detailing sequential tracks. |
 | **`/learn`** | `Learn.tsx` | IAM Academy. 6 tracks, 36 expandable modules with local progress bar persistent tracking. |
 | **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 7 completed simulators. |
-| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (12 of 19 planned tools live — see `FIXED_TODO.md`). |
+| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (18 of 19 planned tools live — see `FIXED_TODO.md`). |
 | **`/tools/jwt-decoder`** | `Tools/JwtDecoder.tsx` | Decodes a JWT's header/payload/signature; flags `alg: none`; optional HMAC verify. |
 | **`/tools/jwt-generator`** | `Tools/JwtGenerator.tsx` | Signs a JWT client-side with HS256/384/512 or an ephemeral RS256 keypair. |
 | **`/tools/base64-encoder-decoder`** | `Tools/Base64EncoderDecoder.tsx` | Base64/Base64URL encode-decode for text and files. |
@@ -141,7 +141,7 @@ Optionally add a `Sidebar.tsx` nav entry and a `public/sitemap.xml` `<url>` entr
 
 ### 🛠️ E. How to Add a New Security Tool (`/tools/<slug>`)
 
-The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — see `FIXED_TODO.md` for the live backlog of remaining tools (7 of 19 as of this writing). To add one:
+The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — see `FIXED_TODO.md` for the live backlog of remaining tools (1 of 19 as of this writing). To add one:
 
 1. **`src/data/toolsRegistry.ts`** — append a `ToolMeta` entry (`slug`, `title`, `description`, `category`, `icon`, `phase`, `keywords`, `analogy`, `expert`, `faqs`, optional `relatedLinks`) with `status: 'planned'` while you build, then flip to `'live'` when it ships. `ToolsCatalog.tsx` and the sidebar-adjacent catalog card both render from this array automatically — nothing else to touch there.
 2. **`src/pages/Tools/<PascalCaseName>.tsx`** — build the page using the shared components in `src/components/Tools/` (`ToolPageShell` for the header/privacy-notice/JSON-LD wrapper, `BeginnerExpertExplainer` for the analogy/expert/FAQ card, `useClipboardCopy` for copy buttons, `FileDropInput` for file-accepting tools) and any pure-logic helpers you need in `src/lib/tools/` (one small, independently Vitest-tested module per concern — see the existing `base64.ts`/`jwt.ts`/`totp.ts`/etc. for the pattern).

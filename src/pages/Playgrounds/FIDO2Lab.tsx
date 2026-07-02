@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { 
+import { Link } from 'react-router-dom'
+import {
   Fingerprint, Terminal, Copy, Info, Cpu, CheckCircle2
 } from 'lucide-react'
 
@@ -66,6 +67,9 @@ Device security chip (TPM / Secure Enclave) generates a brand new asymmetric key
         <p className="text-text-secondary">
           Simulate a browser-native WebAuthn Passkey registration and verify the public key structure, challenges, and clientDataJSON payload blocks in real-time.
         </p>
+        <Link to="/tools/webauthn-decoder" className="text-xs font-semibold text-accent-primary hover:text-accent-hover transition-colors inline-block">
+          Decode a real clientDataJSON, authenticatorData, or attestationObject →
+        </Link>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">

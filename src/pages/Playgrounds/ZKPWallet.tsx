@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Wallet, EyeOff, CheckCircle2, ShieldCheck, ArrowRight, Lock } from 'lucide-react'
 
 export default function ZKPWallet() {
@@ -38,6 +39,9 @@ export default function ZKPWallet() {
         <p className="text-text-secondary">
           Self-Sovereign Identity (SSI) allows users to prove facts about themselves without revealing underlying raw data. Generate a Zero-Knowledge Proof to prove you are "Over 21" without sharing your actual birthdate.
         </p>
+        <Link to="/tools/did-key-generator" className="text-xs font-semibold text-accent-primary hover:text-accent-hover transition-colors inline-block">
+          Generate a real did:key decentralized identifier →
+        </Link>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">

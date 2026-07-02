@@ -3,6 +3,7 @@ import {
   Users, Mail, Heart, Send, CheckCircle2, Globe
 } from 'lucide-react'
 import mayankPhoto from '../assets/contributors/mayank.jpg'
+import rajatPhoto from '../assets/contributors/rajat.jpg'
 
 interface ContributorLink {
   type: 'github' | 'email' | 'linkedin' | 'website'
@@ -25,6 +26,7 @@ const contributors: Contributor[] = [
     affiliation: 'IAM Engineering - Thales Group',
     bio: "A Senior Engineering Manager leading IAM engineering at Thales Group, bringing enterprise-scale identity and access management expertise to AboutIAM's hands-on, real-world approach to security education.",
     avatar: '🧑‍💻',
+    photo: rajatPhoto,
     links: [
       { type: 'github', href: 'https://github.com/thalesgroup', label: "Browse Thales Group's GitHub" },
       { type: 'linkedin', href: 'https://www.linkedin.com/in/rajat-rastogi-7b97619/', label: 'Connect with Rajat on LinkedIn' },

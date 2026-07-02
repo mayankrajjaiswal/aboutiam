@@ -1,0 +1,17 @@
+/* TEAM */
+Lead Architect & Founder: Mayank Raj Jaiswal
+Site: https://github.com/mayankrajjaiswal/
+Location: India
+
+/* THANKS */
+Thanks to every open-source contributor who submits modules, playgrounds, and fixes.
+Contributing guide: https://github.com/mayankrajjaiswal/aboutiam/blob/main/CONTRIBUTING.md
+
+/* SITE */
+Last update: 2026/07/02
+Language: English
+Doctype: HTML5
+Components: React 19, TypeScript, Vite, Tailwind CSS v4, Zustand, Framer Motion, React Router 7
+Standards: OAuth 2.0, OIDC, SAML 2.0, JWT, FIDO2/WebAuthn, LDAP, NIST SP 800-207 (Zero Trust), SPIFFE/SPIRE
+License: MIT
+Software: VS Code

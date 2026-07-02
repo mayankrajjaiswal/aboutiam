@@ -316,6 +316,23 @@ words:
   - jwth
   - jwtp
   - wordcount
+  - pathlen
+  - OIDS
+  - OCSP
+  - extn
+  - AQAB
+  - SPSSO
+  - lnbm
+  - LXBs
+  - AQID
+  - Vggv
+  - Aurl
+  - MOVWGLJ
+  - WCDB
+  - Mvzy
+  - kfpao
+  - kbheader
+  - kbpayload
   - pkce
   - PKCE
   - PKCE's
@@ -558,3 +575,20 @@ words:
   - jwth
   - jwtp
   - wordcount
+  - pathlen
+  - OIDS
+  - OCSP
+  - extn
+  - AQAB
+  - SPSSO
+  - lnbm
+  - LXBs
+  - AQID
+  - Vggv
+  - Aurl
+  - MOVWGLJ
+  - WCDB
+  - Mvzy
+  - kfpao
+  - kbheader
+  - kbpayload

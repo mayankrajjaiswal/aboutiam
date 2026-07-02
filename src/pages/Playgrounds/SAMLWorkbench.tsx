@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { 
   Lock, AlertTriangle, ShieldCheck, Terminal, Copy, Info, RefreshCw
 } from 'lucide-react'
@@ -73,6 +74,9 @@ export default function SAMLWorkbench() {
         <p className="text-text-secondary">
           Inspect raw XML SSO Assertions and simulate **SAML Signature Wrapping (SSW)** exploits to see how vulnerable XML parsers can be tricked into validating spoofed admin rights.
         </p>
+        <Link to="/tools/saml-decoder" className="text-xs font-semibold text-accent-primary hover:text-accent-hover transition-colors inline-block">
+          Decode a real SAMLRequest/Response or metadata XML →
+        </Link>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">

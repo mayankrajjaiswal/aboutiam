@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Network, Server, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react'
 
 export default function WorkloadMesh() {
@@ -55,6 +56,9 @@ export default function WorkloadMesh() {
         <p className="text-text-secondary">
           Non-Human Identities (NHI) heavily outnumber users. See how microservices leverage the SPIFFE standard to dynamically attest their platform state and exchange short-lived certificates without relying on static, stealable API keys.
         </p>
+        <Link to="/tools/x509-certificate-decoder" className="text-xs font-semibold text-accent-primary hover:text-accent-hover transition-colors inline-block">
+          Decode a real X.509 SVID certificate (with spiffe:// SAN detection) →
+        </Link>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">

@@ -10,7 +10,7 @@ export function derToPem(der: Uint8Array, label: string): string {
   return `-----BEGIN ${label}-----\n${chunk(bytesToBase64(der))}\n-----END ${label}-----`
 }
 
-export function pemToDer(pem: string): Uint8Array {
+export function pemToDer(pem: string): Uint8Array<ArrayBuffer> {
   const base64 = pem
     .replace(/-----BEGIN [^-]+-----/, '')
     .replace(/-----END [^-]+-----/, '')

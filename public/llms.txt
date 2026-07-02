@@ -42,6 +42,12 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [LDAP Filter Builder](https://www.aboutiam.com/tools/ldap-filter-builder/): Visual AND/OR/NOT composer producing an RFC 4515 filter string.
 - [SCIM Payload Validator & Builder](https://www.aboutiam.com/tools/scim-payload-validator/): Validate or scaffold SCIM 2.0 User/Group JSON.
 - [Basic & Bearer Auth Header Decoder](https://www.aboutiam.com/tools/basic-auth-decoder/): Decode Basic Authorization headers or inspect Bearer tokens.
+- [JWK to PEM Converter](https://www.aboutiam.com/tools/jwk-pem-converter/): Convert RSA/EC JWKs to PEM and back, plus compute the RFC 7638 thumbprint.
+- [X.509 Certificate Decoder](https://www.aboutiam.com/tools/x509-certificate-decoder/): Decode X.509 certs and PKCS#10 CSRs — subject, validity, SANs, key usage, fingerprints.
+- [SAML Decoder](https://www.aboutiam.com/tools/saml-decoder/): Decode SAMLRequest/Response (POST or Redirect binding) or pretty-print SP/IdP metadata XML.
+- [SD-JWT Decoder](https://www.aboutiam.com/tools/sd-jwt-decoder/): Decode Selective Disclosure JWTs and verify each disclosure's digest binding.
+- [WebAuthn / Passkey Assertion Decoder](https://www.aboutiam.com/tools/webauthn-decoder/): Decode clientDataJSON, authenticatorData, and CBOR attestationObject.
+- [DID Key Generator](https://www.aboutiam.com/tools/did-key-generator/): Generate an Ed25519 keypair and derive its did:key identifier and DID document.
 
 ## Advanced Ecosystem & Governance
 

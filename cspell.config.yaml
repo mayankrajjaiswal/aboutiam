@@ -102,6 +102,8 @@ words:
   - idsa
   - kantara
   - parent
+  - postbuild
+  - llms
   - parecki
   - cerbos
   - curity

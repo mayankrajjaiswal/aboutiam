@@ -1,0 +1,12 @@
+# Security Policy for AboutIAM — https://www.aboutiam.com/
+# This is a static, 100% client-side educational site with no backend, no user
+# accounts, and no server-side data storage — the attack surface is limited to
+# the front-end code itself (XSS, dependency CVEs, supply-chain issues).
+#
+# This is a compatibility copy for scanners that only check the site root.
+# The canonical copy (RFC 9116) lives at /.well-known/security.txt.
+Contact: https://github.com/mayankrajjaiswal/aboutiam/security/advisories/new
+Contact: https://github.com/mayankrajjaiswal/aboutiam/issues
+Canonical: https://www.aboutiam.com/.well-known/security.txt
+Preferred-Languages: en
+Expires: 2027-07-02T00:00:00.000Z

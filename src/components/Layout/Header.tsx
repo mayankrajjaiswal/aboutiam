@@ -1,31 +1,36 @@
+import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Menu, Sun, Moon, Laptop } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
+import { getRouteMeta } from '../../routeMeta'
+
+const SITE_URL = 'https://www.aboutiam.com'
+
+function setMetaContent(selector: string, content: string) {
+  document.querySelector(selector)?.setAttribute('content', content)
+}
 
 export default function Header() {
   const location = useLocation()
   const { theme, setTheme } = useThemeStore()
   const { toggleMobileSidebar } = useLayoutStore()
 
-  // Get human-friendly page title from route
-  const getPageTitle = () => {
-    const path = location.pathname
-    if (path === '/') return 'Overview Dashboard'
-    if (path === '/primer') return "Layman's Onboarding Portal"
-    if (path === '/roadmap') return 'Zero-to-Hero Learning Pathway'
-    if (path.startsWith('/learn')) return 'IAM Academy Curriculum'
-    if (path === '/playground') return 'Simulators & Playgrounds'
-    if (path === '/playground/jwt') return 'JWT Studio & Exploit Arena'
-    if (path === '/playground/oauth') return 'OAuth 2.0 / OIDC Handshake Visualizer'
-    if (path === '/encyclopedia') return 'Master IAM Glossary'
-    if (path === '/wall-of-shame') return 'Vulnerability Lab'
-    if (path === '/cheat-sheets') return 'Developer Playbooks'
-    if (path === '/assess') return 'GRC Maturity Assessments'
-    if (path === '/explore') return 'IAM Landscape Directory'
-    if (path === '/assistant') return 'AI IAM Architect Chat'
-    return 'AboutIAM Secure Workspace'
-  }
+  const pageMeta = getRouteMeta(location.pathname)
+  const isHome = location.pathname === '/'
+
+  useEffect(() => {
+    const canonicalUrl = isHome ? `${SITE_URL}/` : `${SITE_URL}${location.pathname}/`
+    document.title = isHome ? 'AboutIAM | The Interactive Identity Workspace' : `${pageMeta.title} | AboutIAM`
+
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl)
+    setMetaContent('meta[name="description"]', pageMeta.description)
+    setMetaContent('meta[property="og:url"]', canonicalUrl)
+    setMetaContent('meta[property="og:title"]', document.title)
+    setMetaContent('meta[property="og:description"]', pageMeta.description)
+    setMetaContent('meta[name="twitter:title"]', document.title)
+    setMetaContent('meta[name="twitter:description"]', pageMeta.description)
+  }, [isHome, location.pathname, pageMeta])
 
   const cycleTheme = () => {
     if (theme === 'light') setTheme('dark')
@@ -57,7 +62,7 @@ export default function Header() {
           <Menu className="w-5 h-5" />
         </button>
         <span className="text-sm font-bold text-text-primary tracking-wide">
-          {getPageTitle()}
+          {pageMeta.title}
         </span>
       </div>
 

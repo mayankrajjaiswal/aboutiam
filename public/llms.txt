@@ -1,0 +1,43 @@
+# AboutIAM
+
+> AboutIAM is an open-source, 100% client-side, browser-native academy and simulation workbench for Identity and Access Management (IAM). It teaches OAuth 2.0/OIDC, SAML, JWT, FIDO2/WebAuthn, ABAC/RBAC, LDAP, Zero Trust, ZKPs, and SPIFFE/SPIRE through hands-on, interactive playgrounds rather than static documentation, with progressive detail for both beginners and expert architects. Every cryptographic operation and policy evaluation runs natively in the browser — there is no backend, no telemetry, and no server-side data collection.
+
+Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https://github.com/mayankrajjaiswal/aboutiam (MIT licensed). Live site: https://www.aboutiam.com/.
+
+## Core Platform
+
+- [Overview Dashboard](https://www.aboutiam.com/): Progress tracker, track graduations, and identity-history trivia.
+- [Beginner's Primer](https://www.aboutiam.com/primer/): Plain-English onboarding — Identify, Authenticate, Authorize, Audit.
+- [Zero-to-Hero Pathway](https://www.aboutiam.com/roadmap/): Chronological, guided learning sequence across all tracks.
+- [IAM Academy](https://www.aboutiam.com/learn/): 6 course tracks, 36 modules, with persisted completion progress.
+- [Playground Catalog](https://www.aboutiam.com/playground/): Index of every interactive simulator.
+
+## Playgrounds (interactive simulators)
+
+- [JWT Studio](https://www.aboutiam.com/playground/jwt/): Browser-native HS256 signing, `none`-algorithm and JWKS-spoofing exploits.
+- [OAuth 2.0 / OIDC Visualizer](https://www.aboutiam.com/playground/oauth/): Step-by-step front/back-channel flow animation with PKCE and raw HTTP inspection.
+- [SAML 2.0 Workbench](https://www.aboutiam.com/playground/saml/): XML assertion builder and Signature Wrapping (SSW) attack simulator.
+- [FIDO2 / WebAuthn Lab](https://www.aboutiam.com/playground/fido2/): Emulated key ceremonies parsing `clientDataJSON` and `authenticatorData`.
+- [Access Control Lab](https://www.aboutiam.com/playground/access/): Dynamic ABAC vs. static RBAC policy evaluation engine.
+- [LDAP Tree Simulator](https://www.aboutiam.com/playground/ldap/): Active Directory schema tree with live LDAP filter search.
+- [Zero Trust Planner](https://www.aboutiam.com/playground/zta/): NIST SP 800-207 trust-algorithm risk scoring.
+- [AI Threat Lab](https://www.aboutiam.com/playground/ai-threat-lab/): Voice-deepfake attacks against legacy MFA vs. FIDO2 hardware bounds.
+- [ZKP Wallet](https://www.aboutiam.com/playground/zkp-wallet/): Zero-knowledge age proofs without exposing raw birthdates.
+- [Ambient Trust](https://www.aboutiam.com/playground/ambient-trust/): Continuous ambient biometric telemetry and session trust decay.
+- [Workload Mesh](https://www.aboutiam.com/playground/workload-mesh/): SPIFFE/SPIRE attestation and X.509 SVID issuance.
+- [Auth Matchmaker](https://www.aboutiam.com/explore/matchmaker/): Wizard that recommends an auth stack with copyable boilerplate.
+
+## Advanced Ecosystem & Governance
+
+- [Master Encyclopedia](https://www.aboutiam.com/encyclopedia/): Searchable A-Z glossary of 35+ IAM standards and acronyms.
+- [Vulnerability Lab / Wall of Shame](https://www.aboutiam.com/wall-of-shame/): Historic identity breaches, including Golden SAML and MFA push-bombing fatigue.
+- [Developer Playbooks](https://www.aboutiam.com/cheat-sheets/): Compliance checklists for SPAs and machine-to-machine credentials.
+- [GRC Maturity Wizard](https://www.aboutiam.com/assess/): 5-pillar organizational readiness assessment with an exportable roadmap.
+- [Landscape Directory](https://www.aboutiam.com/explore/): Product blueprints with copyable integration code.
+- [AI Architect Chat](https://www.aboutiam.com/assistant/): Simulated RAG assistant producing sample policies and Rego scripts.
+
+## Optional
+
+- [Contributors & Contact](https://www.aboutiam.com/contributors/): Team profile and contact form.
+- [Contributing Guide](https://github.com/mayankrajjaiswal/aboutiam/blob/main/CONTRIBUTING.md): How to add modules, playgrounds, or fix bugs.
+- [License (MIT)](https://github.com/mayankrajjaiswal/aboutiam/blob/main/LICENSE)

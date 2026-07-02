@@ -9,6 +9,12 @@
     <meta name="author" content="Mayank Raj Jaiswal" />
     <link rel="canonical" href="https://www.aboutiam.com/" />
 
+    <!-- Best-effort hint against long-lived caching of this HTML shell; GitHub Pages exposes no
+         real Cache-Control header control, so a stale cached copy is recovered by the script below. -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <!-- Icons & PWA -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/favicon.ico" />
@@ -69,6 +75,34 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Self-heal a stale cached HTML shell: after a deploy, GitHub Pages atomically
+      // replaces the previous build, so an old cached page's hashed asset URLs 404.
+      // Recover with a single cache-busted reload instead of leaving a blank page.
+      (function () {
+        var RELOAD_GUARD_KEY = 'aboutiam:asset-reload-attempted';
+        window.addEventListener(
+          'error',
+          function (event) {
+            var target = event.target;
+            if (
+              target === window ||
+              !(target instanceof HTMLScriptElement || target instanceof HTMLLinkElement)
+            ) {
+              return;
+            }
+            if (sessionStorage.getItem(RELOAD_GUARD_KEY)) {
+              return;
+            }
+            sessionStorage.setItem(RELOAD_GUARD_KEY, '1');
+            var url = new URL(window.location.href);
+            url.searchParams.set('_r', Date.now().toString(36));
+            window.location.replace(url.toString());
+          },
+          true
+        );
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

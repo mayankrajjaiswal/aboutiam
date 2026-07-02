@@ -32,6 +32,19 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/roadmap`** | `Roadmap.tsx` | Zero-to-Hero Learning Pathway. Chronological guide detailing sequential tracks. |
 | **`/learn`** | `Learn.tsx` | IAM Academy. 6 tracks, 36 expandable modules with local progress bar persistent tracking. |
 | **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 7 completed simulators. |
+| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (12 of 19 planned tools live — see `FIXED_TODO.md`). |
+| **`/tools/jwt-decoder`** | `Tools/JwtDecoder.tsx` | Decodes a JWT's header/payload/signature; flags `alg: none`; optional HMAC verify. |
+| **`/tools/jwt-generator`** | `Tools/JwtGenerator.tsx` | Signs a JWT client-side with HS256/384/512 or an ephemeral RS256 keypair. |
+| **`/tools/base64-encoder-decoder`** | `Tools/Base64EncoderDecoder.tsx` | Base64/Base64URL encode-decode for text and files. |
+| **`/tools/sha256-hash-generator`** | `Tools/Sha256HashGenerator.tsx` | SHA-1/256/384/512 checksums for text or files via Web Crypto. |
+| **`/tools/hmac-generator`** | `Tools/HmacGenerator.tsx` | Computes and verifies keyed HMAC signatures. |
+| **`/tools/uuid-generator`** | `Tools/UuidGenerator.tsx` | Bulk UUIDv4/UUIDv7/ULID generation. |
+| **`/tools/password-generator`** | `Tools/PasswordGenerator.tsx` | Random passwords or passphrases with a live entropy/crack-time estimate. |
+| **`/tools/oauth-pkce-generator`** | `Tools/OauthPkceGenerator.tsx` | RFC 7636 `code_verifier`/`code_challenge` pair plus a sample authorization URL. |
+| **`/tools/totp-generator`** | `Tools/TotpGenerator.tsx` | Live RFC 6238 TOTP codes with a 30-second countdown ring, plus a verifier. |
+| **`/tools/ldap-filter-builder`** | `Tools/LdapFilterBuilder.tsx` | Visual AND/OR/NOT composer producing an RFC 4515 filter string. |
+| **`/tools/scim-payload-validator`** | `Tools/ScimPayloadValidator.tsx` | Validates or scaffolds SCIM 2.0 User/Group JSON payloads. |
+| **`/tools/basic-auth-decoder`** | `Tools/BasicAuthDecoder.tsx` | Decodes `Authorization: Basic`/`Bearer` header values. |
 | **`/playground/jwt`** | `JWTStudio.tsx` | JWT encoder/decoder. Runs real browser-native HS256 signatures and "none" alg exploits. |
 | **`/playground/oauth`** | `OAuthVisualizer.tsx` | Step-by-step OIDC flow chart. Animates front/back-channels and parses raw HTTP. |
 | **`/playground/saml`** | `SAMLWorkbench.tsx` | XML assertion workbench. Simulates SAML Signature Wrapping (SSW) attacks. |
@@ -125,3 +138,13 @@ Adding a page touches **three** files, because routes are statically pre-rendere
 3. **`scripts/postbuild-ssg.mjs`** — add the *same* `{ path, title, description }` entry to its `ROUTES` array. This script runs in plain Node after `vite build` and intentionally keeps its own copy instead of importing the `.ts` file (avoids depending on a specific Node TypeScript-execution feature in CI) — it's what writes the real `dist/<route>/index.html` GitHub Pages serves. Skipping this step means the route works for in-app navigation but 404s for anyone (or any crawler) linking to it directly.
 
 Optionally add a `Sidebar.tsx` nav entry and a `public/sitemap.xml` `<url>` entry if the page should be discoverable from the main nav / search engines.
+
+### 🛠️ E. How to Add a New Security Tool (`/tools/<slug>`)
+
+The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — see `FIXED_TODO.md` for the live backlog of remaining tools (7 of 19 as of this writing). To add one:
+
+1. **`src/data/toolsRegistry.ts`** — append a `ToolMeta` entry (`slug`, `title`, `description`, `category`, `icon`, `phase`, `keywords`, `analogy`, `expert`, `faqs`, optional `relatedLinks`) with `status: 'planned'` while you build, then flip to `'live'` when it ships. `ToolsCatalog.tsx` and the sidebar-adjacent catalog card both render from this array automatically — nothing else to touch there.
+2. **`src/pages/Tools/<PascalCaseName>.tsx`** — build the page using the shared components in `src/components/Tools/` (`ToolPageShell` for the header/privacy-notice/JSON-LD wrapper, `BeginnerExpertExplainer` for the analogy/expert/FAQ card, `useClipboardCopy` for copy buttons, `FileDropInput` for file-accepting tools) and any pure-logic helpers you need in `src/lib/tools/` (one small, independently Vitest-tested module per concern — see the existing `base64.ts`/`jwt.ts`/`totp.ts`/etc. for the pattern).
+3. **Route wiring** — same 3 files as §4D (`App.tsx`, `routeMeta.ts`, `postbuild-ssg.mjs`), plus a `public/sitemap.xml` `<url>` entry and a `public/llms.txt` line, plus flipping the registry `status` to `'live'` from step 1.
+4. **No JSON-LD or FAQ schema work needed** — `ToolPageShell` generates both `SoftwareApplication` and `FAQPage` structured data automatically from the registry entry's `description`/`expert`/`faqs` fields.
+5. Run the responsive/mobile-overflow sweep described in `FIXED_TODO.md` §7 before calling it done — two real overflow bugs were found this way during the first 12 tools, both fixed at the shared-component level, but new tools can still introduce new ones (e.g. a long unbroken example string in a paragraph without `wrap-break-word`).

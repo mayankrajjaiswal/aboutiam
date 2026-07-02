@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { 
   Server, Search, Terminal, Info, Folder, User, Network
 } from 'lucide-react'
@@ -121,6 +122,9 @@ export default function LDAPTreeSimulator() {
         </h2>
         <p className="text-text-secondary">
           Visualize corporate organizational schemas. Build standardized LDAP query filters, and witness how LDAP search operations match, filter, and extract records in real-time.
+        </p>
+        <p className="text-xs text-text-muted">
+          Just need to compose a filter string? Try the <Link to="/tools/ldap-filter-builder" className="text-accent-primary font-semibold hover:text-accent-hover">LDAP Filter Builder</Link> tool.
         </p>
       </div>
 

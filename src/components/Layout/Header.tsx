@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Menu, Sun, Moon, Laptop } from 'lucide-react'
+import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
 import { getRouteMeta } from '../../routeMeta'
@@ -14,7 +14,7 @@ function setMetaContent(selector: string, content: string) {
 export default function Header() {
   const location = useLocation()
   const { theme, setTheme } = useThemeStore()
-  const { toggleMobileSidebar } = useLayoutStore()
+  const { toggleMobileSidebar, isDesktopSidebarCollapsed, toggleDesktopSidebarCollapsed } = useLayoutStore()
 
   const pageMeta = getRouteMeta(location.pathname)
   const isHome = location.pathname === '/'
@@ -51,15 +51,25 @@ export default function Header() {
   }
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 bg-bg-card border-b border-border-subtle fixed top-0 right-0 left-0 lg:left-64 z-30 transition-all">
+    <header className={`h-16 flex items-center justify-between px-6 bg-bg-card border-b border-border-subtle fixed top-0 right-0 left-0 z-30 transition-[left] duration-300 ${isDesktopSidebarCollapsed ? 'lg:left-20' : 'lg:left-64'}`}>
       {/* Mobile Toggle & Breadcrumbs */}
       <div className="flex items-center gap-4">
         <button
+          type="button"
           onClick={toggleMobileSidebar}
           className="p-1.5 rounded-lg text-text-secondary hover:bg-bg-sidebar hover:text-text-primary transition-colors focus:outline-none lg:hidden"
           aria-label="Toggle mobile menu"
         >
           <Menu className="w-5 h-5" />
+        </button>
+        <button
+          type="button"
+          onClick={toggleDesktopSidebarCollapsed}
+          className="hidden lg:flex p-1.5 rounded-lg text-text-secondary hover:bg-bg-sidebar hover:text-text-primary transition-colors focus:outline-none"
+          title={isDesktopSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-label={isDesktopSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {isDesktopSidebarCollapsed ? <PanelLeftOpen className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
         </button>
         <span className="text-sm font-bold text-text-primary tracking-wide">
           {pageMeta.title}

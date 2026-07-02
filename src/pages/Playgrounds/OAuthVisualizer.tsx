@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { 
   RefreshCw, Server, Globe, User, CheckCircle, 
   HelpCircle, Terminal, ArrowRight, Copy, Check
@@ -361,6 +362,9 @@ user_code=ABCD-WXYZ&status=approved`,
         </h2>
         <p className="text-text-secondary">
           Configure authentication endpoints, scopes, and cryptographic PKCE verifiers. Step through the handshakes to visualize Front-Channel and Back-Channel communications.
+        </p>
+        <p className="text-xs text-text-muted">
+          Just need a code_verifier/code_challenge pair? Try the <Link to="/tools/oauth-pkce-generator" className="text-accent-primary font-semibold hover:text-accent-hover">OAuth PKCE Generator</Link> tool.
         </p>
       </div>
 

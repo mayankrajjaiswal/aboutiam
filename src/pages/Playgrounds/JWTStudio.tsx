@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { 
   Key, ShieldAlert, Cpu, Terminal, Copy, Check, Info, 
   CheckCircle2, AlertOctagon, Lock, LockOpen
@@ -185,6 +186,9 @@ export default function JWTStudio() {
         </h2>
         <p className="text-text-secondary">
           Craft cryptographically valid JSON Web Tokens completely client-side. Explore and simulate core authentication vulnerabilities like signature exclusions or JWKS domain injection.
+        </p>
+        <p className="text-xs text-text-muted">
+          Just need to decode or sign one token? Try the <Link to="/tools/jwt-decoder" className="text-accent-primary font-semibold hover:text-accent-hover">JWT Decoder</Link> or <Link to="/tools/jwt-generator" className="text-accent-primary font-semibold hover:text-accent-hover">JWT Generator</Link> tools.
         </p>
       </div>
 

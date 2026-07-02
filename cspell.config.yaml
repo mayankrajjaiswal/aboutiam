@@ -287,6 +287,35 @@ words:
   - open-source-project
   - roadmap-check
   - check-offs
+  - hotp
+  - HOTP
+  - otpauth
+  - keypair
+  - keyspace
+  - multicodec
+  - multibase
+  - varint
+  - jdoe
+  - crockford
+  - CROCKFORD
+  - Crockford
+  - ABCDEFGHJKMNPQRSTVWXYZ
+  - HJKMNP
+  - XVCJ
+  - Ijoxf
+  - héllo
+  - bcryptjs
+  - ulid
+  - ULID
+  - base58btc
+  - spki
+  - pkcs8
+  - pkcs10
+  - deflate-raw
+  - urlsafe
+  - jwth
+  - jwtp
+  - wordcount
   - pkce
   - PKCE
   - PKCE's
@@ -500,3 +529,32 @@ words:
   - open-source-project
   - roadmap-check
   - check-offs
+  - hotp
+  - HOTP
+  - otpauth
+  - keypair
+  - keyspace
+  - multicodec
+  - multibase
+  - varint
+  - jdoe
+  - crockford
+  - CROCKFORD
+  - Crockford
+  - ABCDEFGHJKMNPQRSTVWXYZ
+  - HJKMNP
+  - XVCJ
+  - Ijoxf
+  - héllo
+  - bcryptjs
+  - ulid
+  - ULID
+  - base58btc
+  - spki
+  - pkcs8
+  - pkcs10
+  - deflate-raw
+  - urlsafe
+  - jwth
+  - jwtp
+  - wordcount

@@ -5,11 +5,25 @@ import { useThemeStore } from './store/themeStore'
 // Layout Elements
 import Sidebar from './components/Layout/Sidebar'
 import Header from './components/Layout/Header'
+import ScrollToTop from './components/Layout/ScrollToTop'
 
 // Core Pages
 import Home from './pages/Home'
 import Learn from './pages/Learn'
 import PlaygroundCatalog from './pages/PlaygroundCatalog'
+import ToolsCatalog from './pages/ToolsCatalog'
+import JwtDecoder from './pages/Tools/JwtDecoder'
+import JwtGenerator from './pages/Tools/JwtGenerator'
+import Base64EncoderDecoder from './pages/Tools/Base64EncoderDecoder'
+import Sha256HashGenerator from './pages/Tools/Sha256HashGenerator'
+import HmacGenerator from './pages/Tools/HmacGenerator'
+import UuidGenerator from './pages/Tools/UuidGenerator'
+import PasswordGenerator from './pages/Tools/PasswordGenerator'
+import OauthPkceGenerator from './pages/Tools/OauthPkceGenerator'
+import TotpGenerator from './pages/Tools/TotpGenerator'
+import LdapFilterBuilder from './pages/Tools/LdapFilterBuilder'
+import ScimPayloadValidator from './pages/Tools/ScimPayloadValidator'
+import BasicAuthDecoder from './pages/Tools/BasicAuthDecoder'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
@@ -48,6 +62,7 @@ export default function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen bg-bg-base text-text-primary flex transition-all">
         {/* Persistent Desktop Sidebar */}
         <Sidebar />
@@ -56,7 +71,7 @@ export default function App() {
         <Sidebar isMobile={true} />
 
         {/* Core Main Panel */}
-        <div className="flex-grow min-h-screen lg:pl-64 flex flex-col relative">
+        <div className="flex-grow min-w-0 min-h-screen lg:pl-64 flex flex-col relative">
           {/* Top Fixed Floating Header */}
           <Header />
 
@@ -68,6 +83,19 @@ export default function App() {
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/learn" element={<Learn />} />
               <Route path="/playground" element={<PlaygroundCatalog />} />
+              <Route path="/tools" element={<ToolsCatalog />} />
+              <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />
+              <Route path="/tools/jwt-generator" element={<JwtGenerator />} />
+              <Route path="/tools/base64-encoder-decoder" element={<Base64EncoderDecoder />} />
+              <Route path="/tools/sha256-hash-generator" element={<Sha256HashGenerator />} />
+              <Route path="/tools/hmac-generator" element={<HmacGenerator />} />
+              <Route path="/tools/uuid-generator" element={<UuidGenerator />} />
+              <Route path="/tools/password-generator" element={<PasswordGenerator />} />
+              <Route path="/tools/oauth-pkce-generator" element={<OauthPkceGenerator />} />
+              <Route path="/tools/totp-generator" element={<TotpGenerator />} />
+              <Route path="/tools/ldap-filter-builder" element={<LdapFilterBuilder />} />
+              <Route path="/tools/scim-payload-validator" element={<ScimPayloadValidator />} />
+              <Route path="/tools/basic-auth-decoder" element={<BasicAuthDecoder />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />

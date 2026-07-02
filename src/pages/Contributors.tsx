@@ -2,6 +2,8 @@ import { useState } from 'react'
 import {
   Users, Mail, Heart, Send, CheckCircle2, Globe
 } from 'lucide-react'
+import mayankPhoto from '../assets/contributors/mayank.jpg'
+import rajatPhoto from '../assets/contributors/rajat.jpg'
 
 interface ContributorLink {
   type: 'github' | 'email' | 'linkedin' | 'website'
@@ -14,6 +16,7 @@ interface Contributor {
   affiliation: string
   bio: string
   avatar: string
+  photo?: string
   links: ContributorLink[]
 }
 
@@ -23,10 +26,11 @@ const contributors: Contributor[] = [
     affiliation: 'IAM Engineering - Thales Group',
     bio: "A Senior Engineering Manager leading IAM engineering at Thales Group, bringing enterprise-scale identity and access management expertise to AboutIAM's hands-on, real-world approach to security education.",
     avatar: '🧑‍💻',
+    photo: rajatPhoto,
     links: [
       { type: 'github', href: 'https://github.com/thalesgroup', label: "Browse Thales Group's GitHub" },
       { type: 'linkedin', href: 'https://www.linkedin.com/in/rajat-rastogi-7b97619/', label: 'Connect with Rajat on LinkedIn' },
-      { type: 'email', href: 'mailto:oss@thalesgroup.com', label: 'Email Rajat' },
+      { type: 'email', href: 'mailto:rajatthales@gmail.com', label: 'Email Rajat' },
     ],
   },
   {
@@ -34,6 +38,7 @@ const contributors: Contributor[] = [
     affiliation: 'IAM Engineering - Thales Group',
     bio: 'A cybersecurity innovator and identity engineering visionary dedicated to making complex protocols (OAuth 2.1, OIDC, WebAuthn, ZTA) accessible, visual, and secure for everyone.',
     avatar: '👨‍💻',
+    photo: mayankPhoto,
     links: [
       { type: 'github', href: 'https://github.com/mayankrajjaiswal/', label: "Browse Mayank's GitHub" },
       { type: 'linkedin', href: 'https://www.linkedin.com/in/mayankrajjaiswal/', label: 'Connect with Mayank on LinkedIn' },
@@ -123,8 +128,16 @@ export default function Contributors() {
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent-primary/5 rounded-full blur-2xl group-hover:bg-accent-primary/10 transition-all"></div>
 
-              <div className="w-20 h-20 rounded-full bg-accent-glow border border-accent-primary/20 flex items-center justify-center text-3xl shrink-0 shadow-inner">
-                {person.avatar}
+              <div className="w-20 h-20 rounded-full bg-accent-glow border border-accent-primary/20 flex items-center justify-center text-3xl shrink-0 shadow-inner overflow-hidden">
+                {person.photo ? (
+                  <img
+                    src={person.photo}
+                    alt={person.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  person.avatar
+                )}
               </div>
 
               <div className="space-y-1">

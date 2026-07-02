@@ -32,7 +32,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/roadmap`** | `Roadmap.tsx` | Zero-to-Hero Learning Pathway. Chronological guide detailing sequential tracks. |
 | **`/learn`** | `Learn.tsx` | IAM Academy. 6 tracks, 36 expandable modules with local progress bar persistent tracking. |
 | **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 7 completed simulators. |
-| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (18 of 19 planned tools live — see `FIXED_TODO.md`). |
+| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (all 19 planned tools live — see `FIXED_TODO.md`). |
 | **`/tools/jwt-decoder`** | `Tools/JwtDecoder.tsx` | Decodes a JWT's header/payload/signature; flags `alg: none`; optional HMAC verify. |
 | **`/tools/jwt-generator`** | `Tools/JwtGenerator.tsx` | Signs a JWT client-side with HS256/384/512 or an ephemeral RS256 keypair. |
 | **`/tools/base64-encoder-decoder`** | `Tools/Base64EncoderDecoder.tsx` | Base64/Base64URL encode-decode for text and files. |
@@ -60,7 +60,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts and downloadable SVG roadmaps. |
 | **`/explore`** | `Explore.tsx` | Landscape Directory. Product blueprints with copyable integration code blocks. |
 | **`/assistant`** | `Assistant.tsx` | AI Architect Chat. Simulated RAG chatbot delivering JSON policies and Rego scripts. |
-| **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 35 categorized standard terms with analogies and specs. |
+| **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 36 categorized standard terms with analogies and specs. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. |
 | **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards and interactive forms. |
 
@@ -97,7 +97,7 @@ We mandate the inclusion of Vitest unit tests for all state mutations, mathemati
 
 AboutIAM is designed to be highly modular. Follow these simple guides to easily extend the platform's information base:
 
-### 📖 A. How to Add a 36th Term to the Glossary
+### 📖 A. How to Add a 37th Term to the Glossary
 To add a new standard, acronym, or protocol definition to the **Master A-Z Glossary**, simply open `src/pages/Encyclopedia.tsx` and append a new `Term` object into the `encyclopedia` array:
 ```typescript
 {
@@ -141,7 +141,7 @@ Optionally add a `Sidebar.tsx` nav entry and a `public/sitemap.xml` `<url>` entr
 
 ### 🛠️ E. How to Add a New Security Tool (`/tools/<slug>`)
 
-The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — see `FIXED_TODO.md` for the live backlog of remaining tools (1 of 19 as of this writing). To add one:
+The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — all 19 planned tools are now fully live and shipped. To add a new (20th) tool in the future, follow these steps:
 
 1. **`src/data/toolsRegistry.ts`** — append a `ToolMeta` entry (`slug`, `title`, `description`, `category`, `icon`, `phase`, `keywords`, `analogy`, `expert`, `faqs`, optional `relatedLinks`) with `status: 'planned'` while you build, then flip to `'live'` when it ships. `ToolsCatalog.tsx` and the sidebar-adjacent catalog card both render from this array automatically — nothing else to touch there.
 2. **`src/pages/Tools/<PascalCaseName>.tsx`** — build the page using the shared components in `src/components/Tools/` (`ToolPageShell` for the header/privacy-notice/JSON-LD wrapper, `BeginnerExpertExplainer` for the analogy/expert/FAQ card, `useClipboardCopy` for copy buttons, `FileDropInput` for file-accepting tools) and any pure-logic helpers you need in `src/lib/tools/` (one small, independently Vitest-tested module per concern — see the existing `base64.ts`/`jwt.ts`/`totp.ts`/etc. for the pattern).

@@ -48,6 +48,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [SD-JWT Decoder](https://www.aboutiam.com/tools/sd-jwt-decoder/): Decode Selective Disclosure JWTs and verify each disclosure's digest binding.
 - [WebAuthn / Passkey Assertion Decoder](https://www.aboutiam.com/tools/webauthn-decoder/): Decode clientDataJSON, authenticatorData, and CBOR attestationObject.
 - [DID Key Generator](https://www.aboutiam.com/tools/did-key-generator/): Generate an Ed25519 keypair and derive its did:key identifier and DID document.
+- [bcrypt Hash Generator & Verifier](https://www.aboutiam.com/tools/bcrypt-generator/): Hash passwords with bcrypt at custom cost factors or verify plaintext passwords against existing hashes.
 
 ## Advanced Ecosystem & Governance
 

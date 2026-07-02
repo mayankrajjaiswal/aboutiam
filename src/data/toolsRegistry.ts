@@ -243,7 +243,7 @@ export const TOOLS: ToolMeta[] = [
     category: 'Hashing, Encoding & Secrets',
     icon: LockKeyhole,
     phase: 2,
-    status: 'planned',
+    status: 'live',
     keywords: ['bcrypt generator', 'bcrypt hash online', 'bcrypt verify'],
     analogy: 'bcrypt is a lock that\'s deliberately slow to pick, on purpose — so that even if a thief steals the entire box of locks (your password database), trying every possible key against just one of them is impractically slow.',
     expert: 'bcrypt is a Blowfish-based adaptive hashing function with a tunable cost factor that doubles the work per increment. Unlike plain SHA-256, it is intentionally slow and salted per-hash, which is why it (or Argon2/scrypt) is the correct choice for password storage.',

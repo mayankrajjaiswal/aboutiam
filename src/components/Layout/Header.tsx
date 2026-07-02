@@ -11,6 +11,52 @@ function setMetaContent(selector: string, content: string) {
   document.querySelector(selector)?.setAttribute('content', content)
 }
 
+function buildBreadcrumbJsonLd(pathname: string, pageTitle: string) {
+  const parts = pathname.split('/').filter(Boolean)
+  if (parts.length < 2) return null
+
+  const items = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${SITE_URL}/`,
+    },
+  ]
+
+  let currentPath = ''
+  for (let i = 0; i < parts.length; i++) {
+    currentPath += `/${parts[i]}`
+    const isLast = i === parts.length - 1
+
+    let name = parts[i]
+    if (parts[i] === 'tools') {
+      name = 'Security Tools'
+    } else if (parts[i] === 'playground') {
+      name = 'Playgrounds'
+    } else if (parts[i] === 'explore') {
+      name = 'Explore'
+    } else if (isLast) {
+      name = pageTitle.split(' — ')[0].split(' | ')[0]
+    } else {
+      name = parts[i].charAt(0).toUpperCase() + parts[i].slice(1)
+    }
+
+    items.push({
+      '@type': 'ListItem',
+      position: i + 2,
+      name,
+      item: `${SITE_URL}${currentPath}/`,
+    })
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items,
+  }
+}
+
 export default function Header() {
   const location = useLocation()
   const { theme, setTheme } = useThemeStore()
@@ -50,8 +96,16 @@ export default function Header() {
     return 'System'
   }
 
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(location.pathname, pageMeta.title)
+
   return (
     <header className={`h-16 flex items-center justify-between px-6 bg-bg-card border-b border-border-subtle fixed top-0 right-0 left-0 z-30 transition-[left] duration-300 ${isDesktopSidebarCollapsed ? 'lg:left-20' : 'lg:left-64'}`}>
+      {breadcrumbJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+      )}
       {/* Mobile Toggle & Breadcrumbs */}
       <div className="flex items-center gap-4">
         <button

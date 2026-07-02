@@ -47,3 +47,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Ping IndexNow Search Engines
+        run: |
+          curl -s "https://api.indexnow.org/indexnow?url=https://www.aboutiam.com/sitemap.xml&key=850a12053641470fa56e8db0fcbc76d1"

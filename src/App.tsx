@@ -30,6 +30,7 @@ import SamlDecoder from './pages/Tools/SamlDecoder'
 import SdJwtDecoder from './pages/Tools/SdJwtDecoder'
 import WebauthnDecoder from './pages/Tools/WebauthnDecoder'
 import DidKeyGenerator from './pages/Tools/DidKeyGenerator'
+import BcryptGenerator from './pages/Tools/BcryptGenerator'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
@@ -108,6 +109,7 @@ export default function App() {
               <Route path="/tools/sd-jwt-decoder" element={<SdJwtDecoder />} />
               <Route path="/tools/webauthn-decoder" element={<WebauthnDecoder />} />
               <Route path="/tools/did-key-generator" element={<DidKeyGenerator />} />
+              <Route path="/tools/bcrypt-generator" element={<BcryptGenerator />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />

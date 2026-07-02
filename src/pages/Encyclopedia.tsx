@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Book, Search, Lightbulb, ShieldCheck, FileText, ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Book, Search, Lightbulb, ShieldCheck, FileText, ChevronRight, Wrench, ArrowRight } from 'lucide-react'
 
 interface Term {
   id: string
@@ -7,7 +8,25 @@ interface Term {
   fullName: string
   analogy: string
   expert: string
-  category: 'Foundations' | 'Directories' | 'Protocols' | 'Governance' | 'Cryptography' | 'Zero Trust' | 'Decentralized'
+  category: 'Foundations' | 'Directories' | 'Protocols' | 'Governance' | 'Cryptography' | 'Zero Trust' | 'Decentralized' | 'Authorization' | 'Provisioning'
+  toolUrl?: string
+}
+
+function buildEncyclopediaJsonLd(terms: Term[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    '@id': 'https://www.aboutiam.com/encyclopedia/',
+    'name': 'AboutIAM Master IAM Glossary & Encyclopedia',
+    'description': 'Translate complex identity acronyms. Every standard from ABAC to Zero Trust is defined with a beginner-friendly analogy and a strict, expert-grade architectural specification.',
+    'hasDefinedTerm': terms.map((t) => ({
+      '@type': 'DefinedTerm',
+      '@id': `https://www.aboutiam.com/encyclopedia/#${t.id}`,
+      'name': t.term,
+      'description': `${t.fullName}. Analogy: ${t.analogy} Expert specification: ${t.expert}`.slice(0, 300) + '...',
+      'inDefinedTermSet': 'https://www.aboutiam.com/encyclopedia/'
+    }))
+  }
 }
 
 export default function Encyclopedia() {
@@ -28,7 +47,7 @@ export default function Encyclopedia() {
       id: 'abac',
       term: 'ABAC',
       fullName: 'Attribute-Based Access Control',
-      category: 'Authorization' as any, // Mapped to Governance/Foundations dynamically
+      category: 'Authorization', // Mapped to Governance/Foundations dynamically
       analogy: 'Like getting into a VIP club only if you are wearing red shoes (a user attribute), it is before midnight (an environment attribute), and the club isn\'t full (a resource attribute). Your actual name doesn\'t matter.',
       expert: 'An advanced access paradigm granting rights dynamically by combining policies against user attributes, environmental contexts (IP, time), and resource states, overriding flat hierarchical RBAC matrices.'
     },
@@ -73,6 +92,15 @@ export default function Encyclopedia() {
       expert: 'A secure design pattern for single-page applications. The SPA delegates OAuth token storage and session management to a secure server backend. The backend manages tokens and authenticates the SPA via encrypted, HttpOnly, SameSite cookies.'
     },
     {
+      id: 'bcrypt',
+      term: 'bcrypt',
+      fullName: 'bcrypt Password Hashing Algorithm',
+      category: 'Cryptography',
+      analogy: 'bcrypt is a lock that is deliberately slow to pick, on purpose — so that even if a thief steals the entire box of locks (your database), trying keys against even one lock is impractically slow.',
+      expert: 'A Blowfish-based adaptive key-derivation and password hashing function. Features a configurable work factor that doubles the computation time per increment to resist brute-force hardware scaling.',
+      toolUrl: '/tools/bcrypt-generator'
+    },
+    {
       id: 'caep',
       term: 'CAEP',
       fullName: 'Continuous Access Evaluation Protocol',
@@ -94,7 +122,8 @@ export default function Encyclopedia() {
       fullName: 'Decentralized Identifier',
       category: 'Decentralized',
       analogy: 'An official physical driver\'s license card. You carry it in your wallet, show it to whom you want, and the DMV (Identity Provider) is never notified when or where you showed it.',
-      expert: 'A standard W3C URI string resolving to cryptographic public keys held on a tamper-proof blockchain or distributed ledger, allowing users to verify their identities without centralized servers.'
+      expert: 'A standard W3C URI string resolving to cryptographic public keys held on a tamper-proof blockchain or distributed ledger, allowing users to verify their identities without centralized servers.',
+      toolUrl: '/tools/did-key-generator'
     },
     {
       id: 'directory',
@@ -110,7 +139,8 @@ export default function Encyclopedia() {
       fullName: 'FIDO2 & Web Authentication standard',
       category: 'Protocols',
       analogy: 'Unlocking your computer with your face. Instead of typing a secret password, your device dynamically signs a cryptographic message locally and proves you possess the device.',
-      expert: 'The unified passwordless authentication standard combining W3C WebAuthn and CTAP2. Uses asymmetric public-key cryptography to perform secure, phishing-resistant logins natively in-browser.'
+      expert: 'The unified passwordless authentication standard combining W3C WebAuthn and CTAP2. Uses asymmetric public-key cryptography to perform secure, phishing-resistant logins natively in-browser.',
+      toolUrl: '/tools/webauthn-decoder'
     },
     {
       id: 'idp',
@@ -150,7 +180,8 @@ export default function Encyclopedia() {
       fullName: 'JSON Web Key Set',
       category: 'Cryptography',
       analogy: 'A notary public publishing their official signature seal on a public library bulletin board. Anyone can verify the seal on a document is authentic by comparing it to the public board.',
-      expert: 'RFC 7517. A JSON structure containing a list of public cryptographic keys issued by an Identity Server, allowing relying applications to dynamically verify JWT signatures via \`/.well-known/jwks.json\`.'
+      expert: 'RFC 7517. A JSON structure containing a list of public cryptographic keys issued by an Identity Server, allowing relying applications to dynamically verify JWT signatures via \`/.well-known/jwks.json\`.',
+      toolUrl: '/tools/jwk-pem-converter'
     },
     {
       id: 'jws',
@@ -166,7 +197,8 @@ export default function Encyclopedia() {
       fullName: 'JSON Web Token',
       category: 'Cryptography',
       analogy: 'A digital, self-contained passport card containing your name, photo, and signature. Any machine can read the card and trust the text because the government signed the signature block.',
-      expert: 'RFC 7519. A compact, URL-safe string representing claims encoded as a JSON object, composed of three dot-separated blocks: Header, Payload, and Signature (\`xxxxx.yyyyy.zzzzz\`).'
+      expert: 'RFC 7519. A compact, URL-safe string representing claims encoded as a JSON object, composed of three dot-separated blocks: Header, Payload, and Signature (\`xxxxx.yyyyy.zzzzz\`).',
+      toolUrl: '/tools/jwt-decoder'
     },
     {
       id: 'kerberos',
@@ -182,7 +214,8 @@ export default function Encyclopedia() {
       fullName: 'Lightweight Directory Access Protocol',
       category: 'Directories',
       analogy: 'Like looking up a book in a library card catalog using a nested system: Floor -> Aisle -> Shelf -> Subject -> Book.',
-      expert: 'RFC 4511. An active application protocol used to query and manage hierarchical directory services over IP networks. Utilizes distinguished names (DNs) and nested schemas to retrieve user/group records.'
+      expert: 'RFC 4511. An active application protocol used to query and manage hierarchical directory services over IP networks. Utilizes distinguished names (DNs) and nested schemas to retrieve user/group records.',
+      toolUrl: '/tools/ldap-filter-builder'
     },
     {
       id: 'mfa',
@@ -230,13 +263,14 @@ export default function Encyclopedia() {
       fullName: 'Proof Key for Code Exchange',
       category: 'Protocols',
       analogy: 'Like leaving a secret half-torn dollar bill at the hotel front desk when checking in. When you return later to get your room key, you must present the exact matching torn half to prove you are the same person.',
-      expert: 'RFC 7636 standard. Prevents authorization code interception attacks on public clients. The client generates a random `code_verifier`, hashes it to a `code_challenge` for the front-channel, and proves it on the back-channel token exchange.'
+      expert: 'RFC 7636 standard. Prevents authorization code interception attacks on public clients. The client generates a random `code_verifier`, hashes it to a `code_challenge` for the front-channel, and proves it on the back-channel token exchange.',
+      toolUrl: '/tools/oauth-pkce-generator'
     },
     {
       id: 'rbac',
       term: 'RBAC',
       fullName: 'Role-Based Access Control',
-      category: 'Authorization' as any,
+      category: 'Authorization',
       analogy: 'Like assigning keys based on job descriptions: everyone on the finance team gets the keys to the accounting file cabinet, and everyone on engineering gets the keys to the server room.',
       expert: 'An authorization framework where access permissions are bound to logical "Roles" (e.g., editor, admin, viewer) and users are assigned to roles, reducing policy management overhead.'
     },
@@ -244,7 +278,7 @@ export default function Encyclopedia() {
       id: 'rebac',
       term: 'ReBAC',
       fullName: 'Relationship-Based Access Control',
-      category: 'Authorization' as any,
+      category: 'Authorization',
       analogy: 'You can view a family photo album because you are the "child" of the owner, not because your job title says "Photo Viewer". Access is determined by your relationship to the file owner.',
       expert: 'An authorization model (Google Zanzibar standard) evaluating access based on a graph of relationships between users and objects (e.g., "User A is owner of Document B; Folder C contains Document B").'
     },
@@ -254,15 +288,17 @@ export default function Encyclopedia() {
       fullName: 'Security Assertion Markup Language',
       category: 'Protocols',
       analogy: 'A physical passport. The border control (Service Provider) lets you in because they trust the visa stamp (XML Digital Signature) applied by your home government (Identity Provider).',
-      expert: 'A heavyweight, XML-based open standard for exchanging authentication and authorization data between an IdP and an SP, heavily relying on XML Digital Signatures to prevent assertion tampering.'
+      expert: 'A heavyweight, XML-based open standard for exchanging authentication and authorization data between an IdP and an SP, heavily relying on XML Digital Signatures to prevent assertion tampering.',
+      toolUrl: '/tools/saml-decoder'
     },
     {
       id: 'scim',
       term: 'SCIM 2.0',
       fullName: 'System for Cross-domain Identity Management',
-      category: 'Provisioning',
+      category: 'Provisioning' as any,
       analogy: 'An automated megaphone. When HR hires you, the megaphone yells to Slack, AWS, and Salesforce simultaneously to create your accounts using the exact same standard form.',
-      expert: 'RFC 7643. An open standard providing a common RESTful API schema (JSON) for managing user and group identities across cloud applications, eliminating custom API integration scripts.'
+      expert: 'RFC 7643. An open standard providing a common RESTful API schema (JSON) for managing user and group identities across cloud applications, eliminating custom API integration scripts.',
+      toolUrl: '/tools/scim-payload-validator'
     },
     {
       id: 'ssf',
@@ -286,7 +322,8 @@ export default function Encyclopedia() {
       fullName: 'Time-Based One-Time Password',
       category: 'Cryptography',
       analogy: 'A bank vault code that changes every 30 seconds. Both you and the bank share a secret clock mechanism that generates the exact same matching code at the exact same second.',
-      expert: 'RFC 6238. An algorithm generating a one-time password by hashing a shared secret key with the current timestamp, securing secondary user verification factors.'
+      expert: 'RFC 6238. An algorithm generating a one-time password by hashing a shared secret key with the current timestamp, securing secondary user verification factors.',
+      toolUrl: '/tools/totp-generator'
     },
     {
       id: 'vc',
@@ -315,6 +352,10 @@ export default function Encyclopedia() {
 
   return (
     <div className="space-y-8 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildEncyclopediaJsonLd(encyclopedia)) }}
+      />
       {/* Title */}
       <div className="space-y-3 max-w-3xl">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">
@@ -419,10 +460,31 @@ export default function Encyclopedia() {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-bg-nested/30 border border-border-subtle/50 flex gap-3 text-xs text-text-muted font-semibold items-start relative z-10">
-                <FileText className="w-4 h-4 shrink-0 text-text-secondary" />
-                <span>Want to see how {selectedTerm.term} fits into active code or real handshakes? Browse the Playgrounds or play with our visual OIDC handshakes!</span>
-              </div>
+              {selectedTerm.toolUrl ? (
+                <div className="p-5 rounded-xl bg-accent-glow border border-accent-primary/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10 animate-fadeIn">
+                  <div className="flex gap-3 items-start">
+                    <Wrench className="w-5 h-5 text-accent-primary shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs font-bold text-accent-primary uppercase tracking-wider">Interactive Tool Available</h4>
+                      <p className="text-[11px] text-text-secondary mt-0.5 leading-relaxed font-semibold">
+                        We built a 100% client-side, browser-native tool to simulate, parse, and experiment with {selectedTerm.term} in real time!
+                      </p>
+                    </div>
+                  </div>
+                  <Link
+                    to={selectedTerm.toolUrl}
+                    className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-[11px] font-black uppercase tracking-wider transition-all shadow-md shadow-accent-primary/15 shrink-0 group cursor-pointer"
+                  >
+                    Try the Tool
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
+              ) : (
+                <div className="p-4 rounded-xl bg-bg-nested/30 border border-border-subtle/50 flex gap-3 text-xs text-text-muted font-semibold items-start relative z-10">
+                  <FileText className="w-4 h-4 shrink-0 text-text-secondary" />
+                  <span>Want to see how {selectedTerm.term} fits into active code or real handshakes? Browse the Playgrounds or play with our visual OIDC handshakes!</span>
+                </div>
+              )}
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center text-center p-12 border border-dashed border-border-subtle rounded-2xl bg-bg-card/50">

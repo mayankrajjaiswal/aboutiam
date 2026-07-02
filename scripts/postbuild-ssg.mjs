@@ -36,6 +36,7 @@ const ROUTES = [
   { path: '/tools/sd-jwt-decoder', title: 'SD-JWT Decoder — Selective Disclosure JWT Inspector', description: 'Decode Selective Disclosure JWTs (SD-JWT), reveal individual disclosures, and verify each digest binding against the issuer-signed JWT — entirely in-browser.' },
   { path: '/tools/webauthn-decoder', title: 'WebAuthn / Passkey Assertion & Attestation Decoder', description: 'Decode clientDataJSON, authenticatorData, and CBOR attestationObject from a WebAuthn credential to inspect flags, counters, and public keys.' },
   { path: '/tools/did-key-generator', title: 'DID Generator — Create a did:key Identifier', description: 'Generate an Ed25519 keypair entirely in your browser and derive its did:key decentralized identifier and DID document — no wallet, no blockchain.' },
+  { path: '/tools/bcrypt-generator', title: 'bcrypt Hash Generator & Verifier Online', description: 'Hash passwords with bcrypt at a custom cost factor, or verify a password against an existing bcrypt hash — computed entirely client-side, in pure JavaScript.' },
   { path: '/playground/jwt', title: 'JWT Studio & Exploit Arena', description: 'Browser-native HS256 JWT signing, plus the none-algorithm and JWKS-spoofing exploits.' },
   { path: '/playground/oauth', title: 'OAuth 2.0 / OIDC Handshake Visualizer', description: 'Step-by-step front/back-channel OAuth 2.0 and OIDC flow animation with PKCE and raw HTTP inspection.' },
   { path: '/playground/saml', title: 'SAML 2.0 XML Workbench', description: 'SAML assertion builder and Signature Wrapping (SSW) attack simulator.' },
@@ -61,10 +62,20 @@ const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace
 
 const replaceTag = (html, regex, replacement) => html.replace(regex, () => replacement)
 
+function getOgImage(path) {
+  if (path.startsWith('/tools')) return `${SITE_URL}/og-tools.png`
+  if (path.startsWith('/playground')) return `${SITE_URL}/og-playground.png`
+  if (path.startsWith('/encyclopedia')) return `${SITE_URL}/og-encyclopedia.png`
+  if (path.startsWith('/wall-of-shame')) return `${SITE_URL}/og-wall-of-shame.png`
+  if (path.startsWith('/learn') || path.startsWith('/primer') || path.startsWith('/roadmap')) return `${SITE_URL}/og-learn.png`
+  return `${SITE_URL}/og-image.png`
+}
+
 function renderPage(template, route) {
   const title = `${route.title} | AboutIAM`
   const description = escapeHtml(route.description)
   const canonicalUrl = `${SITE_URL}${route.path}/`
+  const ogImage = getOgImage(route.path)
 
   let html = template
   html = replaceTag(html, /<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
@@ -73,8 +84,10 @@ function renderPage(template, route) {
   html = replaceTag(html, /<meta property="og:url" content="[^"]*"\s*\/?>/, `<meta property="og:url" content="${canonicalUrl}" />`)
   html = replaceTag(html, /<meta property="og:title" content="[^"]*"\s*\/?>/, `<meta property="og:title" content="${escapeHtml(title)}" />`)
   html = replaceTag(html, /<meta property="og:description" content="[^"]*"\s*\/?>/, `<meta property="og:description" content="${description}" />`)
+  html = replaceTag(html, /<meta property="og:image" content="[^"]*"\s*\/?>/, `<meta property="og:image" content="${ogImage}" />`)
   html = replaceTag(html, /<meta name="twitter:title" content="[^"]*"\s*\/?>/, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
   html = replaceTag(html, /<meta name="twitter:description" content="[^"]*"\s*\/?>/, `<meta name="twitter:description" content="${description}" />`)
+  html = replaceTag(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/, `<meta name="twitter:image" content="${ogImage}" />`)
   return html
 }
 

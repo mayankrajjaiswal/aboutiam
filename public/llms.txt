@@ -27,6 +27,22 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Workload Mesh](https://www.aboutiam.com/playground/workload-mesh/): SPIFFE/SPIRE attestation and X.509 SVID issuance.
 - [Auth Matchmaker](https://www.aboutiam.com/explore/matchmaker/): Wizard that recommends an auth stack with copyable boilerplate.
 
+## Security Tools (free, client-side utilities)
+
+- [Tools Catalog](https://www.aboutiam.com/tools/): Index of every client-side IAM/security utility, categorized.
+- [JWT Decoder](https://www.aboutiam.com/tools/jwt-decoder/): Decode a token's header, payload, and signature; flag insecure algorithms.
+- [JWT Generator](https://www.aboutiam.com/tools/jwt-generator/): Build and sign tokens with HS256/HS384/HS512/RS256.
+- [Base64 / Base64URL Encoder-Decoder](https://www.aboutiam.com/tools/base64-encoder-decoder/): Encode/decode text and files, standard or URL-safe.
+- [SHA-256 & Hash Generator](https://www.aboutiam.com/tools/sha256-hash-generator/): SHA-1/256/384/512 checksums for text or files.
+- [HMAC Generator & Verifier](https://www.aboutiam.com/tools/hmac-generator/): Compute and verify keyed HMAC signatures.
+- [UUID & ULID Generator](https://www.aboutiam.com/tools/uuid-generator/): UUIDv4, time-sortable UUIDv7, and ULID identifiers in bulk.
+- [Password Generator & Entropy Checker](https://www.aboutiam.com/tools/password-generator/): Random passwords or passphrases with an entropy estimate.
+- [OAuth PKCE Code Generator](https://www.aboutiam.com/tools/oauth-pkce-generator/): RFC 7636 code_verifier/code_challenge plus a sample authorization URL.
+- [TOTP Generator & Verifier](https://www.aboutiam.com/tools/totp-generator/): RFC 6238 time-based one-time passwords, with live countdown.
+- [LDAP Filter Builder](https://www.aboutiam.com/tools/ldap-filter-builder/): Visual AND/OR/NOT composer producing an RFC 4515 filter string.
+- [SCIM Payload Validator & Builder](https://www.aboutiam.com/tools/scim-payload-validator/): Validate or scaffold SCIM 2.0 User/Group JSON.
+- [Basic & Bearer Auth Header Decoder](https://www.aboutiam.com/tools/basic-auth-decoder/): Decode Basic Authorization headers or inspect Bearer tokens.
+
 ## Advanced Ecosystem & Governance
 
 - [Master Encyclopedia](https://www.aboutiam.com/encyclopedia/): Searchable A-Z glossary of 35+ IAM standards and acronyms.

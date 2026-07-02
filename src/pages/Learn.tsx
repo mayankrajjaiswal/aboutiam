@@ -22,8 +22,8 @@ interface Track {
 }
 
 export default function Learn() {
-  const [expandedTrack, setExpandedTrack] = useState<string | null>('track-1')
-  const [expandedModule, setExpandedExpandedModule] = useState<string | null>('m1.1')
+  const [expandedTrack, setExpandedTrack] = useState<string | null>(null)
+  const [expandedModule, setExpandedExpandedModule] = useState<string | null>(null)
   const [completedModules, setCompletedModules] = useState<Record<string, boolean>>({})
 
   // Load progress from LocalStorage on mount

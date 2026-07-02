@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare, GraduationCap, Users, Map } from 'lucide-react'
+import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare, GraduationCap, Users, Map, Wrench } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
 interface SidebarProps {
@@ -9,7 +9,8 @@ interface SidebarProps {
 
 export default function Sidebar({ isMobile = false }: SidebarProps) {
   const location = useLocation()
-  const { isMobileSidebarOpen, setMobileSidebarOpen } = useLayoutStore()
+  const { isMobileSidebarOpen, setMobileSidebarOpen, isDesktopSidebarCollapsed } = useLayoutStore()
+  const collapsed = !isMobile && isDesktopSidebarCollapsed
 
   const coreItems = [
     { name: 'Overview Dashboard', path: '/', icon: Home },
@@ -18,7 +19,11 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
     { name: 'IAM Academy', path: '/learn', icon: BookOpen },
     { name: 'Interactive Playgrounds', path: '/playground', icon: Cpu },
   ]
-  
+
+  const toolsItems = [
+    { name: 'Security Tools', path: '/tools', icon: Wrench },
+  ]
+
   const ecosystemItems = [
     { name: 'Master Encyclopedia', path: '/encyclopedia', icon: Book },
     { name: 'Vulnerability Lab', path: '/wall-of-shame', icon: ShieldAlert },
@@ -47,7 +52,9 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
 
   const NavGroup = ({ title, items }: { title: string, items: any[] }) => (
     <div className="py-3">
-      <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-text-muted mb-2 block">{title}</span>
+      {!collapsed && (
+        <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-text-muted mb-2 block">{title}</span>
+      )}
       <div className="space-y-1">
         {items.map((item) => {
           const active = isActive(item.path)
@@ -56,7 +63,11 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
               key={item.name}
               to={item.path}
               onClick={handleLinkClick}
-              className={`flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg text-sm font-semibold transition-all group ${
+              title={collapsed ? item.name : undefined}
+              aria-label={item.name}
+              className={`flex items-center gap-3 py-2.5 mx-2 rounded-lg text-sm font-semibold transition-all group ${
+                collapsed ? 'justify-center px-2' : 'px-4'
+              } ${
                 active
                   ? 'bg-accent-glow text-accent-primary shadow-sm shadow-accent-primary/5'
                   : 'text-text-secondary hover:bg-bg-card hover:text-text-primary border border-transparent hover:border-border-subtle/50'
@@ -65,7 +76,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
               <item.icon className={`w-4 h-4 shrink-0 transition-colors ${
                 active ? 'text-accent-primary' : 'text-text-muted group-hover:text-text-primary'
               }`} />
-              {item.name}
+              {!collapsed && item.name}
             </Link>
           )
         })}
@@ -76,13 +87,17 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-bg-sidebar border-r border-border-subtle">
       {/* Brand Header */}
-      <div className="h-16 flex items-center justify-between px-6 border-b border-border-subtle shrink-0">
-        <Link to="/" onClick={handleLinkClick} className="flex items-center gap-2 font-black text-lg tracking-wider text-text-primary uppercase">
-          <span className="text-xl">🔐</span> About<span className="text-accent-primary">IAM</span>
+      <div className={`h-16 flex items-center border-b border-border-subtle shrink-0 ${collapsed ? 'justify-center px-2' : 'justify-between px-6'}`}>
+        <Link to="/" onClick={handleLinkClick} className="flex items-center gap-2 font-black text-lg tracking-wider text-text-primary uppercase" title={collapsed ? 'AboutIAM' : undefined}>
+          <span className="text-xl">🔐</span>
+          {!collapsed && <>About<span className="text-accent-primary">IAM</span></>}
         </Link>
         {isMobile && (
           <button
+            type="button"
             onClick={() => setMobileSidebarOpen(false)}
+            title="Close menu"
+            aria-label="Close menu"
             className="p-1 rounded-md text-text-secondary hover:bg-bg-nested hover:text-text-primary transition-colors focus:outline-none"
           >
             <X className="w-5 h-5" />
@@ -94,16 +109,20 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
       <nav className="flex-1 py-4 overflow-y-auto custom-scrollbar">
         <NavGroup title="Core Platform" items={coreItems} />
         <div className="mx-6 border-t border-border-subtle/50 my-1"></div>
+        <NavGroup title="Security Tools" items={toolsItems} />
+        <div className="mx-6 border-t border-border-subtle/50 my-1"></div>
         <NavGroup title="Advanced Ecosystem" items={ecosystemItems} />
         <div className="mx-6 border-t border-border-subtle/50 my-1"></div>
         <NavGroup title="Governance & Tools" items={exploreItems} />
       </nav>
 
       {/* Footer Branding */}
-      <div className="p-4 border-t border-border-subtle/50 text-center shrink-0">
-        <p className="text-[10px] text-text-muted font-bold tracking-wider uppercase">Open-Source Platform</p>
-        <p className="text-[9px] text-text-muted mt-0.5">Version 1.0.0 (MIT)</p>
-      </div>
+      {!collapsed && (
+        <div className="p-4 border-t border-border-subtle/50 text-center shrink-0">
+          <p className="text-[10px] text-text-muted font-bold tracking-wider uppercase">Open-Source Platform</p>
+          <p className="text-[9px] text-text-muted mt-0.5">Version 1.0.0 (MIT)</p>
+        </div>
+      )}
     </div>
   )
 
@@ -137,7 +156,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
   }
 
   return (
-    <div className="hidden lg:block w-64 shrink-0 h-full fixed top-0 bottom-0 left-0 z-20">
+    <div className={`hidden lg:block shrink-0 h-full fixed top-0 bottom-0 left-0 z-20 transition-[width] duration-300 ${collapsed ? 'w-20' : 'w-64'}`}>
       <SidebarContent />
     </div>
   )

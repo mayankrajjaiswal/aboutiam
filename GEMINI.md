@@ -8,14 +8,16 @@ This document serves as the definitive reference guide for the platform's produc
 
 ## 1. Production Architecture Summary
 
-AboutIAM is engineered as a **100% Client-Side, Zero-Backend Application**, ensuring zero-cost hosting (e.g., GitHub Pages, Vercel, Netlify) and ultimate data privacy. All cryptographic calculations, policy compilations, and state persistence run natively inside the user's browser.
+AboutIAM is engineered as a **100% Client-Side, Zero-Backend Application**, ensuring zero-cost hosting (e.g., GitHub Pages, Vercel, Netlify) and ultimate data privacy. All cryptographic calculations, policy compilations, and state persistence run natively inside the user's browser. The production site is served from the custom domain **`www.aboutiam.com`**, mapped via `public/CNAME`.
 
 ### 🛠️ Production Tech Stack
 - **Core Runtime:** React 19 (TypeScript) + Vite 7.x (instant HMR compiling).
+- **Routing & SEO:** React Router 7 (`BrowserRouter`, clean URLs) plus a post-build static pre-render step (`scripts/postbuild-ssg.mjs`) that writes a real, indexable `index.html` per route — required because GitHub Pages has no server-side rewrites, so a route without its own physical file would 404 for crawlers.
 - **Styling Engine:** Tailwind CSS 4.x (fully fluid responsive viewports, supporting system-matching Light & Dark themes).
 - **State Management:** Zustand + Persist middleware (persisting user course completions and layout states in `localStorage`).
 - **Motion Canvas:** Framer Motion (handling animated vector SVG flow paths and popup transitions).
 - **Testing Core:** Vitest (Vite-native unit testing with mock SSR safeguards).
+- **Discoverability:** `robots.txt`, `sitemap.xml`, `llms.txt`, `manifest.webmanifest`, and `security.txt` live in `public/` and all reference the production domain directly — update them alongside any future domain change.
 
 ---
 
@@ -115,3 +117,11 @@ To add a new cyber-attack profile or historic case study to the **Vulnerability 
 
 ### 🎓 C. How to Add a New Course Track to the Academy
 To add a new learning track or module to the **IAM Academy**, open `src/pages/Learn.tsx` and append a new `Track` object to the `tracks` array. Enforce six sub-modules per track to maintain the global graduation progress bar ratios.
+
+### 🧭 D. How to Add a New Page/Route
+Adding a page touches **three** files, because routes are statically pre-rendered for SEO (see §1) rather than resolved purely client-side:
+1. **`src/App.tsx`** — add the `<Route path="..." element={<YourPage />} />`.
+2. **`src/routeMeta.ts`** — add a `{ path, title, description }` entry. This drives the browser tab title, `<meta name="description">`, and canonical link that `Header.tsx` syncs on navigation.
+3. **`scripts/postbuild-ssg.mjs`** — add the *same* `{ path, title, description }` entry to its `ROUTES` array. This script runs in plain Node after `vite build` and intentionally keeps its own copy instead of importing the `.ts` file (avoids depending on a specific Node TypeScript-execution feature in CI) — it's what writes the real `dist/<route>/index.html` GitHub Pages serves. Skipping this step means the route works for in-app navigation but 404s for anyone (or any crawler) linking to it directly.
+
+Optionally add a `Sidebar.tsx` nav entry and a `public/sitemap.xml` `<url>` entry if the page should be discoverable from the main nav / search engines.

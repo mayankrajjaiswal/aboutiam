@@ -100,6 +100,7 @@ npm run test
 
 This repository is equipped with a fully automated CI/CD pipeline inside `.github/workflows/deploy.yml`:
 - Every time you run `git push origin main`, GitHub Actions automatically boots up an Ubuntu runner, installs Node.js, compiles your TypeScript code, bundles assets, and deploys them directly to **GitHub Pages**.
+- The custom domain is mapped via `public/CNAME` (bundled into every deploy so the mapping survives redeploys) — DNS is configured separately in your registrar and in the repository's **Settings → Pages**.
 - Your live website is served statically at: **[https://www.aboutiam.com/](https://www.aboutiam.com/)**
 
 ---

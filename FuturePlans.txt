@@ -1,0 +1,1033 @@
+You are the Chief Product Architect, Enterprise Software Architect, Information Architect, Technical Writer, UX Architect, Security Architect, AI System Designer and Lead Documentation Engineer for the AboutIAM project.
+
+=========================================================
+PROJECT OVERVIEW
+=========================================================
+
+Project Name:
+AboutIAM
+
+Website:
+https://www.aboutiam.com
+
+Repository:
+Already available in current workspace.
+
+Current Documentation:
+- README.md
+- GEMINI.md
+
+Read these documents completely before doing anything.
+
+Understand the complete project architecture, current pages, coding standards, product philosophy, tools, simulators, learning modules, playgrounds, routing, documentation style, SEO implementation, and technology stack.
+
+Do NOT replace these files.
+
+Use them as the source of truth.
+
+=========================================================
+
+PROJECT VISION
+
+=========================================================
+
+The objective is NOT to build another IAM tutorial website.
+
+The objective is to build the world's most comprehensive Identity & Access Management knowledge platform.
+
+Think of AboutIAM as the combination of:
+
+• MDN
+• Roadmap.sh
+• Wikipedia
+• OWASP
+• Microsoft Learn
+• Kubernetes Documentation
+• LeetCode
+• Interactive Labs
+• Enterprise Architecture Reference
+• RFC Knowledge Base
+• Vendor Documentation
+
+All merged into one unified platform.
+
+The platform must serve every level of user:
+
+• Student
+• Beginner
+• Developer
+• Security Engineer
+• IAM Engineer
+• Administrator
+• Consultant
+• Architect
+• Security Architect
+• Principal Engineer
+• Distinguished Engineer
+• CISO
+• Auditor
+
+=========================================================
+
+CORE PRINCIPLES
+
+=========================================================
+
+Everything must follow these principles.
+
+1.
+Beginner to Expert progression.
+
+Every topic must have:
+
+- Beginner explanation
+- Analogy
+- Intermediate explanation
+- Expert explanation
+- Deep technical implementation
+- References
+- Related RFCs
+- Related standards
+
+2.
+
+Interactive first.
+
+Never only explain.
+
+Every major concept should eventually have
+
+simulation
+interactive lab
+playground
+visualization
+architecture
+sequence diagram
+
+3.
+
+Vendor Neutral
+
+Do not bias towards any vendor.
+
+4.
+
+Standards First
+
+RFCs
+
+NIST
+
+OpenID Foundation
+
+FIDO Alliance
+
+W3C
+
+IETF
+
+OASIS
+
+SCIM
+
+OAuth
+
+OIDC
+
+SAML
+
+PKI
+
+must always be referenced.
+
+5.
+
+Enterprise Quality
+
+Everything should look like official Microsoft or AWS documentation.
+
+=========================================================
+
+YOUR TASK
+
+=========================================================
+
+Create an enterprise documentation system for this project.
+
+Create a folder called
+
+docs
+
+Inside docs create an entire documentation ecosystem.
+
+This documentation must become the single source of truth for future development.
+
+The documentation must be suitable for
+
+Gemini CLI
+
+Claude Code
+
+Codex
+
+Cursor
+
+Windsurf
+
+Copilot
+
+Any future AI coding agent.
+
+=========================================================
+
+DOCUMENTATION REQUIREMENTS
+
+=========================================================
+
+Every markdown file must contain
+
+Title
+
+Purpose
+
+Scope
+
+Audience
+
+Goals
+
+Dependencies
+
+Related Documents
+
+Implementation Notes
+
+Future Enhancements
+
+Acceptance Criteria
+
+AI Agent Instructions
+
+Version
+
+Status
+
+Owner
+
+Priority
+
+Phase
+
+=========================================================
+
+MASTER STRUCTURE
+
+=========================================================
+
+Create the following folders.
+
+docs/
+
+00_Project_Foundation
+
+01_Product_Specification
+
+02_Information_Architecture
+
+03_Knowledge_Base
+
+04_Learning_System
+
+05_Playgrounds
+
+06_Security_Tools
+
+07_Architecture_Center
+
+08_Vendor_Center
+
+09_Interview_Center
+
+10_Certification_Center
+
+11_AI_Architect
+
+12_Community
+
+13_AI_Agent_Guidelines
+
+14_Design_System
+
+15_SEO
+
+16_Testing
+
+17_Analytics
+
+18_Release_Planning
+
+19_Product_Roadmap
+
+20_Reference
+
+=========================================================
+
+MASTER INDEX
+
+=========================================================
+
+Create
+
+MASTER_INDEX.md
+
+This becomes the documentation home page.
+
+Every document must be linked.
+
+Every folder must contain README.md
+
+=========================================================
+
+KNOWLEDGE TAXONOMY
+
+=========================================================
+
+Design a complete IAM taxonomy.
+
+Nothing should be missing.
+
+Include every topic under IAM.
+
+Examples
+
+Identity Fundamentals
+
+Authentication
+
+Authorization
+
+Identity Federation
+
+Identity Governance
+
+IGA
+
+PAM
+
+CIAM
+
+Machine Identity
+
+Service Identity
+
+API Security
+
+OAuth
+
+OIDC
+
+JWT
+
+JWS
+
+JWE
+
+JWK
+
+JWKS
+
+SAML
+
+LDAP
+
+Kerberos
+
+SCIM
+
+FIDO2
+
+Passkeys
+
+PKI
+
+Certificates
+
+HSM
+
+Zero Trust
+
+ITDR
+
+Secrets Management
+
+Adaptive Authentication
+
+Risk Based Authentication
+
+Passwordless
+
+Behavior Analytics
+
+Identity Fabric
+
+Decentralized Identity
+
+Verifiable Credentials
+
+DID
+
+OpenID4VC
+
+GNAP
+
+SPIFFE
+
+SPIRE
+
+OPA
+
+Cedar
+
+Zanzibar
+
+XACML
+
+ABAC
+
+RBAC
+
+PBAC
+
+ReBAC
+
+MFA
+
+OTP
+
+TOTP
+
+HOTP
+
+Biometrics
+
+Authorization Policies
+
+Fine Grained Authorization
+
+Access Reviews
+
+Segregation of Duties
+
+Identity Lifecycle
+
+JML
+
+Identity Proofing
+
+Continuous Access Evaluation
+
+CAEP
+
+Shared Signals
+
+Identity Threat Detection
+
+Identity Security Posture
+
+Everything.
+
+Every topic should become its own document.
+
+=========================================================
+
+LEARNING PATHS
+
+=========================================================
+
+Create learning paths.
+
+Student
+
+Beginner
+
+Intermediate
+
+Advanced
+
+Developer
+
+Administrator
+
+IAM Engineer
+
+Security Engineer
+
+Architect
+
+Security Architect
+
+Principal Engineer
+
+Consultant
+
+CISO
+
+Every learning path should include
+
+Estimated hours
+
+Prerequisites
+
+Labs
+
+Projects
+
+Tools
+
+Interview Questions
+
+Certifications
+
+=========================================================
+
+PLAYGROUNDS
+
+=========================================================
+
+Document specifications for every future simulator.
+
+OAuth
+
+OIDC
+
+JWT
+
+JWS
+
+JWE
+
+JWK
+
+JWKS
+
+SAML
+
+SCIM
+
+LDAP
+
+Kerberos
+
+FIDO2
+
+Passkeys
+
+PKI
+
+Certificates
+
+HSM
+
+OPA
+
+Policy Engine
+
+Conditional Access
+
+Adaptive Authentication
+
+Identity Threat Detection
+
+Session Hijacking
+
+Token Replay
+
+OAuth Attacks
+
+JWT Attacks
+
+SAML Attacks
+
+Replay Attacks
+
+Device Trust
+
+Risk Engine
+
+Machine Identity
+
+SPIFFE
+
+SPIRE
+
+=========================================================
+
+TOOLS
+
+=========================================================
+
+Document every future tool.
+
+JWT Decoder
+
+JWT Generator
+
+OAuth Request Builder
+
+OAuth Debugger
+
+PKCE Generator
+
+UUID Generator
+
+Password Generator
+
+Hash Generator
+
+Certificate Decoder
+
+CSR Generator
+
+Certificate Chain Validator
+
+JWK Converter
+
+PEM Converter
+
+LDAP Builder
+
+LDAP Decoder
+
+SCIM Validator
+
+SCIM Builder
+
+SAML Decoder
+
+SAML Metadata Generator
+
+Base64
+
+HMAC
+
+bcrypt
+
+Argon2
+
+PBKDF2
+
+Policy Simulator
+
+Everything should include
+
+Purpose
+
+Inputs
+
+Outputs
+
+Examples
+
+UI
+
+Validation
+
+Test Cases
+
+=========================================================
+
+ARCHITECTURE CENTER
+
+=========================================================
+
+Design specifications for over 200 architecture diagrams.
+
+Enterprise IAM
+
+CIAM
+
+Zero Trust
+
+Banking
+
+Healthcare
+
+Government
+
+Manufacturing
+
+Retail
+
+Cloud Native
+
+Hybrid
+
+Azure
+
+AWS
+
+GCP
+
+Kubernetes
+
+Machine Identity
+
+Secrets Management
+
+PKI
+
+PAM
+
+IGA
+
+Identity Fabric
+
+API Gateway
+
+Developer Portal
+
+Microservices
+
+Every architecture should include
+
+Diagram
+
+Components
+
+Trust Boundaries
+
+Sequence Diagram
+
+Threat Model
+
+Best Practices
+
+Trade-offs
+
+=========================================================
+
+VENDOR CENTER
+
+=========================================================
+
+Create specifications for
+
+Microsoft Entra
+
+Okta
+
+Ping
+
+ForgeRock
+
+SailPoint
+
+CyberArk
+
+Saviynt
+
+BeyondTrust
+
+Delinea
+
+Keycloak
+
+WSO2
+
+One Identity
+
+IBM Security Verify
+
+Oracle IAM
+
+Google Cloud IAM
+
+AWS IAM
+
+Each should include
+
+Architecture
+
+Components
+
+Licensing
+
+Deployment
+
+Strengths
+
+Weaknesses
+
+Use Cases
+
+Interview Questions
+
+Certifications
+
+=========================================================
+
+INTERVIEW CENTER
+
+=========================================================
+
+Design a complete interview preparation system.
+
+MCQs
+
+Scenario Questions
+
+Coding
+
+Architecture
+
+System Design
+
+Behavioral
+
+Mock Interviews
+
+Whiteboard
+
+=========================================================
+
+CERTIFICATION CENTER
+
+=========================================================
+
+Document all certifications.
+
+Microsoft
+
+Okta
+
+Ping
+
+CyberArk
+
+SailPoint
+
+CompTIA
+
+ISC2
+
+=========================================================
+
+COMMUNITY
+
+=========================================================
+
+Forums
+
+Leaderboard
+
+Hall of Fame
+
+Contributor Guide
+
+CTF
+
+Monthly Challenge
+
+Badges
+
+=========================================================
+
+AI ARCHITECT
+
+=========================================================
+
+Design an AI Architect module.
+
+User answers questions.
+
+System generates
+
+Architecture
+
+Threat Model
+
+Products
+
+Policies
+
+Best Practices
+
+Implementation Plan
+
+=========================================================
+
+DESIGN SYSTEM
+
+=========================================================
+
+Document
+
+Typography
+
+Spacing
+
+Icons
+
+Accessibility
+
+Animations
+
+Dark Mode
+
+Responsive Design
+
+Reusable Components
+
+=========================================================
+
+SEO
+
+=========================================================
+
+Document
+
+Metadata
+
+Structured Data
+
+JSON-LD
+
+Canonical URLs
+
+Sitemap
+
+OpenGraph
+
+Twitter Cards
+
+IndexNow
+
+robots.txt
+
+Internal Linking
+
+Breadcrumbs
+
+=========================================================
+
+TESTING
+
+=========================================================
+
+Document
+
+Vitest
+
+Playwright
+
+Accessibility Testing
+
+Performance Testing
+
+Security Testing
+
+=========================================================
+
+ANALYTICS
+
+=========================================================
+
+Document KPIs.
+
+Search Traffic
+
+Learning Completion
+
+Simulator Usage
+
+Retention
+
+Engagement
+
+=========================================================
+
+ROADMAP
+
+=========================================================
+
+Create a roadmap.
+
+Phase 1
+
+Highest Priority
+
+Complete Knowledge Base
+
+Phase 2
+
+Architecture Center
+
+Vendor Center
+
+Phase 3
+
+Interview Center
+
+Certification Center
+
+Phase 4
+
+Community
+
+AI Architect
+
+Enterprise Builder
+
+=========================================================
+
+AI AGENT RULES
+
+=========================================================
+
+Every document must include
+
+AI Agent Instructions
+
+How to extend
+
+How to maintain
+
+How to test
+
+How to update MASTER_INDEX
+
+How to update Knowledge Graph
+
+How to update internal links
+
+=========================================================
+
+QUALITY REQUIREMENTS
+
+=========================================================
+
+Do NOT create placeholder documentation.
+
+Every markdown file must contain meaningful professional content.
+
+Every document must cross-reference related documents.
+
+Every document must be written in enterprise style.
+
+Documentation should resemble Microsoft's official documentation.
+
+Documentation should be versioned.
+
+Documentation should be maintainable.
+
+Documentation should become the long-term blueprint of AboutIAM.
+
+The final result should be considered the official documentation system of the AboutIAM project.
+
+Think deeply.
+
+Do not rush.
+
+Generate high-quality documentation.
+
+This documentation should still be valuable ten years from now.

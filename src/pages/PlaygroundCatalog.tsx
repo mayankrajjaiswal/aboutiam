@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal } from 'lucide-react'
 
 export default function PlaygroundCatalog() {
   const playgrounds = [
@@ -72,6 +72,13 @@ export default function PlaygroundCatalog() {
       icon: Server,
       link: "/playground/kerberos",
       badge: "Active (Standard)",
+    },
+    {
+      title: "Identity CTF Hacking Arena",
+      desc: "Crack and solve client-side identity security puzzles: JWT none algorithm bypass, SAML wrapped assertions, and LDAP query injections.",
+      icon: Terminal,
+      link: "/playground/ctf",
+      badge: "Active (Core)",
     },
     {
       title: "AI vs Identity Threat Lab",

@@ -34,11 +34,17 @@ Many developers and security architects find Identity and Access Management dry,
 
 The AboutIAM platform houses a fully integrated identity workspace, organized into three distinct structural columns:
 
-### 🚀 A. Core Platform
+### 🚀 A. Core Platform & Reference Centers
 * **Overview Dashboard (`Home.tsx`):** Displays overall progress, track graduations, and historical **Identity Trivia cards** (including MIT's first 1961 password bypass and Kerberos mythology).
 * **Beginner's Onboarding Primer (`BeginnerPrimer.tsx`):** Specifically designed for students, interns, and laymen. Explains the 4 chronological pillars (**Identify $\rightarrow$ Authenticate $\rightarrow$ Authorize $\rightarrow$ Audit**) in plain English.
 * **IAM Academy (`Learn.tsx`):** 6 guided course tracks and 36 expanding modules. Toggling "Completed" persists progress inside browser `localStorage` and animates progress bars.
-* **Interactive Playgrounds (`PlaygroundCatalog.tsx`):** selection hub connecting to 5 custom-built detailed simulators.
+* **Interactive Architecture Center (`/architecture`):** Clickable, responsive reference architectures detailing trust boundaries, threat models, and trace logs for Workforce Zero Trust (NIST SP 800-207), Multi-tenant B2B SaaS, and Multi-Cloud SPIRE/SPIFFE setups.
+* **Vendor Knowledge Center (`/vendor`):** Comprehensive reference blueprints, licensed models, certified paths, and technical mock interview guides for Okta, Entra ID, Keycloak, Ping Identity, and CyberArk.
+* **Identity Research & CVE Tracker (`/research`):** Searchable identity CVE directory (e.g. Log4Shell, Spring4Shell) with side-by-side vulnerable vs. secure code-remediation patches, and a live IETF RFC protocol registry.
+* **Design Pattern Library (`/patterns`):** Hardened integration patterns, sequence flows, and implementation checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless FIDO2.
+* **Enterprise Certification Hub (`/certifications`):** Study paths, domain focus splits, and interactive mock practice exams with real-time explanations for SC-300, Okta Admin, CyberArk Sentry, and Ping Professional credentials.
+* **Security Bulletins & IR Simulator (`/bulletins`):** Active threat bulletins tracking real-world incident post-mortems (Okta support HAR cookie theft, SolarWinds Golden SAML) with an interactive "Crisis Response Console" simulation game.
+* **Interactive Playgrounds (`PlaygroundCatalog.tsx`):** Selection hub connecting to 15+ custom-built detailed simulators.
 
 ### 💻 B. Simulators & Playgrounds (`/playground`)
 * **OAuth 2.0 / OIDC Flow Visualizer:** Animates Front-Channel redirects and Back-Channel direct connections step-by-step. Generates dynamic **PKCE verifier/challenge pairs** and inspects raw HTTP requests.
@@ -48,16 +54,33 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Access Control Engine:** Runs dynamic, context-aware **ABAC** evaluations (evaluating device compliance, location network, and department) and contrasts it against static **RBAC** groups.
 * **LDAP Tree Simulator:** Renders a nested Active Directory domain schema. Typing standard LDAP filters (e.g. `(memberOf=cn=Admins)`) dynamically matches and highlights nodes.
 * **Zero Trust Planner:** Models NIST SP 800-207 trust algorithms, calculating access risk scores based on real-time parameters.
+* **SCIM Provisioning Lab & Sync Engine:** Simulates real-time Identity Provider (IdP) to Service Provider (SP) user lifecycle sync loops (CRUD), simulating `HTTP 429` (Rate-Limiting) and `HTTP 409` (Conflict) sync queues.
+* **OAuth 2.0 Attack Lab:** Hands-on hack-and-defend sandbox demonstrating PKCE bypasses, open-redirect URI wildcards, and CSRF session state omissions.
+* **Kerberos Tickets Lab:** State-machine AD simulator modeling AS/TGS cryptographic ticket exchanges and Golden/Silver Ticket exploits.
+* **Identity CTF Hacking Arena:** Gamified identity-focused capture-the-flag challenges with scoreboard tracking for JWT none-algorithm bypass, SAML wrapped assertion injections, and LDAP filter parameter escapes.
+* **Identity Architect AI Builder:** Questionnaire-driven design wizard generating bespoke visual topologies, threat models, software specifications, and OPA/JSON policy scripts based on project parameters.
+* **JWT Signature Secret Cracker:** Visual, client-side dictionary attack simulator hashing local payloads against common weak secrets to discover HS256 JWT keys within seconds.
+* **mTLS & Certificate Chain Validator:** Visual hierarchical map of Certificate Authorities (Root -> Intermediate -> Leaf) allowing users to simulate CRL/OCSP revocations and trace mTLS handshakes.
+* **Active Directory GPO Simulator:** Interactive DC GPO editor modeling password lengths, lockout thresholds, and ticket lifetimes with login lockouts and Kerberos TGT outputs.
+* **AI vs Identity Threat Lab:** Simulates Generative AI voice deepfake attacks against legacy MFA and witness how FIDO2 hardware bounds defeat synthetic cloning.
+* **Zero-Knowledge Proof (ZKP) Wallet:** Explore decentralized Self-Sovereign Identity. Generate mathematical proofs confirming your age without exposing your raw birthdate.
+* **Continuous Ambient Trust Decayer:** Visualize post-2030 systems where real-time biometric telemetry (keystrokes, location) constantly decays or fortifies session trust.
+* **NHI Workload Mesh (SPIFFE):** Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.
 
 ### 🛠️ C. Security Tools (`/tools`)
-* **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. All 19 planned tools are live: JWT Decoder & Generator, Base64/Base64URL Encoder-Decoder, SHA-256 & Hash Generator, HMAC Generator & Verifier, UUID/ULID Generator, Password Generator, OAuth PKCE Generator, TOTP Generator & Verifier, LDAP Filter Builder, SCIM Payload Validator, Basic/Bearer Auth Header Decoder, JWK↔PEM Converter, X.509 Certificate & CSR Decoder, SAML Decoder & Metadata Viewer, SD-JWT Decoder, WebAuthn/Passkey Assertion Decoder, a DID Key Generator, and a bcrypt Hash Generator & Verifier.
+* **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. All 23 planned tools are live:
+  * **Tokens & Assertions:** JWT Decoder, JWT Generator, JWKS Key-Set Inspector, SAML Decoder, SD-JWT Decoder.
+  * **PKI & Certificates:** Basic/Bearer Auth Header Decoder, JWK↔PEM Converter, X.509 Certificate & CSR Decoder.
+  * **Hashing, Encoding & Secrets:** Base64/Base64URL Encoder-Decoder, SHA-256 & Hash Generator, HMAC Generator & Verifier, bcrypt Hash Generator, Passphrase & Entropy Strength Calculator.
+  * **Auth & Directory Builders:** OAuth PKCE Generator, TOTP Generator & Verifier, LDAP Filter Builder, SCIM Payload Validator, OAuth Request Builder, OIDC Discovery Document Auditor.
+  * **Emerging & Decentralized Identity:** WebAuthn/Passkey Assertion Decoder, DID Key Generator.
 * Every tool page pairs a **beginner analogy** with an **expert technical specification** (RFC/spec-referenced), matching the Encyclopedia's teaching pattern, plus its own SEO-optimized route, meta tags, and JSON-LD structured data for search discoverability.
 * All backlog items from `FIXED_TODO.md` (including sitemap hygiene and automatic IndexNow pings) have been fully completed and validated.
 
 ### 🏛️ D. Advanced Ecosystem & Governance
 * **Master A-Z Encyclopedia (`Encyclopedia.tsx`):** Searchable glossary packed with **36 standard identity terms**. Details analogies and strict technical specifications.
 * **Vulnerability Lab & Identity Museum (`WallOfShame.tsx`):** Interactive corridor charting the 5 historic eras of identity. Houses detailed steppers explaining the SolarWinds **Golden SAML** exploit, **Silver SAML** threats, and **MFA Fatigue push bombing**.
-* **Developer Playbooks (`CheatSheets.tsx`):** Checklist compliance audits for SPAs and M2M credentials that update dynamic posture gauges.
+* **Developer Playbooks (`CheatSheets.tsx`):** Checklist compliance audits for SPAs and M2M credentials, fully expanded with interactive regulatory checklists mapping **SOC2 Type II, ISO 27001, and HIPAA Security Rule** identity controls to update dynamic compliance gauges.
 * **GRC Maturity Wizard (`Assess.tsx`):** 5-pillar questionnaire evaluating organizational readiness, plotting dynamic charts, and exporting a downloadable vector SVG roadmap.
 
 ---

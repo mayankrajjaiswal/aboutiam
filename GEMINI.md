@@ -31,8 +31,14 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/primer`** | `BeginnerPrimer.tsx` | Layman's Onboarding Portal. Deconstructs security into "The Internet's Digital Bouncer" analogy. |
 | **`/roadmap`** | `Roadmap.tsx` | Zero-to-Hero Learning Pathway. Chronological guide detailing sequential tracks. |
 | **`/learn`** | `Learn.tsx` | IAM Academy. 6 tracks, 36 expandable modules with local progress bar persistent tracking. |
-| **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 7 completed simulators. |
-| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (all 19 planned tools live — see `FIXED_TODO.md`). |
+| **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs for Zero Trust, B2B SaaS, and Multi-Cloud SPIRE. |
+| **`/vendor`** | `VendorCenter.tsx` | Checklists, licensing models, certified paths, and technical interview guides for Entra ID, Okta, Keycloak, Ping, and CyberArk. |
+| **`/research`** | `ResearchCenter.tsx` | Searchable identity CVE directory with side-by-side remediation code patches and active standard IETF RFC drafts. |
+| **`/patterns`** | `DesignPatternLibrary.tsx` | Hardened design patterns, sequence flows, and checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless. |
+| **`/certifications`** | `CertificationHub.tsx` | Exam domains, study paths, and interactive practice tests for Microsoft, Okta, Ping, and CyberArk credentials. |
+| **`/bulletins`** | `SecurityBulletins.tsx` | Active threat bulletins tracking real-world incident post-mortems (Okta support, SolarWinds) with an interactive "Crisis Response Console" simulation game. |
+| **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 15+ completed simulators. |
+| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (all 23 tools live). |
 | **`/tools/jwt-decoder`** | `Tools/JwtDecoder.tsx` | Decodes a JWT's header/payload/signature; flags `alg: none`; optional HMAC verify. |
 | **`/tools/jwt-generator`** | `Tools/JwtGenerator.tsx` | Signs a JWT client-side with HS256/384/512 or an ephemeral RS256 keypair. |
 | **`/tools/base64-encoder-decoder`** | `Tools/Base64EncoderDecoder.tsx` | Base64/Base64URL encode-decode for text and files. |
@@ -45,6 +51,11 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/tools/ldap-filter-builder`** | `Tools/LdapFilterBuilder.tsx` | Visual AND/OR/NOT composer producing an RFC 4515 filter string. |
 | **`/tools/scim-payload-validator`** | `Tools/ScimPayloadValidator.tsx` | Validates or scaffolds SCIM 2.0 User/Group JSON payloads. |
 | **`/tools/basic-auth-decoder`** | `Tools/BasicAuthDecoder.tsx` | Decodes `Authorization: Basic`/`Bearer` header values. |
+| **`/tools/oauth-builder`** | `Tools/OauthRequestBuilder.tsx` | Visually constructs standard OAuth 2.0 / OIDC request URLs and backchannel exchange curls. |
+| **`/tools/jwks-inspector`** | `Tools/JwksInspector.tsx` | Parses, inspects, and validates public JSON Web Key Sets (JWKS) and extracts key components. |
+| **`/tools/policy-evaluator`** | `Tools/PolicyEvaluator.tsx` | Dynamic JSON-based access policy evaluator (ABAC/RBAC) with step-by-step trace terminals. |
+| **`/tools/passphrase-entropy`** | `Tools/PassphraseEntropy.tsx` | Entropy bits and GPU-cracking speed comparisons between standard passwords and dictionary passphrases. |
+| **`/tools/oidc-discovery`** | `Tools/OidcDiscoveryAuditor.tsx` | Decodes and pretty-prints openid-configuration metadata and extracts supported endpoints. |
 | **`/playground/jwt`** | `JWTStudio.tsx` | JWT encoder/decoder. Runs real browser-native HS256 signatures and "none" alg exploits. |
 | **`/playground/oauth`** | `OAuthVisualizer.tsx` | Step-by-step OIDC flow chart. Animates front/back-channels and parses raw HTTP. |
 | **`/playground/saml`** | `SAMLWorkbench.tsx` | XML assertion workbench. Simulates SAML Signature Wrapping (SSW) attacks. |
@@ -52,6 +63,14 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/playground/access`** | `AccessControlLab.tsx` | Dynamic ABAC/RBAC engine evaluating department, device, and network. |
 | **`/playground/ldap`** | `LDAPTreeSimulator.tsx` | AD directory tree simulator. Searches objects dynamically using LDAP filters. |
 | **`/playground/zta`** | `ZTAPlanner.tsx` | Zero Trust risk controller based on NIST SP 800-207. |
+| **`/playground/scim`** | `Playgrounds/SCIMLab.tsx` | Visual Identity Provider (IdP) to Service Provider (SP) SCIM sync pipeline. |
+| **`/playground/oauth-attack`** | `Playgrounds/OAuthAttackLab.tsx` | Hack-and-defend sandbox mapping PKCE bypasses, wildcard redirects, and CSRF state omissions. |
+| **`/playground/kerberos`** | `Playgrounds/KerberosLab.tsx` | State-machine AD simulator detailing ticketing (AS/TGS) and Golden/Silver ticket exploits. |
+| **`/playground/ctf`** | `Playgrounds/IdentityCTFArena.tsx` | Gamified client-side identity hacking challenges (JWT none bypass, SAML wrapped assertions, LDAP injections). |
+| **`/playground/identity-architect`** | `Playgrounds/IdentityArchitect.tsx` | AI-assisted design wizard generating bespoke visual topologies, threat models, and policy codes. |
+| **`/playground/jwt-cracker`** | `Playgrounds/JwtCracker.tsx` | Client-side dictionary attack simulator hashing local payloads against common secrets to discover HS256 keys. |
+| **`/playground/cert-chain`** | `Playgrounds/CertChainValidator.tsx` | Visual hierarchical map of Certificate Authorities with CRL/OCSP revocation checks and mTLS handshakes. |
+| **`/playground/gpo-simulator`** | `Playgrounds/GpoSimulator.tsx` | Interactive AD GPO editor modeling password lengths, lockout thresholds, and ticket lifetimes. |
 | **`/playground/ai-threat-lab`** | `AIThreatLab.tsx` | Simulates voice deepfake attacks against legacy MFA and verifies FIDO2 hardware bounds. |
 | **`/playground/zkp-wallet`** | `ZKPWallet.tsx` | Generates mathematical zero-knowledge age proofs without exposing raw birthdates. |
 | **`/playground/ambient-trust`** | `AmbientTrust.tsx` | Tracks continuous, ambient biometric telemetry and decays session trust scores. |
@@ -141,7 +160,7 @@ Optionally add a `Sidebar.tsx` nav entry and a `public/sitemap.xml` `<url>` entr
 
 ### 🛠️ E. How to Add a New Security Tool (`/tools/<slug>`)
 
-The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — all 19 planned tools are now fully live and shipped. To add a new (20th) tool in the future, follow these steps:
+The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — all 23 planned tools are now fully live and shipped. To add a new (24th) tool in the future, follow these steps:
 
 1. **`src/data/toolsRegistry.ts`** — append a `ToolMeta` entry (`slug`, `title`, `description`, `category`, `icon`, `phase`, `keywords`, `analogy`, `expert`, `faqs`, optional `relatedLinks`) with `status: 'planned'` while you build, then flip to `'live'` when it ships. `ToolsCatalog.tsx` and the sidebar-adjacent catalog card both render from this array automatically — nothing else to touch there.
 2. **`src/pages/Tools/<PascalCaseName>.tsx`** — build the page using the shared components in `src/components/Tools/` (`ToolPageShell` for the header/privacy-notice/JSON-LD wrapper, `BeginnerExpertExplainer` for the analogy/expert/FAQ card, `useClipboardCopy` for copy buttons, `FileDropInput` for file-accepting tools) and any pure-logic helpers you need in `src/lib/tools/` (one small, independently Vitest-tested module per concern — see the existing `base64.ts`/`jwt.ts`/`totp.ts`/etc. for the pattern).

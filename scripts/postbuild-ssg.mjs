@@ -58,6 +58,8 @@ const ROUTES = [
   { path: '/playground/kerberos', title: 'Kerberos Tickets Lab', description: 'Interactive Active Directory Kerberos protocol simulator detailing Golden and Silver Ticket exploits.' },
   { path: '/playground/ctf', title: 'Identity CTF Hacking Arena', description: 'Hands-on, browser-native CTF hacking puzzles for JWT signature bypasses, SAML wrapping injections, and LDAP filter parameter escapes.' },
   { path: '/playground/identity-architect', title: 'Identity Architect Dashboard', description: 'Answer simple business questions to dynamically generate highly secure, compliance-ready identity blueprints and policies.' },
+  { path: '/playground/jwt-cracker', title: 'JWT Signature Secret Cracker', description: 'Interactive cryptographic simulator demonstrating the danger of using weak shared secrets for HMAC signature keys.' },
+  { path: '/playground/cert-chain', title: 'mTLS & Certificate Chain Validator', description: 'Interactive PKI playground to model Certificate Authority trust chains and simulate real-time OCSP / CRL revocations.' },
   { path: '/playground/ai-threat-lab', title: 'AI Threat Lab', description: 'Voice-deepfake attack simulations against legacy MFA vs. FIDO2 hardware bounds.' },
   { path: '/playground/zkp-wallet', title: 'ZKP Wallet', description: 'Zero-knowledge age proofs that verify without exposing raw birthdates.' },
   { path: '/playground/ambient-trust', title: 'Ambient Trust', description: 'Continuous ambient biometric telemetry and session trust-score decay.' },

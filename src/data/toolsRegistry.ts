@@ -398,6 +398,22 @@ export const TOOLS: ToolMeta[] = [
     ],
     relatedLinks: [{ label: 'Evaluate advanced ABAC profiles →', href: '/playground/access' }],
   },
+  {
+    slug: 'passphrase-entropy',
+    title: 'Diceware Passphrase & Entropy Strength Calculator',
+    description: 'Compare standard character-shuffled passwords against word-based dictionary passphrases to calculate mathematical entropy bits and offline GPU cracking times.',
+    category: 'Hashing, Encoding & Secrets',
+    icon: Hash,
+    phase: 3,
+    status: 'live',
+    keywords: ['passphrase entropy', 'password strength calculator', 'entropy bits calculator'],
+    analogy: 'Like building a wall: you can either stack tiny, intricately-shaped pebbles that are easily knocked over (short complex password), or stack large, interlocking boulders that require immense force to move (long memorable passphrase).',
+    expert: 'Calculates standard informational entropy: E = L * log2(P) where P is the character pool size or word dictionary size and L is the length. Displays estimated crack times assuming a modern 100 Billion hashes/second attacker GPU rig.',
+    faqs: [
+      { q: 'Why is length more important than complexity?', a: 'Length exponentially increases the search space (combinations), whereas complexity only increases the base pool size linearly. A 4-word random passphrase has over 50 bits of entropy, which is mathematically stronger and significantly harder to crack than an 8-character complex string.' },
+    ],
+    relatedLinks: [{ label: 'Generate strong random passwords or passphrases →', href: '/tools/password-generator' }],
+  },
 ]
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {

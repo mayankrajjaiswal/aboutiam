@@ -88,6 +88,20 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "JWT Signature Secret Cracker",
+      desc: "Run client-side dictionary attacks against weak HS256 tokens to crack and discover the signature secret within seconds.",
+      icon: Key,
+      link: "/playground/jwt-cracker",
+      badge: "Active (Core)",
+    },
+    {
+      title: "mTLS & Certificate Chain Validator",
+      desc: "Model dynamic Certificate Authority trust chains, simulate intermediate CRL/OCSP revocations, and audit mTLS connection handshakes.",
+      icon: Network,
+      link: "/playground/cert-chain",
+      badge: "Active (Standard)",
+    },
+    {
       title: "AI vs Identity Threat Lab",
       desc: "Simulate Generative AI voice deepfake attacks against legacy MFA and witness how FIDO2 hardware bounds defeat synthetic cloning.",
       icon: Bot,

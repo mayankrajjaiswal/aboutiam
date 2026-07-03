@@ -41,6 +41,7 @@ import OauthRequestBuilder from './pages/Tools/OauthRequestBuilder'
 import JwksInspector from './pages/Tools/JwksInspector'
 import PolicyEvaluator from './pages/Tools/PolicyEvaluator'
 import PassphraseEntropy from './pages/Tools/PassphraseEntropy'
+import OidcDiscoveryAuditor from './pages/Tools/OidcDiscoveryAuditor'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
@@ -55,6 +56,7 @@ import IdentityCTFArena from './pages/Playgrounds/IdentityCTFArena'
 import IdentityArchitect from './pages/Playgrounds/IdentityArchitect'
 import JwtCracker from './pages/Playgrounds/JwtCracker'
 import CertChainValidator from './pages/Playgrounds/CertChainValidator'
+import GpoSimulator from './pages/Playgrounds/GpoSimulator'
 import Assess from './pages/Assess'
 import Explore from './pages/Explore'
 import Assistant from './pages/Assistant'
@@ -137,6 +139,7 @@ export default function App() {
               <Route path="/tools/jwks-inspector" element={<JwksInspector />} />
               <Route path="/tools/policy-evaluator" element={<PolicyEvaluator />} />
               <Route path="/tools/passphrase-entropy" element={<PassphraseEntropy />} />
+              <Route path="/tools/oidc-discovery" element={<OidcDiscoveryAuditor />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />
@@ -151,6 +154,7 @@ export default function App() {
               <Route path="/playground/identity-architect" element={<IdentityArchitect />} />
               <Route path="/playground/jwt-cracker" element={<JwtCracker />} />
               <Route path="/playground/cert-chain" element={<CertChainValidator />} />
+              <Route path="/playground/gpo-simulator" element={<GpoSimulator />} />
               
               {/* Phase 7 Paths */}
               <Route path="/playground/ai-threat-lab" element={<AIThreatLab />} />

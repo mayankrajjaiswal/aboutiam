@@ -1,10 +1,64 @@
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building, ScanSearch, Layers } from 'lucide-react'
+import { 
+  BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, 
+  CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building, ScanSearch, Layers 
+} from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
 interface SidebarProps {
   isMobile?: boolean
+}
+
+interface NavGroupProps {
+  title: string
+  items: any[]
+  collapsed: boolean
+  pathname: string
+  handleLinkClick: () => void
+}
+
+function NavGroup({ title, items, collapsed, pathname, handleLinkClick }: NavGroupProps) {
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return pathname === '/'
+    }
+    return pathname.startsWith(path)
+  }
+
+  return (
+    <div className="py-3">
+      {!collapsed && (
+        <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-text-muted mb-2 block">{title}</span>
+      )}
+      <div className="space-y-1">
+        {items.map((item) => {
+          const active = isActive(item.path)
+          return (
+            <Link
+              key={item.name}
+              to={item.path}
+              onClick={handleLinkClick}
+              title={collapsed ? item.name : undefined}
+              aria-label={item.name}
+              className={`flex items-center gap-3 py-2.5 mx-2 rounded-lg text-sm font-semibold transition-all group ${
+                collapsed ? 'justify-center px-2' : 'px-4'
+              } ${
+                active
+                  ? 'bg-accent-glow text-accent-primary shadow-sm shadow-accent-primary/5'
+                  : 'text-text-secondary hover:bg-bg-card hover:text-text-primary border border-transparent hover:border-border-subtle/50'
+              }`}
+            >
+              <item.icon className={`w-4 h-4 shrink-0 transition-colors ${
+                active ? 'text-accent-primary' : 'text-text-muted group-hover:text-text-primary'
+              }`} />
+              {!collapsed && item.name}
+            </Link>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 export default function Sidebar({ isMobile = false }: SidebarProps) {
@@ -42,54 +96,14 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
     { name: 'Team & Contact', path: '/contributors', icon: Users },
   ]
 
-  const isActive = (path: string) => {
-    if (path === '/') {
-      return location.pathname === '/'
-    }
-    return location.pathname.startsWith(path)
-  }
-
   const handleLinkClick = () => {
     if (isMobile) {
       setMobileSidebarOpen(false)
     }
   }
 
-  const NavGroup = ({ title, items }: { title: string, items: any[] }) => (
-    <div className="py-3">
-      {!collapsed && (
-        <span className="px-4 text-[10px] font-bold uppercase tracking-wider text-text-muted mb-2 block">{title}</span>
-      )}
-      <div className="space-y-1">
-        {items.map((item) => {
-          const active = isActive(item.path)
-          return (
-            <Link
-              key={item.name}
-              to={item.path}
-              onClick={handleLinkClick}
-              title={collapsed ? item.name : undefined}
-              aria-label={item.name}
-              className={`flex items-center gap-3 py-2.5 mx-2 rounded-lg text-sm font-semibold transition-all group ${
-                collapsed ? 'justify-center px-2' : 'px-4'
-              } ${
-                active
-                  ? 'bg-accent-glow text-accent-primary shadow-sm shadow-accent-primary/5'
-                  : 'text-text-secondary hover:bg-bg-card hover:text-text-primary border border-transparent hover:border-border-subtle/50'
-              }`}
-            >
-              <item.icon className={`w-4 h-4 shrink-0 transition-colors ${
-                active ? 'text-accent-primary' : 'text-text-muted group-hover:text-text-primary'
-              }`} />
-              {!collapsed && item.name}
-            </Link>
-          )
-        })}
-      </div>
-    </div>
-  )
-
-  const SidebarContent = () => (
+  // Purely inline sidebar content template
+  const renderSidebarContent = () => (
     <div className="flex flex-col h-full bg-bg-sidebar border-r border-border-subtle">
       {/* Brand Header */}
       <div className={`h-16 flex items-center border-b border-border-subtle shrink-0 ${collapsed ? 'justify-center px-2' : 'justify-between px-6'}`}>
@@ -112,13 +126,13 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
 
       {/* Navigation List */}
       <nav className="flex-1 py-4 overflow-y-auto custom-scrollbar">
-        <NavGroup title="Core Platform" items={coreItems} />
+        <NavGroup title="Core Platform" items={coreItems} collapsed={collapsed} pathname={location.pathname} handleLinkClick={handleLinkClick} />
         <div className="mx-6 border-t border-border-subtle/50 my-1"></div>
-        <NavGroup title="Security Tools" items={toolsItems} />
+        <NavGroup title="Security Tools" items={toolsItems} collapsed={collapsed} pathname={location.pathname} handleLinkClick={handleLinkClick} />
         <div className="mx-6 border-t border-border-subtle/50 my-1"></div>
-        <NavGroup title="Advanced Ecosystem" items={ecosystemItems} />
+        <NavGroup title="Advanced Ecosystem" items={ecosystemItems} collapsed={collapsed} pathname={location.pathname} handleLinkClick={handleLinkClick} />
         <div className="mx-6 border-t border-border-subtle/50 my-1"></div>
-        <NavGroup title="Governance & Tools" items={exploreItems} />
+        <NavGroup title="Governance & Tools" items={exploreItems} collapsed={collapsed} pathname={location.pathname} handleLinkClick={handleLinkClick} />
       </nav>
 
       {/* Footer Branding */}
@@ -152,7 +166,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
               className="fixed inset-y-0 left-0 w-72 max-w-xs z-50 lg:hidden shadow-2xl"
             >
-              <SidebarContent />
+              {renderSidebarContent()}
             </motion.div>
           </>
         )}
@@ -162,7 +176,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
 
   return (
     <div className={`hidden lg:block shrink-0 h-full fixed top-0 bottom-0 left-0 z-20 transition-[width] duration-300 ${collapsed ? 'w-20' : 'w-64'}`}>
-      <SidebarContent />
+      {renderSidebarContent()}
     </div>
   )
 }

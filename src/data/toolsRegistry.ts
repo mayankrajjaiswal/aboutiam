@@ -414,6 +414,22 @@ export const TOOLS: ToolMeta[] = [
     ],
     relatedLinks: [{ label: 'Generate strong random passwords or passphrases →', href: '/tools/password-generator' }],
   },
+  {
+    slug: 'oidc-discovery',
+    title: 'OIDC Discovery Document Auditor',
+    description: 'Parse, visualize, and audit modern Identity Provider metadata profiles containing standard OIDC endpoint registries.',
+    category: 'Auth & Directory Builders',
+    icon: ScanSearch,
+    phase: 3,
+    status: 'live',
+    keywords: ['oidc discovery', 'metadata auditor', 'openid-configuration'],
+    analogy: 'Like reading a hotel directory board in the lobby: instead of wandering around, you look at the board to see exactly where the reception (auth endpoint), cashier (token endpoint), and room keys (jwks_uri) are located.',
+    expert: 'Implements RFC 8414 (OAuth 2.0 Authorization Server Metadata) and OIDC Discovery Core 1.0. Decodes issuer metadata properties, extracting critical authorization and cryptographic keys mappings.',
+    faqs: [
+      { q: 'Why is the discovery document needed?', a: 'It allows client applications to automatically bootstrap and federate with an Identity Provider by reading a single standardized JSON URL, eliminating the need to manually hardcode different endpoints.' },
+    ],
+    relatedLinks: [{ label: 'Build standard OIDC requests visually →', href: '/tools/oauth-builder' }],
+  },
 ]
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {

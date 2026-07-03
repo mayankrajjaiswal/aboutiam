@@ -88,6 +88,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "Active Directory GPO Simulator",
+      desc: "Configure Default Domain GPO security variables, simulate client logon lockouts, and inspect issued Kerberos TGT ticket lifespans.",
+      icon: Server,
+      link: "/playground/gpo-simulator",
+      badge: "Active (Standard)",
+    },
+    {
       title: "JWT Signature Secret Cracker",
       desc: "Run client-side dictionary attacks against weak HS256 tokens to crack and discover the signature secret within seconds.",
       icon: Key,

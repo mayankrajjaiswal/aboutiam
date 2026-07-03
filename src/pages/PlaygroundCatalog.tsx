@@ -53,6 +53,27 @@ export default function PlaygroundCatalog() {
       badge: "Active (Standard)",
     },
     {
+      title: "SCIM Provisioning & Sync Lab",
+      desc: "Simulate identity lifecycles (Joiner/Mover/Leaver) and visual sync pipelines evaluating SCIM 2.0 user/group endpoints.",
+      icon: Cpu,
+      link: "/playground/scim",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "OAuth 2.0 Attack Lab",
+      desc: "Execute and mitigate common token vulnerabilities step-by-step: PKCE bypasses, wildcard redirects, and state CSRF exploits.",
+      icon: Shield,
+      link: "/playground/oauth-attack",
+      badge: "Active (Core)",
+    },
+    {
+      title: "Kerberos Tickets Lab",
+      desc: "Visualize Active Directory ticketing (AS/TGS) and run Golden Ticket and Silver Ticket bypass exploits.",
+      icon: Server,
+      link: "/playground/kerberos",
+      badge: "Active (Standard)",
+    },
+    {
       title: "AI vs Identity Threat Lab",
       desc: "Simulate Generative AI voice deepfake attacks against legacy MFA and witness how FIDO2 hardware bounds defeat synthetic cloning.",
       icon: Bot,

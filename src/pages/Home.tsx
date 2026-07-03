@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Sparkles, Wrench } from 'lucide-react'
+import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Sparkles, Wrench, Network, Building, ScanSearch } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -223,6 +223,123 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
               Chat with AI <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+
+          {/* Certification Hub Card */}
+          <Link
+            to="/certifications"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <Award className="w-5 h-5" />
+              </div>
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                Certification Hub
+              </h4>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Study roadmaps, curriculum domains, and interactive practice tests for Microsoft SC-300, Okta Admin, CyberArk, and Ping Identity.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
+              Open Hub <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* Architect & Reference Ecosystem */}
+      <section className="space-y-8 pt-6">
+        <div className="text-center max-w-2xl mx-auto space-y-3">
+          <h2 className="text-3xl font-bold tracking-tight text-text-primary">Architect & Governance Ecosystem</h2>
+          <p className="text-text-secondary">
+            Deep-dive enterprise design patterns, clickable topologies, vendor platforms, and standards research.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Architecture Center */}
+          <Link
+            to="/architecture"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <Network className="w-5 h-5" />
+              </div>
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                Architecture Center
+              </h4>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Clickable, interactive security architecture blueprints for Workforce Zero Trust (NIST SP 800-207), SaaS Tenancy, and Multi-Cloud.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
+              Open Center <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+
+          {/* Design Patterns */}
+          <Link
+            to="/patterns"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <Layers className="w-5 h-5" />
+              </div>
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                Design Patterns
+              </h4>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Hardened reference patterns, token exchange flows (RFC 8693), and integration checklists for multi-tenant SaaS and passwordless.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
+              Browse Patterns <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+
+          {/* Vendor Center */}
+          <Link
+            to="/vendor"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <Building className="w-5 h-5" />
+              </div>
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                Vendor Center
+              </h4>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Checklists, licensed models, certified paths, and custom interview guides for Entra ID, Okta, Keycloak, Ping, and CyberArk.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
+              Browse Vendors <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+
+          {/* Research & CVEs */}
+          <Link
+            to="/research"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <ScanSearch className="w-5 h-5" />
+              </div>
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                Research & CVEs
+              </h4>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Search identity CVE directories (Log4Shell, Spring4Shell) with remediation code, and track active standard IETF RFC drafts.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
+              Open Database <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </div>
           </Link>
         </div>

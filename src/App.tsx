@@ -12,6 +12,11 @@ import Home from './pages/Home'
 import Learn from './pages/Learn'
 import PlaygroundCatalog from './pages/PlaygroundCatalog'
 import ToolsCatalog from './pages/ToolsCatalog'
+import ArchitectureCenter from './pages/ArchitectureCenter'
+import VendorCenter from './pages/VendorCenter'
+import ResearchCenter from './pages/ResearchCenter'
+import DesignPatternLibrary from './pages/DesignPatternLibrary'
+import CertificationHub from './pages/CertificationHub'
 import JwtDecoder from './pages/Tools/JwtDecoder'
 import JwtGenerator from './pages/Tools/JwtGenerator'
 import Base64EncoderDecoder from './pages/Tools/Base64EncoderDecoder'
@@ -31,6 +36,9 @@ import SdJwtDecoder from './pages/Tools/SdJwtDecoder'
 import WebauthnDecoder from './pages/Tools/WebauthnDecoder'
 import DidKeyGenerator from './pages/Tools/DidKeyGenerator'
 import BcryptGenerator from './pages/Tools/BcryptGenerator'
+import OauthRequestBuilder from './pages/Tools/OauthRequestBuilder'
+import JwksInspector from './pages/Tools/JwksInspector'
+import PolicyEvaluator from './pages/Tools/PolicyEvaluator'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
@@ -38,6 +46,9 @@ import FIDO2Lab from './pages/Playgrounds/FIDO2Lab'
 import AccessControlLab from './pages/Playgrounds/AccessControlLab'
 import LDAPTreeSimulator from './pages/Playgrounds/LDAPTreeSimulator'
 import ZTAPlanner from './pages/Playgrounds/ZTAPlanner'
+import SCIMLab from './pages/Playgrounds/SCIMLab'
+import OAuthAttackLab from './pages/Playgrounds/OAuthAttackLab'
+import KerberosLab from './pages/Playgrounds/KerberosLab'
 import Assess from './pages/Assess'
 import Explore from './pages/Explore'
 import Assistant from './pages/Assistant'
@@ -89,6 +100,11 @@ export default function App() {
               <Route path="/primer" element={<BeginnerPrimer />} />
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/learn" element={<Learn />} />
+              <Route path="/architecture" element={<ArchitectureCenter />} />
+              <Route path="/vendor" element={<VendorCenter />} />
+              <Route path="/research" element={<ResearchCenter />} />
+              <Route path="/patterns" element={<DesignPatternLibrary />} />
+              <Route path="/certifications" element={<CertificationHub />} />
               <Route path="/playground" element={<PlaygroundCatalog />} />
               <Route path="/tools" element={<ToolsCatalog />} />
               <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />
@@ -110,6 +126,9 @@ export default function App() {
               <Route path="/tools/webauthn-decoder" element={<WebauthnDecoder />} />
               <Route path="/tools/did-key-generator" element={<DidKeyGenerator />} />
               <Route path="/tools/bcrypt-generator" element={<BcryptGenerator />} />
+              <Route path="/tools/oauth-builder" element={<OauthRequestBuilder />} />
+              <Route path="/tools/jwks-inspector" element={<JwksInspector />} />
+              <Route path="/tools/policy-evaluator" element={<PolicyEvaluator />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />
@@ -117,6 +136,9 @@ export default function App() {
               <Route path="/playground/access" element={<AccessControlLab />} />
               <Route path="/playground/ldap" element={<LDAPTreeSimulator />} />
               <Route path="/playground/zta" element={<ZTAPlanner />} />
+              <Route path="/playground/scim" element={<SCIMLab />} />
+              <Route path="/playground/oauth-attack" element={<OAuthAttackLab />} />
+              <Route path="/playground/kerberos" element={<KerberosLab />} />
               
               {/* Phase 7 Paths */}
               <Route path="/playground/ai-threat-lab" element={<AIThreatLab />} />

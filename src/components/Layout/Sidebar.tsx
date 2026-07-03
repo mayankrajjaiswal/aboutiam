@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare, GraduationCap, Users, Map, Wrench } from 'lucide-react'
+import { BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building, ScanSearch, Layers } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
 interface SidebarProps {
@@ -17,6 +17,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
     { name: "Beginner's Primer", path: '/primer', icon: GraduationCap },
     { name: 'Zero-to-Hero Pathway', path: '/roadmap', icon: Map },
     { name: 'IAM Academy', path: '/learn', icon: BookOpen },
+    { name: 'Architecture Center', path: '/architecture', icon: Network },
     { name: 'Interactive Playgrounds', path: '/playground', icon: Cpu },
   ]
 
@@ -26,6 +27,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
 
   const ecosystemItems = [
     { name: 'Master Encyclopedia', path: '/encyclopedia', icon: Book },
+    { name: 'Design Patterns', path: '/patterns', icon: Layers },
     { name: 'Vulnerability Lab', path: '/wall-of-shame', icon: ShieldAlert },
     { name: 'Developer Playbooks', path: '/cheat-sheets', icon: CheckSquare },
   ]
@@ -33,6 +35,9 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
   const exploreItems = [
     { name: 'Maturity Assessments', path: '/assess', icon: Award },
     { name: 'Landscape Directory', path: '/explore', icon: Compass },
+    { name: 'Vendor Center', path: '/vendor', icon: Building },
+    { name: 'Certification Hub', path: '/certifications', icon: Award },
+    { name: 'Research & CVEs', path: '/research', icon: ScanSearch },
     { name: 'AI Architect Chat', path: '/assistant', icon: Bot },
     { name: 'Team & Contact', path: '/contributors', icon: Users },
   ]

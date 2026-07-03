@@ -50,6 +50,7 @@ import SCIMLab from './pages/Playgrounds/SCIMLab'
 import OAuthAttackLab from './pages/Playgrounds/OAuthAttackLab'
 import KerberosLab from './pages/Playgrounds/KerberosLab'
 import IdentityCTFArena from './pages/Playgrounds/IdentityCTFArena'
+import IdentityArchitect from './pages/Playgrounds/IdentityArchitect'
 import Assess from './pages/Assess'
 import Explore from './pages/Explore'
 import Assistant from './pages/Assistant'
@@ -141,6 +142,7 @@ export default function App() {
               <Route path="/playground/oauth-attack" element={<OAuthAttackLab />} />
               <Route path="/playground/kerberos" element={<KerberosLab />} />
               <Route path="/playground/ctf" element={<IdentityCTFArena />} />
+              <Route path="/playground/identity-architect" element={<IdentityArchitect />} />
               
               {/* Phase 7 Paths */}
               <Route path="/playground/ai-threat-lab" element={<AIThreatLab />} />

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles } from 'lucide-react'
 
 export default function PlaygroundCatalog() {
   const playgrounds = [
@@ -79,6 +79,13 @@ export default function PlaygroundCatalog() {
       icon: Terminal,
       link: "/playground/ctf",
       badge: "Active (Core)",
+    },
+    {
+      title: "Identity Architect (AI Builder)",
+      desc: "Model dynamic target requirements to automatically generate secure, compliance-ready enterprise architectures, threat maps, and policies.",
+      icon: Sparkles,
+      link: "/playground/identity-architect",
+      badge: "Active (Advanced)",
     },
     {
       title: "AI vs Identity Threat Lab",

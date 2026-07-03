@@ -56,6 +56,7 @@ const ROUTES = [
   { path: '/playground/oauth-attack', title: 'OAuth 2.0 Attack Lab', description: 'Interactive hack-and-defend arena showcasing PKCE bypasses, Redirect URI wildcard hijacks, and CSRF token theft.' },
   { path: '/playground/kerberos', title: 'Kerberos Tickets Lab', description: 'Interactive Active Directory Kerberos protocol simulator detailing Golden and Silver Ticket exploits.' },
   { path: '/playground/ctf', title: 'Identity CTF Hacking Arena', description: 'Hands-on, browser-native CTF hacking puzzles for JWT signature bypasses, SAML wrapping injections, and LDAP filter parameter escapes.' },
+  { path: '/playground/identity-architect', title: 'Identity Architect Dashboard', description: 'Answer simple business questions to dynamically generate highly secure, compliance-ready identity blueprints and policies.' },
   { path: '/playground/ai-threat-lab', title: 'AI Threat Lab', description: 'Voice-deepfake attack simulations against legacy MFA vs. FIDO2 hardware bounds.' },
   { path: '/playground/zkp-wallet', title: 'ZKP Wallet', description: 'Zero-knowledge age proofs that verify without exposing raw birthdates.' },
   { path: '/playground/ambient-trust', title: 'Ambient Trust', description: 'Continuous ambient biometric telemetry and session trust-score decay.' },

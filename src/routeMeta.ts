@@ -16,6 +16,7 @@ export const ROUTE_META: RouteMeta[] = [
   { path: '/research', title: 'Identity Research & CVE Tracker', description: 'Database tracking critical security CVEs, standard IETF RFC drafts, and remediations.' },
   { path: '/patterns', title: 'Identity Design Pattern Library', description: 'Production-grade integration patterns, tradeoffs, and checklists for B2B multi-tenant SaaS, API token exchange, and passwordless FIDO2.' },
   { path: '/certifications', title: 'Enterprise Certification Hub', description: 'Comprehensive study roadmaps, domains, and mock practice quizzes for major identity credentials: SC-300, Okta, Ping, and CyberArk.' },
+  { path: '/bulletins', title: 'Identity Security Bulletin Board', description: 'Incident Response console tracking major real-world identity breaches, attack vectors, and hardened playbooks.' },
   { path: '/playground', title: 'Simulators & Playgrounds', description: 'Index of every interactive IAM simulator: OAuth, SAML, JWT, FIDO2, Zero Trust, and more.' },
   { path: '/tools', title: 'Free Client-Side IAM & Security Tools', description: '19 free, 100% browser-based identity and security utilities — JWT, SAML, X.509, bcrypt, TOTP, PKCE, and more. No signup, no uploads, nothing leaves your device.' },
   { path: '/tools/jwt-decoder', title: 'JWT Decoder — Inspect & Verify Tokens Online', description: 'Paste any JSON Web Token to instantly decode its header, payload, and signature, check expiry, and flag insecure algorithms — 100% client-side, nothing is uploaded.' },

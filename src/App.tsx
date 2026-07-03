@@ -17,6 +17,7 @@ import VendorCenter from './pages/VendorCenter'
 import ResearchCenter from './pages/ResearchCenter'
 import DesignPatternLibrary from './pages/DesignPatternLibrary'
 import CertificationHub from './pages/CertificationHub'
+import SecurityBulletins from './pages/SecurityBulletins'
 import JwtDecoder from './pages/Tools/JwtDecoder'
 import JwtGenerator from './pages/Tools/JwtGenerator'
 import Base64EncoderDecoder from './pages/Tools/Base64EncoderDecoder'
@@ -107,6 +108,7 @@ export default function App() {
               <Route path="/research" element={<ResearchCenter />} />
               <Route path="/patterns" element={<DesignPatternLibrary />} />
               <Route path="/certifications" element={<CertificationHub />} />
+              <Route path="/bulletins" element={<SecurityBulletins />} />
               <Route path="/playground" element={<PlaygroundCatalog />} />
               <Route path="/tools" element={<ToolsCatalog />} />
               <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />

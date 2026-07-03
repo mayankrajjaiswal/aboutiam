@@ -92,6 +92,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
     { name: 'Vendor Center', path: '/vendor', icon: Building },
     { name: 'Certification Hub', path: '/certifications', icon: Award },
     { name: 'Research & CVEs', path: '/research', icon: ScanSearch },
+    { name: 'Security Bulletins', path: '/bulletins', icon: ShieldAlert },
     { name: 'AI Architect Chat', path: '/assistant', icon: Bot },
     { name: 'Team & Contact', path: '/contributors', icon: Users },
   ]

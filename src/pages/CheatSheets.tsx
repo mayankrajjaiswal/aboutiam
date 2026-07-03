@@ -40,6 +40,39 @@ export default function CheatSheets() {
         { id: 'm2m_3', task: 'Implement Token Exchange (RFC 8693) for internal hops', desc: 'If Service A calls Service B on behalf of a user, exchange the public token for a restricted internal token before the hop.' },
         { id: 'm2m_4', task: 'Store secrets in an encrypted vault', desc: 'Never hardcode `client_secret` in environments. Inject it dynamically via HashiCorp Vault or AWS Secrets Manager.' }
       ]
+    },
+    {
+      id: 'soc2',
+      title: 'SOC 2 Type II - Trust Services Criteria (Identity Controls)',
+      target: 'Security Auditors, CTOs, and Compliance Managers',
+      checks: [
+        { id: 'soc2_1', task: 'CC6.1: Automated Directory Provisioning (SCIM)', desc: 'Configure automated directory lifecycle synchronization (SCIM) to immediately de-provision terminated employees, preventing unauthorized residual access.' },
+        { id: 'soc2_2', task: 'CC6.2: Phishing-Proof Multi-Factor Authentication', desc: 'Mandate phishing-resistant Multi-Factor Authentication (FIDO2 / WebAuthn passkeys) for all administrative logins and core workforce endpoints.' },
+        { id: 'soc2_3', task: 'CC6.3: Just-In-Time role elevation (PIM)', desc: 'Enforce Role-Based Access Control (RBAC) backed by Just-In-Time role elevation (PIM) to prevent permanent, static administrator credential keys.' },
+        { id: 'soc2_4', task: 'CC6.8: API Gateway Authorization & Scope Validation', desc: 'Secure API endpoints by terminating connections at an API Gateway, validating JWT scopes, and blocking unauthenticated backchannel hops.' }
+      ]
+    },
+    {
+      id: 'iso27001',
+      title: 'ISO/IEC 27001:2022 - Access Control (A.5.15 - A.5.18)',
+      target: 'Information Security Officers, Compliance Auditors',
+      checks: [
+        { id: 'iso_1', task: 'Control A.5.15: Access Rights Lifecycle Workflows', desc: 'Implement automated, documented Joiner-Mover-Leaver workflows with mandatory quarterly user access entitlement reviews.' },
+        { id: 'iso_2', task: 'Control A.5.16: Secure Identity & Secrets Management', desc: 'Enforce unique identifier bindings (disallowing shared admin credentials) and store secrets vaulted with automated CPM rotation cycles.' },
+        { id: 'iso_3', task: 'Control A.5.17: Privileged Session Monitoring & Vaulting', desc: 'Maintain complete session recordings, command logs, and credential masking for all privileged sessions accessing production clusters.' },
+        { id: 'iso_4', task: 'Control A.5.18: Dynamic Departmental Group Re-evaluation', desc: 'Establish automated triggers to re-evaluate and reclaim security group memberships when users transfer departments or change roles.' }
+      ]
+    },
+    {
+      id: 'hipaa',
+      title: 'HIPAA Security Rule - Technical Safeguards (§ 164.312)',
+      target: 'Healthcare App Developers, Compliance Officers',
+      checks: [
+        { id: 'hipaa_1', task: '§164.312(a)(1): Unique User Identification', desc: 'Configure distinct, cryptographically-bound identifiers for every workforce member accessing systems that store or process Protected Health Information (PHI).' },
+        { id: 'hipaa_2', task: '§164.312(a)(2)(iv): Encryption-at-Rest & In-Transit', desc: 'Mandate TLS 1.3 for all PHI transit pipelines (mTLS) and encrypt database partitions-at-rest using AES-256 keys.' },
+        { id: 'hipaa_3', task: '§164.312(d): Person or Entity Authentication', desc: 'Disable standard IP-based or static API key authentication, requiring dynamic cryptographic user and system-to-system validations.' },
+        { id: 'hipaa_4', task: '§164.312(e): Transmission Security (Integrity)', desc: 'Block unauthorized message modification in transit by signing all API payload parameters with asymmetric cryptographic hashes.' }
+      ]
     }
   ]
 
@@ -60,10 +93,10 @@ export default function CheatSheets() {
           <CheckSquare className="w-3.5 h-3.5 text-status-success" /> Developer Playbooks
         </div>
         <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
-          Security Cheat Sheets
+          Security & Compliance Cheat Sheets
         </h2>
         <p className="text-text-secondary">
-          Interactive compliance checklists for software engineers. Check off remediation steps to calculate your application's real-time security posture before deployment.
+          Interactive compliance checklists for software engineers and auditors. Check off remediation steps to calculate your application's real-time security posture and regulatory compliance rating.
         </p>
       </div>
 
@@ -76,14 +109,14 @@ export default function CheatSheets() {
               <button
                 key={s.id}
                 onClick={() => setActiveSheet(s.id)}
-                className={`w-full text-left p-4 rounded-xl border transition-all ${
+                className={`w-full text-left p-4 rounded-xl border transition-all cursor-pointer ${
                   activeSheet === s.id
                     ? 'bg-bg-card border-accent-primary shadow-sm'
-                    : 'bg-bg-sidebar/50 border-border-subtle hover:bg-bg-card hover:border-accent-primary/30'
+                    : 'bg-bg-nested border-border-subtle hover:bg-bg-card hover:border-accent-primary/30'
                 }`}
               >
-                <span className={`block font-bold text-sm ${activeSheet === s.id ? 'text-accent-primary' : 'text-text-primary'}`}>{s.title}</span>
-                <span className="block text-[10px] text-text-muted font-bold uppercase mt-1">Target: {s.target}</span>
+                <span className={`block font-bold text-sm ${activeSheet === s.id ? 'text-accent-primary' : 'text-text-primary'}`}>{s.title.split(' - ')[0]}</span>
+                <span className="block text-[10px] text-text-muted font-bold uppercase mt-1">Target: {s.target.split(', ')[0]}</span>
               </button>
             ))}
           </div>
@@ -123,7 +156,7 @@ export default function CheatSheets() {
                 <div className="space-y-0.5">
                   <span className="text-[10px] font-bold text-text-muted uppercase block">Security Posture</span>
                   <span className={`text-xs font-black uppercase ${pct === 100 ? 'text-status-success' : 'text-status-warning'}`}>
-                    {pct === 100 ? 'Production Ready' : 'Vulnerable'}
+                    {pct === 100 ? 'Audit Compliant' : 'Uncertified'}
                   </span>
                 </div>
               </div>
@@ -137,7 +170,7 @@ export default function CheatSheets() {
                   <button
                     key={chk.id}
                     onClick={() => toggleCheck(chk.id)}
-                    className={`w-full text-left p-4 rounded-xl border flex items-start gap-4 transition-all ${
+                    className={`w-full text-left p-4 rounded-xl border flex items-start gap-4 transition-all cursor-pointer ${
                       isChecked
                         ? 'bg-status-success/5 border-status-success/30 shadow-inner'
                         : 'bg-bg-sidebar/50 border-border-subtle hover:bg-bg-sidebar hover:border-accent-primary/30'

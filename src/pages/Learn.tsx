@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { 
   BookOpen, Compass, Key, Lock, Fingerprint, 
   Users, Server, CheckCircle2, ChevronDown, ChevronUp, HelpCircle, 
-  Info, AwardIcon, Sparkles, LayoutGrid
+  Info, AwardIcon, Sparkles, LayoutGrid, RotateCcw
 } from 'lucide-react'
 
 interface SubModule {
@@ -21,10 +21,176 @@ interface Track {
   modules: SubModule[]
 }
 
+interface AcademyQuiz {
+  q: string
+  options: string[]
+  correct: number
+  explanation: string
+}
+
+const ACADEMY_QUIZZES: Record<string, AcademyQuiz> = {
+  'track-1': {
+    q: "Which component of an IAM architecture is responsible for verifying that an identity exists and matching presented credentials (e.g. passwords, biometrics)?",
+    options: [
+      "Authorization Server (STS)",
+      "Authentication Provider (Identity Provider - IdP)",
+      "Directory Repository (User Database / Active Directory)",
+      "Policy Decision Point (PDP)"
+    ],
+    correct: 1,
+    explanation: "The Authentication Provider (IdP) is responsible for verifying the authenticity of an identity (matching presented credentials like passwords or biometrics) and asserting that verified state to downstream applications."
+  },
+  'track-2': {
+    q: "Why are FIDO2/WebAuthn hardware credentials structurally immune to phishing attacks compared to traditional passwords or SMS OTPs?",
+    options: [
+      "They utilize standard symmetric shared keys stored on the server.",
+      "The private key is cryptographically bound to the origin domain and never leaves the hardware security enclave/TPM.",
+      "They enforce longer password lengths dynamically in the background.",
+      "They are backed by blockchain ledger verifications."
+    ],
+    correct: 1,
+    explanation: "Under FIDO2/WebAuthn, the browser binds the asymmetric keypair to the specific origin domain. The private key remains locked inside the device TPM enclave and is never sent over the wire, neutralizing phishing and credential-theft."
+  },
+  'track-3': {
+    q: "In an Attribute-Based Access Control (ABAC) engine, which component evaluates request contexts (user, device, network, resources) against policies to return a security decision?",
+    options: [
+      "Policy Enforcement Point (PEP)",
+      "Policy Decision Point (PDP)",
+      "Policy Administration Point (PAP)",
+      "Policy Information Point (PIP)"
+    ],
+    correct: 1,
+    explanation: "The Policy Decision Point (PDP) acts as the logic engine. It evaluates incoming contextual attributes supplied by the PIP against active authorization policies to return a verdict (permit vs. deny)."
+  },
+  'track-4': {
+    q: "An organization wants to enforce Segregation of Duties (SoD) inside their finance system. Which control represents a valid SoD implementation?",
+    options: [
+      "Requiring all finance employees to use hardware Passkeys.",
+      "Ensuring that the user who creates a vendor record cannot also approve payments to that same vendor.",
+      "Automatically rotating administrative passwords every 24 hours.",
+      "Recording administrative sessions inside a secure PAM vault."
+    ],
+    correct: 1,
+    explanation: "Segregation of Duties (SoD) prevents fraud by dividing critical, multi-step actions across separate identities, ensuring no single user possesses complete control over a sensitive transaction lifecycle."
+  },
+  'track-5': {
+    q: "What is the primary architectural purpose of implementing 'Progressive Profiling' inside a Customer Identity (CIAM) journey?",
+    options: [
+      "To force users to undergo MFA checks on every single login attempt.",
+      "To gradually collect additional user profile attributes over multiple sessions as trust is established, reducing registration friction.",
+      "To index user behaviors across social directories like Google or Apple.",
+      "To cryptographically encrypt customer metadata inside browser localStorage."
+    ],
+    correct: 1,
+    explanation: "Progressive Profiling reduces onboarding friction by only asking for mandatory information (e.g. email) during registration, and progressively requesting additional attributes in subsequent logins as they engage."
+  },
+  'track-6': {
+    q: "Under the SPIFFE standard, what is an SVID (SPIFFE Verifiable Identity Document) used for?",
+    options: [
+      "To store encrypted enterprise master passwords on-premise.",
+      "To authenticate software workloads securely across cloud boundaries using short-lived X.509 certificates or JWTs.",
+      "To verify corporate domain compliance on employee workstations.",
+      "To federate workforce SSO connections via SAML redirects."
+    ],
+    correct: 1,
+    explanation: "An SVID is a cryptographically verifiable, short-lived identity document (formatted as an X.509 certificate or JWT) issued dynamically to running workloads, allowing software robots to attest identity securely without static secrets."
+  }
+}
+
 export default function Learn() {
   const [expandedTrack, setExpandedTrack] = useState<string | null>(null)
   const [expandedModule, setExpandedExpandedModule] = useState<string | null>(null)
   const [completedModules, setCompletedModules] = useState<Record<string, boolean>>({})
+
+  // Track quiz state
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, { selectedIdx: number; correct: boolean | null }>>({})
+
+  const handleSelectQuizOption = (trackId: string, optionIdx: number, correctIdx: number) => {
+    const isCorrect = optionIdx === correctIdx
+    setQuizAnswers(prev => ({
+      ...prev,
+      [trackId]: { selectedIdx: optionIdx, correct: isCorrect }
+    }))
+  }
+
+  const handleResetQuiz = (trackId: string) => {
+    setQuizAnswers(prev => {
+      const copy = { ...prev }
+      delete copy[trackId]
+      return copy
+    })
+  }
+
+  const renderTrackQuiz = (trackId: string) => {
+    const quiz = ACADEMY_QUIZZES[trackId]
+    if (!quiz) return null
+
+    const answer = quizAnswers[trackId]
+    const isAnswered = !!answer
+
+    return (
+      <div className="p-5 bg-bg-card border border-border-subtle rounded-2xl shadow-sm space-y-4 mt-6">
+        <div className="border-b border-border-subtle pb-3">
+          <span className="text-[10px] text-accent-primary font-black uppercase tracking-wider">Track Verification Quiz</span>
+          <h5 className="text-sm font-black text-text-primary mt-1.5 leading-snug">
+            {quiz.q}
+          </h5>
+        </div>
+
+        <div className="space-y-2">
+          {quiz.options.map((opt, i) => {
+            const isSelected = answer?.selectedIdx === i
+            let btnStyle = 'border-border-subtle bg-bg-nested hover:bg-bg-sidebar text-text-secondary'
+            
+            if (isAnswered) {
+              if (i === quiz.correct) {
+                btnStyle = 'bg-emerald-500/10 border-emerald-500 text-emerald-500 font-bold'
+              } else if (isSelected) {
+                btnStyle = 'bg-status-danger/10 border-status-danger text-status-danger font-bold'
+              } else {
+                btnStyle = 'border-border-subtle bg-bg-nested opacity-50 text-text-secondary'
+              }
+            }
+
+            return (
+              <button
+                key={i}
+                disabled={isAnswered}
+                onClick={() => handleSelectQuizOption(trackId, i, quiz.correct)}
+                className={`w-full py-2.5 px-3 rounded-lg border text-left text-[11px] font-bold transition-all leading-normal ${btnStyle}`}
+              >
+                {opt}
+              </button>
+            )
+          })}
+        </div>
+
+        {isAnswered && (
+          <div className={`p-3.5 rounded-xl border text-[11px] leading-relaxed transition-all ${
+            answer.correct 
+              ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' 
+              : 'bg-status-danger/10 border-status-danger/20 text-status-danger'
+          }`}>
+            <strong className="block uppercase text-[9px] mb-0.5">
+              {answer.correct ? 'Verification Successful! ✔' : 'Incorrect Choice! ❌'}
+            </strong>
+            <p className="text-text-secondary font-semibold leading-normal">
+              {quiz.explanation}
+            </p>
+          </div>
+        )}
+
+        {isAnswered && (
+          <button
+            onClick={() => handleResetQuiz(trackId)}
+            className="px-3 py-1.5 bg-bg-nested hover:bg-bg-sidebar border border-border-subtle rounded text-[9px] font-black text-text-secondary uppercase transition-all flex items-center gap-1"
+          >
+            <RotateCcw className="w-3 h-3" /> Retry Quiz
+          </button>
+        )}
+      </div>
+    )
+  }
 
   // Load progress from LocalStorage on mount
   useEffect(() => {
@@ -529,6 +695,9 @@ export default function Learn() {
                         </div>
                       )
                     })}
+
+                    {/* INTERACTIVE TRACK QUIZ BLOCK */}
+                    {renderTrackQuiz(track.id)}
                   </div>
                 )}
               </div>

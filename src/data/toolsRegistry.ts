@@ -302,6 +302,57 @@ export const TOOLS: ToolMeta[] = [
     relatedLinks: [{ label: 'Build and sign a full SAML assertion →', href: '/playground/saml' }],
   },
   {
+    slug: 'saml-metadata-builder',
+    title: 'SAML Metadata Builder — Generate SP & IdP Metadata XML',
+    description: 'Visually configure compliant SAML 2.0 Service Provider (SP) or Identity Provider (IdP) XML metadata configurations, endpoints, certificates, and export completed files.',
+    category: 'Auth & Directory Builders',
+    icon: FileCode,
+    phase: 3,
+    status: 'live',
+    keywords: ['saml metadata builder', 'generate saml xml', 'sp metadata generator', 'idp metadata xml'],
+    analogy: 'SAML metadata is like a business card that SPAs and Identity Providers exchange before they do business. It lists exactly where they reside (endpoints), how to talk (bindings), and how they sign agreements (certificates), so they can establish cryptographic trust.',
+    expert: 'SAML 2.0 Metadata Profile. This utility outputs standard-compliant <md:EntityDescriptor> XML schema envelopes incorporating <md:SPSSODescriptor> or <md:IDPSSODescriptor> payloads with <ds:KeyInfo> certificate coordinates and binding endpoints.',
+    faqs: [
+      { q: 'Is a signing certificate required for SAML metadata?', a: 'Technically optional, but highly recommended. In enterprise environments, IdPs require SP metadata to contain public certificates to cryptographically verify the signature of incoming AuthnRequests and single-logout requests.' },
+      { q: 'What is the ACS index in SP metadata?', a: 'The Assertion Consumer Service (ACS) index represents the priority and unique ID of the endpoint where the SP expects the SAML assertion POST token redirect. Index 0 is typically flagged as default.' }
+    ],
+    relatedLinks: [{ label: 'Decode an existing SAML token or XML metadata →', href: '/tools/saml-decoder' }]
+  },
+  {
+    slug: 'scim-diff',
+    title: 'SCIM Diff & Reconciliation Tool — Calculate Sync Drift',
+    description: 'Input Identity Provider (IdP) and Service Provider (SP) user records to visually calculate attribute sync drift and programmatically generate standard-compliant SCIM PATCH reconciliation scripts.',
+    category: 'Auth & Directory Builders',
+    icon: Users,
+    phase: 3,
+    status: 'live',
+    keywords: ['scim diff', 'scim patch generator', 'scim sync drift', 'scim user patch builder'],
+    analogy: 'A SCIM Diff tool is like comparing two copies of a shared database ledger. If Okta (IdP) says your name is Barbara Jensen but Slack (SP) still says Barbara J, this tool calculates the exact SCIM PATCH message to update Slack\'s record so they sync perfectly.',
+    expert: 'Implements RFC 7643 and RFC 7644. Compares nested SCIM JSON schemas and complex multivalued arrays (like emails/groups) using specific path mappings. Programmatically compiles synchronization deltas into standard-compliant PatchOp operation sets (add/replace/remove values).',
+    faqs: [
+      { q: 'What is a SCIM PATCH request?', a: 'An HTTP PATCH request (RFC 7644) that allows directories to perform partial updates to a user profile (e.g. modifying only their phone number) without sending the entire heavy User payload over the wire.' },
+      { q: 'How does this diff tool match multivalued fields?', a: 'It matches complex arrays (like emails) using type filters, e.g. emails[type eq "work"], mapping to the standard SCIM path filtering specification.' }
+    ],
+    relatedLinks: [{ label: 'Validate standard SCIM User/Group schemas →', href: '/tools/scim-payload-validator' }]
+  },
+  {
+    slug: 'csr-generator',
+    title: 'X.509 CSR Generator — Compile PKCS#10 Requests Online',
+    description: 'Visually construct secure X.509 Certificate Signing Requests (CSR) with Subject DN attributes and SAN fields, generate browser-native private/public keys, and inspect their ASN.1 DER-parsed structure.',
+    category: 'PKI & Certificates',
+    icon: FileKey,
+    phase: 3,
+    status: 'live',
+    keywords: ['csr generator', 'certificate signing request generator', 'make csr online', 'generate pkcs10 pem'],
+    analogy: 'A CSR (Certificate Signing Request) is like filling out an application form for an official passport. You write down your name and company (Subject DN), attach your passport photo (public key), and sign it. You then hand this form to the CA (government), who stamps it to issue your trusted certificate.',
+    expert: 'Conforms to RFC 2986 (PKCS#10 Specification). Generates RSA-2048/4096 or ECDSA P-256 keys locally in-browser via SubtleCrypto. Compiles the Subject Distinguished Name (DN), public keys, and extension requests (such as Subject Alternative Names) into standard-compliant PEM wrappers.',
+    faqs: [
+      { q: 'Does my private key get uploaded?', a: 'No. Cryptographic key pairs are generated entirely inside your browser\'s private tab memory using Web Crypto APIs. The private key never travels across any network or server.' },
+      { q: 'What is the purpose of SAN (Subject Alternative Name) in a CSR?', a: 'SANs allow a single SSL/TLS certificate to secure multiple domain names (e.g. secure.company.com and mail.company.com) or IP addresses under a single cryptographic handshaking certificate.' }
+    ],
+    relatedLinks: [{ label: 'Parse and decode raw X.509 certificates →', href: '/tools/x509-certificate-decoder' }]
+  },
+  {
     slug: 'sd-jwt-decoder',
     title: 'SD-JWT Decoder — Selective Disclosure JWT Inspector',
     description: 'Decode Selective Disclosure JWTs (SD-JWT), reveal individual disclosures, and verify each digest binding against the issuer-signed JWT — entirely in-browser.',

@@ -82,6 +82,20 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 36 categorized standard terms with analogies and specs. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. |
 | **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards and interactive forms. |
+| **`/timeline`** | `IdentityTimeline.tsx` | Interactive historical identity timeline from mainframes to post-2030 ambient trust with inline simulators. |
+| **`/community`** | `CommunityHub.tsx` | Community Achievements and dynamic contributor badges matched with local storage progression. |
+| **`/community-forums`** | `CommunityForums.tsx` | Threaded developer forums (SCIM conflicts, SSW bypasses) and custom architectural showcase. |
+| **`/playground/reference-builder`** | `Playgrounds/ReferenceBuilder.tsx` | Visual drag-and-drop identity topology architect with dynamic SVG connectors, OIDC/SAML redirects, and SCIM sync animations. |
+| **`/playground/session-hijacking`** | `Playgrounds/SessionHijackingLab.tsx` | Simulates session cookie theft via infostealers, pasting stolen tokens, and applying DPoP, IP-binding, and CAEP. |
+| **`/playground/conditional-access`** | `Playgrounds/ConditionalAccess.tsx` | Models conditional policy evaluations testing device compliance, networks, geolocations, and risk scores. |
+| **`/playground/opa`** | `Playgrounds/OpaPlayground.tsx` | Decoupled fine-grained authorization rules playground using OPA's standard Rego language with input JSON. |
+| **`/playground/token-exchange`** | `Playgrounds/TokenExchange.tsx` | Security Token Service (STS) broker flow modeling RFC 8693 access delegation and impersonation. |
+| **`/playground/itdr`** | `Playgrounds/ItdrLab.tsx` | Real-time SecOps system log monitoring, brute-force/push fatigue injection, and lockout mitigations. |
+| **`/playground/device-trust`** | `Playgrounds/DeviceTrust.tsx` | Models Zero Trust endpoint posture attestation handshakes evaluating firewalls, FileVault encryption, and mTLS client certificates. |
+| **`/playground/passkey-internals`** | `Playgrounds/PasskeyInternals.tsx` | Deconstructs binary authenticatorData byte-offsets and CBOR public keys generated inside hardware enclave TPMs. |
+| **`/tools/saml-metadata-builder`** | `Tools/SamlMetadataBuilder.tsx` | Visually compile and export standard-compliant SAML 2.0 SP and IdP XML metadata configurations. |
+| **`/tools/scim-diff`** | `Tools/ScimDiffTool.tsx` | Side-by-side SCIM JSON comparison diff engine generating standard RFC 7644 PATCH reconciliation payloads. |
+| **`/tools/csr-generator`** | `Tools/CsrGenerator.tsx` | Visually compile standard PKCS#10 Certificate Signing Requests, generate local browser keypairs, and walk ASN.1 DER structures. |
 
 ---
 

@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   Network, ArrowRight, Shield, Play, Terminal, Cpu, Database, 
-  Globe, Server, Users, Cloud, RefreshCw, KeySquare, ChevronRight
+  Globe, Server, Users, Cloud, RefreshCw, KeySquare, ChevronRight, Laptop
 } from 'lucide-react'
 
-type ArchitectureType = 'zero_trust' | 'b2b_saas' | 'multi_cloud'
+type ArchitectureType = 'zero_trust' | 'b2b_saas' | 'multi_cloud' | 'ciam_social' | 'oauth_oidc' | 'saml' | 'pam' | 'pki' | 'k8s_identity'
 
 interface NodeDetails {
   title: string
@@ -166,6 +166,234 @@ const ARCHITECTURE_DATA: Record<ArchitectureType, {
         bestPractice: 'Segment resources based on SPIFFE namespaces, limiting write privileges to attested workloads.'
       }
     }
+  },
+  ciam_social: {
+    name: 'Customer Identity & Social Login Federation (CIAM)',
+    description: 'A standard Customer Identity architecture showing social directory brokers, registration workflows, and API token authorizations.',
+    nodes: {
+      client: {
+        title: 'Customer Web Browser',
+        role: 'Initiates a login request to access restricted SaaS customer accounts.',
+        analogy: 'A traveler arriving at a foreign terminal and clicking "Login with Social Passport".',
+        spec: 'Runs standard JavaScript code requesting OAuth redirects and storing JWT Access Tokens in memory.',
+        threatModel: 'Threat: Session hijacking via malicious scripts. Mitigation: Keep Access Tokens strictly scoped and store inside secure memory bounds.',
+        bestPractice: 'Enforce phishing-resistant biometrics using FIDO2 WebAuthn Passkeys wherever available.'
+      },
+      social_idp: {
+        title: 'Social IdP (Google / Apple)',
+        role: 'Authenticates the user identity and verifies their active social profile credentials.',
+        analogy: 'An official state passport office verifying your fingerprint and printing your picture.',
+        spec: 'Authenticates users on social realms and returns an OIDC ID Token mapping user profiles.',
+        threatModel: 'Threat: Social account compromise. Mitigation: Force strict, risk-aware biometrics and MFA checks.',
+        bestPractice: 'Only request minimal required permissions (email and profile scopes) during federated redirection.'
+      },
+      broker: {
+        title: 'Central Identity Broker',
+        role: 'Negotiates social redirects, parses profile claims, and handles Account Linking rules.',
+        analogy: 'A hotel check-in desk that reads your foreign passport, matches it to your booking, and issues a hotel key.',
+        spec: 'An OIDC Relying Party (RP) mapping custom attributes and generating SaaS-specific Access Tokens.',
+        threatModel: 'Threat: Token redirection hijack. Mitigation: Enforce strict redirect URI whitelists and PKCE S256 verification.',
+        bestPractice: 'Decouple auth redirections from app backends, channeling transactions through unified gateways.'
+      },
+      user_store: {
+        title: 'Customer Profile Database',
+        role: 'Maintains long-term profile data, consent receipts, and social account linking metadata keys.',
+        analogy: 'The hotel secure locker containing customer registration forms and previous visit history.',
+        spec: 'Highly scalable SQL/NoSQL document database containing progressive profile attributes and scopes.',
+        threatModel: 'Threat: Database extraction of personal credentials. Mitigation: Encrypt all database columns at-rest and parameterize queries.',
+        bestPractice: 'Implement progressive profiling, requesting optional data values dynamically across logins.'
+      },
+      api_gw: {
+        title: 'Secure SaaS API Gateway',
+        role: 'Verifies incoming customer tokens and enforces RBAC/ABAC access controls before granting access.',
+        analogy: 'The security bouncer standing at the VIP entrance verifying your wristband matches the list.',
+        spec: 'An API Gateway (e.g. Envoy, Kong) validating RSA signature bounds using cached public JWKS keys.',
+        threatModel: 'Threat: Token signature forgery. Mitigation: Match kid parameters and verify tokens natively against JWKS.',
+        bestPractice: 'Cache JWKS public keys locally to minimize latency during API handshakes.'
+      }
+    }
+  },
+  oauth_oidc: {
+    name: 'OAuth 2.0 & OIDC Authorization Code Flow',
+    description: 'The definitive sequence for delegating API access and federating identities securely over the web.',
+    nodes: {
+      user: {
+        title: 'Resource Owner (User)',
+        role: 'The human interacting with the client application to grant consent.',
+        analogy: 'A bank customer authorizing a third-party accounting app to read their ledger.',
+        spec: 'Operates via a standard User-Agent (browser) which executes HTTP redirects during the authorization flow.',
+        threatModel: 'Threat: Phishing or session theft. Mitigation: Employ strong, hardware-backed MFA (WebAuthn).',
+        bestPractice: 'Ensure users clearly understand requested scopes on the consent screen.'
+      },
+      client_app: {
+        title: 'Client Application',
+        role: 'The app requesting access to the Resource Server on behalf of the user.',
+        analogy: 'The accounting app requesting a read-only pass to your bank.',
+        spec: 'A public SPA or confidential web app registered with a client_id. Handles PKCE (S256) code verifiers securely.',
+        threatModel: 'Threat: CSRF and Authorization Code Interception. Mitigation: Enforce strict PKCE and exact redirect URIs.',
+        bestPractice: 'Never store client secrets in public clients (SPAs/Mobile). Use PKCE exclusively.'
+      },
+      auth_server: {
+        title: 'Authorization Server (IdP)',
+        role: 'Authenticates the user, records consent, and issues secure tokens.',
+        analogy: 'The bank’s security office that verifies your identity and issues a restricted temporary badge.',
+        spec: 'Exposes /authorize (front-channel) and /token (back-channel) OIDC endpoints. Issues JWT access and ID tokens.',
+        threatModel: 'Threat: Open redirect attacks. Mitigation: Strictly enforce whitelisted, exact-match redirect_uri verification.',
+        bestPractice: 'Keep token lifetimes extremely short (e.g., 5 minutes) and rely on rotating refresh tokens.'
+      },
+      resource_server: {
+        title: 'Resource Server (API)',
+        role: 'Hosts the protected data and honors valid access tokens.',
+        analogy: 'The bank teller who checks the restricted temporary badge before handing over the ledger.',
+        spec: 'An API validating incoming Bearer JWTs locally via JWKS or remotely via Token Introspection (RFC 7662).',
+        threatModel: 'Threat: Replay attacks. Mitigation: Enforce Sender-Constrained tokens (DPoP or mTLS).',
+        bestPractice: 'Validate token signature, expiration, issuer, and audience on every single API request.'
+      }
+    }
+  },
+  saml: {
+    name: 'SAML 2.0 Enterprise Web SSO',
+    description: 'The legacy XML-based federation standard driving corporate SSO across enterprise boundaries.',
+    nodes: {
+      user: {
+        title: 'Employee (Browser)',
+        role: 'The corporate employee navigating to a protected SaaS application.',
+        analogy: 'An employee presenting their corporate badge at a partner building.',
+        spec: 'Routes base64-encoded XML payloads (SAMLRequest / SAMLResponse) between the SP and IdP via HTTP-POST or HTTP-Redirect.',
+        threatModel: 'Threat: Browser history token leakage. Mitigation: Set strict Cache-Control headers on SSO endpoints.',
+        bestPractice: 'Initiate SP-initiated flows rather than IdP-initiated to prevent unsolicited login attacks.'
+      },
+      sp: {
+        title: 'Service Provider (SP)',
+        role: 'The SaaS application consuming the identity assertion to create a local session.',
+        analogy: 'The partner building checking the cryptographic seal on the employee\'s corporate badge.',
+        spec: 'Generates AuthnRequests and exposes an Assertion Consumer Service (ACS) endpoint to ingest signed XML assertions.',
+        threatModel: 'Threat: XML Signature Wrapping (SSW). Mitigation: Strictly validate signatures on both the SAML Response and the Assertion node.',
+        bestPractice: 'Enforce strict Destination matching and verify the InResponseTo attribute to prevent replay injections.'
+      },
+      idp: {
+        title: 'Identity Provider (IdP)',
+        role: 'The central corporate directory that authenticates the user and signs the assertion.',
+        analogy: 'The home office security desk that prints and holographically seals the corporate badge.',
+        spec: 'Authenticates the user session and generates a signed <saml:Assertion> detailing NameID and attribute claims.',
+        threatModel: 'Threat: Forged assertions via stolen private keys. Mitigation: Store IdP signing certificates in hardware vaults (HSM) and rotate frequently.',
+        bestPractice: 'Sign the Assertion (mandatory) and encrypt the attributes if transmitting sensitive PII.'
+      }
+    }
+  },
+  pam: {
+    name: 'Privileged Access Management (PAM) Vaulting',
+    description: 'Securing, rotating, and proxying highly sensitive administrative sessions (e.g. CyberArk, BeyondTrust).',
+    nodes: {
+      admin: {
+        title: 'System Administrator',
+        role: 'Requests access to a critical backend server without knowing the actual target password.',
+        analogy: 'A pilot requesting temporary access to the cockpit controls without possessing the master physical key.',
+        spec: 'Authenticates to the PAM portal via MFA to request a brokered, time-bound RDP or SSH session.',
+        threatModel: 'Threat: Endpoint compromise. Mitigation: Use hardened privileged access workstations (PAWs) for all admin activities.',
+        bestPractice: 'Administrators must never see or handle the raw vaulted passwords.'
+      },
+      pam_vault: {
+        title: 'PAM Session Vault',
+        role: 'Securely stores credentials, rotates them, and proxies connections with full session recording.',
+        analogy: 'An armored lockbox that brokers your connection, dials the lock for you, and records everything you do on camera.',
+        spec: 'A hardened cluster that acts as a jump server (PSM), injecting credentials into the stream and recording keystrokes.',
+        threatModel: 'Threat: Vault master key theft. Mitigation: Distribute vault keys across fragmented smart cards (quorum/M-of-N).',
+        bestPractice: 'Implement continuous password rotation (CPM) after every single use.'
+      },
+      target_server: {
+        title: 'Target Server (DB/OS)',
+        role: 'The critical infrastructure being managed (e.g. Root Linux Server, Domain Controller).',
+        analogy: 'The secured cockpit that is completely isolated from the main cabin.',
+        spec: 'Accepts incoming SSH/RDP connections strictly and exclusively from the PAM Proxy IP ranges.',
+        threatModel: 'Threat: Lateral bypass. Mitigation: Configure strict local firewalls to reject any direct SSH/RDP access bypassing the PAM.',
+        bestPractice: 'Isolate target servers in restricted network zones accessible only by the PAM vault IPs.'
+      }
+    }
+  },
+  pki: {
+    name: 'Public Key Infrastructure (PKI) & mTLS',
+    description: 'The foundation of asymmetric cryptographic trust, Certificate Authorities, and secure channels.',
+    nodes: {
+      device: {
+        title: 'Client Device',
+        role: 'Generates a local keypair and requests a signed certificate to prove its identity.',
+        analogy: 'A citizen filling out a passport application, attaching their photo, and requesting an official seal.',
+        spec: 'Generates a PKCS#10 Certificate Signing Request (CSR) containing its public key and Subject Distinguished Name (DN).',
+        threatModel: 'Threat: Private key extraction. Mitigation: Generate and trap the private key immutably inside a hardware TPM/Secure Enclave.',
+        bestPractice: 'Never transmit the private key. Send only the CSR to the CA.'
+      },
+      sub_ca: {
+        title: 'Intermediate CA',
+        role: 'The active issuing authority that signs client certificates on behalf of the offline Root CA.',
+        analogy: 'The regional passport office authorized by the capital to issue physical passports.',
+        spec: 'An active Certificate Authority that signs the incoming CSR with its own private key, issuing an X.509 certificate.',
+        threatModel: 'Threat: Intermediate CA compromise. Mitigation: Monitor Certificate Transparency (CT) logs for rogue issuances.',
+        bestPractice: 'Keep the active Sub CA isolated on a secure network and issue short-lived leaf certificates.'
+      },
+      root_ca: {
+        title: 'Offline Root CA',
+        role: 'The supreme cryptographic trust anchor of the organization.',
+        analogy: 'The nation’s founding constitution and original master seal kept inside a nuclear bunker.',
+        spec: 'A self-signed Certificate Authority used exclusively to sign Intermediate CAs, then immediately taken offline.',
+        threatModel: 'Threat: Total organizational compromise. Mitigation: Keep the Root CA completely disconnected from any network (air-gapped).',
+        bestPractice: 'Store the Root CA private key in a FIPS 140-2 Level 3 Hardware Security Module (HSM) stored in a physical safe.'
+      },
+      crl: {
+        title: 'Revocation Check (CRL/OCSP)',
+        role: 'Provides real-time status on whether a certificate has been compromised and revoked.',
+        analogy: 'The active wanted-list checking if a presented passport was reported stolen.',
+        spec: 'Certificate Revocation Lists (CRL) or Online Certificate Status Protocol (OCSP) responders queried during TLS handshakes.',
+        threatModel: 'Threat: OCSP server failure causing "fail-open". Mitigation: Implement OCSP Stapling directly on the web server.',
+        bestPractice: 'Enforce hard-fail revocation checks for highly sensitive administrative connections.'
+      }
+    }
+  },
+  k8s_identity: {
+    name: 'Kubernetes Identity (OIDC & RBAC)',
+    description: 'Models how external identity providers map to internal Kubernetes clusters using OIDC tokens and native RBAC bindings.',
+    nodes: {
+      developer: {
+        title: 'Cluster Developer (kubectl)',
+        role: 'An engineer attempting to run commands against the cluster.',
+        analogy: 'A construction worker arriving at the site with a union badge.',
+        spec: 'Uses kubectl configured with an OIDC auth provider plugin, performing standard PKCE flows to get a JWT.',
+        threatModel: 'Threat: Static kubeconfig theft. Mitigation: Never distribute long-lived static tokens; rely exclusively on OIDC federation.',
+        bestPractice: 'Enforce strong MFA and short session timeouts at the IdP level.'
+      },
+      oidc_provider: {
+        title: 'External IdP (Okta / Entra)',
+        role: 'The centralized workforce directory issuing signed identity claims.',
+        analogy: 'The union office that issues the badge stating the worker is certified.',
+        spec: 'Issues a signed OIDC ID Token containing the user’s email and directory group memberships (e.g. "k8s-admins").',
+        threatModel: 'Threat: Forged token signatures. Mitigation: API server must actively fetch and cache IdP public JWKS keys.',
+        bestPractice: 'Keep OIDC tokens short-lived and implement strict group-mapping rules.'
+      },
+      kube_apiserver: {
+        title: 'Kubernetes API Server',
+        role: 'The control plane gateway validating all incoming cluster requests.',
+        analogy: 'The foreman checking the badge against the daily approved roster.',
+        spec: 'Receives the Bearer token, validates its cryptographic signature using the IdP\'s discovery document, and extracts the "groups" claim.',
+        threatModel: 'Threat: Unauthenticated API access. Mitigation: Disable anonymous authentication and restrict API server network ingress.',
+        bestPractice: 'Audit API server logs to track exactly which OIDC user executed which command.'
+      },
+      k8s_rbac: {
+        title: 'K8s RBAC (RoleBinding)',
+        role: 'Maps the verified IdP group to specific, granular cluster permissions.',
+        analogy: 'The site instructions dictating that "union workers" are only allowed in Sector B.',
+        spec: 'A native K8s RoleBinding associating the IdP group string to a specific Role (e.g. "pod-reader") within a Namespace.',
+        threatModel: 'Threat: Privilege escalation. Mitigation: Never grant ClusterAdmin unless strictly necessary; use namespace-scoped Roles.',
+        bestPractice: 'Map RBAC exclusively to IdP Groups, never directly to individual user emails, to maintain scalable IGA processes.'
+      },
+      pod_sa: {
+        title: 'Pod Service Account',
+        role: 'The target machine identity running the actual workload containers.',
+        analogy: 'The heavy machinery that the authorized worker is finally allowed to operate.',
+        spec: 'A native Kubernetes ServiceAccount projected into the pod volume, enabling the pod to communicate securely with other services.',
+        threatModel: 'Threat: Service Account token extraction. Mitigation: Use Bound Service Account Token Volumes with expiration.',
+        bestPractice: 'Avoid using the "default" service account. Create dedicated, least-privilege service accounts per workload.'
+      }
+    }
   }
 }
 
@@ -241,7 +469,7 @@ export default function ArchitectureCenter() {
 
       addLog('👥 Synced user record parsed. Querying Database with Row-Level Security current_tenant_id binding...')
       setSelectedNode('isolated_db')
-    } else {
+    } else if (activeArch === 'multi_cloud') {
       addLog('🚀 AWS pod worker initiates gRPC connection over Unix socket to request identity document...')
       setSelectedNode('aws_workload')
       await new Promise(r => setTimeout(r, 800))
@@ -260,6 +488,120 @@ export default function ArchitectureCenter() {
 
       addLog('🔓 Mutually authenticated mTLS session established! GCP Database grants access to validated AWS SPIFFE workload.')
       setSelectedNode('gcp_resource')
+    } else if (activeArch === 'oauth_oidc') {
+      addLog('🚀 User clicks "Login with Identity" in the Client Application...')
+      setSelectedNode('user')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 Client app redirects browser to Authorization Server with PKCE challenge...')
+      setSelectedNode('client_app')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 User authenticates and consents. Auth Server issues short-lived Authorization Code...')
+      setSelectedNode('auth_server')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔄 Client app receives code. Initiates back-channel POST with PKCE verifier...')
+      setSelectedNode('client_app')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ Auth Server validates PKCE matching. Issues Access & ID JWTs!')
+      setSelectedNode('auth_server')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔓 Client calls backend REST API using Bearer Token. Resource Server validates signature and grants access!')
+      setSelectedNode('resource_server')
+    } else if (activeArch === 'saml') {
+      addLog('🚀 Employee navigates to protected Service Provider SaaS app...')
+      setSelectedNode('user')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 SP creates base64-encoded SAMLRequest. Redirects browser to IdP...')
+      setSelectedNode('sp')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 IdP authenticates employee session. Generates signed SAML Assertion XML...')
+      setSelectedNode('idp')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔄 Browser automatically POSTs SAMLResponse back to SP Assertion Consumer Service (ACS)...')
+      setSelectedNode('user')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ SP validates X.509 signature against IdP metadata. Issues secure local session! 🎉')
+      setSelectedNode('sp')
+    } else if (activeArch === 'pam') {
+      addLog('🚀 Administrator authenticates to PAM portal via MFA...')
+      setSelectedNode('admin')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 Admin requests temporary RDP/SSH access to Target Server without knowing credentials...')
+      setSelectedNode('pam_vault')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 PAM Vault retrieves root credentials internally. Initiates video recording stream...')
+      setSelectedNode('pam_vault')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ PAM proxies the connection. Target Server accepts isolated PAM IP connection! Session established.')
+      setSelectedNode('target_server')
+    } else if (activeArch === 'pki') {
+      addLog('🚀 Device generates secure local asymmetric keypair. Crafts PKCS#10 CSR...')
+      setSelectedNode('device')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 Device transmits CSR to active Intermediate CA for signing...')
+      setSelectedNode('sub_ca')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 Intermediate CA validates request. Signs public key using authority key linked to Offline Root CA...')
+      setSelectedNode('root_ca')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔄 Device receives signed X.509 Certificate. Prepares for mTLS handshake...')
+      setSelectedNode('device')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ Target server checks CRL/OCSP responders to verify certificate is not revoked. Handshake complete! 🎉')
+      setSelectedNode('crl')
+    } else if (activeArch === 'k8s_identity') {
+      addLog('🚀 Developer initiates cluster command using `kubectl` with an OIDC provider plugin...')
+      setSelectedNode('developer')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 Developer authenticates. External IdP issues a signed OIDC JWT mapping the "k8s-admins" group...')
+      setSelectedNode('oidc_provider')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 Developer passes Bearer token. API Server verifies signature using IdP discovery document...')
+      setSelectedNode('kube_apiserver')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔄 API Server resolves native RBAC RoleBinding matching the OIDC group claim to cluster roles...')
+      setSelectedNode('k8s_rbac')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ Request authorized! Developer initiates execution on target Pod Service Account. 🎉')
+      setSelectedNode('pod_sa')
+    } else {
+      addLog('🚀 Customer browser initiates login request to access secure SaaS accounts...')
+      setSelectedNode('client')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 Browser redirects user to Google Social Identity Provider (OIDC workflow)...')
+      setSelectedNode('social_idp')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🧠 User authenticated. Redirection transfers secure OIDC identity assertions back to Broker...')
+      setSelectedNode('broker')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📝 Broker reads claims, completes Account Linking rules, and synchronizes User Profile Database...')
+      setSelectedNode('user_store')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ Broker issues secure, signed JWT. SaaS API Gateway validates signature and grants access! 🎉')
+      setSelectedNode('api_gw')
     }
 
     setIsSimulating(false)
@@ -542,6 +884,163 @@ export default function ArchitectureCenter() {
                   onClick={() => setSelectedNode('gcp_resource')} 
                 />
 
+              </div>
+            )}
+
+            {/* --- CUSTOMER IDENTITY (CIAM) & SOCIAL FEDERATION DIAGRAM --- */}
+            {activeArch === 'ciam_social' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                
+                {/* Row 1: Client and Social IdP */}
+                <DiagramNode 
+                  id="client" 
+                  selected={selectedNode === 'client'} 
+                  title="Customer Browser" 
+                  icon={Users} 
+                  color="blue"
+                  onClick={() => setSelectedNode('client')} 
+                />
+
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+
+                <DiagramNode 
+                  id="social_idp" 
+                  selected={selectedNode === 'social_idp'} 
+                  title="Social IdP (Google)" 
+                  icon={KeySquare} 
+                  color="teal"
+                  onClick={() => setSelectedNode('social_idp')} 
+                />
+
+                {/* Vertical Row to Broker */}
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode 
+                    id="broker" 
+                    selected={selectedNode === 'broker'} 
+                    title="Central Identity Broker" 
+                    icon={Server} 
+                    color="blue"
+                    onClick={() => setSelectedNode('broker')} 
+                  />
+                </div>
+
+                {/* Vertical Row down to User Store & API Gateway */}
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+
+                <DiagramNode 
+                  id="user_store" 
+                  selected={selectedNode === 'user_store'} 
+                  title="Customer Profile DB" 
+                  icon={Database} 
+                  color="teal"
+                  onClick={() => setSelectedNode('user_store')} 
+                />
+
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+
+                <DiagramNode 
+                  id="api_gw" 
+                  selected={selectedNode === 'api_gw'} 
+                  title="SaaS API Gateway" 
+                  icon={Shield} 
+                  color="emerald"
+                  onClick={() => setSelectedNode('api_gw')} 
+                />
+
+              </div>
+            )}
+
+            {/* --- OAUTH 2.0 & OIDC --- */}
+            {activeArch === 'oauth_oidc' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="user" selected={selectedNode === 'user'} title="Resource Owner" icon={Users} color="blue" onClick={() => setSelectedNode('user')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="client_app" selected={selectedNode === 'client_app'} title="Client App" icon={Globe} color="blue" onClick={() => setSelectedNode('client_app')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode id="auth_server" selected={selectedNode === 'auth_server'} title="Authorization Server" icon={KeySquare} color="teal" onClick={() => setSelectedNode('auth_server')} />
+                </div>
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <DiagramNode id="client_app" selected={selectedNode === 'client_app'} title="Client App (Bearer)" icon={Globe} color="blue" onClick={() => setSelectedNode('client_app')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="resource_server" selected={selectedNode === 'resource_server'} title="Resource Server (API)" icon={Server} color="emerald" onClick={() => setSelectedNode('resource_server')} />
+              </div>
+            )}
+
+            {/* --- SAML 2.0 --- */}
+            {activeArch === 'saml' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="user" selected={selectedNode === 'user'} title="Employee Browser" icon={Users} color="blue" onClick={() => setSelectedNode('user')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="sp" selected={selectedNode === 'sp'} title="Service Provider" icon={Cloud} color="teal" onClick={() => setSelectedNode('sp')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode id="idp" selected={selectedNode === 'idp'} title="Identity Provider" icon={KeySquare} color="blue" onClick={() => setSelectedNode('idp')} />
+                </div>
+              </div>
+            )}
+
+            {/* --- PAM --- */}
+            {activeArch === 'pam' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="admin" selected={selectedNode === 'admin'} title="System Administrator" icon={Users} color="blue" onClick={() => setSelectedNode('admin')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="pam_vault" selected={selectedNode === 'pam_vault'} title="PAM Session Vault" icon={Shield} color="teal" onClick={() => setSelectedNode('pam_vault')} />
+                <div className="h-10"></div>
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="col-span-2"></div>
+                <DiagramNode id="target_server" selected={selectedNode === 'target_server'} title="Target Server" icon={Server} color="emerald" onClick={() => setSelectedNode('target_server')} />
+              </div>
+            )}
+
+            {/* --- PKI --- */}
+            {activeArch === 'pki' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="device" selected={selectedNode === 'device'} title="Client Device" icon={Laptop} color="blue" onClick={() => setSelectedNode('device')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="sub_ca" selected={selectedNode === 'sub_ca'} title="Intermediate CA" icon={Server} color="teal" onClick={() => setSelectedNode('sub_ca')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <DiagramNode id="crl" selected={selectedNode === 'crl'} title="Revocation (CRL)" icon={Database} color="emerald" onClick={() => setSelectedNode('crl')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="root_ca" selected={selectedNode === 'root_ca'} title="Offline Root CA" icon={KeySquare} color="blue" onClick={() => setSelectedNode('root_ca')} />
+              </div>
+            )}
+
+            {/* --- KUBERNETES IDENTITY --- */}
+            {activeArch === 'k8s_identity' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                {/* Developer -> OIDC Provider -> Kube API Server */}
+                <DiagramNode id="developer" selected={selectedNode === 'developer'} title="Developer (kubectl)" icon={Users} color="blue" onClick={() => setSelectedNode('developer')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="oidc_provider" selected={selectedNode === 'oidc_provider'} title="External IdP (OIDC)" icon={KeySquare} color="teal" onClick={() => setSelectedNode('oidc_provider')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode id="kube_apiserver" selected={selectedNode === 'kube_apiserver'} title="Kubernetes API Server" icon={Server} color="blue" onClick={() => setSelectedNode('kube_apiserver')} />
+                </div>
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                {/* K8s RBAC -> Pod SA */}
+                <DiagramNode id="k8s_rbac" selected={selectedNode === 'k8s_rbac'} title="K8s RBAC (RoleBinding)" icon={Shield} color="emerald" onClick={() => setSelectedNode('k8s_rbac')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="pod_sa" selected={selectedNode === 'pod_sa'} title="Pod Service Account" icon={Cpu} color="teal" onClick={() => setSelectedNode('pod_sa')} />
               </div>
             )}
 

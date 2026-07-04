@@ -1,6 +1,6 @@
 # AboutIAM Vision & Product Roadmap
 
-Version: 1.0
+Version: 1.5
 
 > Goal: Make AboutIAM the world's most comprehensive, vendor-neutral
 > Identity & Access Management platform covering beginners through
@@ -17,13 +17,6 @@ and standards driven - Hands-on learning
 
 ------------------------------------------------------------------------
 
-# Phase 0 (Completed)
-
-Current foundation: - Learning Academy - Roadmap - Encyclopedia -
-Interactive Playgrounds - Security Tools - AI Assistant - Assessments -
-Wall of Shame - Explore - Contributor ecosystem
-
-------------------------------------------------------------------------
 
 # Phase 1 -- Complete the IAM Knowledge Base (Highest Priority)
 
@@ -114,27 +107,17 @@ References
 
 # Phase 2 -- Vendor Knowledge Center
 
-Dedicated pages for: - Microsoft Entra ID - Okta - Ping Identity -
-ForgeRock - SailPoint - CyberArk - Saviynt - Keycloak - WSO2 - One
-Identity - BeyondTrust - Delinea
+Dedicated pages remaining to build:
+-   Saviynt
+-   WSO2
+-   One Identity
+-   BeyondTrust
+-   Delinea
 
-Each page: Architecture, components, deployment, integrations, licensing
-overview, strengths, limitations, interview questions, certification
-path.
-
-------------------------------------------------------------------------
-
-# Phase 3 -- Interactive Architecture Center
-
-Create 200+ architecture diagrams.
-
-Examples: - Enterprise IAM - CIAM - Zero Trust - OAuth - OIDC - SAML -
-PAM - PKI - Kubernetes Identity - Machine Identity - Multi-cloud
-Identity
-
-Every component clickable with explanations.
+*(Completed: Microsoft Entra ID, Okta, Keycloak, Ping Identity, CyberArk, ForgeRock, SailPoint IGA)*
 
 ------------------------------------------------------------------------
+
 
 # Phase 4 -- Design Pattern Library
 
@@ -156,88 +139,23 @@ exercises - Mock interviews - Resume guidance
 
 ------------------------------------------------------------------------
 
-# Phase 6 -- Advanced Labs
-
-New simulators: - SCIM - Kerberos - Token Exchange - OAuth Attack Lab -
-Session Hijacking - Conditional Access - Identity Threat Detection -
-Device Trust - Passkey Internals
-
-------------------------------------------------------------------------
-
-# Phase 7 -- Developer Tool Suite
-
-Expand utilities: - JWK/JWKS Inspector - OAuth Request Builder - JWT
-Inspector - X509 Chain Validator - PEM Converter - CSR Generator - SAML
-Metadata Builder - SCIM Diff Tool - Policy Evaluator - OPA Playground
-
-------------------------------------------------------------------------
-
-# Phase 8 -- Certification Hub
-
-Roadmaps, study plans, practice tests and labs for major IAM
-certifications.
 
 ------------------------------------------------------------------------
 
 # Phase 9 -- Research & News
 
 Sections: - RFC tracker - CVEs - Identity news - Product releases -
-Research papers - Identity timeline
-
-------------------------------------------------------------------------
-
-# Phase 10 -- Community
-
--   Forums
--   Monthly challenges
--   Capture-the-Flag
--   Leaderboards
--   Contributor badges
--   Community showcase
-
-------------------------------------------------------------------------
-
-# Moonshot Features (Strategic)
-
-## Identity Architect
-
-AI-assisted architecture generator producing: - Architecture diagrams -
-Trust relationships - Threat model - Product recommendations -
-Policies - Checklists
-
-## Enterprise IAM Reference Builder
-
-Drag-and-drop enterprise architecture designer with exports.
-
-## Identity Timeline
-
-Interactive history from mainframes to decentralized identity and AI
-agents.
+Research papers
 
 ------------------------------------------------------------------------
 
 # Product Priorities
 
-## P1 (Immediate)
+## Remaining Immediate Focus (P1)
+-   Complete standards coverage and vendor integration checklists
 
--   Complete encyclopedia
--   Complete standards coverage
--   Vendor knowledge
--   Architecture diagrams
-
-## P2 (3--6 months)
-
--   Labs
--   Interview hub
--   Design patterns
--   Certification center
-
-## P3 (6--12 months)
-
--   Community
--   AI architect
--   Enterprise reference builder
--   Research hub
+## Remaining Medium-Term Focus (P2)
+-   Interview & Career Center (Role-based tracks, MCQs, and Mock Interview Simulators)
 
 ------------------------------------------------------------------------
 

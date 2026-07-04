@@ -10,6 +10,11 @@ export default function WallOfShame() {
   const [activeEra, setActiveEra] = useState(0)
   const [activeLab, setActiveLab] = useState<'goldensaml' | 'pushfatigue' | 'wildcard'>('goldensaml')
 
+  // Set visited flag on mount
+  useEffect(() => {
+    localStorage.setItem('aboutiam-museum-visited', 'true')
+  }, [])
+
   // Golden SAML Lab State
   const [samlStep, setSamlStep] = useState(0)
   const [signingKeyStolen, setSigningKeyStolen] = useState(false)

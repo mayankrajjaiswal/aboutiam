@@ -33,6 +33,9 @@ import BasicAuthDecoder from './pages/Tools/BasicAuthDecoder'
 import JwkPemConverter from './pages/Tools/JwkPemConverter'
 import X509CertificateDecoder from './pages/Tools/X509CertificateDecoder'
 import SamlDecoder from './pages/Tools/SamlDecoder'
+import SamlMetadataBuilder from './pages/Tools/SamlMetadataBuilder'
+import ScimDiffTool from './pages/Tools/ScimDiffTool'
+import CsrGenerator from './pages/Tools/CsrGenerator'
 import SdJwtDecoder from './pages/Tools/SdJwtDecoder'
 import WebauthnDecoder from './pages/Tools/WebauthnDecoder'
 import DidKeyGenerator from './pages/Tools/DidKeyGenerator'
@@ -57,12 +60,23 @@ import IdentityArchitect from './pages/Playgrounds/IdentityArchitect'
 import JwtCracker from './pages/Playgrounds/JwtCracker'
 import CertChainValidator from './pages/Playgrounds/CertChainValidator'
 import GpoSimulator from './pages/Playgrounds/GpoSimulator'
+import ReferenceBuilder from './pages/Playgrounds/ReferenceBuilder'
+import SessionHijackingLab from './pages/Playgrounds/SessionHijackingLab'
+import ConditionalAccess from './pages/Playgrounds/ConditionalAccess'
+import OpaPlayground from './pages/Playgrounds/OpaPlayground'
+import TokenExchange from './pages/Playgrounds/TokenExchange'
+import ItdrLab from './pages/Playgrounds/ItdrLab'
+import DeviceTrust from './pages/Playgrounds/DeviceTrust'
+import PasskeyInternals from './pages/Playgrounds/PasskeyInternals'
+import CommunityForums from './pages/CommunityForums'
 import Assess from './pages/Assess'
 import Explore from './pages/Explore'
 import Assistant from './pages/Assistant'
 
 // Advanced Ecosystem Modules
 import Encyclopedia from './pages/Encyclopedia'
+import IdentityTimeline from './pages/IdentityTimeline'
+import CommunityHub from './pages/CommunityHub'
 import WallOfShame from './pages/WallOfShame'
 import CheatSheets from './pages/CheatSheets'
 import BeginnerPrimer from './pages/BeginnerPrimer'
@@ -131,6 +145,9 @@ export default function App() {
               <Route path="/tools/jwk-pem-converter" element={<JwkPemConverter />} />
               <Route path="/tools/x509-certificate-decoder" element={<X509CertificateDecoder />} />
               <Route path="/tools/saml-decoder" element={<SamlDecoder />} />
+              <Route path="/tools/saml-metadata-builder" element={<SamlMetadataBuilder />} />
+              <Route path="/tools/scim-diff" element={<ScimDiffTool />} />
+              <Route path="/tools/csr-generator" element={<CsrGenerator />} />
               <Route path="/tools/sd-jwt-decoder" element={<SdJwtDecoder />} />
               <Route path="/tools/webauthn-decoder" element={<WebauthnDecoder />} />
               <Route path="/tools/did-key-generator" element={<DidKeyGenerator />} />
@@ -155,8 +172,14 @@ export default function App() {
               <Route path="/playground/jwt-cracker" element={<JwtCracker />} />
               <Route path="/playground/cert-chain" element={<CertChainValidator />} />
               <Route path="/playground/gpo-simulator" element={<GpoSimulator />} />
-              
-              {/* Phase 7 Paths */}
+              <Route path="/playground/reference-builder" element={<ReferenceBuilder />} />
+              <Route path="/playground/session-hijacking" element={<SessionHijackingLab />} />
+              <Route path="/playground/conditional-access" element={<ConditionalAccess />} />
+              <Route path="/playground/opa" element={<OpaPlayground />} />
+              <Route path="/playground/token-exchange" element={<TokenExchange />} />
+              <Route path="/playground/itdr" element={<ItdrLab />} />
+              <Route path="/playground/device-trust" element={<DeviceTrust />} />
+              <Route path="/playground/passkey-internals" element={<PasskeyInternals />} />
               <Route path="/playground/ai-threat-lab" element={<AIThreatLab />} />
               <Route path="/playground/zkp-wallet" element={<ZKPWallet />} />
               <Route path="/playground/ambient-trust" element={<AmbientTrust />} />
@@ -167,6 +190,9 @@ export default function App() {
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/encyclopedia" element={<Encyclopedia />} />
+              <Route path="/timeline" element={<IdentityTimeline />} />
+              <Route path="/community" element={<CommunityHub />} />
+              <Route path="/community-forums" element={<CommunityForums />} />
               <Route path="/wall-of-shame" element={<WallOfShame />} />
               <Route path="/cheat-sheets" element={<CheatSheets />} />
               <Route path="/contributors" element={<Contributors />} />

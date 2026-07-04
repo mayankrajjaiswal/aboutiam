@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop } from 'lucide-react'
 
 export default function PlaygroundCatalog() {
   const playgrounds = [
@@ -88,6 +88,34 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "Enterprise IAM Reference Builder",
+      desc: "Drag-and-drop identity components (IdPs, Directories, PAM, Workstations) onto an interactive canvas to configure connections and trace secure protocol handshakes.",
+      icon: Network,
+      link: "/playground/reference-builder",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Session Hijacking & Token Theft Lab",
+      desc: "Emulate session cookie theft via infostealers, paste and replay stolen tokens against protected APIs, and apply modern mitigations like IP binding, DPoP, and CAEP.",
+      icon: Shield,
+      link: "/playground/session-hijacking",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Conditional Access Policy Simulator",
+      desc: "Model dynamic trust gates and evaluate logon context parameters (device compliance, untrusted networks, geo-IP ranges, risk scores) in real-time.",
+      icon: Sliders,
+      link: "/playground/conditional-access",
+      badge: "Active (Standard)",
+    },
+    {
+      title: "Open Policy Agent (OPA) & Rego Playground",
+      desc: "Write fine-grained access policies using Regos declarative language, configure input JSON context, and step-through compiled rules.",
+      icon: KeySquare,
+      link: "/playground/opa",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "Active Directory GPO Simulator",
       desc: "Configure Default Domain GPO security variables, simulate client logon lockouts, and inspect issued Kerberos TGT ticket lifespans.",
       icon: Server,
@@ -134,6 +162,34 @@ export default function PlaygroundCatalog() {
       desc: "Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.",
       icon: Network,
       link: "/playground/workload-mesh",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Token Exchange Lab (RFC 8693)",
+      desc: "Exchange incoming user security assertions for scoped downstream APIs access tokens dynamically using delegation or impersonation parameters.",
+      icon: Key,
+      link: "/playground/token-exchange",
+      badge: "Active (Standard)",
+    },
+    {
+      title: "Identity Threat Detection (ITDR) Lab",
+      desc: "Monitor authentication security streams in real-time, inject brute-force, geovelocity travel or push bombing attacks, and trigger active lockout countermeasures.",
+      icon: Eye,
+      link: "/playground/itdr",
+      badge: "Active (Standard)",
+    },
+    {
+      title: "Device Posture Attestation Lab",
+      desc: "Model Zero Trust endpoint handshakes checking workstation firewalls, disk encryption states, OS kernels, and client certificates.",
+      icon: Laptop,
+      link: "/playground/device-trust",
+      badge: "Active (Standard)",
+    },
+    {
+      title: "Passkey Internals Playground",
+      desc: "Deconstruct the binary authenticatorData and CBOR COSE public keys byte-by-byte during WebAuthn public-key registrations.",
+      icon: Fingerprint,
+      link: "/playground/passkey-internals",
       badge: "Active (Advanced)",
     }
   ]

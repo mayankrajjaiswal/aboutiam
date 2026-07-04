@@ -45,6 +45,9 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Enterprise Certification Hub (`/certifications`):** Study paths, domain focus splits, and interactive mock practice exams with real-time explanations for SC-300, Okta Admin, CyberArk Sentry, and Ping Professional credentials.
 * **Security Bulletins & IR Simulator (`/bulletins`):** Active threat bulletins tracking real-world incident post-mortems (Okta support HAR cookie theft, SolarWinds Golden SAML) with an interactive "Crisis Response Console" simulation game.
 * **Interactive Playgrounds (`PlaygroundCatalog.tsx`):** Selection hub connecting to 15+ custom-built detailed simulators.
+* **Interactive Identity Timeline (`/timeline`):** Traces identity history from 1961 mainframes to future ambient trust, with active inline simulators for 6 eras.
+* **Community Achievements & Badge Hub (`/community`):** Dynamic contributor achievements, monthly challenges, and leaderboards driven by browser states.
+* **Community Forums & Showcase Hub (`/community-forums`):** Threaded SecOps discussion boards (SCIM conflicts, SSW bypasses) and custom reference architecture showcases.
 
 ### 💻 B. Simulators & Playgrounds (`/playground`)
 * **OAuth 2.0 / OIDC Flow Visualizer:** Animates Front-Channel redirects and Back-Channel direct connections step-by-step. Generates dynamic **PKCE verifier/challenge pairs** and inspects raw HTTP requests.
@@ -66,13 +69,21 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Zero-Knowledge Proof (ZKP) Wallet:** Explore decentralized Self-Sovereign Identity. Generate mathematical proofs confirming your age without exposing your raw birthdate.
 * **Continuous Ambient Trust Decayer:** Visualize post-2030 systems where real-time biometric telemetry (keystrokes, location) constantly decays or fortifies session trust.
 * **NHI Workload Mesh (SPIFFE):** Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.
+* **Enterprise IAM Reference Builder:** Visual drag-and-drop identity topology architect with dynamic SVG trust lines and OIDC/SAML/SCIM handshake traces.
+* **Session Hijacking & Token Theft Lab:** Simulates session cookie theft via infostealers, pasting stolen tokens, and applying DPoP, IP-binding, and CAEP.
+* **Conditional Access Policy Simulator:** Models conditional policy evaluations testing device compliance, networks, geolocations, and risk scores.
+* **Open Policy Agent (OPA) & Rego Playground:** Decoupled fine-grained authorization rules playground using OPA's standard Rego language with input JSON.
+* **Token Exchange Lab (RFC 8693):** Security Token Service (STS) broker flow modeling RFC 8693 access delegation and impersonation.
+* **Identity Threat Detection (ITDR) Lab:** Real-time SecOps system log monitoring, brute-force/push fatigue injection, and lockout mitigations.
+* **Device Posture & MDM Attestation Lab:** Models Zero Trust endpoint posture attestation handshakes evaluating firewalls, FileVault encryption, and mTLS client certificates.
+* **Passkey Internals Playground:** Deconstructs binary authenticatorData byte-offsets and CBOR public keys generated inside hardware enclave TPMs.
 
 ### 🛠️ C. Security Tools (`/tools`)
-* **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. All 23 planned tools are live:
+* **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. All 26 planned tools are live:
   * **Tokens & Assertions:** JWT Decoder, JWT Generator, JWKS Key-Set Inspector, SAML Decoder, SD-JWT Decoder.
-  * **PKI & Certificates:** Basic/Bearer Auth Header Decoder, JWK↔PEM Converter, X.509 Certificate & CSR Decoder.
+  * **PKI & Certificates:** Basic/Bearer Auth Header Decoder, JWK↔PEM Converter, X.509 Certificate & CSR Decoder, X.509 CSR Generator.
   * **Hashing, Encoding & Secrets:** Base64/Base64URL Encoder-Decoder, SHA-256 & Hash Generator, HMAC Generator & Verifier, bcrypt Hash Generator, Passphrase & Entropy Strength Calculator.
-  * **Auth & Directory Builders:** OAuth PKCE Generator, TOTP Generator & Verifier, LDAP Filter Builder, SCIM Payload Validator, OAuth Request Builder, OIDC Discovery Document Auditor.
+  * **Auth & Directory Builders:** OAuth PKCE Generator, TOTP Generator & Verifier, LDAP Filter Builder, SCIM Payload Validator, OAuth Request Builder, OIDC Discovery Document Auditor, SAML Metadata Builder, SCIM Diff & Reconciliation Tool.
   * **Emerging & Decentralized Identity:** WebAuthn/Passkey Assertion Decoder, DID Key Generator.
 * Every tool page pairs a **beginner analogy** with an **expert technical specification** (RFC/spec-referenced), matching the Encyclopedia's teaching pattern, plus its own SEO-optimized route, meta tags, and JSON-LD structured data for search discoverability.
 * All backlog items from `FIXED_TODO.md` (including sitemap hygiene and automatic IndexNow pings) have been fully completed and validated.

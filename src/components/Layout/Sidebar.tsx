@@ -2,7 +2,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { 
   BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, 
-  CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building, ScanSearch, Layers 
+  CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building, ScanSearch, Layers,
+  History
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -81,6 +82,9 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
 
   const ecosystemItems = [
     { name: 'Master Encyclopedia', path: '/encyclopedia', icon: Book },
+    { name: 'Identity Timeline', path: '/timeline', icon: History },
+    { name: 'Community Achievements', path: '/community', icon: Users },
+    { name: 'Community Forums', path: '/community-forums', icon: Network },
     { name: 'Design Patterns', path: '/patterns', icon: Layers },
     { name: 'Vulnerability Lab', path: '/wall-of-shame', icon: ShieldAlert },
     { name: 'Developer Playbooks', path: '/cheat-sheets', icon: CheckSquare },

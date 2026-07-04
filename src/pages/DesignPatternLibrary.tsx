@@ -5,7 +5,7 @@ import {
   Terminal, Settings, Layers, AlertTriangle, Cpu
 } from 'lucide-react'
 
-type PatternType = 'b2b_sso' | 'token_exchange' | 'passwordless'
+type PatternType = 'b2b_sso' | 'token_exchange' | 'passwordless' | 'banking' | 'healthcare' | 'government' | 'workforce'
 
 interface PatternDetails {
   name: string
@@ -86,6 +86,98 @@ const PATTERN_DATA: Record<PatternType, PatternDetails> = {
       'Validate and record the signature counter to detect cloned or replayed authenticator payloads.',
       'Provide fallback authentication options (e.g., recovery codes) during initial passkey setup.'
     ]
+  },
+  banking: {
+    name: 'Financial-grade API (FAPI 1.0 Advanced) Security Pattern',
+    subtitle: 'Enforcing mTLS, sender-constrained tokens, private_key_jwt, and signed request objects (JAR) for open banking APIs.',
+    problemStatement: 'Standard retail banking OAuth bearer tokens are highly vulnerable to leakage and man-in-the-middle interceptions. If a standard access token is stolen via network proxies or leaked server logs, an attacker can immediately replay it to execute unauthorized wire transfers.',
+    architectureOverview: 'Implements Financial-grade API (FAPI 1.0 Advanced) specifications. Enforces mutual TLS (mTLS) for both transport encryption and sender-constraining access tokens. Replaces shared client secrets with asymmetric Client Assertion JWTs (private_key_jwt) and requires cryptographically signed request objects (JAR / RFC 9101) to eliminate client-side parameter tampering.',
+    tradeoffs: [
+      { title: 'Strict mTLS Routing', desc: 'Provides absolute, unbreakable cryptographic proof-of-possession, but increases proxy configuration overhead and does not support legacy HTTP gateways.' },
+      { title: 'Signed JAR requests', desc: 'Eliminates request parameter modification exploits completely, but adds cryptographic signature-verification compute overhead to the API server.' }
+    ],
+    sequenceFlow: [
+      'FinTech Client initiates an mTLS connection to the bank\'s Token endpoint.',
+      'FinTech presents a cryptographically signed Client Assertion JWT signed with its private key.',
+      'Bank Token endpoint verifies the signature, and issues an access token constrained to the client\'s TLS certificate.',
+      'FinTech calls `/transfer` API presenting the sender-constrained token over mTLS.',
+      'Bank API Gateway verifies the token\'s certificate thumbprint matches the TLS client certificate.'
+    ],
+    checklist: [
+      'Enforce asymmetric `private_key_jwt` client authentication inside OAuth client settings.',
+      'Configure the API Gateway to bind the client\'s TLS certificate thumbprint (cnf claim) to the issued JWT access token.',
+      'Require cryptographically signed authorization request objects (JAR / RFC 9101) to protect incoming URL parameters.',
+      'Reject any incoming connections lacking valid mTLS handshakes or utilizing blacklisted cipher suites.'
+    ]
+  },
+  healthcare: {
+    name: 'SMART on FHIR Patient Access & Consent Pattern',
+    subtitle: 'Standardizing scoped user authorization and EHR profile mappings across hospital databases.',
+    problemStatement: 'Healthcare directories contain sensitive patient PII under strict HIPAA and GDPR boundaries. Connecting third-party doctor or patient portals to Electronic Health Record (EHR) databases often leads to massive privilege escalations, leaking unrelated patient records.',
+    architectureOverview: 'Implements the HL7 SMART on FHIR authorization profile based on OAuth 2.0. Utilizes granular clinical scope strings (e.g., `patient/Patient.read`, `user/Observation.write`) to enforce least-privilege boundaries. The central EHR server evaluates user context, ensuring clinicians can only retrieve patient records mapped directly to their assigned active care groups.',
+    tradeoffs: [
+      { title: 'Granular FHIR Scopes', desc: 'Limits API access to specific patient records and resources, but increases OIDC claim mapping complexity across old HL7 database schemas.' },
+      { title: 'Dynamic Care-Team Checks', desc: 'Enforces strict clinical compliance boundaries, but adds run-time database lookup latency during authorization checks.' }
+    ],
+    sequenceFlow: [
+      'Clinician logs into third-party patient portal and requests records.',
+      'Portal redirects clinician to hospital EHR OIDC authorization endpoint requesting scopes: `patient/*.read`.',
+      'EHR prompts credentials, verifies clinician group, and asks user to confirm clinical consent.',
+      'EHR issues signed ID Token and Access Token containing the clinician\'s active `patient_context` claim.',
+      'Portal calls hospital FHIR REST API with the token. FHIR Gateway restricts queries strictly to the assigned patient.'
+    ],
+    checklist: [
+      'Map all user profiles to standard HL7 FHIR resource schemas (e.g. Practitioner, Patient).',
+      'Enforce strict scope verification checks (e.g. `patient/Condition.read`) at the clinical gateway boundary.',
+      'Implement dynamic care-team database checks to block clinicians from accessing records of patients they are not actively treating.',
+      'Encrypt all FHIR resource payloads at-rest and sanitize all transaction audit logs.'
+    ]
+  },
+  government: {
+    name: 'PIV/CAC High-Assurance Gov Federation Pattern',
+    subtitle: 'Implementing hardware-backed PIV/CAC certificate handshakes and FedRAMP security bounds.',
+    problemStatement: 'Government systems manage critical infrastructure and sensitive national databases. Traditional passwords or mobile app SMS OTPs are completely insufficient, failing high-assurance FedRAMP compliance and remaining vulnerable to advanced persistent threat (APT) spear-phishing.',
+    architectureOverview: 'Enforces High-Assurance credential integrations conforming to NIST SP 800-63B (AAL3). Enforces physical cryptographic smart cards (PIV / Personal Identity Verification, or CAC / Common Access Card) carrying hardware-bound client certificates. During login, the browser negotiates a secure client-certificate TLS handshake, prompting the user for their smart card PIN to unlock local signing keys.',
+    tradeoffs: [
+      { title: 'PIV/CAC mTLS Auth', desc: 'Guarantees the highest possible level of phishing-resistant, hardware-backed identity, but requires specialized physical card-reader hardware and enterprise certificate authority setups.' },
+      { title: 'Offline Root CA setup', desc: 'Ensures absolute cryptographic trust control, but requires physical safes and strict multi-person quorum ceremonies.' }
+    ],
+    sequenceFlow: [
+      'User inserts their physical PIV/CAC smart card into the reader and navigates to the government portal.',
+      'Government portal gateway terminates connection and initiates an mTLS handshake, requesting a client certificate.',
+      'Browser prompts user for their smart card PIN to unlock the certificate\'s private signing key.',
+      'Browser signs the TLS handshake claim. Gateway validates the certificate chain against the federal Root CA.',
+      'Gateway parses the subject name (e.g. EDIPI) and maps it to directory permissions, granting access.'
+    ],
+    checklist: [
+      'Enforce NIST SP 800-63B Authenticator Assurance Level 3 (AAL3) guidelines for all admin boundaries.',
+      'Configure the gateway proxies to terminate mTLS and extract the unique Subject Alternative Name (SAN) from the PIV/CAC.',
+      'Maintain active local Certificate Revocation Lists (CRL) or real-time OCSP responders to detect stolen or revoked smart cards.',
+      'Store all intermediate CA signing keys inside physical, air-gapped FIPS 140-2 Level 3 HSM hardware.'
+    ]
+  },
+  workforce: {
+    name: 'Workforce Contextual Access & Posture Pattern',
+    subtitle: 'Continuous device posture attestation and conditional risk-based access rules.',
+    problemStatement: 'Securing corporate workforce directories against lateral movement. In modern remote-work setups, attackers who compromise user credentials can immediately log in from untrusted personal laptops, bypassing static MFA parameters and accessing confidential source code.',
+    architectureOverview: 'Implements Workforce Zero Trust contextual access controls (NIST SP 800-207). It integrates with Endpoint Protection (EDR) and Mobile Device Management (MDM) agents to continuously verify device compliance (encryption active, firewall enabled, managed certificate present) and evaluates real-time geolocation risk scores before allowing a session.',
+    tradeoffs: [
+      { title: 'Continuous Attestation', desc: 'Minimizes lateral movement risk and blocks unmanaged endpoints, but requires installing native agents on employee workstations.' },
+      { title: 'Adaptive MFA Step-Up', desc: 'Balances user friction and security, but requires complex correlation algorithms inside the central policy engine.' }
+    ],
+    sequenceFlow: [
+      'Employee workstation initiates a connection to the corporate SaaS portal.',
+      'Gateway intercepts request and queries local MDM compliance agents to attest device posture.',
+      'Gateway evaluates context variables: user department, device health, trusted IP range, and session risk.',
+      'Central PDP evaluates policies and determines that an unmanaged IP requires biometric step-up checks.',
+      'Workstation prompts local FaceID verification. Handshake completes successfully, granting restricted access.'
+    ],
+    checklist: [
+      'Deploy MDM agents to all corporate endpoints to enforce mandatory disk encryption and active firewalls.',
+      'Deploy client-attestation certificates (mTLS) to corporate-managed devices to identify managed vs personal BYOD.',
+      'Enforce dynamic risk-based policy rules to block or step-up authentication based on impossible travel or anomalous IPs.',
+      'Enforce a default-deny rule fallback. If the device posture agent is offline, restrict access.'
+    ]
   }
 }
 
@@ -126,7 +218,7 @@ export default function DesignPatternLibrary() {
                   onClick={() => setActivePattern(key)}
                   className={`w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold border transition flex items-center justify-between ${activePattern === key ? 'bg-accent-glow border-accent-primary text-accent-primary font-bold' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:bg-bg-nested hover:border-border-subtle'}`}
                 >
-                  <span>{key === 'b2b_sso' ? 'B2B Multi-Tenant' : key === 'token_exchange' ? 'Token Exchange' : 'Passwordless FIDO2'}</span>
+                  <span>{key === 'b2b_sso' ? 'B2B Multi-Tenant' : key === 'token_exchange' ? 'Token Exchange' : key === 'passwordless' ? 'Passwordless FIDO2' : key === 'banking' ? 'Financial-grade API' : key === 'healthcare' ? 'SMART on FHIR' : key === 'government' ? 'PIV/CAC Gov' : 'Workforce Zero Trust'}</span>
                   <ChevronRight className={`w-3.5 h-3.5 transition-transform ${activePattern === key ? 'translate-x-0.5 text-accent-primary' : 'text-text-muted'}`} />
                 </button>
               ))}
@@ -155,7 +247,7 @@ export default function DesignPatternLibrary() {
 
             <div>
               <span className="text-[10px] text-accent-primary font-bold font-mono uppercase tracking-wider bg-accent-glow border border-accent-primary/20 px-2.5 py-1 rounded-full">
-                {activePattern === 'b2b_sso' ? 'Multi-Tenancy' : activePattern === 'token_exchange' ? 'Delegation' : 'Passwordless'}
+                {activePattern === 'b2b_sso' ? 'Multi-Tenancy' : activePattern === 'token_exchange' ? 'Delegation' : activePattern === 'passwordless' ? 'Passwordless' : activePattern === 'banking' ? 'Finance' : activePattern === 'healthcare' ? 'Healthcare' : activePattern === 'government' ? 'Government' : 'Workforce'}
               </span>
               <h2 className="text-xl font-black text-text-primary mt-2.5">{pattern.name}</h2>
               <p className="text-xs text-text-secondary leading-relaxed mt-1">{pattern.subtitle}</p>

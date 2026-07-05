@@ -66,7 +66,11 @@ export default function Header() {
   const isHome = location.pathname === '/'
 
   useEffect(() => {
-    const canonicalUrl = isHome ? `${SITE_URL}/` : `${SITE_URL}${location.pathname}/`
+    // location.pathname already carries a trailing slash for every real
+    // route — strip it before re-appending one, or this produces a
+    // double-slash canonical URL (e.g. ".../playground/jwt//").
+    const normalizedPath = location.pathname.length > 1 ? location.pathname.replace(/\/+$/, '') : ''
+    const canonicalUrl = `${SITE_URL}${normalizedPath}/`
     document.title = isHome ? 'AboutIAM | The Interactive Identity Workspace' : `${pageMeta.title} | AboutIAM`
 
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl)

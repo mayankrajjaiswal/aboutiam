@@ -97,8 +97,17 @@ const DEFAULT_META: RouteMeta = {
 }
 
 export function getRouteMeta(pathname: string): RouteMeta {
-  const exact = ROUTE_META.find((r) => r.path === pathname)
+  // Real URLs (and location.pathname at runtime) always carry a trailing
+  // slash (see scripts/postbuild-ssg.mjs's per-route dist/<path>/index.html
+  // layout), but no ROUTE_META entry does — normalize before matching, or
+  // every non-root route falls through to the prefix fallback below.
+  const normalized = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+  const exact = ROUTE_META.find((r) => r.path === normalized)
   if (exact) return exact
-  const prefix = ROUTE_META.find((r) => r.path !== '/' && pathname.startsWith(r.path))
-  return prefix ?? DEFAULT_META
+  // Fall back to the longest known ancestor path, not array order — e.g.
+  // '/playground/xacml' must not resolve to the earlier, shorter '/playground'
+  // entry just because .find() would hit it first.
+  const prefixMatches = ROUTE_META.filter((r) => r.path !== '/' && normalized.startsWith(`${r.path}/`))
+  if (prefixMatches.length === 0) return DEFAULT_META
+  return prefixMatches.reduce((longest, r) => (r.path.length > longest.path.length ? r : longest))
 }

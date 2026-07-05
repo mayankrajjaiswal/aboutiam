@@ -20,6 +20,8 @@ export default function ItdrLab() {
   const [ipBlocked, setIpBlocked] = useState(false)
   const [sessionRevoked, setSessionRevoked] = useState(false)
   const [numberMatching, setNumberMatching] = useState(false)
+  const [recoveryStepUp, setRecoveryStepUp] = useState(false)
+  const [dormantFreeze, setDormantFreeze] = useState(false)
 
   // Simulation Status
   const [activeAlert, setActiveAlert] = useState<string | null>(null)
@@ -29,7 +31,7 @@ export default function ItdrLab() {
   ])
 
   // Trigger Attacks
-  const triggerAttack = (type: 'impossible_travel' | 'push_fatigue' | 'brute_force') => {
+  const triggerAttack = (type: 'impossible_travel' | 'push_fatigue' | 'brute_force' | 'sim_swap' | 'dormant_account') => {
     setActiveAlert(null)
 
     if (type === 'impossible_travel') {
@@ -93,10 +95,44 @@ export default function ItdrLab() {
         setActiveAlert('BRUTE_FORCE')
       }
     }
+
+    if (type === 'sim_swap') {
+      const newEntries: LogEntry[] = [
+        { time: '10:20:02', ip: '198.51.100.204', geo: 'Unknown Carrier Route', user: 'jordan@company.com', event: 'SMS-based account recovery requested — phone number recently re-provisioned to a new SIM', severity: 'high' }
+      ]
+      setLogs(prev => [...newEntries, ...prev])
+      setLogsTerminal(prev => [
+        ...prev,
+        `🚨 ITDR ALERT: SIM-swap / MFA recovery abuse detected! 'jordan@company.com' triggered an SMS recovery code request immediately after their number was re-provisioned to an unrecognized carrier route.`,
+        recoveryStepUp
+          ? `[SHIELD] Recovery-Flow Step-Up Verification is active. SMS-only recovery rejected pending email confirmation + cool-down. Reset BLOCKED. ✔`
+          : `🚨 SECURITY BREACH: Password reset approved on SMS code alone! Attacker now controls the account recovery flow.`
+      ])
+      if (!recoveryStepUp) {
+        setActiveAlert('SIM_SWAP')
+      }
+    }
+
+    if (type === 'dormant_account') {
+      const newEntries: LogEntry[] = [
+        { time: '10:22:07', ip: '203.0.113.140', geo: 'Sofia, Bulgaria (Proxy)', user: 'contractor.smith@company.com', event: 'Dormant account (last login: 214 days ago) authenticated and requested access to the finance file share', severity: 'high' }
+      ]
+      setLogs(prev => [...newEntries, ...prev])
+      setLogsTerminal(prev => [
+        ...prev,
+        `🚨 ITDR ALERT: Dormant account reactivation detected! 'contractor.smith@company.com' had no login for 214 days — offboarding likely missed revoking its entitlements — and just authenticated from an unrecognized proxy IP.`,
+        dormantFreeze
+          ? `[SHIELD] Dormant-Account Access Freeze is active. Accounts idle beyond the threshold are auto-disabled pending manager re-approval. Login BLOCKED. ✔`
+          : `🚨 SECURITY BREACH: Stale entitlements from a missed offboarding let the attacker walk straight into the finance share!`
+      ])
+      if (!dormantFreeze) {
+        setActiveAlert('DORMANT_REACTIVATION')
+      }
+    }
   }
 
   // Handle mitigation toggle changes
-  const applyMitigation = (type: 'ip' | 'session' | 'mfa') => {
+  const applyMitigation = (type: 'ip' | 'session' | 'mfa' | 'recovery' | 'dormant') => {
     if (type === 'ip') {
       setIpBlocked(!ipBlocked)
       setLogsTerminal(p => [...p, `[SOC] Geoblocking and IP lockout for Bulgarian proxy ranges ${!ipBlocked ? 'ENABLED' : 'DISABLED'}.`])
@@ -121,6 +157,22 @@ export default function ItdrLab() {
         setLogsTerminal(p => [...p, `✔ Push fatigue bypass neutralized. Number matching blocks push hijacking!`])
       }
     }
+    if (type === 'recovery') {
+      setRecoveryStepUp(!recoveryStepUp)
+      setLogsTerminal(p => [...p, `[SOC] Recovery-Flow Step-Up Verification (email confirmation + cool-down on SMS-based resets) ${!recoveryStepUp ? 'ENABLED' : 'DISABLED'}.`])
+      if (!recoveryStepUp && activeAlert === 'SIM_SWAP') {
+        setActiveAlert(null)
+        setLogsTerminal(p => [...p, `✔ SIM-swap recovery abuse neutralized. SMS-only resets can no longer bypass account recovery step-up.`])
+      }
+    }
+    if (type === 'dormant') {
+      setDormantFreeze(!dormantFreeze)
+      setLogsTerminal(p => [...p, `[SOC] Dormant-Account Access Freeze (auto-disable after inactivity threshold) ${!dormantFreeze ? 'ENABLED' : 'DISABLED'}.`])
+      if (!dormantFreeze && activeAlert === 'DORMANT_REACTIVATION') {
+        setActiveAlert(null)
+        setLogsTerminal(p => [...p, `✔ Dormant account reactivation neutralized. Idle accounts are frozen until a manager re-approves them.`])
+      }
+    }
   }
 
   const handleReset = () => {
@@ -131,6 +183,8 @@ export default function ItdrLab() {
     setIpBlocked(false)
     setSessionRevoked(false)
     setNumberMatching(false)
+    setRecoveryStepUp(false)
+    setDormantFreeze(false)
     setActiveAlert(null)
     setLogsTerminal([
       `[SOC] ITDR log monitoring initialized...`,
@@ -187,6 +241,22 @@ export default function ItdrLab() {
                 className="w-full py-2.5 px-3 rounded-lg border border-border-subtle hover:border-status-danger bg-bg-nested hover:bg-bg-sidebar transition-all flex items-center justify-between text-xs text-text-primary font-bold"
               >
                 <span>Credential Brute-Force Spray</span>
+                <span className="text-[8px] uppercase bg-status-danger/10 text-status-danger font-bold px-1.5 py-0.5 rounded">High Severity</span>
+              </button>
+
+              <button
+                onClick={() => triggerAttack('sim_swap')}
+                className="w-full py-2.5 px-3 rounded-lg border border-border-subtle hover:border-status-danger bg-bg-nested hover:bg-bg-sidebar transition-all flex items-center justify-between text-xs text-text-primary font-bold"
+              >
+                <span>SIM-Swap / MFA Recovery Abuse</span>
+                <span className="text-[8px] uppercase bg-status-danger/10 text-status-danger font-bold px-1.5 py-0.5 rounded">High Severity</span>
+              </button>
+
+              <button
+                onClick={() => triggerAttack('dormant_account')}
+                className="w-full py-2.5 px-3 rounded-lg border border-border-subtle hover:border-status-danger bg-bg-nested hover:bg-bg-sidebar transition-all flex items-center justify-between text-xs text-text-primary font-bold"
+              >
+                <span>Dormant Account Reactivation</span>
                 <span className="text-[8px] uppercase bg-status-danger/10 text-status-danger font-bold px-1.5 py-0.5 rounded">High Severity</span>
               </button>
             </div>
@@ -255,6 +325,44 @@ export default function ItdrLab() {
                 >
                   <div className={`w-4 h-4 rounded-full bg-white transition-transform ${
                     sessionRevoked ? 'translate-x-4' : 'translate-x-0'
+                  }`} />
+                </button>
+              </div>
+
+              {/* Recovery-Flow Step-Up */}
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <span className="text-[10px] font-black text-text-primary block leading-tight uppercase">Recovery-Flow Step-Up</span>
+                  <span className="text-[8px] text-text-muted block">Defeat SIM-swap MFA recovery abuse</span>
+                </div>
+                <button
+                  onClick={() => applyMitigation('recovery')}
+                  className={`w-9 h-5 rounded-full p-0.5 transition-colors shrink-0 ${
+                    recoveryStepUp ? 'bg-accent-primary' : 'bg-border-subtle'
+                  }`}
+                  aria-label="Toggle Recovery-Flow Step-Up"
+                >
+                  <div className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                    recoveryStepUp ? 'translate-x-4' : 'translate-x-0'
+                  }`} />
+                </button>
+              </div>
+
+              {/* Dormant Account Freeze */}
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <span className="text-[10px] font-black text-text-primary block leading-tight uppercase">Dormant Account Freeze</span>
+                  <span className="text-[8px] text-text-muted block">Auto-disable stale idle accounts</span>
+                </div>
+                <button
+                  onClick={() => applyMitigation('dormant')}
+                  className={`w-9 h-5 rounded-full p-0.5 transition-colors shrink-0 ${
+                    dormantFreeze ? 'bg-accent-primary' : 'bg-border-subtle'
+                  }`}
+                  aria-label="Toggle Dormant Account Freeze"
+                >
+                  <div className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                    dormantFreeze ? 'translate-x-4' : 'translate-x-0'
                   }`} />
                 </button>
               </div>

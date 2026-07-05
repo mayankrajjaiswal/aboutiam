@@ -5,7 +5,7 @@ import {
   Settings, AlertTriangle, List, Check
 } from 'lucide-react'
 
-type IncidentType = 'okta_support' | 'golden_saml' | 'mfa_fatigue'
+type IncidentType = 'okta_support' | 'golden_saml' | 'mfa_fatigue' | 'snowflake_breach'
 
 interface BulletinDetails {
   title: string
@@ -16,6 +16,22 @@ interface BulletinDetails {
   playbookSteps: string[]
   remediationSnippet: string
   snippetLanguage: string
+  controlsMapped: string[]
+}
+
+const CONTROL_TITLES: Record<string, string> = {
+  soc2_1: 'SOC 2 CC6.1: Automated Directory Provisioning',
+  soc2_2: 'SOC 2 CC6.2: Phishing-Proof MFA',
+  soc2_3: 'SOC 2 CC6.3: JIT Role Elevation',
+  soc2_4: 'SOC 2 CC6.8: API Gateway Authorization',
+  iso_1: 'ISO 27001 A.5.15: Access Rights Lifecycle',
+  iso_2: 'ISO 27001 A.5.16: Secure Identity & Secrets Mgmt',
+  iso_3: 'ISO 27001 A.5.17: Privileged Session Monitoring',
+  iso_4: 'ISO 27001 A.5.18: Dynamic Group Re-evaluation',
+  pci_1: 'PCI-DSS Req 7: Need-to-Know Access',
+  pci_2: 'PCI-DSS Req 8.3: MFA Into the CDE',
+  pci_3: 'PCI-DSS Req 8.6: Unique Service Account Auth',
+  pci_4: 'PCI-DSS Req 10.2: Cardholder Data Audit Trails',
 }
 
 const BULLETIN_DATA: Record<IncidentType, BulletinDetails> = {
@@ -32,7 +48,8 @@ const BULLETIN_DATA: Record<IncidentType, BulletinDetails> = {
       'Enforce short admin-session timeouts and audit all support bypass configuration changes.'
     ],
     remediationSnippet: `// Node.js Express Session IP Binding check\napp.use((req, res, next) => {\n  if (req.session.userId) {\n    if (req.session.ipAddress !== req.ip) {\n      req.session.destroy(); // Terminate session immediately on IP swap\n      return res.status(401).send("Unauthorized: IP Mismatch");\n    }\n  }\n  next();\n});`,
-    snippetLanguage: 'JavaScript'
+    snippetLanguage: 'JavaScript',
+    controlsMapped: ['soc2_2', 'iso_3']
   },
   golden_saml: {
     title: 'SolarWinds Golden SAML (APT29 Nobelium)',
@@ -47,7 +64,8 @@ const BULLETIN_DATA: Record<IncidentType, BulletinDetails> = {
       'Migrate workforce single-sign-on (SSO) channels from on-premise federations to cloud-native Entra ID.'
     ],
     remediationSnippet: `# PowerShell: Enable ADFS Token Signing Key HSM protection\nSet-AdfsCertificate -CertificateType Token-Signing -Thumbprint "THUMBPRINT_HEX" -Pin "HSM_PIN_HERE"`,
-    snippetLanguage: 'PowerShell'
+    snippetLanguage: 'PowerShell',
+    controlsMapped: ['iso_2', 'soc2_1']
   },
   mfa_fatigue: {
     title: 'MFA Fatigue Push-Bombing Handovers',
@@ -62,7 +80,24 @@ const BULLETIN_DATA: Record<IncidentType, BulletinDetails> = {
       'Enforce alert thresholds to block or lock accounts when more than 5 MFA notifications trigger in 1 minute.'
     ],
     remediationSnippet: `{\n  "MfaFatigueLockout": {\n    "MaxPushRequestsPerMinute": 5,\n    "LockoutDurationMinutes": 15,\n    "TriggerAction": "LOCK_ACCOUNT"\n  }\n}`,
-    snippetLanguage: 'JSON Config'
+    snippetLanguage: 'JSON Config',
+    controlsMapped: ['soc2_2']
+  },
+  snowflake_breach: {
+    title: 'Snowflake Customer Tenant Credential Stuffing (UNC5537)',
+    date: 'May 2024',
+    severity: 'Critical',
+    vector: 'Credential Stuffing Against MFA-less Customer Accounts',
+    description: 'Threat actor UNC5537 used credentials previously harvested by infostealer malware — unrelated to any Snowflake platform vulnerability — to log into customer Snowflake accounts that had neither MFA nor network allow-listing enabled. This affected multiple named customers, including Ticketmaster and Advance Auto Parts, among others widely reported. The Snowflake platform itself was never compromised; every impacted tenant had left MFA disabled on the customer side.',
+    playbookSteps: [
+      'Mandate MFA enforcement on every customer/tenant account accessing the SaaS platform, not just administrative logins.',
+      'Enable network policy allow-listing to restrict data warehouse access to known corporate IP ranges.',
+      'Screen for credentials appearing in infostealer dumps and force rotation before attackers can reuse them.',
+      'Remember: in a shared-responsibility SaaS/cloud-provider model, tenant-side authentication hardening is the customer\'s responsibility, not the vendor\'s.'
+    ],
+    remediationSnippet: `-- Snowflake: Enforce MFA and restrict access via network policy\nALTER USER target_user SET MINS_TO_BYPASS_MFA = 0;\nCREATE NETWORK POLICY corp_allowlist ALLOWED_IP_LIST = ('203.0.113.0/24');\nALTER ACCOUNT SET NETWORK_POLICY = corp_allowlist;`,
+    snippetLanguage: 'SQL',
+    controlsMapped: ['soc2_2', 'pci_1']
   }
 }
 
@@ -104,8 +139,10 @@ export default function SecurityBulletins() {
       addLog(`SIEM Log: User "admin@company.com" logged in from anomalous IP: 203.0.113.88. No MFA challenge prompted during session init!`)
     } else if (activeIncident === 'golden_saml') {
       addLog(`SIEM Log: Multiple administrative logins authenticated to cloud portal without matching ADFS request logs!`)
-    } else {
+    } else if (activeIncident === 'mfa_fatigue') {
       addLog(`SIEM Log: Administrative user triggered 15 push notifications in 2 minutes before successful approval.`)
+    } else {
+      addLog(`SIEM Log: Customer tenant account "svc-integration@customer.com" authenticated successfully from an unrecognized IP with zero MFA challenges.`)
     }
     setCrisisStep(1)
   }
@@ -116,8 +153,10 @@ export default function SecurityBulletins() {
       addLog(`Incident Detail: Cookie extraction trace confirmed. Attacker repurposed global admin session cookie. Stolen cookie is bound to an active support ticket HAR attachment!`)
     } else if (activeIncident === 'golden_saml') {
       addLog(`Incident Detail: SAML assertion signatures verified, but ADFS server logs do not show token generation. Certificate key is likely compromised locally!`)
-    } else {
+    } else if (activeIncident === 'mfa_fatigue') {
       addLog(`Incident Detail: User confirmed they approved the push request after receiving consecutive notification popups simply to stop the device buzzings.`)
+    } else {
+      addLog(`Incident Detail: Credential matches a batch harvested by infostealer malware months earlier. Account had no MFA enrolled and no network policy allow-list configured.`)
     }
     setCrisisStep(2)
   }
@@ -145,7 +184,7 @@ export default function SecurityBulletins() {
         setContainmentScore('F- (CRITICAL LEAKAGE)')
         addLog('❌ Containment Failed! Attackers still hold the ADFS private signing key, letting them forge valid administrative SAML assertions at will.')
       }
-    } else {
+    } else if (activeIncident === 'mfa_fatigue') {
       if (strategy === 'high') {
         addLog('Action: Enforcing Context-Aware Number Matching, location-aware notifications, and lockouts after 5 consecutive push failures.')
         setContainmentScore('A+ (EXCELLENT)')
@@ -154,6 +193,16 @@ export default function SecurityBulletins() {
         addLog('Action: Sending corporate security awareness training emails to employees.')
         setContainmentScore('F- (CRITICAL LEAKAGE)')
         addLog('❌ Containment Failed! Simple push exhaustion hacks are still structurally possible.')
+      }
+    } else {
+      if (strategy === 'high') {
+        addLog('Action: Enforcing tenant-wide MFA and network policy allow-listing; forcing rotation of every credential matched against known infostealer dumps.')
+        setContainmentScore('A+ (EXCELLENT)')
+        addLog('✓ Containment Successful! Stuffed credentials are worthless without the second factor, and the account is unreachable outside the allow-listed range.')
+      } else {
+        addLog('Action: Filing a support ticket asking the platform vendor to investigate their infrastructure for a breach.')
+        setContainmentScore('F- (CRITICAL LEAKAGE)')
+        addLog('❌ Containment Failed! The platform was never compromised — the vulnerable surface is entirely tenant-side and remains wide open.')
       }
     }
     setCrisisStep(3)
@@ -195,7 +244,7 @@ export default function SecurityBulletins() {
                   className={`w-full text-left p-3 rounded-lg border text-xs flex items-center justify-between transition ${activeIncident === key ? 'bg-accent-glow border-accent-primary text-accent-primary font-bold' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:bg-bg-nested hover:border-border-subtle'}`}
                 >
                   <div>
-                    <span className="font-bold block">{key === 'okta_support' ? 'Okta HAR Cookie Theft' : key === 'golden_saml' ? 'SolarWinds Golden SAML' : 'MFA Fatigue Exhaustion'}</span>
+                    <span className="font-bold block">{key === 'okta_support' ? 'Okta HAR Cookie Theft' : key === 'golden_saml' ? 'SolarWinds Golden SAML' : key === 'mfa_fatigue' ? 'MFA Fatigue Exhaustion' : 'Snowflake Credential Stuffing'}</span>
                     <span className="text-[9px] text-text-muted">{BULLETIN_DATA[key].date}</span>
                   </div>
                   <ChevronRight className={`w-3.5 h-3.5 transition-transform ${activeIncident === key ? 'translate-x-0.5 text-accent-primary' : 'text-text-muted'}`} />
@@ -245,6 +294,22 @@ export default function SecurityBulletins() {
 
               <h2 className="text-lg font-black text-text-primary uppercase tracking-wide">{bulletin.title}</h2>
               <p className="text-xs text-text-secondary leading-relaxed mt-2.5">{bulletin.description}</p>
+
+              <div className="mt-4 pt-3 border-t border-border-subtle/60">
+                <span className="text-[9px] text-text-muted font-bold uppercase tracking-wider block mb-2">Controls Mapped (Cheat Sheet Cross-Reference)</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {bulletin.controlsMapped.map((controlId) => (
+                    <Link
+                      key={controlId}
+                      to="/cheat-sheets"
+                      className="text-[10px] font-bold font-mono px-2 py-1 rounded-full bg-accent-glow border border-accent-primary/25 text-accent-primary hover:bg-accent-primary/20 transition"
+                      title="View this control in the Cheat Sheets playbooks"
+                    >
+                      {CONTROL_TITLES[controlId] ?? controlId}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 

@@ -29,7 +29,7 @@ export function base64UrlEncodeBytes(bytes: Uint8Array): string {
   return toBase64Url(bytesToBase64(bytes))
 }
 
-export function base64UrlDecodeBytes(base64url: string): Uint8Array {
+export function base64UrlDecodeBytes(base64url: string): Uint8Array<ArrayBuffer> {
   return base64ToBytes(fromBase64Url(base64url))
 }
 

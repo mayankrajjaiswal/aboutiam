@@ -90,6 +90,12 @@ import AmbientTrust from './pages/Playgrounds/AmbientTrust'
 import WorkloadMesh from './pages/Playgrounds/WorkloadMesh'
 import AuthMatchmaker from './pages/Playgrounds/AuthMatchmaker'
 
+// Content Gaps & Enhancements: Standards & Compliance Coverage
+import XacmlPolicyEngine from './pages/Playgrounds/XacmlPolicyEngine'
+import GnapVisualizer from './pages/Playgrounds/GnapVisualizer'
+import CaepLab from './pages/Playgrounds/CaepLab'
+import VcDidLab from './pages/Playgrounds/VcDidLab'
+
 export default function App() {
   const { initializeTheme } = useThemeStore()
 
@@ -185,6 +191,10 @@ export default function App() {
               <Route path="/playground/ambient-trust" element={<AmbientTrust />} />
               <Route path="/playground/workload-mesh" element={<WorkloadMesh />} />
               <Route path="/explore/matchmaker" element={<AuthMatchmaker />} />
+              <Route path="/playground/xacml" element={<XacmlPolicyEngine />} />
+              <Route path="/playground/gnap" element={<GnapVisualizer />} />
+              <Route path="/playground/caep" element={<CaepLab />} />
+              <Route path="/playground/vc-did" element={<VcDidLab />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/explore" element={<Explore />} />

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck } from 'lucide-react'
 
 export default function PlaygroundCatalog() {
   const playgrounds = [
@@ -190,6 +190,34 @@ export default function PlaygroundCatalog() {
       desc: "Deconstruct the binary authenticatorData and CBOR COSE public keys byte-by-byte during WebAuthn public-key registrations.",
       icon: Fingerprint,
       link: "/playground/passkey-internals",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "XACML 3.0 Policy Engine",
+      desc: "Evaluate real combining-algorithm semantics — deny-overrides, permit-overrides, first-applicable, and only-one-applicable — against an editable request context.",
+      icon: Scale,
+      link: "/playground/xacml",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "GNAP Grant Negotiation Visualizer",
+      desc: "Step through the RFC 9635 grant request, interaction, continuation, and key-bound token issuance timeline.",
+      icon: Radio,
+      link: "/playground/gnap",
+      badge: "Active (Standard)",
+    },
+    {
+      title: "CAEP Continuous Access Evaluation Lab",
+      desc: "Push signed Security Event Tokens (SETs) from a transmitter to receivers and watch sessions revoke or re-evaluate in real time.",
+      icon: Activity,
+      link: "/playground/caep",
+      badge: "Active (Standard)",
+    },
+    {
+      title: "Verifiable Credentials & DID Lab",
+      desc: "Issue, hold, and verify a real Ed25519-signed Verifiable Credential and Presentation across an Issuer/Holder/Verifier flow.",
+      icon: BadgeCheck,
+      link: "/playground/vc-did",
       badge: "Active (Advanced)",
     }
   ]

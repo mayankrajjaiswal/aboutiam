@@ -73,6 +73,39 @@ export default function CheatSheets() {
         { id: 'hipaa_3', task: '§164.312(d): Person or Entity Authentication', desc: 'Disable standard IP-based or static API key authentication, requiring dynamic cryptographic user and system-to-system validations.' },
         { id: 'hipaa_4', task: '§164.312(e): Transmission Security (Integrity)', desc: 'Block unauthorized message modification in transit by signing all API payload parameters with asymmetric cryptographic hashes.' }
       ]
+    },
+    {
+      id: 'pci_dss',
+      title: 'PCI-DSS v4.0 - Identity & Access Requirements',
+      target: 'Payment/Banking Engineers',
+      checks: [
+        { id: 'pci_1', task: 'Req 7: Restrict Access by Business Need-to-Know', desc: 'Limit access to system components and cardholder data to only those individuals whose job requires such access, defined by role.' },
+        { id: 'pci_2', task: 'Req 8.3: MFA for All Access Into the CDE', desc: 'Enforce multi-factor authentication for all access into the Cardholder Data Environment, not just remote or administrative access.' },
+        { id: 'pci_3', task: 'Req 8.6: Unique Authentication for Service/System Accounts', desc: 'Prohibit shared credentials for service and system accounts; each account must be uniquely identifiable and managed.' },
+        { id: 'pci_4', task: 'Req 10.2: Audit Trails for All Access to Cardholder Data', desc: 'Log all individual access to cardholder data, including the identity performing the action and the outcome.' }
+      ]
+    },
+    {
+      id: 'nist_80063',
+      title: 'NIST SP 800-63-3 - Digital Identity Guidelines',
+      target: 'Government & Federal Contractors',
+      checks: [
+        { id: 'nist_1', task: 'IAL2: Identity Proofing Evidence Requirements', desc: 'Collect and validate at least one piece of superior or two pieces of strong evidence during remote or in-person identity proofing.' },
+        { id: 'nist_2', task: 'AAL2/AAL3: Phishing-Resistant Authenticator Requirements', desc: 'Require multi-factor cryptographic authenticators at AAL2, and hardware-based, verifier-impersonation-resistant authenticators at AAL3.' },
+        { id: 'nist_3', task: 'FAL3: Holder-of-Key Federation Assertions', desc: 'Bind federated assertions to a cryptographic key held by the subscriber, rather than relying on bearer assertions alone.' },
+        { id: 'nist_4', task: 'Re-authentication & Session Binding Requirements', desc: 'Enforce periodic re-authentication and bind sessions to the authenticated device or channel to prevent session injection.' }
+      ]
+    },
+    {
+      id: 'gdpr',
+      title: 'GDPR Article 32 - Technical & Organizational Measures',
+      target: 'EU-Facing SaaS & Data Controllers',
+      checks: [
+        { id: 'gdpr_1', task: 'Art. 32(1)(a): Pseudonymization & Encryption of Personal Data', desc: 'Apply pseudonymization and encryption as appropriate technical measures to protect personal data at rest and in transit.' },
+        { id: 'gdpr_2', task: 'Art. 32(1)(b): Ongoing Confidentiality, Integrity & Availability', desc: 'Ensure the ongoing confidentiality, integrity, availability, and resilience of processing systems handling personal data.' },
+        { id: 'gdpr_3', task: 'Art. 25: Privacy-by-Design Least-Privilege Access', desc: 'Design access to personal data stores around least-privilege defaults, granting the minimum necessary scope by default.' },
+        { id: 'gdpr_4', task: 'Art. 33: 72-Hour Breach Notification Readiness', desc: 'Maintain sufficient audit logging and detection capability to identify a personal data breach and notify the supervisory authority within 72 hours.' }
+      ]
     }
   ]
 

@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  Network, ArrowRight, Shield, Play, Terminal, Cpu, Database, 
-  Globe, Server, Users, Cloud, RefreshCw, KeySquare, ChevronRight, Laptop
+import {
+  Network, ArrowRight, Shield, Play, Terminal, Cpu, Database,
+  Globe, Server, Users, Cloud, RefreshCw, KeySquare, ChevronRight, Laptop,
+  Wallet, Fingerprint, Landmark, TrendingUp, Send, FileCheck, Waypoints, Siren, Building2, IdCard, Scale, Eye,
+  HardHat, Router, Cog, Truck, Factory, CreditCard, ScanLine, Boxes
 } from 'lucide-react'
 
-type ArchitectureType = 'zero_trust' | 'b2b_saas' | 'multi_cloud' | 'ciam_social' | 'oauth_oidc' | 'saml' | 'pam' | 'pki' | 'k8s_identity'
+type ArchitectureType = 'zero_trust' | 'b2b_saas' | 'multi_cloud' | 'ciam_social' | 'oauth_oidc' | 'saml' | 'pam' | 'pki' | 'k8s_identity' | 'banking' | 'healthcare' | 'government' | 'manufacturing' | 'retail'
 
 interface NodeDetails {
   title: string
@@ -394,6 +396,236 @@ const ARCHITECTURE_DATA: Record<ArchitectureType, {
         bestPractice: 'Avoid using the "default" service account. Create dedicated, least-privilege service accounts per workload.'
       }
     }
+  },
+  banking: {
+    name: 'Banking & Financial Services Identity Architecture (PCI-DSS & PSD2)',
+    description: 'Models Strong Customer Authentication, segmented core-ledger dual control, real-time fraud screening, and correspondent-bank wire authorization.',
+    nodes: {
+      customer_channel: {
+        title: 'Digital Banking Channel (Customer)',
+        role: 'The customer-facing mobile or web banking app initiating payment and account-management requests, carrying FIDO2/PSD2 Strong Customer Authentication (SCA) proofs.',
+        analogy: 'A customer walking up to a bank teller window with their government ID already in hand.',
+        spec: 'A PSD2-regulated payment initiation client performing FIDO2/WebAuthn biometric SCA challenges before every high-risk transaction.',
+        threatModel: 'Threat: Malware-driven transaction hijacking (man-in-the-browser). Mitigation: Bind SCA dynamic linking to the exact payee and amount so a tampered transaction invalidates the signature.',
+        bestPractice: 'Re-run SCA on every new payee or amount change; never reuse a single SCA approval across multiple transactions.'
+      },
+      sca_engine: {
+        title: 'Strong Customer Authentication (SCA) Engine',
+        role: 'Evaluates PSD2 exemption eligibility (low-value, trusted beneficiary, TRA) and enforces dynamic linking between the authentication and the specific transaction.',
+        analogy: 'The bank manager who decides whether a transaction is small enough to wave through or big enough to demand a second signature.',
+        spec: 'Implements the EBA Regulatory Technical Standards (RTS) on SCA, computing Transaction Risk Analysis (TRA) fraud-rate thresholds to grant exemptions.',
+        threatModel: 'Threat: Exemption abuse to bypass MFA on fraudulent transfers. Mitigation: Cap cumulative exempted transaction value and force full SCA once thresholds are breached.',
+        bestPractice: 'Log every exemption decision with its computed fraud rate for regulator audit trails.'
+      },
+      core_ledger: {
+        title: 'Core Banking Ledger',
+        role: 'The authoritative system of record for account balances and transaction postings, operating inside the segmented Cardholder/Core Data Environment (CDE).',
+        analogy: 'The bank vault\'s master ledger book that only specific dual-keyed officers may amend.',
+        spec: 'A segmented, network-isolated ledger platform enforcing dual-control approvals for any manual balance adjustment or wire override.',
+        threatModel: 'Threat: Insider-initiated fraudulent ledger entries. Mitigation: Require maker-checker (dual-control) approval on every manual posting above a defined threshold.',
+        bestPractice: 'Isolate the ledger network segment from general corporate IT, permitting only brokered, audited connections.'
+      },
+      fraud_engine: {
+        title: 'Real-Time Fraud & AML Risk Engine',
+        role: 'Screens every transaction for velocity anomalies, sanctioned-party matches (OFAC), and money-laundering typologies before settlement.',
+        analogy: 'The airport customs officer scanning every passenger\'s name against a watchlist before letting them board.',
+        spec: 'A streaming risk engine applying velocity rules and real-time OFAC/sanctions-list screening against every payment instruction.',
+        threatModel: 'Threat: Structuring (breaking large transfers into many small ones to evade thresholds). Mitigation: Aggregate velocity scoring across a rolling window, not just single-transaction limits.',
+        bestPractice: 'Feed confirmed fraud outcomes back into the risk model to continuously retrain detection thresholds.'
+      },
+      swift_gateway: {
+        title: 'SWIFT / Correspondent Banking Gateway',
+        role: 'Formats and transmits verified, high-value wire instructions to correspondent banks over the SWIFT messaging network.',
+        analogy: 'The diplomatic courier who carries a sealed, dual-signed letter between two nations\' treasuries.',
+        spec: 'Enforces the SWIFT Customer Security Programme (CSP) mandatory controls, requiring dual-authorization sign-off before releasing any outbound wire message.',
+        threatModel: 'Threat: Malware forging fraudulent SWIFT messages (cf. Bangladesh Bank heist). Mitigation: Enforce hardware-token dual-authorization and out-of-band confirmation for high-value wires.',
+        bestPractice: 'Segregate SWIFT terminal access on dedicated, hardened workstations with no general internet access.'
+      }
+    }
+  },
+  healthcare: {
+    name: 'Healthcare Identity Architecture (HIPAA & HL7 FHIR)',
+    description: 'Models patient-facing CIAM proofing, minimum-necessary EHR scoping, SMART on FHIR granular authorization, break-glass emergency access, and the Business Associate boundary.',
+    nodes: {
+      patient_portal: {
+        title: 'Patient Portal (CIAM)',
+        role: 'Customer-facing portal where patients register, verify their identity, and view their own health records.',
+        analogy: 'The hospital\'s front-desk check-in kiosk that verifies you are who your appointment says you are.',
+        spec: 'A CIAM registration flow performing NIST IAL2-level identity proofing (government ID plus a liveness/biometric check) before granting portal access.',
+        threatModel: 'Threat: Account takeover exposing a patient\'s full medical history. Mitigation: Require step-up authentication before displaying sensitive diagnosis or mental-health records.',
+        bestPractice: 'Offer passwordless FIDO2 login to reduce credential-stuffing exposure on patient accounts.'
+      },
+      fhir_gateway: {
+        title: 'HL7 FHIR API Gateway',
+        role: 'Exposes clinical data to patient apps and third-party health tools through standardized, scope-limited FHIR resources.',
+        analogy: 'A hospital records window that only releases the exact document category you have a signed release for.',
+        spec: 'Implements SMART on FHIR, issuing granular OAuth 2.0 scopes (e.g., patient/Observation.read) rather than blanket record access.',
+        threatModel: 'Threat: Over-broad scope grants leaking unrelated record categories to a third-party app. Mitigation: Enforce scope allow-lists per registered SMART app and reject undeclared scope requests.',
+        bestPractice: 'Version and publish a FHIR CapabilityStatement so integrators know exactly which resources and scopes are supported.'
+      },
+      ehr_system: {
+        title: 'Electronic Health Record (EHR) System',
+        role: 'The system of record for clinical data, enforcing that every user only sees the minimum data necessary for their treatment role.',
+        analogy: 'The hospital records room clerk who hands a nurse only the specific patient chart requested, not the entire cabinet.',
+        spec: 'Implements HIPAA §164.312 Technical Safeguards and the Minimum Necessary Standard, scoping field-level record visibility to the requester\'s clinical role.',
+        threatModel: 'Threat: Curious-employee snooping on a celebrity or family member\'s chart. Mitigation: Run automated audit analytics flagging record access with no matching treatment relationship.',
+        bestPractice: 'Attach a treatment-relationship justification to every record access for audit defensibility.'
+      },
+      break_glass: {
+        title: 'Break-Glass Emergency Access',
+        role: 'Grants clinicians immediate, time-boxed elevated access to a patient record during an emergency, bypassing normal relationship checks.',
+        analogy: 'The fire alarm glass box in a hallway: breaking it gets you the axe immediately, but someone reviews the broken glass afterward.',
+        spec: 'Issues a short-lived elevated-access token (typically minutes to hours) that auto-expires and triggers a mandatory post-hoc supervisor review.',
+        threatModel: 'Threat: Break-glass access used as a routine bypass rather than a true emergency. Mitigation: Auto-flag every break-glass invocation for mandatory next-business-day review with termination consequences for misuse.',
+        bestPractice: 'Never allow break-glass grants to silently expire unreviewed — route every instance to a compliance queue.'
+      },
+      business_associate: {
+        title: 'Business Associate Boundary',
+        role: 'The contractual and technical boundary governing any third party (billing vendor, cloud host, analytics firm) that processes PHI on the covered entity\'s behalf.',
+        analogy: 'The visiting contractor who may only enter the building escorted, under a signed non-disclosure agreement, and only in the rooms specified in their work order.',
+        spec: 'Every data flow crossing this boundary is governed by a signed Business Associate Agreement (BAA) and scoped API credentials limited to the vendor\'s specific function.',
+        threatModel: 'Threat: A breached subcontractor exposing PHI outside the covered entity\'s direct control. Mitigation: Require BAAs to flow down to sub-subcontractors and audit vendor access logs periodically.',
+        bestPractice: 'Maintain a live inventory of every Business Associate with API access and their exact PHI scope.'
+      }
+    }
+  },
+  government: {
+    name: 'Government & Public Sector Identity Architecture (FedRAMP & NIST 800-63)',
+    description: 'Models PIV/CAC hardware-bound credentials, NIST-tiered assurance assertions, cross-agency federation, the FedRAMP authorization boundary, and continuous audit monitoring.',
+    nodes: {
+      piv_card: {
+        title: 'PIV / CAC Smart Card',
+        role: 'The physical, hardware-bound credential federal employees and contractors present to authenticate to government systems.',
+        analogy: 'A federal employee badge with an embedded chip that must be physically inserted into a reader, not just shown.',
+        spec: 'A FIPS 201-compliant Personal Identity Verification (PIV) or Common Access Card (CAC) storing a hardware-bound X.509 certificate and private key.',
+        threatModel: 'Threat: Cloned or stolen physical card used without the holder present. Mitigation: Require PIN entry alongside the card (something-you-have plus something-you-know) at every logon.',
+        bestPractice: 'Bind the card\'s private key to non-exportable hardware so it can never be copied off the chip.'
+      },
+      assurance_broker: {
+        title: 'IAL/AAL/FAL Assurance Broker',
+        role: 'Determines and asserts the identity, authenticator, and federation assurance levels achieved for a given authentication event.',
+        analogy: 'A notary who stamps a document not just "verified" but with a specific grade of verification rigor that other offices can trust.',
+        spec: 'Implements NIST SP 800-63-3, computing and asserting IAL/AAL/FAL tier claims inside issued federation tokens.',
+        threatModel: 'Threat: A relying party silently accepting a lower assurance tier than it requires. Mitigation: Have relying parties explicitly request and validate minimum acceptable IAL/AAL/FAL values, rejecting under-strength assertions.',
+        bestPractice: 'Stamp the achieved assurance tier directly into the token claims so every downstream relying party can independently verify it.'
+      },
+      agency_broker: {
+        title: 'Cross-Agency Federation Broker',
+        role: 'A shared identity provider (Login.gov-style) that lets citizens and federal employees use one credential across many agency applications.',
+        analogy: 'A single embassy visa that is honored at the border crossing of every allied nation, rather than requiring a new visa per country.',
+        spec: 'A centralized OIDC/SAML IdP federating dozens of independent agency relying parties under one shared assurance and proofing pipeline.',
+        threatModel: 'Threat: Single federated IdP compromise cascading access across every connected agency. Mitigation: Monitor for anomalous cross-agency assertion patterns and support rapid, forest-wide token revocation.',
+        bestPractice: 'Publish a single, well-audited proofing and authentication pipeline so agencies stop duplicating costly proofing infrastructure.'
+      },
+      fedramp_boundary: {
+        title: 'FedRAMP Authorization Boundary',
+        role: 'Defines the exact set of systems, services, and data flows that fall under a cloud service\'s federal security authorization.',
+        analogy: 'The fence line around a secured federal facility: everything inside it was inspected and approved, anything outside was not.',
+        spec: 'A System Security Plan (SSP) mapping every in-scope component to its required NIST SP 800-53 control baseline (Low/Moderate/High).',
+        threatModel: 'Threat: Undocumented "shadow" services quietly expanding the true attack surface beyond the authorized boundary. Mitigation: Continuously reconcile deployed infrastructure inventory against the SSP-declared boundary.',
+        bestPractice: 'Treat any new service addition as an SSP change requiring re-assessment before it goes live in the authorized environment.'
+      },
+      audit_continuous_monitoring: {
+        title: 'Continuous Monitoring & Audit Logging',
+        role: 'Aggregates immutable audit logs and continuously reassesses control effectiveness across the entire authorization boundary.',
+        analogy: 'The building\'s 24/7 security camera feed, permanently recorded to a vault no single guard can erase.',
+        spec: 'Implements FedRAMP Continuous Monitoring (ConMon), shipping immutable, tamper-evident logs and monthly vulnerability scan attestations to the authorizing agency.',
+        threatModel: 'Threat: Log tampering to hide unauthorized access after the fact. Mitigation: Write logs to an append-only, cryptographically chained store with independent retention outside the monitored system\'s own control.',
+        bestPractice: 'Retain audit logs for the full federally mandated retention period, verified independently from the system being monitored.'
+      }
+    }
+  },
+  manufacturing: {
+    name: 'Industrial OT/ICS Identity Architecture (IEC 62443)',
+    description: 'Models IT/OT segmentation, machine identity for PLCs and controllers, brokered third-party vendor access, and dual-authorization safety controls on the plant floor.',
+    nodes: {
+      plant_operator: {
+        title: 'Plant Floor Operator / HMI',
+        role: 'The shift operator authenticating to a Human-Machine Interface (HMI) terminal to monitor and control equipment on the production line.',
+        analogy: 'A factory floor worker badging into a shared control terminal with their own personal ID card instead of a sticky note password taped to the machine.',
+        spec: 'Terminal authenticates via badge-tap RFID/PIV bound to a named operator identity, feeding session logs into the plant Manufacturing Execution System (MES).',
+        threatModel: 'Threat: Shared, generic HMI login credentials used by multiple shift workers. Mitigation: Require individual badge-based login per operator shift with automatic idle-session timeout.',
+        bestPractice: 'Bind every HMI session to a named individual identity — never a shared shift-generic login.'
+      },
+      ot_it_gateway: {
+        title: 'OT/IT Segmentation Gateway',
+        role: 'The Industrial DMZ enforcing a controlled protocol break between the corporate IT network and the OT/ICS production network.',
+        analogy: 'The airlock door between the office building and the factory floor that only lets specific approved carts pass through in one direction.',
+        spec: 'Implements the IEC 62443 zones-and-conduits model, running protocol-aware firewalls (Modbus/OPC-UA proxies) between IT and OT/ICS network segments.',
+        threatModel: 'Threat: Malware pivoting from corporate IT into the OT network (cf. NotPetya-style lateral movement). Mitigation: Enforce unidirectional data diodes or strict protocol-break firewalls at every IT/OT boundary.',
+        bestPractice: 'Never allow a direct, unbrokered network path between corporate IT and the OT/ICS zone.'
+      },
+      plc_identity_broker: {
+        title: 'PLC/RTU Machine Identity Broker',
+        role: 'Issues and manages machine identities and certificates for Programmable Logic Controllers (PLCs) and Remote Terminal Units (RTUs) on the plant floor.',
+        analogy: 'The foreman\'s master key ring that only issues verified, numbered keys to certified robot arms and never to counterfeit blanks.',
+        spec: 'A PKI-backed identity service issuing X.509 device certificates to PLCs/RTUs and validating mutual TLS handshakes for every engineering-workstation connection.',
+        threatModel: 'Threat: Firmware or ladder-logic tampering via a spoofed controller identity (cf. Stuxnet). Mitigation: Require signed firmware updates and mutually-authenticated engineering-to-PLC sessions.',
+        bestPractice: 'Rotate and re-issue PLC device certificates on a fixed schedule, and alert on any unexpected certificate change.'
+      },
+      vendor_remote_access: {
+        title: 'Third-Party Vendor Remote Access Broker',
+        role: 'Brokers time-boxed, approval-gated remote sessions for OEM and vendor maintenance technicians who need to service plant equipment.',
+        analogy: 'The outside repair contractor who must sign in at the gatehouse, get escorted, and sign out — never given a spare building key to keep.',
+        spec: 'A brokered jump-host (PAM-style) granting vendor technicians time-boxed, fully session-recorded remote access with no standing credentials.',
+        threatModel: 'Threat: Persistent, always-on VPN credentials left active for OEM technicians (cf. retail vendor-access breaches). Mitigation: Broker every vendor session through an approval-gated jump host with full session recording.',
+        bestPractice: 'Expire vendor remote-access grants automatically at the end of the approved maintenance window.'
+      },
+      scada_historian: {
+        title: 'SCADA Historian & Safety System',
+        role: 'The process-control target: the historian database recording production data plus the safety instrumented system (SIS) enforcing physical interlocks.',
+        analogy: 'The main control room where changing a critical valve setting requires two supervisors turning their keys at the same time.',
+        spec: 'The SCADA historian database and safety instrumented system (SIS) record process data and enforce interlocks on physical equipment.',
+        threatModel: 'Threat: Unauthorized setpoint changes causing physical or safety damage. Mitigation: Enforce dual-operator (four-eyes) authorization for any safety-critical setpoint change.',
+        bestPractice: 'Require dual-operator sign-off for any change to a safety-critical setpoint.'
+      }
+    }
+  },
+  retail: {
+    name: 'Retail & Point-of-Sale Identity Architecture (PCI-DSS & Omnichannel)',
+    description: 'Models PCI-scoped point-of-sale hardening, badge-based staff RBAC, a unified omnichannel customer identity hub, payment tokenization, and least-privilege supply-chain integrations.',
+    nodes: {
+      pos_terminal: {
+        title: 'Point-of-Sale Terminal',
+        role: 'The physical checkout terminal or self-checkout kiosk where a customer\'s payment card or mobile wallet is presented for a transaction.',
+        analogy: 'The register counter itself — anyone can walk up to it, but it only unlocks a sale after the cashier or self-checkout logs in.',
+        spec: 'A PCI-DSS scoped terminal running Point-to-Point Encryption (P2PE) hardware, isolated on its own segmented VLAN from the general store network.',
+        threatModel: 'Threat: Point-of-sale malware skimming card data from memory (RAM-scraping). Mitigation: Encrypt card data at the swipe head itself (P2PE) so plaintext PAN never touches general-purpose terminal memory.',
+        bestPractice: 'Never allow POS terminals to browse the general internet or run software outside the certified payment application allow-list.'
+      },
+      store_associate_id: {
+        title: 'Store Associate Identity',
+        role: 'The badge-based staff identity a cashier, manager, or loss-prevention officer uses to unlock register functions and inventory overrides.',
+        analogy: 'The manager\'s override key that must be inserted and turned before a cashier can approve a large refund or price change.',
+        spec: 'An RBAC-scoped staff directory issuing role-based POS permissions (cashier vs. manager override vs. loss-prevention) via badge-tap or PIN login.',
+        threatModel: 'Threat: Cashiers sharing manager override PINs to bypass refund and discount approval controls. Mitigation: Require a physical badge tap in addition to a PIN for any manager-level override, logged to loss-prevention.',
+        bestPractice: 'Immediately revoke terminated employees\' badge access across every store location, not just their home store.'
+      },
+      omnichannel_ciam: {
+        title: 'Omnichannel Customer Identity Hub',
+        role: 'The unified customer identity linking a shopper\'s online account, loyalty profile, and in-store purchase history across every retail channel.',
+        analogy: 'The single loyalty card that works whether you\'re shopping on the website, the mobile app, or walking into the physical store.',
+        spec: 'A CIAM platform federating e-commerce login, loyalty program membership, and Buy-Online-Pickup-In-Store (BOPIS) order verification under one customer profile.',
+        threatModel: 'Threat: Account takeover via credential stuffing draining stored loyalty points or gift card balances. Mitigation: Apply risk-based, adaptive authentication and rate-limit login attempts across the omnichannel hub.',
+        bestPractice: 'Give customers one consistent identity and consent record across web, app, and in-store systems instead of siloed per-channel accounts.'
+      },
+      payment_gateway: {
+        title: 'Tokenized Payment Gateway',
+        role: 'The tokenization service that exchanges a customer\'s raw card number for a non-sensitive token immediately at the point of capture.',
+        analogy: 'A coat-check ticket: you hand over your coat once and get a numbered ticket back — the ticket alone is worthless to a thief who doesn\'t control the coat closet.',
+        spec: 'A PCI-DSS Level 1 tokenization/payment gateway generating a merchant-specific token in place of the PAN, drastically shrinking the store\'s own PCI compliance scope.',
+        threatModel: 'Threat: Token vault compromise re-linking tokens back to real card numbers. Mitigation: Keep the detokenization vault isolated from the merchant network, accessible only to the payment processor.',
+        bestPractice: 'Never store raw PAN data anywhere in the retail environment — tokenize at first capture and store only tokens.'
+      },
+      inventory_supply_chain: {
+        title: 'Inventory & Supply Chain System',
+        role: 'The warehouse management and supply-chain system tracking stock levels and coordinating restocking with third-party logistics partners.',
+        analogy: 'The loading dock logbook that only lets an approved delivery driver\'s badge open the correct bay door for their scheduled shipment.',
+        spec: 'An M2M-authenticated EDI/API integration layer connecting store inventory systems to distribution centers and third-party logistics (3PL) partners.',
+        threatModel: 'Threat: A compromised 3PL API key enabling fraudulent inventory adjustments or shipment redirection. Mitigation: Scope each partner\'s API credentials to only their specific warehouse/SKU range, with mTLS and key rotation.',
+        bestPractice: 'Issue least-privilege, per-partner API credentials rather than one shared integration key for every logistics vendor.'
+      }
+    }
   }
 }
 
@@ -411,6 +643,11 @@ export default function ArchitectureCenter() {
     if (type === 'zero_trust') setSelectedNode('client')
     else if (type === 'b2b_saas') setSelectedNode('tenant_router')
     else if (type === 'multi_cloud') setSelectedNode('aws_workload')
+    else if (type === 'banking') setSelectedNode('customer_channel')
+    else if (type === 'healthcare') setSelectedNode('patient_portal')
+    else if (type === 'government') setSelectedNode('piv_card')
+    else if (type === 'manufacturing') setSelectedNode('plant_operator')
+    else if (type === 'retail') setSelectedNode('pos_terminal')
     setSimLogs([])
   }
 
@@ -583,6 +820,101 @@ export default function ArchitectureCenter() {
 
       addLog('✓ Request authorized! Developer initiates execution on target Pod Service Account. 🎉')
       setSelectedNode('pod_sa')
+    } else if (activeArch === 'banking') {
+      addLog('🚀 Customer initiates a high-value wire transfer via the Digital Banking Channel...')
+      setSelectedNode('customer_channel')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 SCA Engine evaluates PSD2 exemption eligibility. Transaction exceeds the low-value threshold, triggering a dynamically-linked SCA challenge...')
+      setSelectedNode('sca_engine')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 Customer approves the dynamically-linked biometric challenge. Core Banking Ledger begins a dual-control posting...')
+      setSelectedNode('core_ledger')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔍 Real-Time Fraud & AML Risk Engine screens the payee against OFAC sanctions lists and velocity thresholds... CLEAR.')
+      setSelectedNode('fraud_engine')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ SWIFT Gateway obtains dual-authorization sign-off and transmits the wire to the correspondent bank! 🎉')
+      setSelectedNode('swift_gateway')
+    } else if (activeArch === 'healthcare') {
+      addLog('🚀 Patient logs into the Patient Portal, having already completed IAL2 identity proofing...')
+      setSelectedNode('patient_portal')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 Portal requests lab results via the HL7 FHIR Gateway using a scoped patient/Observation.read token...')
+      setSelectedNode('fhir_gateway')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 EHR System enforces the Minimum Necessary Standard, returning only the requested lab result fields...')
+      setSelectedNode('ehr_system')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🚨 Emergency: an on-call physician invokes Break-Glass access to view the same patient\'s allergy history during a code event...')
+      setSelectedNode('break_glass')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ Access logged for mandatory post-hoc review. Billing data for the visit is later shared with a vendor under a signed Business Associate Agreement! 🎉')
+      setSelectedNode('business_associate')
+    } else if (activeArch === 'government') {
+      addLog('🚀 Federal employee inserts their PIV smart card and enters their PIN at a workstation...')
+      setSelectedNode('piv_card')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 Assurance Broker validates the hardware-bound certificate and asserts IAL2/AAL3/FAL3 tiers into the token...')
+      setSelectedNode('assurance_broker')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 Cross-Agency Federation Broker federates the asserted identity to the target agency application...')
+      setSelectedNode('agency_broker')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔄 Application resides inside a FedRAMP Moderate authorization boundary. Request is validated against the SSP-mapped control baseline...')
+      setSelectedNode('fedramp_boundary')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ Continuous Monitoring logs the access to an immutable audit trail for ConMon reporting! 🎉')
+      setSelectedNode('audit_continuous_monitoring')
+    } else if (activeArch === 'manufacturing') {
+      addLog('🚀 Operator badges into the Plant Floor HMI to begin a shift on the packaging line...')
+      setSelectedNode('plant_operator')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 HMI session request crosses the OT/IT Segmentation Gateway, which enforces the Industrial DMZ protocol break...')
+      setSelectedNode('ot_it_gateway')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 PLC/RTU Machine Identity Broker validates the mutual TLS certificate on the target packaging-line controller...')
+      setSelectedNode('plc_identity_broker')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔧 An OEM vendor technician requests remote access to recalibrate the same PLC. Vendor Remote Access Broker opens a time-boxed, recorded session...')
+      setSelectedNode('vendor_remote_access')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ Recalibration setpoint change requires dual-operator sign-off before the SCADA Historian applies it to the safety-critical control loop! 🎉')
+      setSelectedNode('scada_historian')
+    } else if (activeArch === 'retail') {
+      addLog('🚀 Customer taps their loyalty card at checkout while the cashier logs into the POS Terminal with a badge...')
+      setSelectedNode('pos_terminal')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('📡 Store Associate Identity confirms cashier-level RBAC permissions to open the sale...')
+      setSelectedNode('store_associate_id')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('🔐 Omnichannel Customer Identity Hub resolves the customer\'s unified profile, linking this purchase to their online order history and loyalty balance...')
+      setSelectedNode('omnichannel_ciam')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('💳 Tokenized Payment Gateway tokenizes the card at the point of capture — raw PAN never touches the store network...')
+      setSelectedNode('payment_gateway')
+      await new Promise(r => setTimeout(r, 800))
+
+      addLog('✓ Inventory & Supply Chain System deducts the sold SKU and automatically triggers a restock order with the 3PL partner! 🎉')
+      setSelectedNode('inventory_supply_chain')
     } else {
       addLog('🚀 Customer browser initiates login request to access secure SaaS accounts...')
       setSelectedNode('client')
@@ -1041,6 +1373,111 @@ export default function ArchitectureCenter() {
                 <DiagramNode id="k8s_rbac" selected={selectedNode === 'k8s_rbac'} title="K8s RBAC (RoleBinding)" icon={Shield} color="emerald" onClick={() => setSelectedNode('k8s_rbac')} />
                 <div className="w-full h-0.5 bg-border-subtle"></div>
                 <DiagramNode id="pod_sa" selected={selectedNode === 'pod_sa'} title="Pod Service Account" icon={Cpu} color="teal" onClick={() => setSelectedNode('pod_sa')} />
+              </div>
+            )}
+
+            {/* --- BANKING & FINANCIAL SERVICES --- */}
+            {activeArch === 'banking' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="customer_channel" selected={selectedNode === 'customer_channel'} title="Digital Banking Channel" icon={Wallet} color="blue" onClick={() => setSelectedNode('customer_channel')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="sca_engine" selected={selectedNode === 'sca_engine'} title="SCA Engine (PSD2)" icon={Fingerprint} color="teal" onClick={() => setSelectedNode('sca_engine')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode id="core_ledger" selected={selectedNode === 'core_ledger'} title="Core Banking Ledger" icon={Landmark} color="blue" onClick={() => setSelectedNode('core_ledger')} />
+                </div>
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <DiagramNode id="fraud_engine" selected={selectedNode === 'fraud_engine'} title="Fraud & AML Engine" icon={TrendingUp} color="teal" onClick={() => setSelectedNode('fraud_engine')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="swift_gateway" selected={selectedNode === 'swift_gateway'} title="SWIFT Gateway" icon={Send} color="emerald" onClick={() => setSelectedNode('swift_gateway')} />
+              </div>
+            )}
+
+            {/* --- HEALTHCARE (HIPAA & HL7 FHIR) --- */}
+            {activeArch === 'healthcare' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="patient_portal" selected={selectedNode === 'patient_portal'} title="Patient Portal (CIAM)" icon={Users} color="blue" onClick={() => setSelectedNode('patient_portal')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="fhir_gateway" selected={selectedNode === 'fhir_gateway'} title="HL7 FHIR Gateway" icon={Waypoints} color="teal" onClick={() => setSelectedNode('fhir_gateway')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode id="ehr_system" selected={selectedNode === 'ehr_system'} title="EHR System" icon={FileCheck} color="blue" onClick={() => setSelectedNode('ehr_system')} />
+                </div>
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <DiagramNode id="break_glass" selected={selectedNode === 'break_glass'} title="Break-Glass Access" icon={Siren} color="teal" onClick={() => setSelectedNode('break_glass')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="business_associate" selected={selectedNode === 'business_associate'} title="Business Associate" icon={Building2} color="emerald" onClick={() => setSelectedNode('business_associate')} />
+              </div>
+            )}
+
+            {/* --- GOVERNMENT & PUBLIC SECTOR (FedRAMP & NIST 800-63) --- */}
+            {activeArch === 'government' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="piv_card" selected={selectedNode === 'piv_card'} title="PIV / CAC Card" icon={IdCard} color="blue" onClick={() => setSelectedNode('piv_card')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="assurance_broker" selected={selectedNode === 'assurance_broker'} title="Assurance Broker" icon={Scale} color="teal" onClick={() => setSelectedNode('assurance_broker')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode id="agency_broker" selected={selectedNode === 'agency_broker'} title="Cross-Agency Broker" icon={Landmark} color="blue" onClick={() => setSelectedNode('agency_broker')} />
+                </div>
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <DiagramNode id="fedramp_boundary" selected={selectedNode === 'fedramp_boundary'} title="FedRAMP Boundary" icon={Building2} color="teal" onClick={() => setSelectedNode('fedramp_boundary')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="audit_continuous_monitoring" selected={selectedNode === 'audit_continuous_monitoring'} title="Continuous Monitoring" icon={Eye} color="emerald" onClick={() => setSelectedNode('audit_continuous_monitoring')} />
+              </div>
+            )}
+
+            {/* --- MANUFACTURING (OT/ICS & IEC 62443) --- */}
+            {activeArch === 'manufacturing' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="plant_operator" selected={selectedNode === 'plant_operator'} title="Plant Floor Operator" icon={HardHat} color="blue" onClick={() => setSelectedNode('plant_operator')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="ot_it_gateway" selected={selectedNode === 'ot_it_gateway'} title="OT/IT Segmentation Gateway" icon={Router} color="teal" onClick={() => setSelectedNode('ot_it_gateway')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode id="plc_identity_broker" selected={selectedNode === 'plc_identity_broker'} title="PLC/RTU Identity Broker" icon={Cog} color="blue" onClick={() => setSelectedNode('plc_identity_broker')} />
+                </div>
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <DiagramNode id="vendor_remote_access" selected={selectedNode === 'vendor_remote_access'} title="Vendor Remote Access" icon={Truck} color="teal" onClick={() => setSelectedNode('vendor_remote_access')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="scada_historian" selected={selectedNode === 'scada_historian'} title="SCADA Historian" icon={Factory} color="emerald" onClick={() => setSelectedNode('scada_historian')} />
+              </div>
+            )}
+
+            {/* --- RETAIL (PCI-DSS & OMNICHANNEL) --- */}
+            {activeArch === 'retail' && (
+              <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
+                <DiagramNode id="pos_terminal" selected={selectedNode === 'pos_terminal'} title="Point-of-Sale Terminal" icon={CreditCard} color="blue" onClick={() => setSelectedNode('pos_terminal')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="store_associate_id" selected={selectedNode === 'store_associate_id'} title="Store Associate Identity" icon={IdCard} color="teal" onClick={() => setSelectedNode('store_associate_id')} />
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <div className="col-span-3 flex justify-center">
+                  <DiagramNode id="omnichannel_ciam" selected={selectedNode === 'omnichannel_ciam'} title="Omnichannel CIAM Hub" icon={Users} color="blue" onClick={() => setSelectedNode('omnichannel_ciam')} />
+                </div>
+                <div className="h-10"></div>
+                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10"></div>
+                <DiagramNode id="payment_gateway" selected={selectedNode === 'payment_gateway'} title="Tokenized Payment Gateway" icon={ScanLine} color="teal" onClick={() => setSelectedNode('payment_gateway')} />
+                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <DiagramNode id="inventory_supply_chain" selected={selectedNode === 'inventory_supply_chain'} title="Inventory & Supply Chain" icon={Boxes} color="emerald" onClick={() => setSelectedNode('inventory_supply_chain')} />
               </div>
             )}
 

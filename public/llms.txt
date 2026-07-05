@@ -26,6 +26,10 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Ambient Trust](https://www.aboutiam.com/playground/ambient-trust/): Continuous ambient biometric telemetry and session trust decay.
 - [Workload Mesh](https://www.aboutiam.com/playground/workload-mesh/): SPIFFE/SPIRE attestation and X.509 SVID issuance.
 - [Auth Matchmaker](https://www.aboutiam.com/explore/matchmaker/): Wizard that recommends an auth stack with copyable boilerplate.
+- [XACML 3.0 Policy Engine](https://www.aboutiam.com/playground/xacml/): Real combining-algorithm engine — deny-overrides, permit-overrides, first-applicable, only-one-applicable.
+- [GNAP Grant Negotiation Visualizer](https://www.aboutiam.com/playground/gnap/): RFC 9635 grant request, interaction, continuation, and key-bound token issuance timeline.
+- [CAEP Continuous Access Evaluation Lab](https://www.aboutiam.com/playground/caep/): Shared Signals Framework transmitter pushing signed SETs to receivers in real time.
+- [Verifiable Credentials & DID Lab](https://www.aboutiam.com/playground/vc-did/): Issuer/Holder/Verifier flow signing and verifying a real Ed25519 VC and Presentation.
 
 ## Security Tools (free, client-side utilities)
 

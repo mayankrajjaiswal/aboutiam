@@ -72,16 +72,20 @@ export default function WallOfShame() {
 
   // Handle push fatigue bombing simulation
   useEffect(() => {
-    let interval: any
-    if (bombingActive && pushCount < 10) {
-      interval = setInterval(() => {
-        setPushCount(prev => prev + 1)
-      }, 800)
-    } else if (pushCount >= 10) {
-      setBombingActive(false)
-    }
+    if (!bombingActive) return
+
+    const interval: ReturnType<typeof setInterval> = setInterval(() => {
+      setPushCount(prev => {
+        const next = prev + 1
+        if (next >= 10) {
+          clearInterval(interval)
+          setBombingActive(false)
+        }
+        return next
+      })
+    }, 800)
     return () => clearInterval(interval)
-  }, [bombingActive, pushCount])
+  }, [bombingActive])
 
   const triggerPushBombing = () => {
     setPushCount(0)
@@ -200,14 +204,14 @@ export default function WallOfShame() {
         <div className="grid lg:grid-cols-4 gap-8 pt-2 animate-fadeIn relative z-10">
           {/* Sub-menu of Labs */}
           <div className="lg:col-span-1 space-y-2">
-            {[
+            {([
               { id: 'goldensaml', label: '🇷🇺 SolarWinds: Golden SAML', sub: 'Russian Nobelium attack (2020)' },
               { id: 'pushfatigue', label: '📱 MFA Push Fatigue Bombing', sub: 'Uber/Cisco password overrides (2022)' },
               { id: 'wildcard', label: '🔗 OAuth Wildcard Redirects', sub: 'Front-channel URL interceptions' }
-            ].map(l => (
+            ] as { id: 'goldensaml' | 'pushfatigue' | 'wildcard'; label: string; sub: string }[]).map(l => (
               <button
                 key={l.id}
-                onClick={() => { setActiveLab(l.id as any); setSamlStep(0); setSigningKeyStolen(false); setForgedToken('') }}
+                onClick={() => { setActiveLab(l.id); setSamlStep(0); setSigningKeyStolen(false); setForgedToken('') }}
                 className={`w-full text-left p-4 rounded-xl border transition-all ${
                   activeLab === l.id
                     ? 'border-status-danger bg-status-danger/5 text-status-danger shadow-sm'

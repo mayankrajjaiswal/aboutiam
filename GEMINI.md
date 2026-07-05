@@ -125,6 +125,14 @@ if (typeof window !== 'undefined') {
 ### 🧪 C. Testing Standards (`npm run test`)
 We mandate the inclusion of Vitest unit tests for all state mutations, mathematical calculations, and helper utility libraries. Running `npm run test` executes tests in our custom safe environments.
 
+### 🧹 D. React Hooks Lint Compliance (`npm run lint`)
+`eslint-plugin-react-hooks` enforces the React-Compiler-readiness rules (`set-state-in-effect`, `purity`, `immutability`) on top of `exhaustive-deps`. Pick the fix by what the effect actually does — don't reach for a blanket `eslint-disable`:
+- **One-time read from `localStorage` on mount** → a lazy `useState(() => ...)` initializer (guarded per §3B), not an effect + setter.
+- **Synchronous value derived from other state** (e.g. building an XML/JSON string) → `useMemo`, not state + effect.
+- **Timer/interval loop with a "stop" condition** → fold the stop transition into the *same* interval's functional-updater callback (see `IdentityTimeline.tsx`'s ambient-trust decay), not a second synchronous setter call on the effect's next run.
+- **Async Web Crypto derivation** (can't become a `useMemo`) → wrap the call itself in `setTimeout(() => fn(), 0)` at the effect's call site. Wrapping inside the async function (e.g. a leading `await Promise.resolve()`) does not satisfy the rule — verified empirically.
+- **`Math.random()`/`Date.now()` inside a function only ever invoked from a click/submit handler** → a scoped `eslint-disable-next-line react-hooks/purity` with a one-line comment naming the handler is acceptable; the linter can't prove render-time vs. event-time reachability on its own.
+
 ---
 
 ## 4. Developer Maintenance & Extension Playbook

@@ -132,8 +132,7 @@ export default function PolicyEvaluator() {
   // Pure JavaScript condition-matching evaluation engine
   const evaluationResult = useMemo(() => {
     const traces: EvaluationTrace[] = []
-    let effect: 'ALLOW' | 'DENY' = 'DENY'
-    let parseError: string | null = null
+    let effect: 'ALLOW' | 'DENY'
 
     try {
       const request = JSON.parse(requestJson)
@@ -149,8 +148,8 @@ export default function PolicyEvaluator() {
       const rules = policy.rules || []
 
       // Helper to dynamically resolve nested attributes (e.g. "subject.role")
-      const getNestedValue = (obj: any, path: string): any => {
-        return path.split('.').reduce((acc, part) => acc && acc[part], obj)
+      const getNestedValue = (obj: unknown, path: string): unknown => {
+        return path.split('.').reduce((acc: unknown, part) => acc && (acc as Record<string, unknown>)[part], obj)
       }
 
       for (const rule of rules) {
@@ -189,9 +188,9 @@ export default function PolicyEvaluator() {
 
       return { effect, traces, defaultEffect, error: null }
 
-    } catch (e: any) {
-      parseError = `JSON syntax error: ${e.message}`
-      return { effect: 'DENY', traces: [], error: parseError }
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e)
+      return { effect: 'DENY', traces: [], error: `JSON syntax error: ${message}` }
     }
   }, [requestJson, policyJson])
 

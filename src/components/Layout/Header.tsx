@@ -29,7 +29,7 @@ function buildBreadcrumbJsonLd(pathname: string, pageTitle: string) {
     currentPath += `/${parts[i]}`
     const isLast = i === parts.length - 1
 
-    let name = parts[i]
+    let name: string
     if (parts[i] === 'tools') {
       name = 'Security Tools'
     } else if (parts[i] === 'playground') {

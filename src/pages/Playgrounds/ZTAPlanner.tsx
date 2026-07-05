@@ -55,7 +55,7 @@ export default function ZTAPlanner() {
               <label className="block uppercase tracking-wider">Device Posture</label>
               <select 
                 value={device} 
-                onChange={(e) => setDevice(e.target.value as any)}
+                onChange={(e) => setDevice(e.target.value as 'Secure' | 'Compromised')}
                 className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary"
               >
                 <option value="Secure">Compliant & Patched (+40% Trust)</option>
@@ -68,7 +68,7 @@ export default function ZTAPlanner() {
               <label className="block uppercase tracking-wider">Network Origin</label>
               <select 
                 value={network} 
-                onChange={(e) => setNetwork(e.target.value as any)}
+                onChange={(e) => setNetwork(e.target.value as 'Office' | 'Starbucks')}
                 className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary"
               >
                 <option value="Office">Corporate Intranet (+30% Trust)</option>
@@ -81,7 +81,7 @@ export default function ZTAPlanner() {
               <label className="block uppercase tracking-wider">Authentication Factors</label>
               <select 
                 value={auth} 
-                onChange={(e) => setAuth(e.target.value as any)}
+                onChange={(e) => setAuth(e.target.value as 'MFA' | 'Password')}
                 className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary"
               >
                 <option value="MFA">Phishing-Resistant MFA (+30% Trust)</option>

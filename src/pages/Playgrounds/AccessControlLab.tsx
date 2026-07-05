@@ -88,7 +88,7 @@ export default function AccessControlLab() {
               <label className="block uppercase tracking-wider">Target Action</label>
               <select 
                 value={action}
-                onChange={(e) => setAction(e.target.value as any)}
+                onChange={(e) => setAction(e.target.value as 'Read logs' | 'Deploy code' | 'Delete database')}
                 className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary"
               >
                 <option value="Read logs">Read logs</option>
@@ -103,7 +103,7 @@ export default function AccessControlLab() {
                 <label className="block uppercase tracking-wider">User Role</label>
                 <select 
                   value={role}
-                  onChange={(e) => setRole(e.target.value as any)}
+                  onChange={(e) => setRole(e.target.value as 'Guest' | 'Developer' | 'Admin')}
                   className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary"
                 >
                   <option value="Guest">Guest</option>
@@ -118,7 +118,7 @@ export default function AccessControlLab() {
                   <label className="block uppercase tracking-wider">User Department</label>
                   <select 
                     value={department}
-                    onChange={(e) => setDepartment(e.target.value as any)}
+                    onChange={(e) => setDepartment(e.target.value as 'Finance' | 'Engineering')}
                     className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary"
                   >
                     <option value="Engineering">Engineering</option>
@@ -140,7 +140,7 @@ export default function AccessControlLab() {
                   <label className="block uppercase tracking-wider">Network Origin</label>
                   <select 
                     value={network}
-                    onChange={(e) => setNetwork(e.target.value as any)}
+                    onChange={(e) => setNetwork(e.target.value as 'Corporate Office' | 'Starbucks Wi-Fi')}
                     className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary"
                   >
                     <option value="Corporate Office">Corporate Office Network</option>

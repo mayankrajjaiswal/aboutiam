@@ -145,7 +145,7 @@ export default function CsrGenerator() {
   }
 
   useEffect(() => {
-    generateKeysAndCsr()
+    setTimeout(() => generateKeysAndCsr(), 0)
   }, [commonName, organization, orgUnit, locality, stateName, country, sans, keyType])
 
   const handleDownloadCsr = () => {
@@ -289,7 +289,7 @@ export default function CsrGenerator() {
               <select
                 id="key-type-select"
                 value={keyType}
-                onChange={(e) => setKeyType(e.target.value as any)}
+                onChange={(e) => setKeyType(e.target.value as 'RSA-2048' | 'RSA-4096' | 'ECDSA-P256')}
                 className="w-full p-2.5 rounded-lg bg-bg-nested border border-border-subtle text-xs font-sans text-text-primary focus:outline-none"
               >
                 <option value="RSA-2048">RSA-2048 bits (Standard)</option>

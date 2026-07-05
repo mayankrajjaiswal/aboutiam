@@ -80,7 +80,7 @@ export default function JWTStudio() {
       setSignatureB64(sigB64)
       setVerificationResult('valid')
       return sigB64
-    } catch (e) {
+    } catch {
       setSignatureB64('error_signing')
       setVerificationResult('invalid')
       return ''
@@ -98,7 +98,9 @@ export default function JWTStudio() {
     try {
       JSON.parse(currentHeader)
       hValid = true
-    } catch {}
+    } catch {
+      // hValid stays false; textarea already shows "Invalid JSON" via isHeaderValid
+    }
     try {
       const parsed = JSON.parse(currentPayload)
       pValid = true
@@ -107,7 +109,9 @@ export default function JWTStudio() {
         parsed.role = 'admin'
         currentPayload = JSON.stringify(parsed, null, 2)
       }
-    } catch {}
+    } catch {
+      // pValid stays false; textarea already shows "Invalid JSON" via isPayloadValid
+    }
 
     setIsHeaderValid(hValid)
     setIsPayloadValid(pValid)
@@ -130,7 +134,9 @@ export default function JWTStudio() {
         headerObj.alg = alg
       }
       currentHeader = JSON.stringify(headerObj, null, 2)
-    } catch {}
+    } catch {
+      // hValid already validated currentHeader as parseable JSON above
+    }
 
     const hB64 = base64UrlEncode(currentHeader)
     const pB64 = base64UrlEncode(currentPayload)
@@ -149,7 +155,7 @@ export default function JWTStudio() {
 
   // Trigger recomputation on any inputs changes
   useEffect(() => {
-    recomputeJWT()
+    setTimeout(() => recomputeJWT(), 0)
   }, [headerJson, payloadJson, secret, alg, noneExploitActive, jwksExploitActive])
 
   // If user switches grant or exploit states, synchronize headers

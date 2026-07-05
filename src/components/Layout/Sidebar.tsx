@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { 
-  BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert, 
+import type { LucideIcon } from 'lucide-react'
+import {
+  BookOpen, Cpu, Award, Compass, Bot, X, Home, Book, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building, ScanSearch, Layers,
   History
 } from 'lucide-react'
@@ -11,9 +12,15 @@ interface SidebarProps {
   isMobile?: boolean
 }
 
+interface NavItem {
+  name: string
+  path: string
+  icon: LucideIcon
+}
+
 interface NavGroupProps {
   title: string
-  items: any[]
+  items: NavItem[]
   collapsed: boolean
   pathname: string
   handleLinkClick: () => void

@@ -59,12 +59,12 @@ export default function JwksInspector() {
         return { keys: [], error: 'JWKS document is missing the required top-level "keys" array.' }
       }
 
-      const keysList: ParsedKey[] = parsed.keys.map((key: any, index: number) => {
-        const kid = key.kid || `Unnamed Key [Index ${index}]`
-        const kty = key.kty
-        const alg = key.alg
-        const use = key.use
-        const crv = key.crv
+      const keysList: ParsedKey[] = parsed.keys.map((key: Record<string, unknown>, index: number) => {
+        const kid = (key.kid as string) || `Unnamed Key [Index ${index}]`
+        const kty = key.kty as string
+        const alg = key.alg as string | undefined
+        const use = key.use as string | undefined
+        const crv = key.crv as string | undefined
 
         // Check validation rules
         let isValid = true
@@ -103,8 +103,8 @@ export default function JwksInspector() {
 
       return { keys: keysList, error: null }
 
-    } catch (e: any) {
-      return { keys: [], error: `Invalid JSON syntax: ${e.message}` }
+    } catch (e) {
+      return { keys: [], error: `Invalid JSON syntax: ${e instanceof Error ? e.message : String(e)}` }
     }
   }, [rawJwks])
 

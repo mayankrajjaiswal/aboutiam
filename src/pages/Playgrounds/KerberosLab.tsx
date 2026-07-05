@@ -15,7 +15,7 @@ export default function KerberosLab() {
   const [copiedText, setCopiedText] = useState<string | null>(null)
 
   // Decoded payload blocks for visual inspection
-  const [ticketPayload, setTicketPayload] = useState<any | null>(null)
+  const [ticketPayload, setTicketPayload] = useState<Record<string, unknown> | null>(null)
 
   const addLog = (msg: string) => {
     setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`])

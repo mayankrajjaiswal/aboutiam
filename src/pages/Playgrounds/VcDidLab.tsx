@@ -79,7 +79,6 @@ export default function VcDidLab() {
       if (ok) generateIdentities()
     })
     return () => { cancelled = true }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const issueCredential = async () => {

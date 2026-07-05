@@ -9,7 +9,7 @@ export default function AmbientTrust() {
 
   // Simulation effect
   useEffect(() => {
-    let interval: any
+    let interval: ReturnType<typeof setInterval> | undefined
     if (isSimulating && trustScore > 0 && !stepUpActive) {
       interval = setInterval(() => {
         setTrustScore(prev => {

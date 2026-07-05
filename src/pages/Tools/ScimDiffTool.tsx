@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { Check, Copy, RefreshCw, FileCode, AlertTriangle, RotateCcw } from 'lucide-react'
 import ToolPageShell from '../../components/Tools/ToolPageShell'
 import BeginnerExpertExplainer from '../../components/Tools/BeginnerExpertExplainer'
@@ -47,30 +47,26 @@ const DEFAULT_SP_PAYLOAD = `{
 
 interface DiffItem {
   path: string
-  idpVal: any
-  spVal: any
+  idpVal: unknown
+  spVal: unknown
   type: 'mismatch' | 'missing_in_sp' | 'missing_in_idp'
 }
 
 export default function ScimDiffTool() {
   const [idpJson, setIdpJson] = useState(DEFAULT_IDP_PAYLOAD)
   const [spJson, setSpJson] = useState(DEFAULT_SP_PAYLOAD)
-  const [diffItems, setDiffItems] = useState<DiffItem[]>([])
-  const [patchPayload, setPatchPayload] = useState('')
-  const [jsonError, setJsonError] = useState<string | null>(null)
   const { copy, copiedId } = useClipboardCopy()
 
   // Compare both JSON schemas dynamically
-  const runDiffCalculation = () => {
+  const { diffItems, patchPayload, jsonError } = useMemo(() => {
     try {
-      setJsonError(null)
       const idpObj = JSON.parse(idpJson)
       const spObj = JSON.parse(spJson)
 
       const diffs: DiffItem[] = []
 
       // Helper to trace primitive fields
-      const compareField = (path: string, valIdp: any, valSp: any) => {
+      const compareField = (path: string, valIdp: unknown, valSp: unknown) => {
         if (JSON.stringify(valIdp) !== JSON.stringify(valSp)) {
           if (valSp === undefined) {
             diffs.push({ path, idpVal: valIdp, spVal: undefined, type: 'missing_in_sp' })
@@ -101,7 +97,7 @@ export default function ScimDiffTool() {
           idpVal.forEach((item, index) => {
             if (item.type && item.value) {
               const spArr = Array.isArray(spVal) ? spVal : []
-              const matchingSpItem = spArr.find((i: any) => i.type === item.type)
+              const matchingSpItem = spArr.find((i: { type?: string; value?: unknown }) => i.type === item.type)
               if (!matchingSpItem) {
                 diffs.push({
                   path: `${key}[type eq "${item.type}"].value`,
@@ -126,9 +122,8 @@ export default function ScimDiffTool() {
         }
       })
 
-      setDiffItems(diffs)
-
       // Build standard SCIM RFC 7644 PATCH Payload
+      let patchPayload: string
       if (diffs.length > 0) {
         const operations = diffs
           .filter(d => d.type !== 'missing_in_idp') // IdP is source of truth, so we replace/add SP values
@@ -146,26 +141,25 @@ export default function ScimDiffTool() {
           Operations: operations
         }
 
-        setPatchPayload(JSON.stringify(patch, null, 2))
+        patchPayload = JSON.stringify(patch, null, 2)
       } else {
-        setPatchPayload(JSON.stringify({
+        patchPayload = JSON.stringify({
           schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
           Operations: [],
           status: "reconciled",
           message: "No sync drift detected. Both systems are fully in-sync!"
-        }, null, 2))
+        }, null, 2)
       }
 
-    } catch (e) {
-      setJsonError(e instanceof Error ? e.message : 'Invalid JSON format. Check brackets and commas.')
-      setDiffItems([])
-      setPatchPayload('')
-    }
-  }
+      return { diffItems: diffs, patchPayload, jsonError: null as string | null }
 
-  // Run diff automatically on code updates
-  useEffect(() => {
-    runDiffCalculation()
+    } catch (e) {
+      return {
+        diffItems: [] as DiffItem[],
+        patchPayload: '',
+        jsonError: e instanceof Error ? e.message : 'Invalid JSON format. Check brackets and commas.'
+      }
+    }
   }, [idpJson, spJson])
 
   // Apply Reconciliation (forces SP to match IdP)

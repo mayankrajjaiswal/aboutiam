@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import type { LucideIcon } from 'lucide-react'
 import {
   Network, ArrowRight, Shield, Play, Terminal, Cpu, Database,
   Globe, Server, Users, Cloud, RefreshCw, KeySquare, ChevronRight, Laptop,
@@ -1564,15 +1565,15 @@ export default function ArchitectureCenter() {
   )
 }
 
-function DiagramNode({ 
-  selected, title, icon: Icon, color, onClick 
-}: { 
+function DiagramNode({
+  selected, title, icon: Icon, color, onClick
+}: {
   id: string
   selected: boolean
   title: string
-  icon: any
+  icon: LucideIcon
   color: 'blue' | 'teal' | 'emerald'
-  onClick: () => void 
+  onClick: () => void
 }) {
   const colorClasses = {
     blue: selected ? 'bg-accent-glow border-accent-primary text-accent-primary shadow shadow-accent-primary/20' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle',

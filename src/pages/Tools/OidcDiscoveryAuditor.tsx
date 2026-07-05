@@ -137,8 +137,8 @@ export default function OidcDiscoveryAuditor() {
         signingAlgs: Array.isArray(parsed.id_token_signing_alg_values_supported) ? parsed.id_token_signing_alg_values_supported : [],
         error: null
       }
-    } catch (e: any) {
-      return { error: `Invalid JSON syntax: ${e.message}` }
+    } catch (e) {
+      return { error: `Invalid JSON syntax: ${e instanceof Error ? e.message : String(e)}` }
     }
   }, [rawJson])
 

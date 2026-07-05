@@ -65,7 +65,7 @@ export default function Encyclopedia() {
       category: 'Foundations',
       fullName: 'Access Token (OAuth 2.0 Payload)',
       analogy: 'A Bluetooth hotel keycard. You scan it at your room door, and the lock opens because the bouncer receptionist signed it, even though the door lock doesn\'t know your name or home address.',
-      expert: 'RFC 6749. A string or JWT representing authorization granted to the client application. It is passed in HTTP headers (\`Authorization: Bearer <token>\`) to authenticate requests at resource APIs.'
+      expert: 'RFC 6749. A string or JWT representing authorization granted to the client application. It is passed in HTTP headers (`Authorization: Bearer <token>`) to authenticate requests at resource APIs.'
     },
     {
       id: 'authn',
@@ -156,7 +156,7 @@ export default function Encyclopedia() {
       category: 'Foundations',
       fullName: 'ID Token (OpenID Connect Assertion)',
       analogy: 'A laminated corporate name badge. It explicitly states your name, department, photo, and badge expiration date directly on the card so anyone can read it at a glance.',
-      expert: 'OIDC Core 1.0. A JSON Web Token (JWT) containing cryptographically signed claims verifying the user\'s identity (such as \`sub\`, \`name\`, \`email\`, \`auth_time\`). It is intended strictly for the client application.'
+      expert: 'OIDC Core 1.0. A JSON Web Token (JWT) containing cryptographically signed claims verifying the user\'s identity (such as `sub`, `name`, `email`, `auth_time`). It is intended strictly for the client application.'
     },
     {
       id: 'iga',
@@ -180,7 +180,7 @@ export default function Encyclopedia() {
       fullName: 'JSON Web Key Set',
       category: 'Cryptography',
       analogy: 'A notary public publishing their official signature seal on a public library bulletin board. Anyone can verify the seal on a document is authentic by comparing it to the public board.',
-      expert: 'RFC 7517. A JSON structure containing a list of public cryptographic keys issued by an Identity Server, allowing relying applications to dynamically verify JWT signatures via \`/.well-known/jwks.json\`.',
+      expert: 'RFC 7517. A JSON structure containing a list of public cryptographic keys issued by an Identity Server, allowing relying applications to dynamically verify JWT signatures via `/.well-known/jwks.json`.',
       toolUrl: '/tools/jwk-pem-converter'
     },
     {
@@ -197,7 +197,7 @@ export default function Encyclopedia() {
       fullName: 'JSON Web Token',
       category: 'Cryptography',
       analogy: 'A digital, self-contained passport card containing your name, photo, and signature. Any machine can read the card and trust the text because the government signed the signature block.',
-      expert: 'RFC 7519. A compact, URL-safe string representing claims encoded as a JSON object, composed of three dot-separated blocks: Header, Payload, and Signature (\`xxxxx.yyyyy.zzzzz\`).',
+      expert: 'RFC 7519. A compact, URL-safe string representing claims encoded as a JSON object, composed of three dot-separated blocks: Header, Payload, and Signature (`xxxxx.yyyyy.zzzzz`).',
       toolUrl: '/tools/jwt-decoder'
     },
     {
@@ -239,7 +239,7 @@ export default function Encyclopedia() {
       fullName: 'OpenID Connect',
       category: 'Protocols',
       analogy: 'Adding a photo ID card inside your hotel keycard envelope. Not only can you unlock the door, but the hotel room bouncer also immediately knows your name and email.',
-      expert: 'An identity layer built directly on top of the OAuth 2.0 authorization framework, standardizing user authentication and profile attributes using JSON Web Tokens (\`id_token\`).'
+      expert: 'An identity layer built directly on top of the OAuth 2.0 authorization framework, standardizing user authentication and profile attributes using JSON Web Tokens (`id_token`).'
     },
     {
       id: 'pam',
@@ -295,7 +295,7 @@ export default function Encyclopedia() {
       id: 'scim',
       term: 'SCIM 2.0',
       fullName: 'System for Cross-domain Identity Management',
-      category: 'Provisioning' as any,
+      category: 'Provisioning',
       analogy: 'An automated megaphone. When HR hires you, the megaphone yells to Slack, AWS, and Salesforce simultaneously to create your accounts using the exact same standard form.',
       expert: 'RFC 7643. An open standard providing a common RESTful API schema (JSON) for managing user and group identities across cloud applications, eliminating custom API integration scripts.',
       toolUrl: '/tools/scim-payload-validator'

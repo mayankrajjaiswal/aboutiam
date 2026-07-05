@@ -63,9 +63,11 @@ export default function OAuthVisualizer() {
 
   // Initialize PKCE values on mount or grant switch
   useEffect(() => {
-    generatePKCEPair()
-    setStep(0)
-    setIsApproved(false)
+    setTimeout(() => {
+      generatePKCEPair()
+      setStep(0)
+      setIsApproved(false)
+    }, 0)
   }, [grant])
 
   const copyToClipboard = (text: string, id: string) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   History, ShieldAlert, ShieldCheck, Lock, Fingerprint, 
@@ -96,7 +96,6 @@ export default function IdentityTimeline() {
   const [samlRole, setSamlRole] = useState<'User' | 'Administrator'>('User')
   const [samlUser, setSamlUser] = useState('Alice Smith')
   const [samlSignatureVerified, setSamlSignatureVerified] = useState(true)
-  const [samlXml, setSamlXml] = useState('')
 
   // Era 4 (JWT) State
   const [jwtSub, setJwtSub] = useState('usr_987')
@@ -117,12 +116,12 @@ export default function IdentityTimeline() {
   const [ambientActive, setAmbientActive] = useState(false)
 
   // Sync SAML XML based on state
-  useEffect(() => {
-    const computedSignature = samlSignatureVerified 
-      ? 'dGhlX3NpZ25hdHVyZV9vY29tcGxldGVfZXhhbXBsZV9zYW1sXzIwMDE=' 
+  const samlXml = useMemo(() => {
+    const computedSignature = samlSignatureVerified
+      ? 'dGhlX3NpZ25hdHVyZV9vY29tcGxldGVfZXhhbXBsZV9zYW1sXzIwMDE='
       : 'INVALID_SIGNATURE_TAMPERED_HASH_ERROR_0x99'
 
-    setSamlXml(`<?xml version="1.0" encoding="UTF-8"?>
+    return `<?xml version="1.0" encoding="UTF-8"?>
 <saml:Assertion ID="_a1b2c3d4e5f6" IssueInstant="2001-10-12T14:20:00Z" Version="2.0">
   <saml:Issuer>https://idp.company.com</saml:Issuer>
   <ds:Signature>
@@ -141,7 +140,7 @@ export default function IdentityTimeline() {
       <saml:AttributeValue>${samlRole}</saml:AttributeValue>
     </saml:Attribute>
   </saml:AttributeStatement>
-</saml:Assertion>`)
+</saml:Assertion>`
   }, [samlRole, samlUser, samlSignatureVerified])
 
   // Trigger SAML tampering
@@ -250,8 +249,8 @@ export default function IdentityTimeline() {
     const encodedHeader = btoa(JSON.stringify(headerObj)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
     const encodedPayload = btoa(JSON.stringify(payloadObj)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
     
-    let signature = 'none'
-    let verified = false
+    let signature: string
+    let verified: boolean
 
     if (jwtAlg !== 'none') {
       // Mock HMAC computation
@@ -321,7 +320,7 @@ export default function IdentityTimeline() {
 
   // Era 6: Ambient Trust continuous decay simulation
   useEffect(() => {
-    let interval: any
+    let interval: ReturnType<typeof setInterval> | undefined
     if (ambientActive && ambientTrustScore > 0) {
       interval = setInterval(() => {
         setAmbientTrustScore(prev => {
@@ -778,7 +777,7 @@ export default function IdentityTimeline() {
                               <select
                                 aria-label="SIGNING ALGORITHM"
                                 value={jwtAlg}
-                                onChange={(e) => setJwtAlg(e.target.value as any)}
+                                onChange={(e) => setJwtAlg(e.target.value as 'HS256' | 'none')}
                                 className="w-full px-2.5 py-1.5 rounded bg-bg-card border border-border-subtle text-xs text-text-primary font-bold focus:outline-none"
                               >
                                 <option value="HS256">HS256 (HMAC-SHA256)</option>

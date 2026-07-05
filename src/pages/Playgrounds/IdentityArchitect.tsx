@@ -32,7 +32,7 @@ export default function IdentityArchitect() {
   // Dynamic Blueprint Generation Engine
   const generatedBlueprint = useMemo(() => {
     // Generate ASCII/text topological flow diagram
-    let topology = ''
+    let topology: string
     if (useCase === 'workforce') {
       topology = `[ Workstation (Postured) ]\n       │ (mTLS TLS 1.3)\n       ▼\n[ API Gateway PEP (Envoy) ] ──(queries gRPC)──► [ PDP Engine (OPA) ]\n       │                                                │\n       │ (authorizes JWT / SVID)                       │ (evaluates OIDC Groups)\n       ▼                                                ▼\n[ Target microservice ] ◄─────────────────────── [ Entra ID / Okta IdP ]`
     } else {
@@ -72,7 +72,7 @@ export default function IdentityArchitect() {
     }
 
     // Generate access policy code (Rego or AWS IAM)
-    let policyCode = ''
+    let policyCode: string
     if (useCase === 'workforce') {
       policyCode = `# Open Policy Agent (Rego) Access Control Policy\npackage identity.authz\n\ndefault allow = false\n\n# Allow engineers on compliant, managed devices inside internal network\nallow {\n    input.subject.role == "Developer"\n    input.subject.department == "Engineering"\n    input.environment.deviceState == "compliant"\n    input.environment.network == "internal"\n}`
     } else {

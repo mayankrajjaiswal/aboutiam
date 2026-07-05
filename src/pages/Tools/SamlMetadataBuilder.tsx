@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { Check, Copy, Download, RefreshCw, FileCode } from 'lucide-react'
 import ToolPageShell from '../../components/Tools/ToolPageShell'
 import BeginnerExpertExplainer from '../../components/Tools/BeginnerExpertExplainer'
@@ -35,7 +35,6 @@ export default function SamlMetadataBuilder() {
   const [authnSigned, setAuthnRequestsSigned] = useState(true)
   const [assertionsSigned, setWantAssertionsSigned] = useState(true)
 
-  const [xmlOutput, setXmlOut] = useState('')
   const { copy, copiedId } = useClipboardCopy()
 
   // Auto-adjust default URLs depending on role
@@ -60,7 +59,7 @@ export default function SamlMetadataBuilder() {
   }
 
   // Calculate XML output dynamically
-  useEffect(() => {
+  const xmlOutput = useMemo(() => {
     const cleanCert = signingCert.trim().replace(/-----BEGIN CERTIFICATE-----/g, '').replace(/-----END CERTIFICATE-----/g, '').replace(/\s+/g, '')
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -148,7 +147,7 @@ export default function SamlMetadataBuilder() {
     xml += `
 </md:EntityDescriptor>`
 
-    setXmlOut(xml)
+    return xml
   }, [role, entityId, endpointUrl, endpointBinding, sloUrl, sloBinding, includeSlo, signingCert, nameIdFormat, authnSigned, assertionsSigned])
 
   // Download XML file

@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { 
+import {
   Lock, AlertTriangle, ShieldCheck, Terminal, Copy, Info, RefreshCw
 } from 'lucide-react'
 
 export default function SAMLWorkbench() {
   const [sswActive, setSswActive] = useState(false)
   const [isCopied, setIsCopied] = useState<string | null>(null)
-  const [xmlContent, setXmlContent] = useState('')
-  const [verification, setVerification] = useState<'valid' | 'spoofed' | 'invalid'>('valid')
+  const verification: 'valid' | 'spoofed' | 'invalid' = sswActive ? 'spoofed' : 'valid'
 
   const generateSAMLXml = () => {
     if (sswActive) {
-      setVerification('spoofed')
       return `<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_resp123">
   <!-- Signature wrapping exploit wraps a signed, legitimate assertion -->
   <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="_legitAssert">
@@ -33,7 +31,6 @@ export default function SAMLWorkbench() {
 </samlp:Response>`
     }
 
-    setVerification('valid')
     return `<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_resp123">
   <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="_legitAssert">
     <saml:Issuer>https://auth.company.com</saml:Issuer>
@@ -51,9 +48,7 @@ export default function SAMLWorkbench() {
 </samlp:Response>`
   }
 
-  useEffect(() => {
-    setXmlContent(generateSAMLXml())
-  }, [sswActive])
+  const xmlContent = useMemo(() => generateSAMLXml(), [sswActive])
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(xmlContent)

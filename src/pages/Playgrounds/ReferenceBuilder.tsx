@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import type { DragEvent } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import type { LucideIcon } from 'lucide-react'
+import {
   Server, Shield, Cpu, Key, Network, Terminal,
   RotateCcw, Plus, Trash2, Download, Sliders,
   X, Lock, Laptop, Cloud, Database
 } from 'lucide-react'
 
 // Icon mapping dictionary
-const ICON_MAP: Record<string, React.ComponentType<any>> = {
+const ICON_MAP: Record<string, LucideIcon> = {
   'entra-id': Shield,
   'okta': Key,
   'keycloak': Lock,
@@ -191,9 +193,121 @@ export default function ReferenceBuilder() {
   const selectedNode = nodes.find(n => n.id === selectedNodeId)
   const selectedConnection = connections.find(c => c.id === selectedConnectionId)
 
+  const getSimulationStepsCount = (type: 'oidc' | 'saml' | 'scim' | 'kerberos') => {
+    return type === 'oidc' ? 6 : type === 'saml' ? 5 : type === 'scim' ? 5 : 5
+  }
+
+  const getSimulationLogs = (type: 'oidc' | 'saml' | 'scim' | 'kerberos', step: number): string[] => {
+    const isMfa = nodes.find(n => n.id === 'entra-id')?.mfaEnforced ?? true
+
+    const flows: Record<string, Record<number, string[]>> = {
+      oidc: {
+        2: [
+          `[REDIRECT] Redirecting browser to Entra ID Auth Endpoint with code_challenge.`,
+          `URL: https://login.microsoftonline.com/oauth2/v2.0/authorize?client_id=spa_99&response_type=code&code_challenge=xyz...`,
+          `Sending packets from workstation to Entra ID...`
+        ],
+        3: [
+          `[IdP] Entra ID intercepts request. User authenticated.`,
+          isMfa
+            ? `[MFA] Enforced! Prompting Face ID check on employee workstation... Verified! ✔`
+            : `[MFA] Bypassed! (MFA is currently DISABLED in Entra ID properties).`,
+          `[IdP] Generating cryptographically random Authorization Code (code_a5b9)...`
+        ],
+        4: [
+          `[REDIRECT] Redirecting back to App callback URI with auth code.`,
+          `URL: https://portal.company.com/callback?code=code_a5b9`,
+          `App intercepts Authorization Code from redirect URI...`
+        ],
+        5: [
+          `[CLIENT] Initiating Back-Channel Token Exchange with client credentials.`,
+          `POST to /token endpoint with Authorization Code + PKCE code_verifier...`,
+          `[IdP] Verifying code_verifier hash against original challenge... MATCH! ✔`
+        ],
+        6: [
+          `[IdP] Issuing RSA-SHA256 Signed tokens: ID Token (IDaaS profile) + Access Token.`,
+          `[CLIENT] Local validation successful via Entra ID public JWKS keys.`,
+          `🎉 SUCCESS: User session established. Dashboard accessed secure. Handshake complete!`
+        ]
+      },
+      saml: {
+        2: [
+          `[REDIRECT] Redirecting client workstation with base64-encoded SAMLRequest.`,
+          `URL: https://login.microsoftonline.com/saml/sso?SAMLRequest=fZDRboMwD...`,
+          `Connecting to cloud Identity Provider...`
+        ],
+        3: [
+          `[IdP] Entra ID decodes SAMLRequest, authenticates user session.`,
+          isMfa
+            ? `[MFA] Entra ID Enforced: biometric check successful. ✔`
+            : `[MFA] Skip (MFA is disabled in properties).`,
+          `[IdP] Generating SAML Assertion: [Subject: Alice, Role: Administrator, Issuer: company_idp]`
+        ],
+        4: [
+          `[IdP] Cryptographically signing XML Statement using SAML Token Signing Key.`,
+          `[REDIRECT] Returning signed SAMLResponse XML wrapper to Client Browser redirect...`,
+          `Client workstation submits signed assertion automatically via POST callback...`
+        ],
+        5: [
+          `[SP] Salesforce decodes SAMLResponse XML wrapper.`,
+          `[SP] Verifying digital signature against registered public certificate... SUCCESS! ✔`,
+          `🎉 SUCCESS: Federation Trust established! SP session granted with Admin scopes.`
+        ]
+      },
+      scim: {
+        2: [
+          `[IdP] Detecting changes: User 'John Doe' added to 'Engineering' directory group.`,
+          `[IdP] Building standard SCIM 2.0 User JSON payload (RFC 7643 Schema)...`
+        ],
+        3: [
+          `[IdP] Querying SCIM /Users target endpoint at Custom Portal...`,
+          `Request: POST https://portal.company.com/scim/v2/Users with payload headers.`
+        ],
+        4: [
+          `[SP] Custom Portal process request. Validating Bearer Auth Token... verified. ✔`,
+          `[SP] Writing record to local database table: Creating portal user profile...`
+        ],
+        5: [
+          `[SP] Return SCIM JSON payload: HTTP 201 Created (ID: usr_8a92f0).`,
+          `[IdP] Directory Sync synchronization queue: SUCCESS! John Doe successfully provisioned. 🎉`
+        ]
+      },
+      kerberos: {
+        2: [
+          `[CLIENT] Crafting plaintext request to Active Directory KDC.`,
+          `Sent: Requesting Ticket Granting Ticket (TGT) for domain user...`
+        ],
+        3: [
+          `[KDC] Authentication Server (AS) verifies user, generates Session Key.`,
+          `[KDC] Returns TGT encrypted with AD Krbtgt Key, and Session Key encrypted with User Password Hash.`
+        ],
+        4: [
+          `[CLIENT] Decrypts Session Key locally with user password. Requests Service Ticket (ST) from KDC.`,
+          `[KDC] Ticket Granting Server (TGS) validates TGT, returns ST encrypted with target App Key.`
+        ],
+        5: [
+          `[CLIENT] Presents Service Ticket to target App Server.`,
+          `[SERVER] Server decrypts ST using its pre-shared key... MATCH! ✔`,
+          `🎉 SUCCESS: Kerberos session authorized. Secure intranet connection established!`
+        ]
+      }
+    }
+
+    return flows[type][step] || []
+  }
+
+  const advanceSimulationStep = () => {
+    setSimulationStep(prev => {
+      const nextStep = prev + 1
+      const logs = getSimulationLogs(activeSimulationType!, nextStep)
+      setTraceLogs(p => [...p, ...logs])
+      return nextStep
+    })
+  }
+
   // Simulation step timeouts for handshakes
   useEffect(() => {
-    let timer: any
+    let timer: ReturnType<typeof setTimeout> | undefined
     if (simulationActive && activeSimulationType) {
       const stepsCount = getSimulationStepsCount(activeSimulationType)
       if (simulationStep < stepsCount) {
@@ -201,14 +315,14 @@ export default function ReferenceBuilder() {
           advanceSimulationStep()
         }, 2200)
       } else {
-        setSimulationActive(false)
+        timer = setTimeout(() => setSimulationActive(false), 0)
       }
     }
     return () => clearTimeout(timer)
   }, [simulationActive, simulationStep, activeSimulationType])
 
   // HTML5 Drag-and-drop handlers
-  const handleDragStart = (e: React.DragEvent, nodeId: string) => {
+  const handleDragStart = (e: DragEvent, nodeId: string) => {
     draggedNodeIdRef.current = nodeId
     e.dataTransfer.setData('text/plain', nodeId)
     // Make transparent drag preview
@@ -217,11 +331,11 @@ export default function ReferenceBuilder() {
     e.dataTransfer.setDragImage(img, 0, 0)
   }
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault()
   }
 
-  const handleCanvasDrop = (e: React.DragEvent) => {
+  const handleCanvasDrop = (e: DragEvent) => {
     e.preventDefault()
     if (!canvasRef.current || !draggedNodeIdRef.current) return
 
@@ -241,10 +355,10 @@ export default function ReferenceBuilder() {
   // Node operations
   const addNewNode = (type: 'idp' | 'directory' | 'resource' | 'gateway' | 'device') => {
     const id = `node_${Date.now()}`
-    let name = ''
-    let iconName = ''
-    let domain = ''
-    let desc = ''
+    let name: string
+    let iconName: string
+    let domain: string
+    let desc: string
 
     if (type === 'idp') {
       name = 'Okta SSO Identity Provider'
@@ -334,6 +448,8 @@ export default function ReferenceBuilder() {
 
       const protoDetails = PROTOCOLS.find(p => p.id === connectionCreator.protocol)!
       const newConnection: Connection = {
+        // Only ever invoked from a node's onClick while connect-mode is active, never during render.
+        // eslint-disable-next-line react-hooks/purity
         id: `conn_${Date.now()}`,
         from: fromNodeId,
         to: targetNodeId,
@@ -385,118 +501,6 @@ export default function ReferenceBuilder() {
     }
 
     setTraceLogs(initialLogs[type])
-  }
-
-  const getSimulationStepsCount = (type: 'oidc' | 'saml' | 'scim' | 'kerberos') => {
-    return type === 'oidc' ? 6 : type === 'saml' ? 5 : type === 'scim' ? 5 : 5
-  }
-
-  const advanceSimulationStep = () => {
-    setSimulationStep(prev => {
-      const nextStep = prev + 1
-      const logs = getSimulationLogs(activeSimulationType!, nextStep)
-      setTraceLogs(p => [...p, ...logs])
-      return nextStep
-    })
-  }
-
-  const getSimulationLogs = (type: 'oidc' | 'saml' | 'scim' | 'kerberos', step: number): string[] => {
-    const isMfa = nodes.find(n => n.id === 'entra-id')?.mfaEnforced ?? true
-
-    const flows: Record<string, Record<number, string[]>> = {
-      oidc: {
-        2: [
-          `[REDIRECT] Redirecting browser to Entra ID Auth Endpoint with code_challenge.`,
-          `URL: https://login.microsoftonline.com/oauth2/v2.0/authorize?client_id=spa_99&response_type=code&code_challenge=xyz...`,
-          `Sending packets from workstation to Entra ID...`
-        ],
-        3: [
-          `[IdP] Entra ID intercepts request. User authenticated.`,
-          isMfa 
-            ? `[MFA] Enforced! Prompting Face ID check on employee workstation... Verified! ✔`
-            : `[MFA] Bypassed! (MFA is currently DISABLED in Entra ID properties).`,
-          `[IdP] Generating cryptographically random Authorization Code (code_a5b9)...`
-        ],
-        4: [
-          `[REDIRECT] Redirecting back to App callback URI with auth code.`,
-          `URL: https://portal.company.com/callback?code=code_a5b9`,
-          `App intercepts Authorization Code from redirect URI...`
-        ],
-        5: [
-          `[CLIENT] Initiating Back-Channel Token Exchange with client credentials.`,
-          `POST to /token endpoint with Authorization Code + PKCE code_verifier...`,
-          `[IdP] Verifying code_verifier hash against original challenge... MATCH! ✔`
-        ],
-        6: [
-          `[IdP] Issuing RSA-SHA256 Signed tokens: ID Token (IDaaS profile) + Access Token.`,
-          `[CLIENT] Local validation successful via Entra ID public JWKS keys.`,
-          `🎉 SUCCESS: User session established. Dashboard accessed secure. Handshake complete!`
-        ]
-      },
-      saml: {
-        2: [
-          `[REDIRECT] Redirecting client workstation with base64-encoded SAMLRequest.`,
-          `URL: https://login.microsoftonline.com/saml/sso?SAMLRequest=fZDRboMwD...`,
-          `Connecting to cloud Identity Provider...`
-        ],
-        3: [
-          `[IdP] Entra ID decodes SAMLRequest, authenticates user session.`,
-          isMfa 
-            ? `[MFA] Entra ID Enforced: biometric check successful. ✔`
-            : `[MFA] Skip (MFA is disabled in properties).`,
-          `[IdP] Generating SAML Assertion: [Subject: Alice, Role: Administrator, Issuer: company_idp]`
-        ],
-        4: [
-          `[IdP] Cryptographically signing XML Statement using SAML Token Signing Key.`,
-          `[REDIRECT] Returning signed SAMLResponse XML wrapper to Client Browser redirect...`,
-          `Client workstation submits signed assertion automatically via POST callback...`
-        ],
-        5: [
-          `[SP] Salesforce decodes SAMLResponse XML wrapper.`,
-          `[SP] Verifying digital signature against registered public certificate... SUCCESS! ✔`,
-          `🎉 SUCCESS: Federation Trust established! SP session granted with Admin scopes.`
-        ]
-      },
-      scim: {
-        2: [
-          `[IdP] Detecting changes: User 'John Doe' added to 'Engineering' directory group.`,
-          `[IdP] Building standard SCIM 2.0 User JSON payload (RFC 7643 Schema)...`
-        ],
-        3: [
-          `[IdP] Querying SCIM /Users target endpoint at Custom Portal...`,
-          `Request: POST https://portal.company.com/scim/v2/Users with payload headers.`
-        ],
-        4: [
-          `[SP] Custom Portal process request. Validating Bearer Auth Token... verified. ✔`,
-          `[SP] Writing record to local database table: Creating portal user profile...`
-        ],
-        5: [
-          `[SP] Return SCIM JSON payload: HTTP 201 Created (ID: usr_8a92f0).`,
-          `[IdP] Directory Sync synchronization queue: SUCCESS! John Doe successfully provisioned. 🎉`
-        ]
-      },
-      kerberos: {
-        2: [
-          `[CLIENT] Crafting plaintext request to Active Directory KDC.`,
-          `Sent: Requesting Ticket Granting Ticket (TGT) for domain user...`
-        ],
-        3: [
-          `[KDC] Authentication Server (AS) verifies user, generates Session Key.`,
-          `[KDC] Returns TGT encrypted with AD Krbtgt Key, and Session Key encrypted with User Password Hash.`
-        ],
-        4: [
-          `[CLIENT] Decrypts Session Key locally with user password. Requests Service Ticket (ST) from KDC.`,
-          `[KDC] Ticket Granting Server (TGS) validates TGT, returns ST encrypted with target App Key.`
-        ],
-        5: [
-          `[CLIENT] Presents Service Ticket to target App Server.`,
-          `[SERVER] Server decrypts ST using its pre-shared key... MATCH! ✔`,
-          `🎉 SUCCESS: Kerberos session authorized. Secure intranet connection established!`
-        ]
-      }
-    }
-
-    return flows[type][step] || []
   }
 
   // Simulation line drawing helpers

@@ -19,7 +19,7 @@ export default function GpoSimulator() {
   const [lockoutTimeLeft, setLockoutTimeLeft] = useState(0)
   const [logs, setLogs] = useState<string[]>([])
   const [handshakeResult, setHandshakeResult] = useState<'success' | 'failed' | 'locked' | null>(null)
-  const [generatedTicket, setGeneratedTicket] = useState<any | null>(null)
+  const [generatedTicket, setGeneratedTicket] = useState<Record<string, unknown> | null>(null)
 
   const addLog = (msg: string) => {
     setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`])
@@ -36,22 +36,25 @@ export default function GpoSimulator() {
 
   // Handle active lockout timer
   useEffect(() => {
-    if (!isLocked || lockoutTimeLeft <= 0) {
-      if (isLocked && lockoutTimeLeft === 0) {
-        setIsLocked(false)
-        setFailedAttempts(0)
-        setHandshakeResult(null)
-        addLog('🔓 GPO Lockout duration elapsed. Account unlocked automatically.')
-      }
-      return
-    }
+    if (!isLocked) return
 
-    const timer = setInterval(() => {
-      setLockoutTimeLeft(prev => prev - 1)
+    const timer: ReturnType<typeof setInterval> = setInterval(() => {
+      setLockoutTimeLeft(prev => {
+        const next = prev - 1
+        if (next <= 0) {
+          clearInterval(timer)
+          setIsLocked(false)
+          setFailedAttempts(0)
+          setHandshakeResult(null)
+          addLog('🔓 GPO Lockout duration elapsed. Account unlocked automatically.')
+          return 0
+        }
+        return next
+      })
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isLocked, lockoutTimeLeft])
+  }, [isLocked])
 
   const attemptLogon = () => {
     if (isLocked) {

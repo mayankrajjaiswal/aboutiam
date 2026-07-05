@@ -72,7 +72,7 @@ export default function PasskeyInternals() {
   }
 
   useEffect(() => {
-    handleSimulate()
+    setTimeout(() => handleSimulate(), 0)
   }, [origin, challenge, upFlag, uvFlag])
 
   return (

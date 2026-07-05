@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Users, CheckCircle2, ArrowRight, User, Award, Plus, Trash2, Heart } from 'lucide-react'
 
 interface ForumThread {
@@ -27,26 +27,14 @@ export default function CommunityForums() {
   const [activeTab, setActiveTab] = useState<'forums' | 'showcase'>('forums')
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>('t1')
 
-  // Showcase state
-  const [showcase, setShowcase] = useState<ShowcaseItem[]>([
+  const DEFAULT_SHOWCASE: ShowcaseItem[] = [
     { id: 'sc1', title: 'Workforce Zero Trust Perimeter', creator: 'Mayank (Lead Dev)', scope: 'Workforce', desc: 'Enterprise hybrid configuration connecting local Active Directory trees to Okta with device posture validations.', likes: 44 },
     { id: 'sc2', title: 'B2B Multi-Tenant SaaS Gateway', creator: 'Rajat (Contributor)', scope: 'CIAM', desc: 'Secure B2B multi-tenant OIDC federation router mapping corporate claims dynamically to downstream gateways.', likes: 28 }
-  ])
+  ]
 
-  // Track if they have designed in the Reference Builder
-  const [builderConfigured, setBuilderConfigured] = useState(false)
-  const [userPublished, setUserPublished] = useState(false)
-
-  // Audit Logs
-  const [logsTerminal, setLogsTerminal] = useState<string[]>([
-    `[GATEWAY] Community connection active.`,
-    `[GATEWAY] Federated Showcase directory indexed.`
-  ])
-
-  useEffect(() => {
-    setBuilderConfigured(localStorage.getItem('aboutiam-builder-configured') === 'true')
-    setUserPublished(localStorage.getItem('aboutiam-showcase-published') === 'true')
-
+  // Showcase state — seeds the user's own published architecture (if any) from localStorage on first render
+  const [showcase, setShowcase] = useState<ShowcaseItem[]>(() => {
+    if (typeof window === 'undefined') return DEFAULT_SHOWCASE
     if (localStorage.getItem('aboutiam-showcase-published') === 'true') {
       const userItem: ShowcaseItem = {
         id: 'user_sc',
@@ -57,9 +45,20 @@ export default function CommunityForums() {
         likes: 1,
         isUserAdded: true
       }
-      setShowcase(prev => prev.some(i => i.id === 'user_sc') ? prev : [userItem, ...prev])
+      return [userItem, ...DEFAULT_SHOWCASE]
     }
-  }, [])
+    return DEFAULT_SHOWCASE
+  })
+
+  // Track if they have designed in the Reference Builder
+  const [builderConfigured] = useState(() => typeof window !== 'undefined' && localStorage.getItem('aboutiam-builder-configured') === 'true')
+  const [userPublished, setUserPublished] = useState(() => typeof window !== 'undefined' && localStorage.getItem('aboutiam-showcase-published') === 'true')
+
+  // Audit Logs
+  const [logsTerminal, setLogsTerminal] = useState<string[]>([
+    `[GATEWAY] Community connection active.`,
+    `[GATEWAY] Federated Showcase directory indexed.`
+  ])
 
   const handlePublishUserArchitecture = () => {
     if (!builderConfigured) return

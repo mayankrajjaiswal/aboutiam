@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { 
   Users, Award, Shield, ShieldAlert, CheckCircle2, RotateCcw, 
   Trophy, BookOpen, User, Star, Flame
@@ -30,40 +30,31 @@ interface MonthlyChallenge {
 }
 
 export default function CommunityHub() {
-  const [completedModules, setCompletedModules] = useState<Record<string, boolean>>({})
-  const [museumVisited, setMuseumVisited] = useState(false)
-  const [builderConfigured, setBuilderConfigured] = useState(false)
-  const [challengeState, setChallengeState] = useState<Record<string, 'active' | 'solved' | 'failed'>>({})
+  const [completedModules] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') return {}
+    try {
+      const savedAcademy = localStorage.getItem('aboutiam-academy-progress')
+      return savedAcademy ? JSON.parse(savedAcademy) : {}
+    } catch (e) {
+      console.error(e)
+      return {}
+    }
+  })
+  const [museumVisited] = useState(() => typeof window !== 'undefined' && localStorage.getItem('aboutiam-museum-visited') === 'true')
+  const [builderConfigured] = useState(() => typeof window !== 'undefined' && localStorage.getItem('aboutiam-builder-configured') === 'true')
+  const [challengeState, setChallengeState] = useState<Record<string, 'active' | 'solved' | 'failed'>>(() => {
+    if (typeof window === 'undefined') return {}
+    try {
+      const savedChallenges = localStorage.getItem('aboutiam-challenges-progress')
+      return savedChallenges ? JSON.parse(savedChallenges) : {}
+    } catch (e) {
+      console.error(e)
+      return {}
+    }
+  })
   const [selectedChallengeId, setSelectedChallengeId] = useState<string | null>('challenge-1')
   const [selectedAnswerIdx, setSelectedAnswerId] = useState<number | null>(null)
   const [challengeResult, setChallengeResult] = useState<string | null>(null)
-
-  // Load progress states on mount
-  useEffect(() => {
-    // Academy Progress
-    const savedAcademy = localStorage.getItem('aboutiam-academy-progress')
-    if (savedAcademy) {
-      try {
-        setCompletedModules(JSON.parse(savedAcademy))
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    // Special LocalStorage flags
-    setMuseumVisited(localStorage.getItem('aboutiam-museum-visited') === 'true')
-    setBuilderConfigured(localStorage.getItem('aboutiam-builder-configured') === 'true')
-
-    // Challenge Progress
-    const savedChallenges = localStorage.getItem('aboutiam-challenges-progress')
-    if (savedChallenges) {
-      try {
-        setChallengeState(JSON.parse(savedChallenges))
-      } catch (e) {
-        console.error(e)
-      }
-    }
-  }, [])
 
   // Calculations
   const completedCount = Object.values(completedModules).filter(Boolean).length

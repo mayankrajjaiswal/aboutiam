@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
-import { 
-  BookOpen, Compass, Key, Lock, Fingerprint, 
-  Users, Server, CheckCircle2, ChevronDown, ChevronUp, HelpCircle, 
+import { useState } from 'react'
+import type { LucideIcon } from 'lucide-react'
+import {
+  BookOpen, Compass, Key, Lock, Fingerprint,
+  Users, Server, CheckCircle2, ChevronDown, ChevronUp, HelpCircle,
   Info, AwardIcon, Sparkles, LayoutGrid, RotateCcw
 } from 'lucide-react'
 
@@ -17,7 +18,7 @@ interface Track {
   id: string
   title: string
   desc: string
-  icon: any
+  icon: LucideIcon
   modules: SubModule[]
 }
 
@@ -100,7 +101,15 @@ const ACADEMY_QUIZZES: Record<string, AcademyQuiz> = {
 export default function Learn() {
   const [expandedTrack, setExpandedTrack] = useState<string | null>(null)
   const [expandedModule, setExpandedExpandedModule] = useState<string | null>(null)
-  const [completedModules, setCompletedModules] = useState<Record<string, boolean>>({})
+  const [completedModules, setCompletedModules] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') return {}
+    try {
+      const saved = localStorage.getItem('aboutiam-academy-progress')
+      return saved ? JSON.parse(saved) : {}
+    } catch {
+      return {}
+    }
+  })
 
   // Track quiz state
   const [quizAnswers, setQuizAnswers] = useState<Record<string, { selectedIdx: number; correct: boolean | null }>>({})
@@ -192,23 +201,15 @@ export default function Learn() {
     )
   }
 
-  // Load progress from LocalStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('aboutiam-academy-progress')
-      if (saved) {
-        setCompletedModules(JSON.parse(saved))
-      }
-    } catch {}
-  }, [])
-
   // Toggle module completion and persist
   const toggleModuleCompletion = (modId: string) => {
     const updated = { ...completedModules, [modId]: !completedModules[modId] }
     setCompletedModules(updated)
     try {
       localStorage.setItem('aboutiam-academy-progress', JSON.stringify(updated))
-    } catch {}
+    } catch {
+      // localStorage unavailable (private browsing quota, etc.) — in-memory state still updated
+    }
   }
 
   // Calculate track progress

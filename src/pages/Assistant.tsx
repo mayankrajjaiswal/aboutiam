@@ -150,7 +150,7 @@ const credential = await navigator.credentials.create(credentialOptions);`
 
 To secure this architecture, please ensure you enforce these three baseline guidelines:
 1. **Never send credentials across channels:** If your query relates to API authentication, ensure client secrets are restricted strictly to secure backends, and public clients (SPAs/mobiles) leverage **OAuth 2.1 PKCE** configurations.
-2. **Minimize session standing windows:** Force session cookies or JSON Web Token expiries to a maximum threshold ($\le 1$ hour) and configure **CAEP Continuous Access Evaluations** to react to network shifts in real-time.
+2. **Minimize session standing windows:** Force session cookies or JSON Web Token expiries to a maximum threshold ($le 1$ hour) and configure **CAEP Continuous Access Evaluations** to react to network shifts in real-time.
 3. **Phishing Protection:** Transition your authentication gateways from legacy passwords or SMS TOTPs to **phishing-resistant FIDO2 Passkeys** using native WebAuthn challenges.
 
 Please select one of the Quick-Start Prompts below to inspect specific production-grade JSON, Rego, or JavaScript code configurations!`

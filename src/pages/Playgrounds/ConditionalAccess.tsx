@@ -174,7 +174,7 @@ export default function ConditionalAccess() {
                 {['Finance', 'HR', 'Engineering', 'Guest'].map((g) => (
                   <button
                     key={g}
-                    onClick={() => setGroup(g as any)}
+                    onClick={() => setGroup(g as 'Finance' | 'HR' | 'Engineering' | 'Guest')}
                     className={`py-1.5 rounded-lg border transition-all ${
                       group === g ? 'bg-accent-glow/5 border-accent-primary text-accent-primary shadow-sm' : 'border-border-subtle bg-bg-nested text-text-secondary'
                     }`}
@@ -196,7 +196,7 @@ export default function ConditionalAccess() {
                 ]).map((d) => (
                   <button
                     key={d.id}
-                    onClick={() => setDevice(d.id as any)}
+                    onClick={() => setDevice(d.id as 'Managed' | 'BYOD' | 'Infected')}
                     className={`py-1.5 rounded-lg border transition-all ${
                       device === d.id ? 'bg-accent-glow/5 border-accent-primary text-accent-primary shadow-sm' : 'border-border-subtle bg-bg-nested text-text-secondary'
                     }`}
@@ -241,7 +241,7 @@ export default function ConditionalAccess() {
                 ]).map((c) => (
                   <button
                     key={c.id}
-                    onClick={() => setCountry(c.id as any)}
+                    onClick={() => setCountry(c.id as 'US' | 'Bulgaria' | 'Proxy')}
                     className={`py-1.5 rounded-lg border transition-all ${
                       country === c.id ? 'bg-accent-glow/5 border-accent-primary text-accent-primary shadow-sm' : 'border-border-subtle bg-bg-nested text-text-secondary'
                     }`}
@@ -259,7 +259,7 @@ export default function ConditionalAccess() {
                 {['Low', 'Medium', 'High'].map((r) => (
                   <button
                     key={r}
-                    onClick={() => setRisk(r as any)}
+                    onClick={() => setRisk(r as 'Low' | 'Medium' | 'High')}
                     className={`py-1.5 rounded-lg border transition-all ${
                       risk === r ? 'bg-accent-glow/5 border-accent-primary text-accent-primary shadow-sm' : 'border-border-subtle bg-bg-nested text-text-secondary'
                     }`}

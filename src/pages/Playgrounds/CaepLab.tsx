@@ -76,7 +76,10 @@ export default function CaepLab() {
   const addLog = (msg: string) => setLogs(prev => [...prev, msg])
 
   const fireSignal = (signal: SignalType) => {
+    // Only ever invoked from the signal-injector button's onClick, never during render.
+    // eslint-disable-next-line react-hooks/purity
     const subId = `urn:example:session:${Math.random().toString(36).slice(2, 8)}`
+    // eslint-disable-next-line react-hooks/purity
     const timestamp = Math.floor(Date.now() / 1000)
 
     addLog(`[TRANSMITTER] Building signed SET (RFC 8417): { events: { "${signal.eventType}": {} }, sub_id: "${subId}", iat: ${timestamp} }`)

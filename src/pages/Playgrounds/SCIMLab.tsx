@@ -69,13 +69,6 @@ export default function SCIMLab() {
   const [newUsername, setNewUsername] = useState('')
   const [newEmail, setNewEmail] = useState('')
 
-  // Auto-run Queue when items are added and not currently syncing
-  useEffect(() => {
-    if (syncQueue.length > 0 && !isSyncing) {
-      processNextQueueItem()
-    }
-  }, [syncQueue, isSyncing])
-
   const processNextQueueItem = async () => {
     if (syncQueue.length === 0) return
     setIsSyncing(true)
@@ -90,16 +83,26 @@ export default function SCIMLab() {
     setIsSyncing(false)
   }
 
+  // Auto-run Queue when items are added and not currently syncing
+  useEffect(() => {
+    if (syncQueue.length > 0 && !isSyncing) {
+      setTimeout(() => processNextQueueItem(), 0)
+    }
+  }, [syncQueue, isSyncing])
+
   // Log Helper
   const addLog = (
     method: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE',
     path: string,
     status: number,
-    requestObj: any,
-    responseObj: any,
+    requestObj: unknown,
+    responseObj: unknown,
     message: string
   ) => {
     const newLog: SyncLog = {
+      // Log id only needs to be unique for the React key + display order, and addLog is
+      // always invoked from event handlers or the async sync queue, never during render.
+      // eslint-disable-next-line react-hooks/purity
       id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
       timestamp: new Date().toLocaleTimeString(),
       method,
@@ -117,6 +120,8 @@ export default function SCIMLab() {
 
   // Add User Operation
   const triggerAddUser = (given: string, family: string, uname: string, email: string) => {
+    // Only ever invoked from the "Add User" form submit handler, never during render.
+    // eslint-disable-next-line react-hooks/purity
     const userId = `usr-${Math.random().toString(36).substr(2, 4)}`
     const newUser: SCIMUser = {
       id: userId,

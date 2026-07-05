@@ -218,7 +218,7 @@ export default function DeviceTrust() {
                 ]).map((c) => (
                   <button
                     key={c.id}
-                    onClick={() => setMtlsCert(c.id as any)}
+                    onClick={() => setMtlsCert(c.id as 'valid' | 'expired' | 'missing')}
                     className={`py-1.5 rounded-lg border transition-all ${
                       mtlsCert === c.id ? 'bg-accent-glow/5 border-accent-primary text-accent-primary shadow-sm' : 'border-border-subtle bg-bg-nested text-text-secondary'
                     }`}

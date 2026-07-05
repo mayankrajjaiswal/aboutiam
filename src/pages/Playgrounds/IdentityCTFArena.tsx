@@ -60,8 +60,8 @@ export default function IdentityCTFArena() {
           addLog('❌ Signature Verification Failed! Gateway attempted RS256 validation. Stolen signature did not match modulus components.')
         }
       }
-    } catch (e: any) {
-      addLog(`❌ Gateway Crash! Malformed token JSON structure: ${e.message}`)
+    } catch (e) {
+      addLog(`❌ Gateway Crash! Malformed token JSON structure: ${e instanceof Error ? e.message : String(e)}`)
     }
   }
 

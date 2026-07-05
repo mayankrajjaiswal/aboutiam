@@ -9,6 +9,17 @@
     <meta name="author" content="Mayank Raj Jaiswal" />
     <link rel="canonical" href="https://www.aboutiam.com/" />
 
+    <!-- CSP is the primary defense-in-depth control here: GitHub Pages serves no
+         custom HTTP headers, so this meta tag is the only enforcement mechanism.
+         connect-src 'none' blocks any outbound network call in the browser, so a
+         compromised dependency cannot exfiltrate user-pasted secrets.
+         frame-ancestors is intentionally omitted: the CSP spec has browsers ignore
+         it when delivered via <meta> (only an HTTP header can enforce it), and
+         GitHub Pages cannot serve custom headers, so including it here would only
+         produce a console warning with zero actual protection. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
     <!-- Best-effort hint against long-lived caching of this HTML shell; GitHub Pages exposes no
          real Cache-Control header control, so a stale cached copy is recovered by the script below. -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />

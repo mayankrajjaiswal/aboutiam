@@ -107,7 +107,7 @@ export default function Header() {
       {breadcrumbJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c') }}
         />
       )}
       {/* Mobile Toggle & Breadcrumbs */}
@@ -150,7 +150,7 @@ export default function Header() {
         <a
           href="https://github.com/mayankrajjaiswal/aboutiam"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
           title="Browse on GitHub"
         >

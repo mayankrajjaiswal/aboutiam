@@ -505,7 +505,7 @@ export default function WallOfShame() {
                 <a
                   href={res.link}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-bg-sidebar hover:bg-bg-nested text-text-primary text-xs font-bold transition-all border border-border-subtle"
                 >
                   Visit Portal <Globe className="w-3.5 h-3.5 text-text-secondary" />

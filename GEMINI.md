@@ -18,6 +18,7 @@ AboutIAM is engineered as a **100% Client-Side, Zero-Backend Application**, ensu
 - **Motion Canvas:** Framer Motion (handling animated vector SVG flow paths and popup transitions).
 - **Testing Core:** Vitest (Vite-native unit testing with mock SSR safeguards).
 - **Discoverability:** `robots.txt`, `sitemap.xml`, `llms.txt`, `manifest.webmanifest`, and `security.txt` live in `public/` and all reference the production domain directly — update them alongside any future domain change.
+- **Security Hardening:** A strict `Content-Security-Policy` (`connect-src 'none'`) and `Referrer-Policy` are enforced via `<meta>` tags in `index.html` (GitHub Pages serves no custom HTTP headers, so this is the only enforcement mechanism). `.github/workflows/deploy.yml` and `ci.yml` pin all third-party GitHub Actions to commit SHA (not mutable tags) and gate on `npm audit`; `.github/dependabot.yml` keeps both npm and Actions pins current.
 
 ---
 

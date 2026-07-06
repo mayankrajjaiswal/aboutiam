@@ -37,7 +37,10 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 ### 🚀 A. Core Platform & Reference Centers
 * **Overview Dashboard (`Home.tsx`):** Displays overall progress, track graduations, and historical **Identity Trivia cards** (including MIT's first 1961 password bypass and Kerberos mythology).
 * **Beginner's Onboarding Primer (`BeginnerPrimer.tsx`):** Specifically designed for students, interns, and laymen. Explains the 4 chronological pillars (**Identify $\rightarrow$ Authenticate $\rightarrow$ Authorize $\rightarrow$ Audit**) in plain English.
-* **IAM Academy (`Learn.tsx`):** 6 guided course tracks and 36 expanding modules. Toggling "Completed" persists progress inside browser `localStorage` and animates progress bars.
+* **IAM Academy (`Learn.tsx`):** 6 guided course tracks and 36 expanding modules. Toggling "Completed" persists progress inside browser `localStorage` and animates progress bars. (Phase 3 Milestone)
+* **Identity Scenario Builder (`/scenario-builder`):** Questionnaire-driven enterprise topology, user lifecycle, and threat model generator. (Phase 1 Milestone)
+* **Interactive Identity Labs (`/labs`):** Hands-on vulnerability and pen-test sandbox covering JWT Algorithm Confusion, SAML SSW, SCIM sync conflicts, and OAuth security overrides. (Phase 2 Milestone)
+* **Enterprise Reference Implementations (`/references`):** Ready-to-run copyable directories, schemas, and Rego policies for Keycloak Spring Security, Node middleware, SCIM 2.0 payloads, and OPA fine-grained rules. (Phase 4 Milestone)
 * **Interactive Architecture Center (`/architecture`):** Clickable, responsive reference architectures detailing trust boundaries, threat models, and trace logs for Workforce Zero Trust (NIST SP 800-207), Multi-tenant B2B SaaS, and Multi-Cloud SPIRE/SPIFFE setups.
 * **Vendor Knowledge Center (`/vendor`):** Comprehensive reference blueprints, licensed models, certified paths, and technical mock interview guides for Okta, Entra ID, Keycloak, Ping Identity, and CyberArk.
 * **Identity Research & CVE Tracker (`/research`):** Searchable identity CVE directory (e.g. Log4Shell, Spring4Shell) with side-by-side vulnerable vs. secure code-remediation patches, and a live IETF RFC protocol registry.
@@ -48,6 +51,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Interactive Identity Timeline (`/timeline`):** Traces identity history from 1961 mainframes to future ambient trust, with active inline simulators for 6 eras.
 * **Community Achievements & Badge Hub (`/community`):** Dynamic contributor achievements, monthly challenges, and leaderboards driven by browser states.
 * **Community Forums & Showcase Hub (`/community-forums`):** Threaded SecOps discussion boards (SCIM conflicts, SSW bypasses) and custom reference architecture showcases.
+* **AI Knowledge Assistant 2.0 (`/assistant`):** Multi-tabbed platform navigator featuring highly context-aware chat with automatic tool recommendations, side-by-side protocol comparisons, and customized dynamic career roadmaps.
 
 ### 💻 B. Simulators & Playgrounds (`/playground`)
 * **OAuth 2.0 / OIDC Flow Visualizer:** Animates Front-Channel redirects and Back-Channel direct connections step-by-step. Generates dynamic **PKCE verifier/challenge pairs** and inspects raw HTTP requests.
@@ -93,6 +97,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Vulnerability Lab & Identity Museum (`WallOfShame.tsx`):** Interactive corridor charting the 5 historic eras of identity. Houses detailed steppers explaining the SolarWinds **Golden SAML** exploit, **Silver SAML** threats, and **MFA Fatigue push bombing**.
 * **Developer Playbooks (`CheatSheets.tsx`):** Checklist compliance audits for SPAs and M2M credentials, fully expanded with interactive regulatory checklists mapping **SOC2 Type II, ISO 27001, and HIPAA Security Rule** identity controls to update dynamic compliance gauges.
 * **GRC Maturity Wizard (`Assess.tsx`):** 5-pillar questionnaire evaluating organizational readiness, plotting dynamic charts, and exporting a downloadable vector SVG roadmap.
+* **Identity Playground SDK (`src/lib/sdk`):** A unified, reusable React developer framework containing integrated state machines, trace terminals, scoring hooks, and structured AI connector schemas to rapidly spin up and scale future sandboxes.
 
 ---
 

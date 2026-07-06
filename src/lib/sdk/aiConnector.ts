@@ -1,4 +1,4 @@
-import { TraceLog } from './usePlayground'
+import type { TraceLog } from './usePlayground'
 
 export interface PlaygroundAIState {
   moduleId: string;

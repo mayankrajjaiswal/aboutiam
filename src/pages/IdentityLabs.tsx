@@ -23,9 +23,17 @@ interface Lab {
   hints: string[]
 }
 
+interface LabStats {
+  score: number
+  labsCompleted: number
+  accuracy: number
+  stars: number
+  hintsUsed: number
+}
+
 export default function IdentityLabs() {
   // Global User Stats (Persisted locally)
-  const [stats, setStats] = useState(() => {
+  const [stats, setStats] = useState<LabStats>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
       try {
         const saved = localStorage.getItem('aboutiam_labs_stats')

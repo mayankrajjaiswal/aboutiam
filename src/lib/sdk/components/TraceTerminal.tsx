@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Terminal, ShieldAlert } from 'lucide-react'
-import { TraceLog } from '../usePlayground'
+import type { TraceLog } from '../usePlayground'
 
 export interface TraceTerminalProps {
   logs: TraceLog[];

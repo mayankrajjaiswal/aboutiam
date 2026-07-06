@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { serializePlaygroundStateForAI, PlaygroundAIState } from './aiConnector'
+import { serializePlaygroundStateForAI } from './aiConnector'
+import type { PlaygroundAIState } from './aiConnector'
 
 describe('Identity Playground SDK AI Connector', () => {
   it('should compile active playground state into structured AI-LD format', () => {

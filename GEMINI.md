@@ -193,3 +193,72 @@ The **Security Tools** section (`/tools`) is a registry-driven extension point o
 3. **Route wiring** — same 3 files as §4D (`App.tsx`, `routeMeta.ts`, `postbuild-ssg.mjs`), plus a `public/sitemap.xml` `<url>` entry and a `public/llms.txt` line, plus flipping the registry `status` to `'live'` from step 1.
 4. **No JSON-LD or FAQ schema work needed** — `ToolPageShell` generates both `SoftwareApplication` and `FAQPage` structured data automatically from the registry entry's `description`/`expert`/`faqs` fields.
 5. Run the responsive/mobile-overflow sweep described in `FIXED_TODO.md` §7 before calling it done — two real overflow bugs were found this way during the first 12 tools, both fixed at the shared-component level, but new tools can still introduce new ones (e.g. a long unbroken example string in a paragraph without `wrap-break-word`).
+
+---
+
+### 🏛️ F. How to Leverage the Identity Playground SDK
+
+All future interactive simulators, CTFs, or sandboxes should be engineered using the unified **Identity Playground SDK** (`src/lib/sdk/`) rather than writing redundant state tracking, scoreboards, hints, and terminal logging logic.
+
+#### **1. Import & Initialize the Core Hook (`usePlayground`)**
+In your page/component, trigger the hook with your module metadata:
+```typescript
+import { usePlayground } from '../lib/sdk/usePlayground'
+
+const {
+  score,
+  hintsRevealed,
+  logs,
+  currentStep,
+  isCompleted,
+  log,
+  revealHint,
+  completeStep,
+  finishPlayground,
+  resetPlayground
+} = usePlayground({
+  moduleId: 'jwt_studio_lab',
+  initialScore: 100,
+  maxHints: 3
+})
+```
+
+#### **2. Wrap the Page Canvas inside `<PlaygroundShell />`**
+The shell component handles responsive split layouts, status indicators, scoreboards, checklists, and active hints out of the box:
+```typescript
+import { PlaygroundShell } from '../lib/sdk/components/PlaygroundShell'
+import { TraceTerminal } from '../lib/sdk/components/TraceTerminal'
+
+return (
+  <PlaygroundShell
+    title="JWT Algorithm Confusion Lab"
+    description="Analyze and exploit a server that blindly trusts user-supplied signing headers."
+    score={score}
+    hintsRevealed={hintsRevealed}
+    currentStep={currentStep}
+    totalSteps={3}
+    isCompleted={isCompleted}
+    onRevealHint={() => revealHint("Verify if the header 'alg' equals 'none'")}
+    onReset={resetPlayground}
+    sidebarContent={<TraceTerminal logs={logs} />}
+  >
+    {/* Your Interactive Sandbox Controls Here */}
+  </PlaygroundShell>
+)
+```
+
+#### **3. Feed Workspace States to AI Prompts (`serializePlaygroundStateForAI`)**
+To support future client-side GenAI integrations, compile your inputs and SDK states into structured formats natively:
+```typescript
+import { serializePlaygroundStateForAI } from '../lib/sdk/aiConnector'
+
+const promptPayload = serializePlaygroundStateForAI({
+  moduleId: 'jwt_studio_lab',
+  score,
+  currentStep,
+  isCompleted,
+  logs,
+  userVariables: { alg: 'none', sub: 'admin' }
+})
+```
+

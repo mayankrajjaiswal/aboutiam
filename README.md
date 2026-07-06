@@ -97,6 +97,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Vulnerability Lab & Identity Museum (`WallOfShame.tsx`):** Interactive corridor charting the 5 historic eras of identity. Houses detailed steppers explaining the SolarWinds **Golden SAML** exploit, **Silver SAML** threats, and **MFA Fatigue push bombing**.
 * **Developer Playbooks (`CheatSheets.tsx`):** Checklist compliance audits for SPAs and M2M credentials, fully expanded with interactive regulatory checklists mapping **SOC2 Type II, ISO 27001, and HIPAA Security Rule** identity controls to update dynamic compliance gauges.
 * **GRC Maturity Wizard (`Assess.tsx`):** 5-pillar questionnaire evaluating organizational readiness, plotting dynamic charts, and exporting a downloadable vector SVG roadmap.
+* **Identity Playground SDK (`src/lib/sdk`):** A unified, reusable React developer framework containing integrated state machines, trace terminals, scoring hooks, and structured AI connector schemas to rapidly spin up and scale future sandboxes.
 
 ---
 

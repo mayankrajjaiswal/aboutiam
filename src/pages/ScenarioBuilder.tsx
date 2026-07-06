@@ -54,10 +54,10 @@ export default function ScenarioBuilder() {
   const handleOrgSelection = (org: OrgType) => {
     let scale: UserScale = 'small'
     let cloud: CloudModel = 'cloud'
-    let wf = true
+    const wf = true
     let cust = false
     let partner = false
-    let intApis = true
+    const intApis = true
     let extApis = false
     let mfa = true
     let passkey = false

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   Award, ShieldAlert, CheckSquare, ArrowLeft, Play, Terminal, HelpCircle, 
@@ -18,30 +18,24 @@ interface Lab {
   background: string
   architecture: string[]
   objectives: { id: string; text: string; solved: boolean }[]
-  brokenConfig: Record<string, any>
-  solutionConfig: Record<string, any> // Expected values
+  brokenConfig: Record<string, unknown>
+  solutionConfig: Record<string, unknown> // Expected values
   hints: string[]
 }
 
 export default function IdentityLabs() {
   // Global User Stats (Persisted locally)
-  const [stats, setStats] = useState({
-    score: 0,
-    labsCompleted: 0,
-    accuracy: 100,
-    stars: 0,
-    hintsUsed: 0
-  })
-
-  // Load and Save stats to localStorage
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('aboutiam_labs_stats')
-      if (saved) {
-        setStats(JSON.parse(saved))
+  const [stats, setStats] = useState(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        const saved = localStorage.getItem('aboutiam_labs_stats')
+        return saved ? JSON.parse(saved) : { score: 0, labsCompleted: 0, accuracy: 100, stars: 0, hintsUsed: 0 }
+      } catch (e) {
+        console.error(e)
       }
     }
-  }, [])
+    return { score: 0, labsCompleted: 0, accuracy: 100, stars: 0, hintsUsed: 0 }
+  })
 
   const saveStats = (newStats: typeof stats) => {
     setStats(newStats)
@@ -51,15 +45,17 @@ export default function IdentityLabs() {
   }
 
   // List of completed lab IDs (Persisted)
-  const [completedLabIds, setCompletedLabIds] = useState<string[]>([])
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('aboutiam_labs_completed')
-      if (saved) {
-        setCompletedLabIds(JSON.parse(saved))
+  const [completedLabIds, setCompletedLabIds] = useState<string[]>(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        const saved = localStorage.getItem('aboutiam_labs_completed')
+        return saved ? JSON.parse(saved) : []
+      } catch (e) {
+        console.error(e)
       }
     }
-  }, [])
+    return []
+  })
 
   const markLabCompleted = (id: string, starsEarned: number, scoreAwarded: number) => {
     if (!completedLabIds.includes(id)) {
@@ -91,7 +87,7 @@ export default function IdentityLabs() {
 
   // Active Lab Workspace State
   const [activeLabId, setActiveLabId] = useState<string | null>(null)
-  const [patchedConfig, setPatchedConfig] = useState<Record<string, any>>({})
+  const [patchedConfig, setPatchedConfig] = useState<Record<string, unknown>>({})
   const [terminalFeed, setTerminalFeed] = useState<string[]>([])
   const [isAttacking, setIsSimulating] = useState<boolean>(false)
   const [showHintIndex, setShowHintIndex] = useState<number>(-1)
@@ -565,7 +561,7 @@ export default function IdentityLabs() {
                   {['All', 'Beginner', 'Intermediate', 'Advanced', 'Expert'].map(diff => (
                     <button
                       key={diff}
-                      onClick={() => setSelectedDifficulty(diff as any)}
+                      onClick={() => setSelectedDifficulty(diff as Difficulty | 'All')}
                       className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer transition ${selectedDifficulty === diff ? 'bg-bg-card text-text-primary shadow-sm border border-border-subtle/40' : 'text-text-muted hover:text-text-secondary'}`}
                     >
                       {diff}
@@ -578,7 +574,7 @@ export default function IdentityLabs() {
                   {['All', 'OAuth / OIDC', 'JWT / Cryptography', 'SAML / SSO', 'SCIM / Provisioning'].map(cat => (
                     <button
                       key={cat}
-                      onClick={() => setSelectedCategory(cat as any)}
+                      onClick={() => setSelectedCategory(cat as Category | 'All')}
                       className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer transition ${selectedCategory === cat ? 'bg-bg-card text-text-primary shadow-sm border border-border-subtle/40' : 'text-text-muted hover:text-text-secondary'}`}
                     >
                       {cat.split(' / ')[0]}

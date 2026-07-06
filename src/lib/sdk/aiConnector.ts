@@ -6,7 +6,7 @@ export interface PlaygroundAIState {
   currentStep: number;
   isCompleted: boolean;
   logs: TraceLog[];
-  userVariables: Record<string, any>;
+  userVariables: Record<string, unknown>;
 }
 
 /**

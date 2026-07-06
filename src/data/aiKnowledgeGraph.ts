@@ -1,5 +1,3 @@
-import { TOOLS } from './toolsRegistry'
-
 export interface ResourceLink {
   title: string;
   path: string;

@@ -31,7 +31,7 @@ function NavGroup({ title, items, collapsed, pathname, handleLinkClick }: NavGro
     if (path === '/') {
       return pathname === '/'
     }
-    return pathname.startsWith(path)
+    return pathname === path || pathname.startsWith(path + '/')
   }
 
   return (

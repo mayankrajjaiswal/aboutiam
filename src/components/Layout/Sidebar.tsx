@@ -81,6 +81,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
     { name: 'IAM Academy', path: '/learn', icon: BookOpen },
     { name: 'Architecture Center', path: '/architecture', icon: Network },
     { name: 'Interactive Playgrounds', path: '/playground', icon: Cpu },
+    { name: 'Identity Labs Academy', path: '/labs', icon: Award },
   ]
 
   const toolsItems = [
@@ -99,7 +100,9 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
 
   const exploreItems = [
     { name: 'Maturity Assessments', path: '/assess', icon: Award },
+    { name: 'Identity Scenario Builder', path: '/scenario-builder', icon: Layers },
     { name: 'Landscape Directory', path: '/explore', icon: Compass },
+    { name: 'Enterprise References', path: '/references', icon: Wrench },
     { name: 'Vendor Center', path: '/vendor', icon: Building },
     { name: 'Certification Hub', path: '/certifications', icon: Award },
     { name: 'Research & CVEs', path: '/research', icon: ScanSearch },

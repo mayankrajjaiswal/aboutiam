@@ -72,6 +72,9 @@ import CommunityForums from './pages/CommunityForums'
 import Assess from './pages/Assess'
 import Explore from './pages/Explore'
 import Assistant from './pages/Assistant'
+import ScenarioBuilder from './pages/ScenarioBuilder'
+import IdentityLabs from './pages/IdentityLabs'
+import ReferenceImplementations from './pages/ReferenceImplementations'
 
 // Advanced Ecosystem Modules
 import Encyclopedia from './pages/Encyclopedia'
@@ -197,6 +200,10 @@ export default function App() {
               <Route path="/playground/vc-did" element={<VcDidLab />} />
 
               <Route path="/assess" element={<Assess />} />
+              <Route path="/scenario-builder" element={<ScenarioBuilder />} />
+              <Route path="/labs" element={<IdentityLabs />} />
+              <Route path="/references" element={<ReferenceImplementations />} />
+              <Route path="/refrences" element={<ReferenceImplementations />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/encyclopedia" element={<Encyclopedia />} />

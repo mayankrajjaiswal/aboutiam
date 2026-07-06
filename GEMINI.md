@@ -32,6 +32,9 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/primer`** | `BeginnerPrimer.tsx` | Layman's Onboarding Portal. Deconstructs security into "The Internet's Digital Bouncer" analogy. |
 | **`/roadmap`** | `Roadmap.tsx` | Zero-to-Hero Learning Pathway. Chronological guide detailing sequential tracks. |
 | **`/learn`** | `Learn.tsx` | IAM Academy. 6 tracks, 36 expandable modules with local progress bar persistent tracking. |
+| **`/scenario-builder`** | `ScenarioBuilder.tsx` | Identity Scenario Builder. Questionnaire-driven enterprise architecture and threat model designer. (Phase 1) |
+| **`/labs`** | `IdentityLabs.tsx` | Interactive Identity Labs. Hands-on vulnerability and pen-test academy with progressive score boards. (Phase 2) |
+| **`/references`** | `ReferenceImplementations.tsx` | Enterprise Reference Implementations. Ready-to-run copyable directories for Spring Boot, Node, SCIM, and OPA. (Phase 4) |
 | **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs for Zero Trust, B2B SaaS, and Multi-Cloud SPIRE. |
 | **`/vendor`** | `VendorCenter.tsx` | Checklists, licensing models, certified paths, and technical interview guides for Entra ID, Okta, Keycloak, Ping, and CyberArk. |
 | **`/research`** | `ResearchCenter.tsx` | Searchable identity CVE directory with side-by-side remediation code patches and active standard IETF RFC drafts. |
@@ -79,7 +82,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/explore/matchmaker`** | `AuthMatchmaker.tsx` | Startup Auth Matchmaker wizard with copyable boilerplates. |
 | **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts and downloadable SVG roadmaps. |
 | **`/explore`** | `Explore.tsx` | Landscape Directory. Product blueprints with copyable integration code blocks. |
-| **`/assistant`** | `Assistant.tsx` | AI Architect Chat. Simulated RAG chatbot delivering JSON policies and Rego scripts. |
+| **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Intelligent platform navigator, protocol comparison engine, and customized learning planner. |
 | **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 36 categorized standard terms with analogies and specs. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. |
 | **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards and interactive forms. |

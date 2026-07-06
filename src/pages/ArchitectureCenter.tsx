@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import type { LucideIcon } from 'lucide-react'
 import {
   Network, ArrowRight, Shield, Play, Terminal, Cpu, Database,
-  Globe, Server, Users, Cloud, RefreshCw, KeySquare, ChevronRight, Laptop,
+  Globe, Server, Users, Cloud, RefreshCw, KeySquare, ChevronRight, ChevronDown, Laptop,
   Wallet, Fingerprint, Landmark, TrendingUp, Send, FileCheck, Waypoints, Siren, Building2, IdCard, Scale, Eye,
   HardHat, Router, Cog, Truck, Factory, CreditCard, ScanLine, Boxes
 } from 'lucide-react'
@@ -630,9 +630,13 @@ const ARCHITECTURE_DATA: Record<ArchitectureType, {
   }
 }
 
+const PROTOCOL_ARCHS: ArchitectureType[] = ['zero_trust', 'oauth_oidc', 'saml', 'pki', 'k8s_identity', 'pam']
+const INDUSTRY_ARCHS: ArchitectureType[] = ['b2b_saas', 'multi_cloud', 'ciam_social', 'banking', 'healthcare', 'government', 'manufacturing', 'retail']
+
 export default function ArchitectureCenter() {
   const [activeArch, setActiveArch] = useState<ArchitectureType>('zero_trust')
   const [selectedNode, setSelectedNode] = useState<string>('client')
+  const [isOpen, setIsOpen] = useState(false)
   
   // Animation / simulation trace logs
   const [simLogs, setSimLogs] = useState<string[]>([])
@@ -960,28 +964,78 @@ export default function ArchitectureCenter() {
 
       {/* Main Grid Wrapper */}
       <div className="p-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         {/* Left Side: Layout Map & Diagram Controls */}
         <div className="lg:col-span-8 flex flex-col gap-6">
-          
-          {/* Architecture tabs */}
-          <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md flex justify-between items-center">
-            <div className="flex gap-2">
-              {(Object.keys(ARCHITECTURE_DATA) as ArchitectureType[]).map((key) => (
-                <button
-                  key={key}
-                  onClick={() => handleArchChange(key)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition ${activeArch === key ? 'bg-accent-glow border-accent-primary text-accent-primary font-bold' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
-                >
-                  {ARCHITECTURE_DATA[key].name.split(' (')[0]}
-                </button>
-              ))}
+
+          {/* Architecture Selector Controls */}
+          <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center relative z-20">
+            <div className="relative flex-1 sm:flex-none">
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full sm:w-[320px] flex items-center justify-between gap-3 bg-bg-nested/60 border border-border-subtle hover:border-accent-primary p-3 rounded-xl transition text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-accent-primary"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <Network className="w-5 h-5 text-accent-primary shrink-0 animate-pulse-slow" />
+                  <div className="min-w-0">
+                    <span className="text-[9px] text-text-muted font-bold uppercase tracking-wider block leading-none mb-1">Active Blueprint</span>
+                    <span className="text-xs font-black text-text-primary block truncate">
+                      {ARCHITECTURE_DATA[activeArch].name.split(' (')[0]}
+                    </span>
+                  </div>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-text-muted transition-transform shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isOpen && (
+                <>
+                  {/* Click-outside backdrop */}
+                  <div className="fixed inset-0 z-30" onClick={() => setIsOpen(false)} />
+                  
+                  {/* Dropdown Menu */}
+                  <div className="absolute top-full left-0 mt-2 w-full sm:w-[360px] bg-bg-card border border-border-subtle rounded-xl shadow-2xl p-2.5 z-40 animate-scaleUp max-h-[350px] overflow-y-auto custom-scrollbar">
+                    <div className="space-y-3">
+                      <div>
+                        <span className="text-[9px] text-accent-primary font-bold font-mono uppercase tracking-wider px-2 block mb-1.5">Core Protocols & Frameworks</span>
+                        <div className="space-y-1">
+                          {PROTOCOL_ARCHS.map((key) => (
+                            <button
+                              key={key}
+                              onClick={() => { handleArchChange(key); setIsOpen(false); }}
+                              className={`w-full text-left p-2 rounded-lg text-xs font-bold transition flex flex-col gap-0.5 cursor-pointer ${activeArch === key ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:bg-bg-nested/60 border border-transparent'}`}
+                            >
+                              <span className="block truncate">{ARCHITECTURE_DATA[key].name.split(' (')[0]}</span>
+                              <span className="text-[10px] text-text-muted font-normal block truncate">{ARCHITECTURE_DATA[key].description}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="border-t border-border-subtle/50 my-2 pt-2">
+                        <span className="text-[9px] text-accent-secondary font-bold font-mono uppercase tracking-wider px-2 block mb-1.5">Industry Verticals & Ecosystems</span>
+                        <div className="space-y-1">
+                          {INDUSTRY_ARCHS.map((key) => (
+                            <button
+                              key={key}
+                              onClick={() => { handleArchChange(key); setIsOpen(false); }}
+                              className={`w-full text-left p-2 rounded-lg text-xs font-bold transition flex flex-col gap-0.5 cursor-pointer ${activeArch === key ? 'bg-accent-glow border-accent-secondary/20 text-accent-secondary' : 'text-text-secondary hover:bg-bg-nested/60 border border-transparent'}`}
+                            >
+                              <span className="block truncate">{ARCHITECTURE_DATA[key].name.split(' (')[0]}</span>
+                              <span className="text-[10px] text-text-muted font-normal block truncate">{ARCHITECTURE_DATA[key].description}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <button
               onClick={runSimulation}
               disabled={isSimulating}
-              className={`text-xs px-3 py-1.5 rounded-lg border transition font-bold flex items-center gap-1.5 ${isSimulating ? 'bg-bg-nested border-border-subtle text-text-muted cursor-not-allowed' : 'bg-accent-primary hover:bg-accent-hover text-white border-accent-primary shadow-sm shadow-accent-primary/10'}`}
+              className={`text-xs px-4 py-3 rounded-xl border transition font-bold flex items-center justify-center gap-1.5 shrink-0 ${isSimulating ? 'bg-bg-nested border-border-subtle text-text-muted cursor-not-allowed' : 'bg-accent-primary hover:bg-accent-hover text-white border-accent-primary shadow-sm shadow-accent-primary/10'}`}
             >
               <Play className={`w-3.5 h-3.5 fill-current ${isSimulating ? '' : 'animate-pulse'}`} /> 
               {isSimulating ? 'Simulating...' : 'Run Simulation Handshake'}
@@ -989,7 +1043,9 @@ export default function ArchitectureCenter() {
           </div>
 
           {/* Graphical Diagram Workspace */}
-          <div className="border border-border-subtle bg-bg-base rounded-xl p-6 relative min-h-[380px] flex items-center justify-center select-none overflow-x-auto shadow-inner">
+          <div className="border border-slate-800 bg-[#090e1a] rounded-xl p-6 relative min-h-[380px] flex items-center justify-center select-none overflow-x-auto shadow-inner overflow-y-hidden">
+            {/* High-tech Grid Overlay */}
+            <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1.5px,transparent_1px)] bg-[size:24px_24px] opacity-60 pointer-events-none rounded-xl"></div>
             
             {/* --- WORKFORCE ZERO TRUST DIAGRAM --- */}
             {activeArch === 'zero_trust' && (
@@ -1006,8 +1062,8 @@ export default function ArchitectureCenter() {
                 />
 
                 <div className="flex flex-col items-center justify-center relative">
-                  <div className="w-full h-0.5 bg-border-subtle"></div>
-                  <ChevronRight className="w-4 h-4 text-text-muted absolute -top-2 animate-bounce" />
+                  <div className="w-full h-0.5 bg-slate-800"></div>
+                  <ChevronRight className="w-4 h-4 text-slate-500 absolute -top-2 animate-bounce" />
                 </div>
 
                 <DiagramNode 
@@ -1020,9 +1076,9 @@ export default function ArchitectureCenter() {
                 />
 
                 {/* Vertical Bridge Row */}
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
 
                 {/* Row 2: MDM, PDP, Resources DB */}
                 <DiagramNode 
@@ -1035,8 +1091,8 @@ export default function ArchitectureCenter() {
                 />
 
                 <div className="flex flex-col items-center justify-center relative">
-                  <div className="w-full h-0.5 bg-border-subtle"></div>
-                  <ChevronRight className="w-4 h-4 text-text-muted absolute -top-2 animate-bounce" />
+                  <div className="w-full h-0.5 bg-slate-800"></div>
+                  <ChevronRight className="w-4 h-4 text-slate-500 absolute -top-2 animate-bounce" />
                 </div>
 
                 <DiagramNode 
@@ -1049,9 +1105,9 @@ export default function ArchitectureCenter() {
                 />
 
                 {/* Vertical Bridge Row 2 */}
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
 
                 {/* Row 3: IdP, Secure DB Target */}
                 <DiagramNode 
@@ -1064,8 +1120,8 @@ export default function ArchitectureCenter() {
                 />
 
                 <div className="flex flex-col items-center justify-center relative">
-                  <div className="w-full h-0.5 bg-border-subtle"></div>
-                  <ChevronRight className="w-4 h-4 text-text-muted absolute -top-2 animate-bounce" />
+                  <div className="w-full h-0.5 bg-slate-800"></div>
+                  <ChevronRight className="w-4 h-4 text-slate-500 absolute -top-2 animate-bounce" />
                 </div>
 
                 <DiagramNode 
@@ -1094,7 +1150,7 @@ export default function ArchitectureCenter() {
                   onClick={() => setSelectedNode('tenant_router')} 
                 />
 
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
 
                 <DiagramNode 
                   id="custom_idp" 
@@ -1107,7 +1163,7 @@ export default function ArchitectureCenter() {
 
                 {/* Row 2: Central Auth */}
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
 
                 <div className="col-span-3 flex justify-center">
@@ -1123,7 +1179,7 @@ export default function ArchitectureCenter() {
 
                 {/* Row 3: SCIM Sync, Isolated DB */}
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
 
                 <DiagramNode 
@@ -1135,7 +1191,7 @@ export default function ArchitectureCenter() {
                   onClick={() => setSelectedNode('scim_sync')} 
                 />
 
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
 
                 <DiagramNode 
                   id="isolated_db" 
@@ -1163,7 +1219,7 @@ export default function ArchitectureCenter() {
                   onClick={() => setSelectedNode('aws_workload')} 
                 />
 
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
 
                 {/* Local agent */}
                 <DiagramNode 
@@ -1177,7 +1233,7 @@ export default function ArchitectureCenter() {
 
                 {/* Vertical to Server */}
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
 
                 {/* Central server */}
@@ -1194,7 +1250,7 @@ export default function ArchitectureCenter() {
 
                 {/* Down to proxy & GCP target */}
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
 
                 <DiagramNode 
@@ -1206,7 +1262,7 @@ export default function ArchitectureCenter() {
                   onClick={() => setSelectedNode('workload_mesh')} 
                 />
 
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
 
                 <DiagramNode 
                   id="gcp_resource" 
@@ -1234,7 +1290,7 @@ export default function ArchitectureCenter() {
                   onClick={() => setSelectedNode('client')} 
                 />
 
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
 
                 <DiagramNode 
                   id="social_idp" 
@@ -1247,7 +1303,7 @@ export default function ArchitectureCenter() {
 
                 {/* Vertical Row to Broker */}
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
 
                 <div className="col-span-3 flex justify-center">
@@ -1263,7 +1319,7 @@ export default function ArchitectureCenter() {
 
                 {/* Vertical Row down to User Store & API Gateway */}
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
 
                 <DiagramNode 
@@ -1275,7 +1331,7 @@ export default function ArchitectureCenter() {
                   onClick={() => setSelectedNode('user_store')} 
                 />
 
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
 
                 <DiagramNode 
                   id="api_gw" 
@@ -1293,19 +1349,19 @@ export default function ArchitectureCenter() {
             {activeArch === 'oauth_oidc' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="user" selected={selectedNode === 'user'} title="Resource Owner" icon={Users} color="blue" onClick={() => setSelectedNode('user')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="client_app" selected={selectedNode === 'client_app'} title="Client App" icon={Globe} color="blue" onClick={() => setSelectedNode('client_app')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="col-span-3 flex justify-center">
                   <DiagramNode id="auth_server" selected={selectedNode === 'auth_server'} title="Authorization Server" icon={KeySquare} color="teal" onClick={() => setSelectedNode('auth_server')} />
                 </div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <DiagramNode id="client_app" selected={selectedNode === 'client_app'} title="Client App (Bearer)" icon={Globe} color="blue" onClick={() => setSelectedNode('client_app')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="resource_server" selected={selectedNode === 'resource_server'} title="Resource Server (API)" icon={Server} color="emerald" onClick={() => setSelectedNode('resource_server')} />
               </div>
             )}
@@ -1314,11 +1370,11 @@ export default function ArchitectureCenter() {
             {activeArch === 'saml' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="user" selected={selectedNode === 'user'} title="Employee Browser" icon={Users} color="blue" onClick={() => setSelectedNode('user')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="sp" selected={selectedNode === 'sp'} title="Service Provider" icon={Cloud} color="teal" onClick={() => setSelectedNode('sp')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="col-span-3 flex justify-center">
                   <DiagramNode id="idp" selected={selectedNode === 'idp'} title="Identity Provider" icon={KeySquare} color="blue" onClick={() => setSelectedNode('idp')} />
                 </div>
@@ -1329,11 +1385,11 @@ export default function ArchitectureCenter() {
             {activeArch === 'pam' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="admin" selected={selectedNode === 'admin'} title="System Administrator" icon={Users} color="blue" onClick={() => setSelectedNode('admin')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="pam_vault" selected={selectedNode === 'pam_vault'} title="PAM Session Vault" icon={Shield} color="teal" onClick={() => setSelectedNode('pam_vault')} />
                 <div className="h-10"></div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="col-span-2"></div>
                 <DiagramNode id="target_server" selected={selectedNode === 'target_server'} title="Target Server" icon={Server} color="emerald" onClick={() => setSelectedNode('target_server')} />
               </div>
@@ -1343,13 +1399,13 @@ export default function ArchitectureCenter() {
             {activeArch === 'pki' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="device" selected={selectedNode === 'device'} title="Client Device" icon={Laptop} color="blue" onClick={() => setSelectedNode('device')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="sub_ca" selected={selectedNode === 'sub_ca'} title="Intermediate CA" icon={Server} color="teal" onClick={() => setSelectedNode('sub_ca')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <DiagramNode id="crl" selected={selectedNode === 'crl'} title="Revocation (CRL)" icon={Database} color="emerald" onClick={() => setSelectedNode('crl')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="root_ca" selected={selectedNode === 'root_ca'} title="Offline Root CA" icon={KeySquare} color="blue" onClick={() => setSelectedNode('root_ca')} />
               </div>
             )}
@@ -1359,20 +1415,20 @@ export default function ArchitectureCenter() {
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 {/* Developer -> OIDC Provider -> Kube API Server */}
                 <DiagramNode id="developer" selected={selectedNode === 'developer'} title="Developer (kubectl)" icon={Users} color="blue" onClick={() => setSelectedNode('developer')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="oidc_provider" selected={selectedNode === 'oidc_provider'} title="External IdP (OIDC)" icon={KeySquare} color="teal" onClick={() => setSelectedNode('oidc_provider')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="col-span-3 flex justify-center">
                   <DiagramNode id="kube_apiserver" selected={selectedNode === 'kube_apiserver'} title="Kubernetes API Server" icon={Server} color="blue" onClick={() => setSelectedNode('kube_apiserver')} />
                 </div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 {/* K8s RBAC -> Pod SA */}
                 <DiagramNode id="k8s_rbac" selected={selectedNode === 'k8s_rbac'} title="K8s RBAC (RoleBinding)" icon={Shield} color="emerald" onClick={() => setSelectedNode('k8s_rbac')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="pod_sa" selected={selectedNode === 'pod_sa'} title="Pod Service Account" icon={Cpu} color="teal" onClick={() => setSelectedNode('pod_sa')} />
               </div>
             )}
@@ -1381,19 +1437,19 @@ export default function ArchitectureCenter() {
             {activeArch === 'banking' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="customer_channel" selected={selectedNode === 'customer_channel'} title="Digital Banking Channel" icon={Wallet} color="blue" onClick={() => setSelectedNode('customer_channel')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="sca_engine" selected={selectedNode === 'sca_engine'} title="SCA Engine (PSD2)" icon={Fingerprint} color="teal" onClick={() => setSelectedNode('sca_engine')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <div className="col-span-3 flex justify-center">
                   <DiagramNode id="core_ledger" selected={selectedNode === 'core_ledger'} title="Core Banking Ledger" icon={Landmark} color="blue" onClick={() => setSelectedNode('core_ledger')} />
                 </div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <DiagramNode id="fraud_engine" selected={selectedNode === 'fraud_engine'} title="Fraud & AML Engine" icon={TrendingUp} color="teal" onClick={() => setSelectedNode('fraud_engine')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="swift_gateway" selected={selectedNode === 'swift_gateway'} title="SWIFT Gateway" icon={Send} color="emerald" onClick={() => setSelectedNode('swift_gateway')} />
               </div>
             )}
@@ -1402,19 +1458,19 @@ export default function ArchitectureCenter() {
             {activeArch === 'healthcare' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="patient_portal" selected={selectedNode === 'patient_portal'} title="Patient Portal (CIAM)" icon={Users} color="blue" onClick={() => setSelectedNode('patient_portal')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="fhir_gateway" selected={selectedNode === 'fhir_gateway'} title="HL7 FHIR Gateway" icon={Waypoints} color="teal" onClick={() => setSelectedNode('fhir_gateway')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <div className="col-span-3 flex justify-center">
                   <DiagramNode id="ehr_system" selected={selectedNode === 'ehr_system'} title="EHR System" icon={FileCheck} color="blue" onClick={() => setSelectedNode('ehr_system')} />
                 </div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <DiagramNode id="break_glass" selected={selectedNode === 'break_glass'} title="Break-Glass Access" icon={Siren} color="teal" onClick={() => setSelectedNode('break_glass')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="business_associate" selected={selectedNode === 'business_associate'} title="Business Associate" icon={Building2} color="emerald" onClick={() => setSelectedNode('business_associate')} />
               </div>
             )}
@@ -1423,19 +1479,19 @@ export default function ArchitectureCenter() {
             {activeArch === 'government' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="piv_card" selected={selectedNode === 'piv_card'} title="PIV / CAC Card" icon={IdCard} color="blue" onClick={() => setSelectedNode('piv_card')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="assurance_broker" selected={selectedNode === 'assurance_broker'} title="Assurance Broker" icon={Scale} color="teal" onClick={() => setSelectedNode('assurance_broker')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <div className="col-span-3 flex justify-center">
                   <DiagramNode id="agency_broker" selected={selectedNode === 'agency_broker'} title="Cross-Agency Broker" icon={Landmark} color="blue" onClick={() => setSelectedNode('agency_broker')} />
                 </div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <DiagramNode id="fedramp_boundary" selected={selectedNode === 'fedramp_boundary'} title="FedRAMP Boundary" icon={Building2} color="teal" onClick={() => setSelectedNode('fedramp_boundary')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="audit_continuous_monitoring" selected={selectedNode === 'audit_continuous_monitoring'} title="Continuous Monitoring" icon={Eye} color="emerald" onClick={() => setSelectedNode('audit_continuous_monitoring')} />
               </div>
             )}
@@ -1444,19 +1500,19 @@ export default function ArchitectureCenter() {
             {activeArch === 'manufacturing' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="plant_operator" selected={selectedNode === 'plant_operator'} title="Plant Floor Operator" icon={HardHat} color="blue" onClick={() => setSelectedNode('plant_operator')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="ot_it_gateway" selected={selectedNode === 'ot_it_gateway'} title="OT/IT Segmentation Gateway" icon={Router} color="teal" onClick={() => setSelectedNode('ot_it_gateway')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <div className="col-span-3 flex justify-center">
                   <DiagramNode id="plc_identity_broker" selected={selectedNode === 'plc_identity_broker'} title="PLC/RTU Identity Broker" icon={Cog} color="blue" onClick={() => setSelectedNode('plc_identity_broker')} />
                 </div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <DiagramNode id="vendor_remote_access" selected={selectedNode === 'vendor_remote_access'} title="Vendor Remote Access" icon={Truck} color="teal" onClick={() => setSelectedNode('vendor_remote_access')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="scada_historian" selected={selectedNode === 'scada_historian'} title="SCADA Historian" icon={Factory} color="emerald" onClick={() => setSelectedNode('scada_historian')} />
               </div>
             )}
@@ -1465,19 +1521,19 @@ export default function ArchitectureCenter() {
             {activeArch === 'retail' && (
               <div className="grid grid-cols-3 gap-y-12 gap-x-12 items-center justify-center min-w-[500px]">
                 <DiagramNode id="pos_terminal" selected={selectedNode === 'pos_terminal'} title="Point-of-Sale Terminal" icon={CreditCard} color="blue" onClick={() => setSelectedNode('pos_terminal')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="store_associate_id" selected={selectedNode === 'store_associate_id'} title="Store Associate Identity" icon={IdCard} color="teal" onClick={() => setSelectedNode('store_associate_id')} />
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <div className="col-span-3 flex justify-center">
                   <DiagramNode id="omnichannel_ciam" selected={selectedNode === 'omnichannel_ciam'} title="Omnichannel CIAM Hub" icon={Users} color="blue" onClick={() => setSelectedNode('omnichannel_ciam')} />
                 </div>
                 <div className="h-10"></div>
-                <div className="h-10 border-l border-dashed border-border-subtle mx-auto"></div>
+                <div className="h-10 border-l border-dashed border-slate-800 mx-auto"></div>
                 <div className="h-10"></div>
                 <DiagramNode id="payment_gateway" selected={selectedNode === 'payment_gateway'} title="Tokenized Payment Gateway" icon={ScanLine} color="teal" onClick={() => setSelectedNode('payment_gateway')} />
-                <div className="w-full h-0.5 bg-border-subtle"></div>
+                <div className="w-full h-0.5 bg-slate-800"></div>
                 <DiagramNode id="inventory_supply_chain" selected={selectedNode === 'inventory_supply_chain'} title="Inventory & Supply Chain" icon={Boxes} color="emerald" onClick={() => setSelectedNode('inventory_supply_chain')} />
               </div>
             )}
@@ -1485,18 +1541,18 @@ export default function ArchitectureCenter() {
           </div>
 
           {/* Interactive simulated execution traces */}
-          <div className="border border-border-subtle bg-bg-card rounded-xl p-4 shadow flex-1 min-h-[140px] flex flex-col justify-between">
+          <div className="border border-slate-800 bg-slate-950 rounded-xl p-4 shadow-xl flex-1 min-h-[140px] flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-1.5 border-b border-border-subtle pb-1.5 mb-2 text-[10px] text-text-secondary font-bold uppercase tracking-wider">
-                <Terminal className="w-4 h-4 text-accent-primary" /> Active Handshake Trace Logs
+              <div className="flex items-center gap-1.5 border-b border-slate-800 pb-1.5 mb-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                <Terminal className="w-4 h-4 text-accent-primary animate-pulse" /> Active Handshake Trace Logs
               </div>
               
               <div className="space-y-1 text-[11px] font-mono leading-normal max-h-32 overflow-y-auto pr-1">
                 {simLogs.length === 0 ? (
-                  <span className="text-text-muted italic select-none">No active handshake trace. Click "Run Simulation Handshake" above to watch packets route.</span>
+                  <span className="text-slate-500 italic select-none">No active handshake trace. Click "Run Simulation Handshake" above to watch packets route.</span>
                 ) : (
                   simLogs.map((log, idx) => (
-                    <div key={idx} className="text-text-primary">
+                    <div key={idx} className="text-emerald-400 font-mono">
                       {log}
                     </div>
                   ))
@@ -1505,7 +1561,7 @@ export default function ArchitectureCenter() {
             </div>
 
             {simLogs.length > 0 && !isSimulating && (
-              <span className="block text-[9px] text-status-success font-bold font-mono mt-2 animate-pulse">
+              <span className="block text-[9px] text-emerald-400 font-bold font-mono mt-2 animate-pulse">
                 ✓ Handshake completed. Dynamic parameters resolved securely.
               </span>
             )}
@@ -1576,17 +1632,23 @@ function DiagramNode({
   onClick: () => void
 }) {
   const colorClasses = {
-    blue: selected ? 'bg-accent-glow border-accent-primary text-accent-primary shadow shadow-accent-primary/20' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle',
-    teal: selected ? 'bg-accent-glow border-accent-secondary text-accent-secondary shadow shadow-accent-secondary/20' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle',
-    emerald: selected ? 'bg-status-success/10 border-status-success text-status-success shadow shadow-status-success/20' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'
+    blue: selected 
+      ? 'bg-blue-950/40 border-blue-500 text-blue-400 shadow-lg shadow-blue-500/30' 
+      : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200 hover:bg-slate-900/70',
+    teal: selected 
+      ? 'bg-teal-950/40 border-teal-500 text-teal-400 shadow-lg shadow-teal-500/30' 
+      : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200 hover:bg-slate-900/70',
+    emerald: selected 
+      ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 shadow-lg shadow-emerald-500/30' 
+      : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200 hover:bg-slate-900/70'
   }
 
   return (
     <button
       onClick={onClick}
-      className={`p-3 rounded-xl border flex flex-col items-center gap-1.5 transition text-center cursor-pointer min-w-[125px] ${colorClasses[color]}`}
+      className={`p-3 rounded-xl border flex flex-col items-center gap-1.5 transition text-center cursor-pointer min-w-[125px] relative z-10 ${colorClasses[color]}`}
     >
-      <Icon className={`w-5 h-5 ${selected ? 'text-accent-primary' : 'text-text-muted'}`} />
+      <Icon className={`w-5 h-5 ${selected ? (color === 'blue' ? 'text-blue-400 animate-pulse' : color === 'teal' ? 'text-teal-400 animate-pulse' : 'text-emerald-400 animate-pulse') : 'text-slate-500'}`} />
       <span className="text-[10px] font-bold tracking-tight block max-w-[110px]">{title}</span>
     </button>
   )

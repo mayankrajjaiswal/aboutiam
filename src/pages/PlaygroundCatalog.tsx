@@ -9,6 +9,7 @@ export default function PlaygroundCatalog() {
       icon: RefreshCw,
       link: "/playground/oauth",
       badge: "Active (Core)",
+      enterpriseProducts: "Microsoft Entra ID, Okta, Ping Identity, Thales OneWelcome"
     },
     {
       title: "JWT Studio & Exploit Arena",
@@ -16,6 +17,7 @@ export default function PlaygroundCatalog() {
       icon: Key,
       link: "/playground/jwt",
       badge: "Active (Core)",
+      enterpriseProducts: "Auth0, PingFederate, Keycloak"
     },
     {
       title: "SAML 2.0 XML Workbench",
@@ -23,6 +25,7 @@ export default function PlaygroundCatalog() {
       icon: Lock,
       link: "/playground/saml",
       badge: "Active (Standard)",
+      enterpriseProducts: "CyberArk, Microsoft Entra ID, PingIdentity"
     },
     {
       title: "FIDO2 / WebAuthn & Passkeys Lab",
@@ -30,6 +33,7 @@ export default function PlaygroundCatalog() {
       icon: Fingerprint,
       link: "/playground/fido2",
       badge: "Active (Standard)",
+      enterpriseProducts: "Thales SafeNet Trusted Access, Okta, YubiKey"
     },
     {
       title: "Access Control Lab (RBAC vs ABAC)",
@@ -37,6 +41,7 @@ export default function PlaygroundCatalog() {
       icon: Shield,
       link: "/playground/access",
       badge: "Active (Standard)",
+      enterpriseProducts: "PingAccess, AWS IAM, Open Policy Agent"
     },
     {
       title: "LDAP Tree Simulator",
@@ -44,6 +49,7 @@ export default function PlaygroundCatalog() {
       icon: Server,
       link: "/playground/ldap",
       badge: "Active (Standard)",
+      enterpriseProducts: "Microsoft Active Directory, PingDirectory"
     },
     {
       title: "Zero Trust Planner",
@@ -51,6 +57,7 @@ export default function PlaygroundCatalog() {
       icon: RefreshCw,
       link: "/playground/zta",
       badge: "Active (Standard)",
+      enterpriseProducts: "Thales SafeNet Trusted Access, Cloudflare Access"
     },
     {
       title: "SCIM Provisioning & Sync Lab",
@@ -58,6 +65,7 @@ export default function PlaygroundCatalog() {
       icon: Cpu,
       link: "/playground/scim",
       badge: "Active (Advanced)",
+      enterpriseProducts: "SailPoint, Saviynt, Okta Lifecycle Management"
     },
     {
       title: "OAuth 2.0 Attack Lab",
@@ -72,6 +80,7 @@ export default function PlaygroundCatalog() {
       icon: Server,
       link: "/playground/kerberos",
       badge: "Active (Standard)",
+      enterpriseProducts: "Microsoft Active Directory"
     },
     {
       title: "Identity CTF Hacking Arena",
@@ -107,6 +116,7 @@ export default function PlaygroundCatalog() {
       icon: Sliders,
       link: "/playground/conditional-access",
       badge: "Active (Standard)",
+      enterpriseProducts: "Microsoft Entra ID Conditional Access, Thales SafeNet"
     },
     {
       title: "Open Policy Agent (OPA) & Rego Playground",
@@ -114,6 +124,7 @@ export default function PlaygroundCatalog() {
       icon: KeySquare,
       link: "/playground/opa",
       badge: "Active (Advanced)",
+      enterpriseProducts: "Styra Declarative Authorization"
     },
     {
       title: "Active Directory GPO Simulator",
@@ -170,6 +181,7 @@ export default function PlaygroundCatalog() {
       icon: Key,
       link: "/playground/token-exchange",
       badge: "Active (Standard)",
+      enterpriseProducts: "Auth0, Keycloak"
     },
     {
       title: "Identity Threat Detection (ITDR) Lab",
@@ -177,6 +189,7 @@ export default function PlaygroundCatalog() {
       icon: Eye,
       link: "/playground/itdr",
       badge: "Active (Standard)",
+      enterpriseProducts: "Okta ITDR, CyberArk"
     },
     {
       title: "Device Posture Attestation Lab",
@@ -184,6 +197,7 @@ export default function PlaygroundCatalog() {
       icon: Laptop,
       link: "/playground/device-trust",
       badge: "Active (Standard)",
+      enterpriseProducts: "Microsoft Intune, JumpCloud"
     },
     {
       title: "Passkey Internals Playground",
@@ -256,6 +270,13 @@ export default function PlaygroundCatalog() {
                 {pg.title}
               </h4>
               <p className="text-sm text-text-secondary leading-relaxed">{pg.desc}</p>
+              
+              {pg.enterpriseProducts && (
+                <div className="pt-3 border-t border-border-subtle border-dashed mt-3">
+                  <span className="text-[9px] font-black uppercase text-text-muted block mb-1">Implemented In</span>
+                  <p className="text-[10px] text-text-secondary font-semibold leading-relaxed">{pg.enterpriseProducts}</p>
+                </div>
+              )}
             </div>
             <div className="pt-6 border-t border-border-subtle/50 mt-6">
               <Link

@@ -1,645 +1,1109 @@
-import { useState } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   Building, ArrowRight, ShieldCheck, HelpCircle, 
-  Settings, Award, AlertTriangle, Layers
+  Settings, Award, AlertTriangle, Layers, Calendar,
+  MessageSquare, Newspaper, Search, Play, RefreshCw,
+  CheckCircle2, ExternalLink, Globe, Target, AlertCircle,
+  Cpu, Sparkles, Plus, Clock, Terminal, ArrowLeftRight
 } from 'lucide-react'
 
-type VendorType = 'entra_id' | 'okta' | 'keycloak' | 'cyberark' | 'ping_identity' | 'forgerock' | 'sailpoint' | 'saviynt' | 'wso2' | 'one_identity' | 'beyondtrust' | 'delinea'
+// Import static databases and type-safe helpers
+import { VENDOR_CATALOG, THALES_PRODUCTS } from '../data/vendorCatalog'
+import type { VendorType } from '../data/vendorCatalog'
+import { 
+  IDENTITY_NEWS_FEED, IDENTITY_CVE_DIRECTORY, COMMUNITY_EVENTS_CALENDAR, 
+  SOCIAL_DISCUSSIONS, INITIAL_INGESTION_STEPS
+} from '../data/identityIntelligence'
+import type { IngestionStep } from '../data/identityIntelligence'
 
-interface VendorDetails {
-  fullName: string
-  category: string
-  certifications: string[]
-  strengths: string[]
-  limitations: string[]
-  components: { name: string; role: string }[]
-  deploymentChecklist: string[]
-  licensingModel: string
-  interviewQuestions: { q: string; a: string }[]
-}
-
-const VENDOR_DATA: Record<VendorType, VendorDetails> = {
-  entra_id: {
-    fullName: 'Microsoft Entra ID (formerly Azure AD)',
-    category: 'Workforce IAM & Cloud Security Infrastructure',
-    certifications: ['SC-300: Microsoft Identity and Access Administrator', 'SC-100: Microsoft Cybersecurity Architect'],
-    strengths: [
-      'Incredible, native integration with Windows, Office 365, and Azure cloud ecosystems.',
-      'Strong Conditional Access Policy engine integrating machine risk and location telemetry.',
-      'Seamless multi-cloud governance and external identity (B2B/B2C) support.'
-    ],
-    limitations: [
-      'Licensing structure is complex (Premium P1/P2/G5 tiers can become highly expensive).',
-      'Requires Microsoft ecosystem alignment to unlock full native capabilities.',
-      'SAML/OIDC custom policy customization via XML (Identity Experience Framework) is notoriously complex.'
-    ],
-    components: [
-      { name: 'Conditional Access', role: 'Context-aware risk evaluation policy decision engine.' },
-      { name: 'Identity Governance (ELM)', role: 'Automates user lifecycle states (Joiner-Mover-Leaver) and entitlements.' },
-      { name: 'Privileged Identity Management (PIM)', role: 'Handles Just-In-Time (JIT) administrative credentials elevation.' }
-    ],
-    deploymentChecklist: [
-      'Configure Microsoft Entra Connect / Cloud Sync for hybrid Active Directory replication.',
-      'Enable security defaults or configure strict Conditional Access baselines.',
-      'Configure emergency access (Break-glass) administrator accounts exempt from MFA.',
-      'Set up authentication strength policies to mandate phishing-proof passkeys / FIDO2.'
-    ],
-    licensingModel: 'User-based monthly subscription. Divided into Free, Premium P1 (advanced security), Premium P2 (governance & PIM), and special enterprise bundles (E5/G5).',
-    interviewQuestions: [
-      {
-        q: 'What is the purpose of emergency access accounts in Entra ID, and how should they be secured?',
-        a: 'Emergency accounts ("break-glass") are highly-privileged administrator accounts used to access the tenant during global federation outages. They must have permanent cloud-only credentials (not federated to on-prem), be excluded from standard MFA policies (or bound to highly-secured physical hardware keys kept in a safe), and any login event on them must trigger active high-priority SIEM alerts.'
-      },
-      {
-        q: 'How does Privileged Identity Management (PIM) reduce organizational security risks?',
-        a: 'PIM enforces the principle of least privilege by removing permanent administrative roles. Instead, administrators must request Just-In-Time (JIT) activation, provide a business justification, complete step-up MFA, and receive optional manager approvals. Roles automatically expire after a set time (e.g. 2 hours), minimizing lateral attack surfaces.'
-      }
-    ]
-  },
-  okta: {
-    fullName: 'Okta Workforce Identity Cloud & Customer Identity (CIAM)',
-    category: 'Universal Single Sign-On (SSO) & Tenant Federation Platform',
-    certifications: ['Okta Certified Professional / Administrator', 'Okta Certified Consultant / Developer', 'Okta Certified Technical Architect'],
-    strengths: [
-      'Outstanding, vendor-neutral Integration Network (OIN) supporting thousands of pre-built apps.',
-      'Highly intuitive, developer-friendly REST APIs and software development kits (SDKs).',
-      'Ultra-fast user onboarding via robust Universal Directory metadata mapping.'
-    ],
-    limitations: [
-      'Primarily cloud-native; on-premise Active Directory support requires installing local sync agents.',
-      'Advanced orchestration (Okta Workflows) can quickly exceed baseline API rate limits.',
-      'Has experienced high-profile support-portal social engineering breaches, necessitating strict admin session lockdowns.'
-    ],
-    components: [
-      { name: 'Universal Directory', role: 'Centralized directory schema aggregation mapping meta-attributes.' },
-      { name: 'Okta Workflows', role: 'No-code visual identity automation and API orchestration platform.' },
-      { name: 'Okta Access Gateway (OAG)', role: 'Enforces header-based authentication for legacy on-premise apps.' }
-    ],
-    deploymentChecklist: [
-      'Deploy Okta AD/LDAP Directory Agents on local server domains.',
-      'Configure custom domain names (e.g. auth.company.com) to prevent third-party cookie tracking issues.',
-      'Define sign-on security policies mapping network zones and risk scoring tiers.',
-      'Implement SCIM provisioning linkages for cloud applications.'
-    ],
-    licensingModel: 'Per-user per-month tiered pricing. Core SSO, Multi-Factor Authentication, Universal Directory, Lifecycle Management, and Workflows are priced as separate add-on licenses.',
-    interviewQuestions: [
-      {
-        q: 'What is Okta Access Gateway (OAG) and how does it integrate with legacy applications?',
-        a: 'OAG acts as a reverse proxy PEP (Policy Enforcement Point) deployed inside the corporate network. It intercepts requests, handles OIDC single sign-on federation with Okta cloud, and forwards the authenticated user context to legacy on-premise apps utilizing HTTP header injection (e.g. injecting the username in an HTTP header) or Kerberos delegation.'
-      },
-      {
-        q: 'How should an Okta administrator protect the tenant against support-portal compromise attacks?',
-        a: 'Administrators must enforce strict Conditional Access rules requiring administrative actions to originate only from managed devices and compliant network zones. Admin accounts should use phishing-proof WebAuthn credentials, and tenant log auditing should actively track any changes made to support bypass configurations.'
-      }
-    ]
-  },
-  keycloak: {
-    fullName: 'Keycloak Open Source Identity and Access Management',
-    category: 'Self-Hosted & Open-Source Identity Federation',
-    certifications: ['No official vendor exams; managed by Red Hat (as part of Red Hat Single Sign-On)'],
-    strengths: [
-      '100% free, open-source, and highly customizable. No license fee overheads.',
-      'Outstanding out-of-the-box support for modern protocols (OAuth 2.1, OIDC, SAML 2.0).',
-      'Highly extensible via Custom SPIs (Service Provider Interfaces) written in Java.'
-    ],
-    limitations: [
-      'Requires self-hosting, database management, patching, and horizontal scaling overhead.',
-      'User administration interface is functional but can feel dated compared to commercial offerings.',
-      'No native directory; typically requires backing with external LDAP/Active Directory engines.'
-    ],
-    components: [
-      { name: 'Realms', role: 'Isolated tenant security boundaries separating users, clients, and policies.' },
-      { name: 'User Federation Providers', role: 'Integrates on-the-fly user syncing with LDAP/Active Directory directories.' },
-      { name: 'Custom Java SPIs', role: 'Developer plug-ins to customize login flows, database storage, or protocol tokens.' }
-    ],
-    deploymentChecklist: [
-      'Deploy Keycloak containers in high-availability clustering mode behind a load balancer.',
-      'Configure a production-grade external database (e.g. PostgreSQL) instead of default H2.',
-      'Enable HTTPS/TLS termination at the reverse proxy layer (e.g. Traefik, NGINX).',
-      'Isolate the Keycloak Admin Console (`/admin`) from external public internet access.'
-    ],
-    licensingModel: 'Free under Apache License 2.0. Optional enterprise commercial support is available through Red Hat build of Keycloak (RH-SSO).',
-    interviewQuestions: [
-      {
-        q: 'What is a "Realm" in Keycloak, and how should it be used in multi-tenant SaaS?',
-        a: 'A Realm is a completely isolated security domain inside Keycloak. It has its own users, client registries, security policies, and token configurations. In multi-tenant systems, you can create one Realm per corporate tenant, giving each tenant complete logical isolation, custom branding, and custom corporate SSO setups.'
-      },
-      {
-        q: 'Why should you avoid using Keycloak\'s default H2 database in production, and how should database connections be scaled?',
-        a: 'The default H2 database is an in-memory, single-instance file storage that cannot scale horizontally or handle server restarts without total data loss. For production, Keycloak must connect to external clustered databases (like Postgres, Oracle, or MariaDB) and leverage caching grids (Infinispan) to distribute active user sessions across multiple container instances.'
-      }
-    ]
-  },
-  cyberark: {
-    fullName: 'CyberArk Privileged Access Manager (PAM) & Identity Security',
-    category: 'Enterprise Privileged Account Security & Secrets Management',
-    certifications: ['CyberArk Certified Trustee / Defender / Sentry', 'CyberArk Certified Delivery Engineer (CDE)', 'CyberArk Certified Guardian'],
-    strengths: [
-      'The undisputed industry gold standard for securing privileged administrator accounts.',
-      'Robust session recording, keystroke logging, and real-time administrative command audits.',
-      'Secure, isolated credential vaulting with automatic password rotation.'
-    ],
-    limitations: [
-      'Infrastructure is heavy and complex (Vault, Central Policy Manager, PVWA, PSM require significant setup).',
-      'Licensing and implementation costs are exceptionally high.',
-      'Requires change-management efforts to convince administrators to abandon direct credential access.'
-    ],
-    components: [
-      { name: 'Enterprise Password Vault (EPV)', role: 'The highly-secured core vault protecting privileged credentials.' },
-      { name: 'Central Policy Manager (CPM)', role: 'Automates privileged password generation, rotation, and health verification.' },
-      { name: 'Privileged Session Manager (PSM)', role: 'Proxies administrative sessions (SSH, RDP) with active keystroke logging.' }
-    ],
-    deploymentChecklist: [
-      'Install the Digital Vault on dedicated, hardened Windows servers with direct firewall lockouts.',
-      'Deploy PVWA (Web Console) and CPM (Rotator) on distinct network servers.',
-      'Onboard administrative credential targets (Active Directory Domain Admins, SQL sa, root keys).',
-      'Define password rotation policies, dual-control approval workflows, and emergency access exceptions.'
-    ],
-    licensingModel: 'Enterprise pricing based on vaulted privileged accounts, concurrent session proxies, and deployed server nodes.',
-    interviewQuestions: [
-      {
-        q: 'How does CyberArk Privileged Session Manager (PSM) prevent administrative credential exposure?',
-        a: 'PSM acts as a secure session jump-server. When an administrator requests access, PSM establishes the remote connection (SSH/RDP) to the target server, retrieves the password from the vault, injects it directly into the session channel, and proxies the connection. The admin never sees, knows, or interacts with the raw credentials, eliminating credential theft from the client machine.'
-      },
-      {
-        q: 'What is the role of the Central Policy Manager (CPM) in the CyberArk architecture?',
-        a: 'The CPM is the automation engine. It is responsible for checking password health on target servers, generating secure cryptographical passwords according to corporate policy, changing them on the target servers, and updating the vault. If a password fails verification, CPM runs self-healing reconciliation scripts using privileged root accounts.'
-      }
-    ]
-  },
-  ping_identity: {
-    fullName: 'Ping Identity (PingFederate & PingAccess)',
-    category: 'Enterprise-Scale Single Sign-On, Federation & API Posture',
-    certifications: ['Ping Identity Certified Professional / Specialist', 'Ping Identity Certified Expert'],
-    strengths: [
-      'Highly flexible, enterprise-grade architecture capable of scaling to hundreds of millions of users.',
-      'Incredible, fine-grained access control policy evaluation at the API and transaction layer.',
-      'Seamless support for hybrid legacy, cloud-native, and multi-tenant configurations.'
-    ],
-    limitations: [
-      'The separate product modules (PingFederate, PingAccess, PingDirectory, PingOne) require integration and licensing sync.',
-      'Steep learning curve for newer developers due to heavy, protocol-dense menus.',
-      'Often requires dedicated on-premise infrastructure setup compared to pure SaaS Okta.'
-    ],
-    components: [
-      { name: 'PingFederate', role: 'Highly scalable, enterprise protocol engine for SAML, WS-Fed, and OIDC.' },
-      { name: 'PingAccess', role: 'Header-based and token-based secure reverse proxy and API security policy decisions.' },
-      { name: 'PingDirectory', role: 'Extremely fast, high-performance LDAP directory storage for core enterprise attributes.' }
-    ],
-    deploymentChecklist: [
-      'Deploy PingFederate clusters in high-performance load-balanced server zones.',
-      'Configure data store connectors to Active Directory, SQL, or custom LDAP registries.',
-      'Establish OAuth and OpenID Connect client registries with precise token lifecycle configurations.',
-      'Deploy PingAccess agents inside corporate application servers to terminate header auth.'
-    ],
-    licensingModel: 'Enterprise licensing agreements tailored to user volume, application connections, and deployed proxy environments.',
-    interviewQuestions: [
-      {
-        q: 'What is the difference between PingFederate and PingAccess, and how do they coordinate access control?',
-        a: 'PingFederate is the **federation protocol engine**; it authenticates users, federates single sign-on across directories, and issues standard SAML or OIDC tokens. PingAccess is the **access gatekeeper (PEP)**; it intercepts application traffic, validates incoming tokens issued by PingFederate, evaluates fine-grained resource rules, and injects secure identity headers into backend enterprise applications.'
-      },
-      {
-        q: 'How does PingDirectory achieve its high performance compared to standard relational databases?',
-        a: 'PingDirectory is built strictly as a highly-optimized directory server (LDAP) rather than a relational database (SQL). It organizes user attributes in a hierarchical tree structure, uses specialized in-memory indexing algorithms, and optimizes specifically for heavy read-to-write ratios (e.g. 95% reads for logins vs 5% database modifications).'
-      }
-    ]
-  },
-  forgerock: {
-    fullName: 'ForgeRock Identity Platform (ForgeRock IDM & AM)',
-    category: 'Highly Customizable Customer Identity & Access Management (CIAM)',
-    certifications: ['ForgeRock Certified Access Management Specialist', 'ForgeRock Certified Identity Management Specialist'],
-    strengths: [
-      'Outstanding, flowchart-style visual Authentication Trees allowing highly custom login paths.',
-      'Strong support for unified, scalable profiles combining CIAM and device variables.',
-      'Extremely flexible, developer-centric design backing microservices and headless SDK integrations.'
-    ],
-    limitations: [
-      'High operational complexity; customizing trees requires deep understanding of Javascript nodes.',
-      'Requires specialized deployment knowledge for clustered Kubernetes environments.',
-      'Licensing is heavily skewed toward high-volume consumer models, which can scale up in cost.'
-    ],
-    components: [
-      { name: 'Access Management (AM)', role: 'Core authentication engine running visual login trees.' },
-      { name: 'Identity Management (IDM)', role: 'Manages User schemas, progressive profiling, and sync reconciliation.' },
-      { name: 'Directory Services (DS)', role: 'Highly scalable, in-memory LDAP directory store.' }
-    ],
-    deploymentChecklist: [
-      'Configure visual Authentication Trees handling WebAuthn passwordless and risk steps.',
-      'Set up IDM sync mappings to reconcile cloud profiles against custom databases.',
-      'Deploy DS replicas in clustered configurations across multi-region Kubernetes groups.'
-    ],
-    licensingModel: 'SaaS or local container nodes subscription pricing, typically scaled by active user volume and transaction throughput.',
-    interviewQuestions: [
-      {
-        q: 'What are ForgeRock Authentication Trees, and how do they differ from static login rules?',
-        a: 'Authentication Trees are visual flowcharts where each node represents a specific authentication decision, query, or API check (e.g. prompt OTP, query IP threat ledger, check browser compliance). Unlike static, linear rule chains, trees allow developers to branch journeys dynamically based on the outcomes of previous steps, creating adaptive security paths.'
-      },
-      {
-        q: 'How does IDM sync reconciliation manage synchronization differences?',
-        a: 'ForgeRock IDM sync uses structured data mappings to reconcile users between different directories. It compares attribute states, flags inserts/deletes/updates, and executes action scripts (like sending email webhooks or provisioning Slack profiles) based on configured sync rules.'
-      }
-    ]
-  },
-  sailpoint: {
-    fullName: 'SailPoint IdentityIQ & IdentityNow (SaaS IGA)',
-    category: 'Market-Leading Identity Governance & Administration (IGA)',
-    certifications: ['SailPoint Certified IdentityNow Professional', 'SailPoint Certified IdentityIQ Engineer'],
-    strengths: [
-      'Definitive, industry-leading platform for Access Certification campaigns and audit compliance.',
-      'Extremely deep Segregation of Duties (SoD) analysis and access risk calculation rules.',
-      'Seamless automatic role mining and birthright entitlement provisioning.'
-    ],
-    limitations: [
-      'IdentityIQ (on-prem) requires heavy custom Java development to write rules and connectors.',
-      'Implementation cycles are notoriously long, often requiring dedicated consulting agencies.',
-      'Not an SSO or MFA engine; must integrate with Ping, Okta, or Entra ID to enforce runtime authorization.'
-    ],
-    components: [
-      { name: 'Access Certifications', role: 'Orchestrates mandatory manager review campaigns to recertify user access.' },
-      { name: 'Lifecycle Manager (LCM)', role: 'Handles self-service access requests, approvals, and birthright provisioning.' },
-      { name: 'Compliance Manager', role: 'Enforces Segregation of Duties (SoD) policies and runs audit logs.' }
-    ],
-    deploymentChecklist: [
-      'Map HR directory endpoints as the primary source of truth for employee lifecycles.',
-      'Configure role structures to auto-assign Birthright access roles on user creation.',
-      'Define Segregation of Duties (SoD) policy violations to block toxic privilege combinations.',
-      'Launch annual Access Certification campaigns for all high-risk financial application groups.'
-    ],
-    licensingModel: 'Per-user active enterprise license, scaled by managed identities and integrated target directories.',
-    interviewQuestions: [
-      {
-        q: 'What is an Access Certification campaign, and why is it critical for regulatory audits?',
-        a: 'Access Certification is a mandated compliance process where managers review and sign off on their employees\' privileges. This prevents entitlement creep (where users retain old access as they move roles). It is critical for SOC2 and SOX audits to mathematically prove that only authorized personnel possess access to financial or sensitive production resources.'
-      },
-      {
-        q: 'How does Segregation of Duties (SoD) prevent internal fraud?',
-        a: 'SoD identifies and blocks toxic privilege combinations. For example, a policy might dictate that the same user cannot possess both the "Create Purchase Order" and "Approve Payments" entitlements. SailPoint analyzes these rules before granting access requests, preventing internal conflict of interest fraud.'
-      }
-    ]
-  },
-  saviynt: {
-    fullName: 'Saviynt Enterprise Identity Cloud',
-    category: 'SaaS Identity Governance & Administration (IGA) & Risk Analytics',
-    certifications: ['Saviynt Certified IGA Professional'],
-    strengths: [
-      'SaaS-native, cloud-first platform delivering instant governance without local server setup.',
-      'Excellent, near real-time Segregation of Duties (SoD) risk analysis.',
-      'Comprehensive out-of-the-box integrations for cloud applications like AWS, Salesforce, and Workday.'
-    ],
-    limitations: [
-      'Highly complex user interface that can feel cluttered to standard business managers.',
-      'Integrating customized, on-prem legacy databases requires specialized scripting brokers.',
-      'Heavy operational dependencies on continuous background directory sync timers.'
-    ],
-    components: [
-      { name: 'Access Governance', role: 'Orchestrates self-service access requests, approvals, and annual certifications.' },
-      { name: 'SaaS Connectivity', role: 'Out-of-the-box API connectors syncing cloud application metadata.' },
-      { name: 'SoD Risk Engine', role: 'Mathematically calculates role combinations to identify risk and SoD violations.' }
-    ],
-    deploymentChecklist: [
-      'Configure SaaS API connectivity parameters to ingest user data from Target Apps.',
-      'Set up Segregation of Duties (SoD) analysis boundaries to flag toxic roles.',
-      'Schedule automated cert-campaign reviews for privileged financial accounts.'
-    ],
-    licensingModel: 'SaaS subscription, priced by active monitored identities and connected target platforms.',
-    interviewQuestions: [
-      {
-        q: 'What makes Saviynt cloud-native IGA different from traditional on-premise governance platforms?',
-        a: 'Saviynt is built strictly as a multi-tenant SaaS platform, meaning organizations can deploy directory syncs, certifications, and access controls immediately without installing or maintaining local Java servers. It leverages APIs directly for target integrations rather than heavy on-prem database brokers.'
-      },
-      {
-        q: 'How does Saviynt identify active Segregation of Duties (SoD) violations?',
-        a: 'Saviynt uses a centralized Risk Engine with pre-loaded rule books. When a user requests access, the engine simulates the grant, checks if they already possess conflicting scopes, and flags a violation before allowing the request to proceed.'
-      }
-    ]
-  },
-  wso2: {
-    fullName: 'WSO2 Identity Server',
-    category: 'Developer-First API-Driven Open Source Access Management',
-    certifications: ['WSO2 Certified Identity Server Developer'],
-    strengths: [
-      'Highly customizable, developer-centric open-source identity engine.',
-      'Excellent support for standard authentication and federation protocols (OAuth, OIDC, SAML, SCIM).',
-      'Excellent performance with tiny memory footprint, optimized for container and API-gateway clusters.'
-    ],
-    limitations: [
-      'Requires custom XML/Java configurations and developer scripting; lacks simplified business user controls.',
-      'Smaller commercial partner ecosystem compared to corporate giants like Okta or Microsoft.',
-      'Support and security patches require paid enterprise subscriptions.'
-    ],
-    components: [
-      { name: 'OAuth/OIDC Engine', role: 'Protocol engine issuing signed JWT tokens and validating PKCE challenges.' },
-      { name: 'Claim Mapping Broker', role: 'Maps user claims dynamically between disparate LDAP, SQL, and AD stores.' },
-      { name: 'User Management Ingress', role: 'SCIM 2.0-compliant endpoints managing CRUD operations.' }
-    ],
-    deploymentChecklist: [
-      'Deploy WSO2 inside clustered Docker/Kubernetes container pods behind API gateways.',
-      'Configure LDAP user store mappings to centralize customer profiles.',
-      'Register OAuth 2.1 client registrations with strict whitelisted redirect URIs.'
-    ],
-    licensingModel: 'Apache 2.0 Open Source, with paid enterprise support and security update subscriptions.',
-    interviewQuestions: [
-      {
-        q: 'Why do developers choose WSO2 Identity Server for API-driven architectures?',
-        a: 'Developers select WSO2 because it is fully open-source, highly extensible, and lightweight. It provides comprehensive, standard-compliant protocol gateways (OAuth, OIDC, SCIM) right out of the box, letting teams secure APIs and build bespoke customer portals without proprietary licensing lock-ins.'
-      },
-      {
-        q: 'How does WSO2 manage user attribute mapping between multiple directories?',
-        a: 'WSO2 uses a Claim Mapping Broker. It abstracts local user directory fields (e.g. sAMAccountName in AD, mail in LDAP) and translates them dynamically into standard OIDC claims (e.g. sub, email) before packing them inside issued JSON Web Tokens.'
-      }
-    ]
-  },
-  one_identity: {
-    fullName: 'One Identity Manager & Safeguard',
-    category: 'Heritage Enterprise Identity Governance (IGA) & Active Directory Security',
-    certifications: ['One Identity Certified Manager Specialist'],
-    strengths: [
-      'Extremely deep, battle-tested integrations for Microsoft Active Directory and Exchange environments.',
-      'Flexible, custom workflow design backing complex corporate joiner-mover-leaver cycles.',
-      'Solid administrative interface with robust database audit controls.'
-    ],
-    limitations: [
-      'Heavy on-prem Windows Server dependencies; high deployment and maintenance costs.',
-      'Customization relies on proprietary vbScript-style code blocks and complex relational database schemas.',
-      'Cloud-native integrations (SaaS APIs) can feel retrofitted compared to pure SaaS competitors.'
-    ],
-    components: [
-      { name: 'Identity Manager', role: 'IGA engine orchestrating employee lifecycles and AD provisioning.' },
-      { name: 'Safeguard PAM', role: 'Secure session vaulting and credential rotation platform.' },
-      { name: 'Active Roles', role: 'Extends Active Directory controls, enforcing secure administrative boundaries.' }
-    ],
-    deploymentChecklist: [
-      'Deploy One Identity Manager on dedicated Windows Server groups connected to local SQL databases.',
-      'Establish AD synchronization connectors using Active Roles agents.',
-      'Configure employee joiner-mover-leaver workflow triggers driven by local HR databases.'
-    ],
-    licensingModel: 'Traditional perpetual enterprise server software licenses combined with annual maintenance support.',
-    interviewQuestions: [
-      {
-        q: 'How does One Identity Active Roles extend standard Active Directory security?',
-        a: 'Active Roles acts as a secure administrative proxy layer. Instead of granting administrators direct, high-level AD permissions, administrators execute actions inside Active Roles. The proxy validates the request against strict policy rules and completes the action in AD on their behalf.'
-      },
-      {
-        q: 'What language is used to customize One Identity Manager workflows, and what is its architecture?',
-        a: 'One Identity Manager uses a relational database-centric architecture where all configurations are stored in SQL Server. Customizations, validation rules, and lifecycle workflows are programmed using a proprietary vbScript-style syntax or visual templates, executing directly inside the database queue.'
-      }
-    ]
-  },
-  beyondtrust: {
-    fullName: 'BeyondTrust Privileged Access Management (PAM)',
-    category: 'Enterprise Privileged Session Vaulting & Local Admin Rotation',
-    certifications: ['BeyondTrust Certified Safeguard Professional'],
-    strengths: [
-      'Definitive leader in secure remote session recording and administrative console vaulting.',
-      'Strong support for endpoint privilege management, completely eliminating local admin rights on employee laptops.',
-      'Seamless automated rotation of administrative, database, and system-account credentials.'
-    ],
-    limitations: [
-      'Managing cross-operating system endpoint agents requires significant endpoint coordination.',
-      'High licensing overhead which can scale rapidly when securing large server environments.',
-      'Integrating with cloud-native DevOps pipelines (container credentials) can require separate broker setups.'
-    ],
-    components: [
-      { name: 'Privileged Remote Access', role: 'Secure proxy gateway vaulting and recording administrative SSH/RDP sessions.' },
-      { name: 'Password Safe', role: 'Central, highly encrypted repository rotating administrative credentials.' },
-      { name: 'Endpoint Privilege Management', role: 'Removes local administrative rights on laptops, elevating specific commands on-demand.' }
-    ],
-    deploymentChecklist: [
-      'Deploy Password Safe vaults across redundant network segments connected to key infrastructure.',
-      'Deploy Endpoint Privilege agents to corporate workstations to strip local admin access.',
-      'Configure session recording retention rules to log all administrative shell commands.'
-    ],
-    licensingModel: 'Enterprise licensing scaled by managed servers, database hosts, and administrative seats.',
-    interviewQuestions: [
-      {
-        q: 'How does BeyondTrust Endpoint Privilege Management reduce malware risk on corporate laptops?',
-        a: 'By stripping local administrative rights from all employees. If a user downloads malware, it cannot install or modify system directories. If an employee needs to execute an administrative task, the BeyondTrust agent elevates only that specific command on-demand based on policy rules, keeping the user account unprivileged.'
-      },
-      {
-        q: 'What is secure Remote Session Recording, and why is it critical for PAM audits?',
-        a: 'Remote Session Recording proxies administrative SSH or RDP connections through a secure gateway, capturing full video and raw keystroke command logs. It is critical for SOC2 compliance to prove that administrative activities were audited, recorded, and can be forensically investigated during incident responses.'
-      }
-    ]
-  },
-  delinea: {
-    fullName: 'Delinea Secret Server (formerly Thycotic)',
-    category: 'Cloud-First Privileged Access Management (PAM) & Password Vaulting',
-    certifications: ['Delinea Certified Secret Server Professional'],
-    strengths: [
-      'Highly optimized, cloud-first SaaS PAM with extremely rapid deployment cycles.',
-      'Excellent discovery engines scanning local networks to find unmanaged service accounts.',
-      'Clean, modern user experience for rotating active local administrative and API keys.'
-    ],
-    limitations: [
-      'Legacy on-prem Unix session monitoring and SSH proxying can require separate engine bridges.',
-      'Relies heavily on background sync agents for hybrid local directory integrations.',
-      'Advanced DevOps pipeline secrets injection requires separate DevOps Secrets Vault additions.'
-    ],
-    components: [
-      { name: 'Secret Server', role: 'The core vaulting repository securely rotating passwords and keys.' },
-      { name: 'Account Discovery', role: 'Scans Active Directory, networks, and hypervisors to identify unmanaged local accounts.' },
-      { name: 'Privilege Manager', role: 'Strips local administrative rights on endpoints, elevating processes on-demand.' }
-    ],
-    deploymentChecklist: [
-      'Deploy Secret Server Cloud tenant linked to corporate Entra ID domains.',
-      'Configure Discovery Scans to audit active network service account passwords.',
-      'Establish automatic rotation schedules for high-privilege SQL and system admins.'
-    ],
-    licensingModel: 'SaaS user subscription or server node licenses scaled by vaulted privileged accounts.',
-    interviewQuestions: [
-      {
-        q: 'What is automated Service Account Discovery, and why is it critical for PAM audits?',
-        a: 'Discovery is an automated scanner that queries AD and domain networks to locate service accounts (e.g. background tasks, IIS app pools, SQL runners) that have legacy, non-rotated passwords. It is critical because unmanaged, static service accounts are a prime target for lateral movement exploits.'
-      },
-      {
-        q: 'How does Delinea Secret Server rotate privileged credentials without interrupting running services?',
-        a: 'Secret Server uses Dependency Rotators. When a password is changed in the vault and target server, CPM-like rotators automatically check dependencies (e.g. Windows services or scheduled tasks running under that account) and update the password there as well, avoiding service downtime.'
-      }
-    ]
-  }
-}
+type SectionType = 'vendors' | 'intelligence' | 'events' | 'social'
+type ThalesTabType = 'overview' | 'onewelcome' | 'sta' | 'idcloud' | 'interview'
 
 export default function VendorCenter() {
-  const [activeVendor, setActiveVendor] = useState<VendorType>('entra_id')
-  const vendor = VENDOR_DATA[activeVendor]
+  const [activeSection, setActiveSection] = useState<SectionType>('vendors')
+  
+  // --- SECTION 1: VENDOR CENTER STATE ---
+  const [activeVendor, setActiveVendor] = useState<VendorType>('thales')
+  const vendor = VENDOR_CATALOG[activeVendor]
+  const [thalesTab, setThalesTab] = useState<ThalesTabType>('overview')
+
+  // --- SECTION 2: INTELLIGENCE HUB STATE ---
+  const [newsFilter, setNewsFilter] = useState<'All' | 'News' | 'Advisory' | 'Research' | 'Announcement'>('All')
+  const [cveSearch, setCveSearch] = useState('')
+  const [activeCveId, setActiveCveId] = useState<string | null>('cve-1')
+  
+  // AI Ingestion Pipeline Simulation State
+  const [ingestionSteps, setIngestionSteps] = useState<IngestionStep[]>(INITIAL_INGESTION_STEPS)
+  const [isSimulatingPipeline, setIsSimulatingPipeline] = useState(false)
+  const [pipelineLogs, setPipelineLogs] = useState<string[]>([
+    '[SYSTEM] Editorial Ingestion Pipeline Ready.',
+    '[SYSTEM] Awaiting ingestion trigger...'
+  ])
+
+  // --- SECTION 3: EVENTS CALENDAR STATE ---
+  const [eventCategoryFilter, setEventCategoryFilter] = useState<'All' | 'Conference' | 'Summit' | 'Webinar' | 'CTF'>('All')
+  const [registeredEventIds, setRegisteredEventIds] = useState<string[]>([])
+  const [notificationMsg, setNotificationMsg] = useState<string | null>(null)
+
+  // --- SECTION 4: SOCIAL DASHBOARD STATE ---
+  const [isGeneratingDigest, setIsGeneratingDigest] = useState(false)
+  const [socialDigest, setSocialDigest] = useState<string | null>(null)
+
+  // --- AI PIPELINE SIMULATION LOGIC ---
+  const runPipelineSimulation = () => {
+    if (isSimulatingPipeline) return
+    setIsSimulatingPipeline(true)
+    setPipelineLogs([])
+    
+    const logs = [
+      'Scanning authoritative RSS registries: NIST NVD, Okta Security Advisories, Thales OneWelcome release notes...',
+      'Detected new publication: "Continuous Authentication and Cryptographic DPoP Bindings" (IETF Draft).',
+      'HTML cleansing complete. Isolated raw body sections containing claims and RFC citations.',
+      'AI Analysis model starting: extracting context tags, evaluating vulnerability score (CVSS).',
+      'AI Summarization: generated user analogy and expert takeaways.',
+      'Cross-linking engine: matched context with related AboutIAM tools (OAuth Request Builder, JWT Studio).',
+      'Publishing review queue complete. Curated summary committed to live Hub databases.'
+    ]
+
+    setIngestionSteps(prev => prev.map(s => s.step === 1 ? { ...s, status: 'active' } : { ...s, status: 'idle' }))
+    setPipelineLogs(prev => [...prev, `[INIT] Starting pipeline cycle...`])
+
+    let currentStep = 1
+    const interval = setInterval(() => {
+      setPipelineLogs(prev => [...prev, `[INFO] ${logs[currentStep - 1]}`])
+      
+      setIngestionSteps(prev => prev.map(s => {
+        if (s.step === currentStep) return { ...s, status: 'completed' }
+        if (s.step === currentStep + 1) return { ...s, status: 'active' }
+        return s
+      }))
+
+      currentStep++
+
+      if (currentStep > 5) {
+        clearInterval(interval)
+        setIsSimulatingPipeline(false)
+        setPipelineLogs(prev => [...prev, `[SUCCESS] Editorial ingestion cycle completed. Curated summary published!`])
+        setIngestionSteps(prev => prev.map(s => ({ ...s, status: 'completed' })))
+      }
+    }, 1500)
+  }
+
+  // --- SIMULATE ADD CALENDAR REMINDER ---
+  const handleRegisterEvent = (eventId: string, eventTitle: string) => {
+    if (registeredEventIds.includes(eventId)) {
+      setRegisteredEventIds(prev => prev.filter(id => id !== eventId))
+      setNotificationMsg(`Removed reminder for: ${eventTitle}`)
+    } else {
+      setRegisteredEventIds(prev => [...prev, eventId])
+      setNotificationMsg(`Reminder added! You will receive a local browser alert 15 minutes before "${eventTitle}" starts.`)
+    }
+  }
+
+  useEffect(() => {
+    if (notificationMsg) {
+      const timer = setTimeout(() => setNotificationMsg(null), 4000)
+      return () => clearTimeout(timer)
+    }
+  }, [notificationMsg])
+
+  // --- SOCIAL DIGEST GENERATOR ---
+  const generateWeeklyDigest = () => {
+    setIsGeneratingDigest(true)
+    setSocialDigest(null)
+    setTimeout(() => {
+      setSocialDigest(
+        `### AboutIAM AI Community Digest — July 2026
+
+**1. Primary Discussion Focus: The Deprecation of SMS OTP**
+The industry consensus is reaching a turning point. Led by PSD2 RTS compliance mandates in Europe, enterprise banking and retail sectors are rapidly stripping SMS authentication in favor of hardware-bound FIDO2 Passkeys. Major partners (such as Thales) are reporting a 40% reduction in user onboarding friction post-biometrics.
+
+**2. Attack Trends: Golden SAML & Active Directory Vulnerabilities**
+With ADFS configurations remaining highly legacy in hybrid companies, threat actors continue to target token-signing certificates to bypass MFA rules. Top security engineers advise isolating certificate-signing keys inside Hardware Security Modules (HSMs) immediately.
+
+**3. Developer Highlights: visual Identity Orchestration**
+Instead of hardcoding complex redirects and KYC validation routines, developers are advocating for drag-and-drop identity orchestrators (like Thales OneWelcome), which cleanly externalize authorization logic from main application repositories.`
+      )
+      setIsGeneratingDigest(false)
+    }, 1200)
+  }
+
+  // --- FILTERED ARRAYS ---
+  const filteredNews = useMemo(() => {
+    if (newsFilter === 'All') return IDENTITY_NEWS_FEED
+    return IDENTITY_NEWS_FEED.filter(item => item.category === newsFilter)
+  }, [newsFilter])
+
+  const filteredCves = useMemo(() => {
+    return IDENTITY_CVE_DIRECTORY.filter(cve => 
+      cve.title.toLowerCase().includes(cveSearch.toLowerCase()) ||
+      cve.cveId.toLowerCase().includes(cveSearch.toLowerCase()) ||
+      cve.vendor.toLowerCase().includes(cveSearch.toLowerCase())
+    )
+  }, [cveSearch])
+
+  const activeCve = useMemo(() => {
+    return IDENTITY_CVE_DIRECTORY.find(cve => cve.id === activeCveId) || null
+  }, [activeCveId])
+
+  const filteredEvents = useMemo(() => {
+    if (eventCategoryFilter === 'All') return COMMUNITY_EVENTS_CALENDAR
+    return COMMUNITY_EVENTS_CALENDAR.filter(e => e.category === eventCategoryFilter)
+  }, [eventCategoryFilter])
 
   return (
-    <div className="min-h-screen bg-bg-base text-text-primary font-sans">
-      {/* Page Header */}
-      <div className="border-b border-border-subtle bg-bg-card px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-bg-base text-text-primary font-sans pb-12">
+      {/* Dynamic Alert Banner */}
+      {notificationMsg && (
+        <div className="fixed bottom-6 right-6 z-50 bg-accent-glow border border-accent-primary p-4 rounded-xl shadow-lg max-w-sm animate-bounce flex items-start gap-2.5">
+          <CheckCircle2 className="w-5 h-5 text-accent-primary shrink-0 mt-0.5" />
+          <p className="text-xs font-bold text-text-primary leading-normal">{notificationMsg}</p>
+        </div>
+      )}
+
+      {/* Global Center Navigation Header */}
+      <div className="border-b border-border-subtle bg-bg-card px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-0 z-30 shadow-sm">
         <div className="flex items-center gap-3">
           <Building className="text-accent-primary w-6 h-6 animate-pulse" />
           <div>
-            <h1 className="text-lg font-bold tracking-tight">Vendor Knowledge Center</h1>
-            <p className="text-xs text-text-secondary">Comprehensive enterprise architectures, deployment checklists, and certifications for top IAM vendors</p>
+            <h1 className="text-lg font-black tracking-tight flex items-center gap-1.5">
+              Enterprise Ecosystem Hub <span className="text-[10px] bg-accent-glow text-accent-primary px-2 py-0.5 rounded border border-accent-primary/20 font-mono">PHASE 7 LIVE</span>
+            </h1>
+            <p className="text-xs text-text-secondary">Official Identity Standards, Live Vulnerability Feeds, Events Calendar, and Vendor Architectures.</p>
           </div>
         </div>
-        <Link to="/" className="text-sm bg-bg-nested hover:bg-border-subtle px-3 py-1.5 rounded text-text-secondary flex items-center gap-1.5 transition">
+
+        {/* TOP LEVEL NAVIGATION TABS */}
+        <div className="flex bg-bg-base p-1.5 rounded-xl border border-border-subtle gap-1">
+          <button
+            onClick={() => setActiveSection('vendors')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'vendors' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+          >
+            🏢 Vendor Directory
+          </button>
+          <button
+            onClick={() => setActiveSection('intelligence')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'intelligence' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+          >
+            📰 Intelligence Hub
+          </button>
+          <button
+            onClick={() => setActiveSection('events')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'events' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+          >
+            📅 Community Calendar
+          </button>
+          <button
+            onClick={() => setActiveSection('social')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'social' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+          >
+            💬 Social Dashboard
+          </button>
+        </div>
+
+        <Link to="/" className="text-xs font-bold bg-bg-nested hover:bg-border-subtle px-3.5 py-2 rounded-xl text-text-secondary flex items-center justify-center gap-1.5 transition">
           <ArrowRight className="rotate-180 w-4 h-4" /> Exit Center
         </Link>
       </div>
 
-      {/* Main Grid Wrapper */}
-      <div className="p-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        {/* Left Side: Vendor Selector Tabs */}
-        <div className="lg:col-span-3 space-y-4">
-          <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md">
-            <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1">
-              Select Vendor Platform
-            </span>
-            
-            <div className="flex flex-col gap-2">
-              {(Object.keys(VENDOR_DATA) as VendorType[]).map((key) => (
-                <button
-                  key={key}
-                  onClick={() => setActiveVendor(key)}
-                  className={`w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold border transition flex items-center justify-between ${activeVendor === key ? 'bg-accent-glow border-accent-primary text-accent-primary font-bold' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
-                >
-                  <span>{key === 'entra_id' ? 'Entra ID' : key === 'okta' ? 'Okta' : key === 'keycloak' ? 'Keycloak (OS)' : key === 'cyberark' ? 'CyberArk' : key === 'forgerock' ? 'ForgeRock' : key === 'sailpoint' ? 'SailPoint IGA' : key === 'saviynt' ? 'Saviynt SaaS' : key === 'wso2' ? 'WSO2 IS' : key === 'one_identity' ? 'One Identity' : key === 'beyondtrust' ? 'BeyondTrust PAM' : 'Ping Identity'}</span>
-                  <ChevronRight className={`w-3.5 h-3.5 transition-transform ${activeVendor === key ? 'translate-x-0.5 text-accent-primary' : 'text-text-muted'}`} />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md">
-            <h3 className="text-xs font-bold text-text-primary mb-2 flex items-center gap-1.5">
-              <Award className="w-4 h-4 text-accent-primary" /> Certified Learning Paths
-            </h3>
-            <p className="text-[10px] text-text-secondary leading-normal mb-3">
-              Want to establish yourself as an enterprise IAM engineer? These certifications are highly valued by corporate recruiters.
-            </p>
-            <div className="space-y-2">
-              {vendor.certifications.map((cert) => (
-                <div key={cert} className="p-2 bg-bg-nested/60 border border-border-subtle rounded-lg text-[10px] font-medium text-text-secondary">
-                  🛡️ {cert}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Side: Heavy Reference Content */}
-        <div className="lg:col-span-9 space-y-6">
+      {/* ======================================================== */}
+      {/* SECTION 1: VENDOR KNOWLEDGE CENTER                       */}
+      {/* ======================================================== */}
+      {activeSection === 'vendors' && (
+        <div className="p-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
           
-          {/* Main overview hero card */}
-          <div className="bg-bg-card border border-border-subtle rounded-xl p-6 shadow-md space-y-3 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none select-none">
-              <Building className="w-24 h-24 text-accent-primary" />
-            </div>
-
-            <div>
-              <span className="text-[10px] text-accent-primary font-bold font-mono uppercase tracking-wider bg-accent-glow border border-accent-primary/20 px-2.5 py-1 rounded-full">
-                {vendor.category}
+          {/* Left Column: 18-Vendor List Selector */}
+          <div className="lg:col-span-3 space-y-4">
+            <div className="bg-bg-card border border-border-subtle rounded-2xl p-4 shadow-sm">
+              <span className="text-[10px] text-text-muted font-black uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1">
+                Select Platform Profile
               </span>
-              <h2 className="text-xl font-black text-text-primary mt-2.5">{vendor.fullName}</h2>
+              
+              <div className="flex flex-col gap-1.5 max-h-[460px] overflow-y-auto pr-1 scrollbar-thin">
+                {(Object.keys(VENDOR_CATALOG) as VendorType[]).map((key) => {
+                  const item = VENDOR_CATALOG[key]
+                  const isAct = activeVendor === key
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setActiveVendor(key)
+                        if (key === 'thales') setThalesTab('overview')
+                      }}
+                      className={`w-full text-left px-3 py-2.5 rounded-xl text-[11px] font-bold border transition flex items-center justify-between ${isAct ? 'bg-accent-glow border-accent-primary text-accent-primary font-black shadow-sm' : 'bg-bg-nested/30 border-transparent text-text-secondary hover:bg-bg-nested/60 hover:border-border-subtle'}`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="text-xs">{item.logo || '🏢'}</span>
+                        <span className="truncate">{key === 'thales' ? 'Thales (Featured)' : item.fullName.split(' (')[0].split(' by ')[0]}</span>
+                      </span>
+                      {item.isFeatured && (
+                        <span className="text-[8px] bg-accent-primary text-bg-card font-black uppercase px-1.5 py-0.5 rounded leading-none shrink-0 scale-90">Flagship</span>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-border-subtle">
-              
-              <div className="space-y-2">
-                <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-status-success" /> Platform Strengths
-                </span>
-                <ul className="space-y-1.5 text-xs text-text-secondary leading-relaxed list-disc list-inside">
-                  {vendor.strengths.map((str, idx) => (
-                    <li key={idx}>{str}</li>
-                  ))}
-                </ul>
+            {/* Micro-learning card on left */}
+            <div className="bg-bg-card border border-border-subtle rounded-2xl p-4 shadow-sm space-y-2">
+              <h3 className="text-xs font-black text-text-primary flex items-center gap-1.5">
+                <Award className="w-4 h-4 text-accent-primary animate-pulse" /> Certified Learning Paths
+              </h3>
+              <p className="text-[10px] text-text-secondary leading-normal">
+                Prepare for top enterprise, platform-specific certifications highly sought after by corporate recruiting departments:
+              </p>
+              <div className="space-y-1.5 pt-1">
+                {vendor.certifications.map((cert) => (
+                  <div key={cert} className="p-2 bg-bg-nested/50 border border-border-subtle rounded-lg text-[10px] font-bold text-text-secondary leading-relaxed flex items-center gap-1.5">
+                    <span className="shrink-0">🛡️</span> <span>{cert}</span>
+                  </div>
+                ))}
               </div>
-
-              <div className="space-y-2">
-                <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider flex items-center gap-1">
-                  <AlertTriangle className="w-3.5 h-3.5 text-status-danger" /> Hard Constraints & Limitations
-                </span>
-                <ul className="space-y-1.5 text-xs text-text-secondary leading-relaxed list-disc list-inside">
-                  {vendor.limitations.map((lim, idx) => (
-                    <li key={idx}>{lim}</li>
-                  ))}
-                </ul>
-              </div>
-
             </div>
           </div>
 
-          {/* Tabular breakdowns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Right Column: Platform Information */}
+          <div className="lg:col-span-9 space-y-6">
             
-            {/* Components & Roles */}
-            <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-md flex flex-col justify-between">
-              <div>
-                <span className="text-xs font-bold text-text-primary uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1 flex items-center gap-1.5">
-                  <Layers className="w-4 h-4 text-accent-primary" /> Core Architectural Components
-                </span>
+            {/* THALES HIGHLY CUSTOM FLAGSHIP EXPERIENCE */}
+            {activeVendor === 'thales' ? (
+              <div className="space-y-6">
                 
-                <div className="space-y-3">
-                  {vendor.components.map((comp) => (
-                    <div key={comp.name} className="p-3 bg-bg-nested/40 border border-border-subtle rounded-lg text-xs leading-normal">
-                      <span className="font-bold text-accent-primary block mb-0.5">{comp.name}</span>
-                      <span className="text-text-secondary">{comp.role}</span>
+                {/* Hero Platform Overview Header */}
+                <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 shadow-sm space-y-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-6 opacity-5 pointer-events-none select-none">
+                    <Building className="w-32 h-32 text-accent-primary" />
+                  </div>
+
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <span className="text-[10px] text-accent-primary font-bold font-mono uppercase tracking-wider bg-accent-glow border border-accent-primary/20 px-3 py-1 rounded-full">
+                        Featured Platform Partner
+                      </span>
+                      <h2 className="text-2xl font-black text-text-primary mt-3 flex items-center gap-2">
+                        <span>🛡️</span> Thales Identity Security Ecosystem
+                      </h2>
+                      <p className="text-xs text-text-secondary mt-1 max-w-2xl">{vendor.marketPositioning}</p>
+                    </div>
+                    <a
+                      href={vendor.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs bg-accent-glow hover:bg-accent-primary hover:text-bg-card border border-accent-primary text-accent-primary px-4 py-2.5 rounded-xl font-bold transition flex items-center gap-1.5 shrink-0 h-10 shadow-sm"
+                    >
+                      <Globe className="w-4 h-4" /> Official Portal <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+
+                  {/* Target Industries tags */}
+                  <div className="pt-3 border-t border-border-subtle flex flex-wrap gap-2 items-center">
+                    <span className="text-[9px] uppercase font-black text-text-muted mr-1.5 tracking-wider">Target Segments:</span>
+                    {vendor.targetIndustries?.map(ind => (
+                      <span key={ind} className="text-[9px] bg-bg-nested border border-border-subtle text-text-secondary font-black px-2 py-0.5 rounded">
+                        {ind}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* THALES PRODUCTS SUB-NAVIGATION */}
+                  <div className="flex bg-bg-nested p-1 rounded-xl border border-border-subtle gap-1 overflow-x-auto">
+                    <button
+                      onClick={() => setThalesTab('overview')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition ${thalesTab === 'overview' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+                    >
+                      📖 Company Overview
+                    </button>
+                    <button
+                      onClick={() => setThalesTab('onewelcome')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === 'onewelcome' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+                    >
+                      🪐 OneWelcome Platform
+                    </button>
+                    <button
+                      onClick={() => setThalesTab('sta')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === 'sta' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+                    >
+                      🔒 SafeNet STA MFA
+                    </button>
+                    <button
+                      onClick={() => setThalesTab('idcloud')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === 'idcloud' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+                    >
+                      ☁️ IdCloud Portal
+                    </button>
+                    <button
+                      onClick={() => setThalesTab('interview')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === 'interview' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+                    >
+                      💬 Interview Prep ({vendor.interviewQuestions.length})
+                    </button>
+                  </div>
+                </div>
+
+                {/* Subtab Render blocks */}
+                {thalesTab === 'overview' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    {/* Strengths */}
+                    <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm space-y-3">
+                      <span className="text-xs font-black text-text-primary uppercase tracking-wider block border-b border-border-subtle pb-1 flex items-center gap-1.5">
+                        <ShieldCheck className="w-4 h-4 text-status-success" /> Key Strengths
+                      </span>
+                      <ul className="space-y-2.5 text-xs text-text-secondary leading-relaxed list-disc list-inside">
+                        {vendor.strengths.map((str, idx) => (
+                          <li key={idx} className="marker:text-accent-primary">{str}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Hard constraints */}
+                    <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm space-y-3">
+                      <span className="text-xs font-black text-text-primary uppercase tracking-wider block border-b border-border-subtle pb-1 flex items-center gap-1.5">
+                        <AlertTriangle className="w-4 h-4 text-status-danger" /> Engineering Tradeoffs
+                      </span>
+                      <ul className="space-y-2.5 text-xs text-text-secondary leading-relaxed list-disc list-inside">
+                        {vendor.limitations.map((lim, idx) => (
+                          <li key={idx} className="marker:text-status-danger">{lim}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Architectural Components */}
+                    <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm space-y-3 md:col-span-2">
+                      <span className="text-xs font-black text-text-primary uppercase tracking-wider block border-b border-border-subtle pb-1">
+                        Operational Portfolio Mapping
+                      </span>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {vendor.components.map(comp => (
+                          <div key={comp.name} className="p-3.5 bg-bg-nested/40 border border-border-subtle rounded-xl text-xs flex flex-col justify-between">
+                            <div>
+                              <span className="font-bold text-accent-primary block mb-1">{comp.name}</span>
+                              <span className="text-text-secondary leading-normal block">{comp.role}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Subtab products: OneWelcome, STA, IdCloud */}
+                {(['onewelcome', 'sta', 'idcloud'] as const).includes(thalesTab as any) && (
+                  (() => {
+                    const prod = THALES_PRODUCTS.find(p => p.id === thalesTab)!
+                    return (
+                      <div className="space-y-6">
+                        <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 shadow-sm space-y-4">
+                          <div>
+                            <span className="text-[9px] uppercase font-black text-accent-primary bg-accent-glow px-2 py-0.5 rounded border border-accent-primary/20">
+                              Featured Product Profile
+                            </span>
+                            <h3 className="text-xl font-black text-text-primary mt-2">{prod.name}</h3>
+                            <p className="text-xs font-bold text-accent-secondary mt-1">{prod.tagline}</p>
+                            <p className="text-xs text-text-secondary mt-3 leading-relaxed">{prod.overview}</p>
+                          </div>
+
+                          {/* ASCII architecture and Modules */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                            
+                            {/* Visual Ascii block */}
+                            <div className="space-y-2">
+                              <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                <Terminal className="w-3.5 h-3.5 text-accent-secondary" /> Architectural Diagram (ASCII Flow)
+                              </span>
+                              <pre className="p-4 bg-bg-nested border border-border-subtle text-[10px] text-accent-primary rounded-xl font-mono leading-relaxed overflow-x-auto select-all">
+                                {prod.architectureAscii}
+                              </pre>
+                            </div>
+
+                            {/* Core Modules List */}
+                            <div className="space-y-2">
+                              <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                <Layers className="w-3.5 h-3.5 text-accent-primary" /> Key Functional Modules
+                              </span>
+                              <div className="space-y-2.5">
+                                {prod.modules.map(mod => (
+                                  <div key={mod.name} className="p-3 bg-bg-nested/40 border border-border-subtle rounded-xl text-xs leading-normal">
+                                    <span className="font-bold text-text-primary block mb-0.5">⭐ {mod.name}</span>
+                                    <span className="text-text-secondary">{mod.desc}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                          </div>
+
+                          {/* Extra Metadata: usecases, standards, deployment models */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-border-subtle text-xs">
+                            <div className="space-y-1.5 p-3.5 bg-bg-nested/30 border border-border-subtle rounded-xl">
+                              <span className="font-bold text-text-primary flex items-center gap-1"><Target className="w-3.5 h-3.5 text-accent-primary" /> Supported Standards</span>
+                              <p className="text-[11px] text-text-secondary leading-normal">{prod.standards.join(', ')}</p>
+                            </div>
+                            <div className="space-y-1.5 p-3.5 bg-bg-nested/30 border border-border-subtle rounded-xl">
+                              <span className="font-bold text-text-primary flex items-center gap-1"><Cpu className="w-3.5 h-3.5 text-accent-secondary" /> Deploy Models</span>
+                              <p className="text-[11px] text-text-secondary leading-normal">{prod.deploymentModels.join(', ')}</p>
+                            </div>
+                            <div className="space-y-1.5 p-3.5 bg-bg-nested/30 border border-border-subtle rounded-xl">
+                              <span className="font-bold text-text-primary flex items-center gap-1"><Globe className="w-3.5 h-3.5 text-status-success" /> Primary Use Cases</span>
+                              <p className="text-[11px] text-text-secondary leading-normal">{prod.useCases.join(', ')}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Troubleshooting Guides */}
+                        <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm space-y-3">
+                          <span className="text-xs font-black text-text-primary uppercase tracking-wider block border-b border-border-subtle pb-1 flex items-center gap-1.5">
+                            <Settings className="w-4 h-4 text-accent-secondary animate-spin-slow" /> Real-World Engineering Troubleshooting
+                          </span>
+                          <div className="space-y-3">
+                            {prod.troubleshooting.map(guide => (
+                              <div key={guide.issue} className="p-4 bg-bg-nested/40 border border-border-subtle rounded-xl text-xs space-y-1.5">
+                                <span className="font-bold text-text-primary flex items-center gap-1.5 text-status-danger">
+                                  <AlertCircle className="w-4 h-4 shrink-0" /> ISSUE: {guide.issue}
+                                </span>
+                                <p className="text-text-secondary leading-relaxed pl-5 font-semibold">
+                                  <span className="text-status-success font-bold">REMEDIATION:</span> {guide.resolution}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Sandbox Link cards */}
+                        <div className="bg-accent-glow/5 border border-accent-primary/20 p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
+                          <div>
+                            <h4 className="text-xs font-black text-text-primary flex items-center gap-1.5">
+                              <Sparkles className="w-4 h-4 text-accent-primary" /> Want to test these standards in-browser?
+                            </h4>
+                            <p className="text-[11px] text-text-secondary mt-1">Deploy sandboxed handshakes, JWT decoders, and WebAuthn authenticators directly inside our simulation playgrounds.</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Link to="/playground/fido2" className="text-[10px] font-black bg-bg-card hover:bg-bg-nested border border-border-subtle px-3 py-2 rounded-lg text-text-secondary transition shadow-sm">FIDO2 Passkey Simulator</Link>
+                            <Link to="/playground/scim" className="text-[10px] font-black bg-bg-card hover:bg-bg-nested border border-border-subtle px-3 py-2 rounded-lg text-text-secondary transition shadow-sm">SCIM sync Simulator</Link>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })()
+                )}
+
+                {thalesTab === 'interview' && (
+                  <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 shadow-sm space-y-4">
+                    <span className="text-xs font-black text-text-primary uppercase tracking-wider block border-b border-border-subtle pb-1.5 flex items-center gap-1.5">
+                      <HelpCircle className="w-4 h-4 text-accent-primary" /> Platform Architecture Mock Interview Questions
+                    </span>
+                    <div className="space-y-4">
+                      {vendor.interviewQuestions.map((q, idx) => (
+                        <div key={idx} className="space-y-1.5">
+                          <span className="block font-bold text-text-primary text-xs flex items-start gap-1">
+                            <span>Q{idx+1}:</span> <span>{q.q}</span>
+                          </span>
+                          <div className="bg-bg-nested/40 border border-border-subtle p-3.5 rounded-xl text-xs leading-relaxed text-text-secondary font-semibold">
+                            {q.a}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            ) : (
+              /* STANDARD VENDOR DETAIL CARD LAYOUT */
+              <div className="space-y-6">
+                
+                {/* Hero card */}
+                <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 shadow-sm space-y-3 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none select-none">
+                    <Building className="w-24 h-24 text-accent-primary" />
+                  </div>
+
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                    <div>
+                      <span className="text-[10px] text-accent-primary font-bold font-mono uppercase tracking-wider bg-accent-glow border border-accent-primary/20 px-2.5 py-1 rounded-full">
+                        {vendor.category}
+                      </span>
+                      <h2 className="text-xl font-black text-text-primary mt-3 flex items-center gap-1.5">
+                        <span className="text-base">{vendor.logo || '🏢'}</span> {vendor.fullName}
+                      </h2>
+                    </div>
+                    {vendor.website && (
+                      <a
+                        href={vendor.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs bg-bg-nested hover:bg-border-subtle px-3 py-1.5 rounded-lg border border-border-subtle text-text-secondary font-bold flex items-center gap-1 transition"
+                      >
+                        Visit Website <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-border-subtle">
+                    
+                    <div className="space-y-2">
+                      <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-1">
+                        <ShieldCheck className="w-3.5 h-3.5 text-status-success" /> Platform Strengths
+                      </span>
+                      <ul className="space-y-1.5 text-xs text-text-secondary leading-relaxed list-disc list-inside">
+                        {vendor.strengths.map((str, idx) => (
+                          <li key={idx} className="marker:text-accent-primary">{str}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-1">
+                        <AlertTriangle className="w-3.5 h-3.5 text-status-danger" /> Limitations & Constraints
+                      </span>
+                      <ul className="space-y-1.5 text-xs text-text-secondary leading-relaxed list-disc list-inside">
+                        {vendor.limitations.map((lim, idx) => (
+                          <li key={idx} className="marker:text-status-danger">{lim}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Split layout: modules & deployment */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
+                  {/* Components */}
+                  <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <span className="text-xs font-bold text-text-primary uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1 flex items-center gap-1.5">
+                        <Layers className="w-4 h-4 text-accent-primary" /> Key Architectural Elements
+                      </span>
+                      
+                      <div className="space-y-3">
+                        {vendor.components.map((comp) => (
+                          <div key={comp.name} className="p-3 bg-bg-nested/40 border border-border-subtle rounded-xl text-xs leading-normal">
+                            <span className="font-bold text-accent-primary block mb-0.5">{comp.name}</span>
+                            <span className="text-text-secondary">{comp.role}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-5 pt-3 border-t border-border-subtle bg-bg-nested/20 p-2.5 rounded-lg text-[10px] text-text-muted font-mono leading-normal">
+                      <strong>Licensing:</strong> {vendor.licensingModel}
+                    </div>
+                  </div>
+
+                  {/* Deployment */}
+                  <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm">
+                    <span className="text-xs font-bold text-text-primary uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1 flex items-center gap-1.5">
+                      <Settings className="w-4 h-4 text-accent-secondary" /> Enterprise Deployment Checklist
+                    </span>
+                    
+                    <div className="space-y-2.5">
+                      {vendor.deploymentChecklist.map((item, idx) => (
+                        <div key={idx} className="flex items-start gap-2.5 text-xs leading-normal text-text-secondary">
+                          <span className="w-5 h-5 rounded-lg bg-accent-glow border border-accent-primary/20 text-accent-primary flex items-center justify-center font-bold font-mono text-[10px] shrink-0 mt-0.5">
+                            {idx + 1}
+                          </span>
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Interview block */}
+                <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm">
+                  <span className="text-xs font-bold text-text-primary uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1.5 flex items-center gap-1.5">
+                    <HelpCircle className="w-4 h-4 text-accent-primary" /> Standard Interview Prep
+                  </span>
+
+                  <div className="space-y-4">
+                    {vendor.interviewQuestions.map((q, idx) => (
+                      <div key={idx} className="space-y-1.5">
+                        <span className="block font-bold text-text-primary text-xs">
+                          Q: {q.q}
+                        </span>
+                        <div className="bg-bg-nested/40 border border-border-subtle p-3 rounded-xl text-xs leading-relaxed text-text-secondary font-semibold">
+                          {q.a}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+          </div>
+
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* SECTION 2: LIVE IDENTITY INTELLIGENCE HUB                 */}
+      {/* ======================================================== */}
+      {activeSection === 'intelligence' && (
+        <div className="p-6 max-w-7xl mx-auto space-y-6">
+          
+          {/* Main Intelligence Grid split */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Left Col: Live news feed */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-border-subtle pb-3">
+                  <h3 className="text-sm font-black text-text-primary flex items-center gap-2">
+                    <Newspaper className="w-5 h-5 text-accent-primary" /> Live Identity Intelligence & Advisories
+                  </h3>
+                  
+                  {/* Category Filter selector */}
+                  <select
+                    value={newsFilter}
+                    onChange={(e: any) => setNewsFilter(e.target.value)}
+                    className="text-[10px] bg-bg-nested border border-border-subtle p-1.5 rounded-lg text-text-secondary font-bold focus:outline-none"
+                  >
+                    <option value="All">All Categories</option>
+                    <option value="News">News Only</option>
+                    <option value="Advisory">Advisories Only</option>
+                    <option value="Research">Research Drafts</option>
+                    <option value="Announcement">Announcements</option>
+                  </select>
+                </div>
+
+                {/* News feed list scroll */}
+                <div className="space-y-3.5 max-h-[500px] overflow-y-auto pr-1">
+                  {filteredNews.map(item => (
+                    <div key={item.id} className="p-4 bg-bg-nested/30 border border-border-subtle rounded-xl text-xs space-y-2 relative hover:bg-bg-nested/50 transition">
+                      <div className="flex items-center justify-between">
+                        <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${
+                          item.category === 'Advisory' ? 'bg-status-danger/15 text-status-danger border border-status-danger/20' : 
+                          item.category === 'Research' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' :
+                          'bg-bg-nested text-text-secondary border border-border-subtle'
+                        }`}>
+                          {item.category}
+                        </span>
+                        <span className="text-[10px] text-text-muted font-mono">{item.date}</span>
+                      </div>
+
+                      <h4 className="font-bold text-text-primary leading-snug">{item.title}</h4>
+                      <p className="text-text-secondary leading-relaxed font-semibold">{item.summary}</p>
+                      
+                      {/* Remediation toggle for advisories */}
+                      {item.category === 'Advisory' && item.remediation && (
+                        <div className="p-2.5 bg-status-danger/5 border border-status-danger/20 rounded-lg text-[11px] leading-relaxed">
+                          <span className="font-black text-status-danger block mb-0.5">⚠️ DISCOVERY MITIGATION REMEDIATION:</span>
+                          <span className="text-text-secondary font-semibold block">{item.remediation}</span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between pt-1 text-[10px] text-text-muted">
+                        <span className="font-bold">Source: {item.source}</span>
+                        <div className="flex gap-1">
+                          {item.tags.map(t => (
+                            <span key={t} className="bg-bg-nested px-1.5 py-0.5 rounded text-[8px] font-bold">#{t}</span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
+            </div>
 
-              <div className="mt-5 pt-3 border-t border-border-subtle bg-bg-nested/20 p-2.5 rounded text-[10px] text-text-muted font-mono">
-                Licensing Context: {vendor.licensingModel}
+            {/* Right Col: Interactive Searchable CVE Code-Remediation */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-sm font-black text-text-primary flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-accent-secondary" /> Searchable Identity CVE Code Patch Auditor
+                  </h3>
+                  
+                  {/* Search input bar */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                    <input
+                      type="text"
+                      placeholder="Search CVEs by ID, title, or vendor..."
+                      value={cveSearch}
+                      onChange={(e) => setCveSearch(e.target.value)}
+                      className="w-full text-xs pl-9 pr-4 py-2.5 rounded-xl bg-bg-nested border border-border-subtle focus:outline-none focus:border-accent-primary"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                  {/* CVE ID List */}
+                  <div className="md:col-span-4 space-y-1.5 max-h-[380px] overflow-y-auto pr-1">
+                    {filteredCves.map(cve => (
+                      <button
+                        key={cve.id}
+                        onClick={() => setActiveCveId(cve.id)}
+                        className={`w-full text-left p-3 border rounded-xl text-xs flex flex-col gap-1 transition ${activeCveId === cve.id ? 'bg-accent-glow border-accent-secondary text-text-primary font-bold shadow-sm' : 'bg-bg-nested/20 border-border-subtle hover:bg-bg-nested/60 text-text-secondary'}`}
+                      >
+                        <span className="font-black text-[10px] font-mono flex items-center justify-between">
+                          <span>{cve.cveId}</span>
+                          <span className={`px-1.5 rounded text-[8px] font-sans ${cve.score >= 8 ? 'bg-status-danger/10 text-status-danger' : 'bg-status-warning/10 text-status-warning'}`}>{cve.score}</span>
+                        </span>
+                        <span className="truncate block font-semibold">{cve.title}</span>
+                      </button>
+                    ))}
+                    {filteredCves.length === 0 && (
+                      <p className="text-[10px] text-text-muted text-center py-6">No matching CVEs found.</p>
+                    )}
+                  </div>
+
+                  {/* Active CVE Detail and Code Comparison */}
+                  <div className="md:col-span-8">
+                    {activeCve ? (
+                      <div className="p-4 bg-bg-nested/30 border border-border-subtle rounded-2xl text-xs space-y-3">
+                        <div className="flex items-center justify-between border-b border-border-subtle pb-2">
+                          <span className="font-mono font-black text-status-danger">{activeCve.cveId}</span>
+                          <span className="text-[10px] text-text-muted font-bold">Severity Score: <strong className="text-status-danger font-mono font-black">{activeCve.score}/10</strong></span>
+                        </div>
+                        <h4 className="font-bold text-text-primary text-xs">{activeCve.title}</h4>
+                        <p className="text-text-secondary leading-relaxed font-semibold">{activeCve.description}</p>
+                        
+                        <div className="p-3 bg-accent-glow/5 border border-accent-secondary/15 rounded-xl text-[11px] leading-relaxed font-semibold text-text-secondary">
+                          <strong className="text-text-primary block mb-0.5">💡 Remediation Protocol:</strong>
+                          {activeCve.remediationSteps}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="h-full flex items-center justify-center p-8 bg-bg-nested/10 border border-dashed border-border-subtle rounded-2xl">
+                        <p className="text-xs text-text-muted">Select a CVE to inspect its code mitigation patch.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Side-by-side Code Diff Render */}
+                {activeCve && (
+                  <div className="space-y-3 pt-2">
+                    <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-1">
+                      <ArrowLeftRight className="w-3.5 h-3.5" /> Side-by-Side Code Repair Patch Comparison
+                    </span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      
+                      {/* Vulnerable Code */}
+                      <div className="space-y-1.5">
+                        <span className="text-[10px] text-status-danger font-bold uppercase flex items-center gap-1 font-mono">
+                          ❌ Vulnerable Code Component
+                        </span>
+                        <pre className="p-3.5 bg-status-danger/5 border border-status-danger/10 text-[9px] text-text-secondary rounded-xl font-mono leading-relaxed overflow-x-auto select-all">
+                          {activeCve.remediationPatch}
+                        </pre>
+                      </div>
+
+                      {/* Secure Code */}
+                      <div className="space-y-1.5">
+                        <span className="text-[10px] text-status-success font-bold uppercase flex items-center gap-1 font-mono">
+                          ✔️ Secure Patched Code Component
+                        </span>
+                        <pre className="p-3.5 bg-status-success/5 border border-status-success/10 text-[9px] text-text-secondary rounded-xl font-mono leading-relaxed overflow-x-auto select-all">
+                          {activeCve.securePatch}
+                        </pre>
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+
               </div>
             </div>
 
-            {/* Deployment checklist */}
-            <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-md">
-              <span className="text-xs font-bold text-text-primary uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1 flex items-center gap-1.5">
-                <Settings className="w-4 h-4 text-accent-secondary" /> Enterprise Deployment Checklist
-              </span>
-              
-              <div className="space-y-2.5">
-                {vendor.deploymentChecklist.map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 text-xs leading-normal text-text-secondary">
-                    <span className="w-5 h-5 rounded bg-accent-glow border border-accent-primary/20 text-accent-primary flex items-center justify-center font-bold font-mono text-[10px] shrink-0 mt-0.5">
-                      {idx + 1}
+          </div>
+
+          {/* Bottom Panel: AI Editorial Ingestion Pipeline Simulator */}
+          <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 shadow-sm space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border-subtle pb-4">
+              <div className="space-y-1">
+                <span className="text-[9px] font-mono font-black text-accent-primary uppercase tracking-widest bg-accent-glow border border-accent-primary/20 px-2.5 py-0.5 rounded-full">
+                  Initiative 5 Implementation
+                </span>
+                <h3 className="text-sm font-black text-text-primary flex items-center gap-2">
+                  <Cpu className="text-accent-primary w-5 h-5 animate-pulse" /> Intelligent Content Ingestion Pipeline Simulator
+                </h3>
+                <p className="text-xs text-text-secondary">Simulate the AI-assisted automated pipeline that scans RSS, digests document claims, generates educational metadata, and cross-links contents.</p>
+              </div>
+
+              <button
+                onClick={runPipelineSimulation}
+                disabled={isSimulatingPipeline}
+                className="text-xs bg-accent-primary hover:bg-accent-secondary disabled:bg-border-subtle text-bg-card px-5 py-3 rounded-xl font-black transition flex items-center justify-center gap-2 shrink-0 shadow-sm"
+              >
+                {isSimulatingPipeline ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" /> Ingesting Content...
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4" /> Trigger Pipeline Simulation
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Stepper Steps UI */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+              {ingestionSteps.map((s) => {
+                const isAct = s.status === 'active'
+                const isComp = s.status === 'completed'
+                return (
+                  <div key={s.step} className={`p-4 rounded-xl border transition-all flex flex-col justify-between space-y-2 relative ${
+                    isAct ? 'bg-accent-glow/30 border-accent-primary scale-[1.02] shadow' : 
+                    isComp ? 'bg-bg-nested/40 border-accent-secondary' : 
+                    'bg-bg-nested/10 border-border-subtle opacity-50'
+                  }`}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-black text-text-muted">STEP 0{s.step}</span>
+                      {isComp ? (
+                        <CheckCircle2 className="w-4 h-4 text-accent-secondary shrink-0" />
+                      ) : isAct ? (
+                        <div className="w-3.5 h-3.5 border-2 border-accent-primary border-t-transparent rounded-full animate-spin shrink-0"></div>
+                      ) : (
+                        <div className="w-3.5 h-3.5 rounded-full border-2 border-border-subtle shrink-0"></div>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-[11px] font-black text-text-primary block leading-tight">{s.title}</h4>
+                      <p className="text-[10px] text-text-secondary leading-normal mt-1 leading-relaxed font-semibold">{s.description}</p>
+                    </div>
+
+                    <span className={`text-[8px] font-bold uppercase py-0.5 text-center rounded block mt-1 tracking-wider ${
+                      isAct ? 'bg-accent-primary text-bg-card animate-pulse' : 
+                      isComp ? 'bg-accent-secondary/15 text-accent-secondary' : 
+                      'bg-bg-nested text-text-muted'
+                    }`}>
+                      {s.status === 'idle' ? 'Pending' : s.status}
                     </span>
-                    <span>{item}</span>
                   </div>
+                )
+              })}
+            </div>
+
+            {/* Simulated log output terminal */}
+            <div className="space-y-1.5 pt-2">
+              <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-1">
+                <Terminal className="w-3.5 h-3.5 text-accent-secondary" /> Active Pipeline Execution Log Terminal
+              </span>
+              <div className="bg-bg-card border border-border-subtle p-4 rounded-xl font-mono text-[10px] text-accent-primary max-h-[160px] overflow-y-auto space-y-1 select-all shadow-inner">
+                {pipelineLogs.map((log, idx) => (
+                  <p key={idx} className="leading-relaxed">
+                    <span className="text-text-muted shrink-0 mr-1 select-none">[{idx+1}]</span> {log}
+                  </p>
                 ))}
               </div>
             </div>
 
           </div>
 
-          {/* Interview Questions block */}
-          <div className="bg-bg-card border border-border-subtle rounded-xl p-6 shadow-md">
-            <span className="text-xs font-bold text-text-primary uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1.5 flex items-center gap-1.5">
-              <HelpCircle className="w-4 h-4 text-accent-primary" /> Common Technical Interview Questions
-            </span>
+        </div>
+      )}
 
-            <div className="space-y-4">
-              {vendor.interviewQuestions.map((q, idx) => (
-                <div key={idx} className="space-y-1.5">
-                  <span className="block font-bold text-text-primary text-xs">
-                    Q: {q.q}
-                  </span>
-                  <div className="bg-bg-nested/40 border border-border-subtle p-3.5 rounded-lg text-xs leading-relaxed text-text-secondary">
-                    {q.a}
+      {/* ======================================================== */}
+      {/* SECTION 3: COMMUNITY EVENTS & CALENDAR                     */}
+      {/* ======================================================== */}
+      {activeSection === 'events' && (
+        <div className="p-6 max-w-7xl mx-auto space-y-6">
+          <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border-subtle pb-3">
+              <div className="space-y-0.5">
+                <h3 className="text-sm font-black text-text-primary flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-accent-primary" /> Enterprise Events & Community Calendar
+                </h3>
+                <p className="text-xs text-text-secondary">Explore conferences, summits, training workshops, and live CTFs. Simulates adding automated calendar alarms.</p>
+              </div>
+
+              {/* Filter */}
+              <div className="flex bg-bg-nested p-1 rounded-xl border border-border-subtle gap-1">
+                {(['All', 'Conference', 'Summit', 'Webinar', 'CTF'] as const).map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setEventCategoryFilter(cat)}
+                    className={`px-3 py-1 text-[10px] font-black rounded-lg transition ${eventCategoryFilter === cat ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Grid events */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredEvents.map(ev => {
+                const isReg = registeredEventIds.includes(ev.id)
+                return (
+                  <div key={ev.id} className="p-5 bg-bg-nested/30 border border-border-subtle rounded-2xl flex flex-col justify-between space-y-4 relative hover:border-accent-primary/20 transition">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[9px] uppercase font-black bg-accent-glow text-accent-primary border border-accent-primary/25 px-2.5 py-0.5 rounded-full">
+                          {ev.category}
+                        </span>
+                        <span className="text-[10px] text-text-muted font-bold flex items-center gap-1 font-mono">
+                          <Clock className="w-3.5 h-3.5" /> {ev.date}
+                        </span>
+                      </div>
+
+                      <h4 className="font-black text-xs text-text-primary tracking-tight leading-snug">{ev.title}</h4>
+                      <p className="text-[11px] text-text-secondary font-semibold">Organized by: <strong className="text-text-primary font-bold">{ev.organizer}</strong></p>
+                      
+                      <div className="text-[11px] text-text-secondary font-mono leading-normal">
+                        <strong>Time & Place:</strong> {ev.time} | <span className="underline">{ev.location}</span>
+                      </div>
+
+                      {/* Speakers & Agenda */}
+                      <div className="pt-2 border-t border-border-subtle space-y-2 text-xs">
+                        <div className="space-y-1">
+                          <strong className="text-text-muted text-[10px] uppercase tracking-wider block">Featured Presenters:</strong>
+                          <div className="flex flex-wrap gap-1.5">
+                            {ev.speakers.map(s => (
+                              <span key={s} className="bg-bg-card px-2 py-0.5 rounded border border-border-subtle text-[10px] font-semibold text-text-secondary">👥 {s}</span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <strong className="text-text-muted text-[10px] uppercase tracking-wider block">Core Session Syllabus:</strong>
+                          <ul className="space-y-1 text-[10px] list-disc list-inside text-text-secondary leading-relaxed font-semibold">
+                            {ev.agenda.map((ag, idx) => (
+                              <li key={idx}>{ag}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 pt-2 border-t border-border-subtle">
+                      <a
+                        href={ev.registrationUrl.startsWith('/') ? '#' : ev.registrationUrl}
+                        target={ev.registrationUrl.startsWith('/') ? undefined : '_blank'}
+                        rel={ev.registrationUrl.startsWith('/') ? undefined : 'noopener noreferrer'}
+                        className="w-1/2 text-center text-[10px] font-black bg-bg-card hover:bg-bg-nested border border-border-subtle p-2.5 rounded-xl text-text-primary transition flex items-center justify-center gap-1.5"
+                      >
+                        Register Now <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                      <button
+                        onClick={() => handleRegisterEvent(ev.id, ev.title)}
+                        className={`w-1/2 text-[10px] font-black p-2.5 rounded-xl transition flex items-center justify-center gap-1.5 ${isReg ? 'bg-accent-secondary text-bg-card shadow' : 'bg-accent-glow text-accent-primary border border-accent-primary/20 hover:bg-accent-primary hover:text-bg-card'}`}
+                      >
+                        {isReg ? (
+                          <>
+                            <CheckCircle2 className="w-3.5 h-3.5" /> Alert Alarm Set!
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-3.5 h-3.5" /> Set Alarm Alert
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
-
         </div>
+      )}
 
-      </div>
+      {/* ======================================================== */}
+      {/* SECTION 4: SOCIAL DASHBOARD                               */}
+      {/* ======================================================== */}
+      {activeSection === 'social' && (
+        <div className="p-6 max-w-7xl mx-auto space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Left Col: Aggregated Posts list */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm space-y-4">
+                <h3 className="text-sm font-black text-text-primary flex items-center gap-2 border-b border-border-subtle pb-3">
+                  <MessageSquare className="w-5 h-5 text-accent-primary" /> Industry Hot Topics & Trending Debates
+                </h3>
+
+                <div className="space-y-4 scrollbar-thin">
+                  {SOCIAL_DISCUSSIONS.map(p => (
+                    <div key={p.id} className="p-4 bg-bg-nested/30 border border-border-subtle rounded-2xl text-xs space-y-2.5 relative">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-accent-primary font-mono bg-accent-glow px-2.5 py-0.5 rounded border border-accent-primary/10">
+                          {p.source} Feed Source
+                        </span>
+                        <div className="text-[10px] text-text-muted font-mono font-bold flex items-center gap-1">
+                          🔥 Trending Score: <span className="text-accent-secondary font-black font-mono bg-accent-glow/20 border border-accent-secondary/10 px-1.5 py-0.5 rounded">{p.trendingScore}%</span>
+                        </div>
+                      </div>
+
+                      <h4 className="font-bold text-text-primary text-xs leading-snug">{p.title}</h4>
+                      <p className="text-text-secondary leading-relaxed font-semibold">{p.summary}</p>
+                      
+                      <div className="pt-2 border-t border-border-subtle flex items-center justify-between text-[10px] text-text-muted">
+                        <span className="font-bold">Author: {p.author}</span>
+                        <div className="flex gap-3">
+                          <span>❤️ {p.likesCount} shares</span>
+                          <span>💬 {p.commentsCount} reviews</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Col: AI Weekly Digest Report Generator */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm space-y-4">
+                <div className="space-y-1 border-b border-border-subtle pb-3">
+                  <span className="text-[9px] font-mono font-black text-accent-primary uppercase tracking-widest bg-accent-glow border border-accent-primary/20 px-2.5 py-0.5 rounded-full">
+                    AI Content Ingestion Task
+                  </span>
+                  <h3 className="text-sm font-black text-text-primary flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-accent-primary animate-pulse" /> Weekly AI Security Posture Digest
+                  </h3>
+                  <p className="text-[11px] text-text-secondary">Compile, synthesize, and audit all trending LinkedIn discussions, podcast releases, and cyber security advisories into an executive digest.</p>
+                </div>
+
+                <button
+                  onClick={generateWeeklyDigest}
+                  disabled={isGeneratingDigest}
+                  className="w-full text-xs bg-accent-primary hover:bg-accent-secondary disabled:bg-border-subtle text-bg-card py-3 rounded-xl font-black transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  {isGeneratingDigest ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" /> Synthesizing Data...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4" /> Synthesize Industry Weekly Digest
+                    </>
+                  )}
+                </button>
+
+                {/* Report Digest Output */}
+                {socialDigest ? (
+                  <div className="p-4 bg-bg-nested border border-border-subtle rounded-xl text-xs space-y-3 prose max-w-none text-text-secondary leading-relaxed font-semibold select-all">
+                    <div className="flex items-center justify-between border-b border-border-subtle pb-2">
+                      <span className="text-[10px] text-text-muted font-bold">Report Status: <strong className="text-status-success">AUDITED & CURATED</strong></span>
+                      <span className="text-[9px] font-mono font-black text-accent-primary">July 2026</span>
+                    </div>
+                    {/* Rendered Digest */}
+                    <div className="space-y-3 whitespace-pre-wrap leading-relaxed text-[11px]">
+                      {socialDigest}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center p-8 bg-bg-nested/15 border border-dashed border-border-subtle rounded-2xl space-y-2">
+                    <Sparkles className="w-8 h-8 text-text-muted" />
+                    <p className="text-[10px] text-text-muted text-center leading-normal">Click the button above to run our local client-side AI summarizer, compiling active posts into an executive report digest.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
-  )
-}
-
-function ChevronRight({ className }: { className?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="m9 18 6-6-6-6"/>
-    </svg>
   )
 }

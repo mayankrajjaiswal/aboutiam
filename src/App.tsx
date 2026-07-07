@@ -98,6 +98,11 @@ import XacmlPolicyEngine from './pages/Playgrounds/XacmlPolicyEngine'
 import GnapVisualizer from './pages/Playgrounds/GnapVisualizer'
 import CaepLab from './pages/Playgrounds/CaepLab'
 import VcDidLab from './pages/Playgrounds/VcDidLab'
+import CaseStudyCenter from './pages/CaseStudyCenter'
+import IdentityDecisionMatrix from './pages/IdentityDecisionMatrix'
+import ThreatModelingStudio from './pages/ThreatModelingStudio'
+import DesignReviewAssistant from './pages/DesignReviewAssistant'
+import StandardsExplorer from './pages/StandardsExplorer'
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
@@ -203,6 +208,11 @@ export default function App() {
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />
               <Route path="/labs" element={<IdentityLabs />} />
               <Route path="/references" element={<ReferenceImplementations />} />
+              <Route path="/case-studies" element={<CaseStudyCenter />} />
+              <Route path="/decision-matrix" element={<IdentityDecisionMatrix />} />
+              <Route path="/threat-modeling" element={<ThreatModelingStudio />} />
+              <Route path="/design-review" element={<DesignReviewAssistant />} />
+              <Route path="/standards" element={<StandardsExplorer />} />
               <Route path="/refrences" element={<ReferenceImplementations />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />

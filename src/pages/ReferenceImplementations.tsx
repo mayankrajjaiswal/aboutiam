@@ -127,7 +127,7 @@ public class SecurityConfig {
       title: 'Node.js Express + JWT Verification Middleware',
       tech: 'JavaScript / Express',
       rfc: 'RFC 7519 (JSON Web Tokens), RFC 7636 (PKCE)',
-      description: 'A production-hardened Node.js/Express JWT verification middleware utilizing jwks-rsa to retrieve public keys from OIDC endpoints, cache keys, and enforce audience and issuer matching.',
+      description: 'A production-hardened Node.js/Express JWT verification middleware utilizing jwks-rsa to retrieve public keys from standard OIDC endpoints (such as Thales OneWelcome, Okta, or Auth0), cache keys, and enforce audience and issuer matching.',
       diagram: `
 +------------+         GET /api/secure with JWT        +----------------------+
 | Client App | --------------------------------------> | Express Middleware   |
@@ -266,7 +266,7 @@ import future.keywords.in`,
       title: 'SCIM 2.0 User Provisioning API Payload',
       tech: 'SCIM 2.0 Schema & Protocol',
       rfc: 'RFC 7643, RFC 7644 (SCIM 2.0)',
-      description: 'Hardened REST API schema specifications and payloads for a standard SCIM 2.0 (System for Cross-domain Identity Management) User synchronization server, enforcing attribute read/write constraints.',
+      description: 'Hardened REST API schema specifications and payloads for a standard SCIM 2.0 (System for Cross-domain Identity Management) User synchronization server, designed to process automated syncing events from clients like Thales OneWelcome, Okta, or SailPoint.',
       diagram: `
 +--------------+     POST /Users (SCIM JSON)     +--------------------+
 | Identity IdP | ------------------------------> | SCIM Server Target |

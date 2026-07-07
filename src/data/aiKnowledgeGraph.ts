@@ -99,6 +99,21 @@ export const KNOWLEDGE_GRAPH: Record<string, ResourceLink[]> = {
   pki: [
     { title: 'Cert Chain Validator', path: '/playground/cert-chain', type: 'playground', desc: 'Map of Certificate Authorities' },
     { title: 'CSR Generator', path: '/tools/csr-generator', type: 'tool', desc: 'PKCS#10 Certificate Signing Requests' }
+  ],
+  thales: [
+    { title: 'Thales Platform Ecosystem', path: '/vendor', type: 'vendor', desc: 'Sovereign CIAM & SafeNet Trusted Access' },
+    { title: 'Identity Summit', path: '/vendor', type: 'vendor', desc: 'Thales B2B & CIAM webinar sessions' }
+  ],
+  onewelcome: [
+    { title: 'Thales OneWelcome Platform', path: '/vendor', type: 'vendor', desc: 'Europe’s leading Customer & Partner CIAM platform' },
+    { title: 'OneWelcome Case Study', path: '/case-studies', type: 'vendor', desc: 'Delegated consent & retail banking CIAM case study' }
+  ],
+  sta: [
+    { title: 'SafeNet Trusted Access (STA)', path: '/vendor', type: 'vendor', desc: 'Military-grade adaptive MFA and SSO policy engine' },
+    { title: 'Zero Trust (ZTA) Planner', path: '/playground/zta', type: 'playground', desc: 'STA adaptive compliance checks mapping' }
+  ],
+  idcloud: [
+    { title: 'Thales IdCloud', path: '/vendor', type: 'vendor', desc: 'Sovereign Digital Banking & Passport Verification' }
   ]
 }
 
@@ -208,6 +223,36 @@ export const COMPARISONS: ComparisonData[] = [
     ],
     useCasesA: ['Kubernetes admission control', 'Terraform security plan auditing', 'General HTTP microservices gatekeeping'],
     useCasesB: ['Fine-grained SaaS resource authorization', 'AWS Verified Permissions integrations', 'Decidable, high-frequency app-logic access checks']
+  },
+  {
+    id: 'sta_vs_entra',
+    title: 'Thales SafeNet Trusted Access vs Microsoft Entra ID',
+    entityA: 'SafeNet Trusted Access (STA)',
+    entityB: 'Microsoft Entra ID',
+    summary: 'SafeNet Trusted Access is a specialized access management service combining adaptive authentication with exceptionally broad multi-factor token support (hardware, software, push, smartcards). Microsoft Entra ID is a complete cloud directory and workforce identity infrastructure tightly integrated with the Azure and Office 365 ecosystems.',
+    table: [
+      { feature: 'Core Identity Directory', a: 'Synchronized via local directory agents (AD, LDAP)', b: 'Native cloud-first directory (with hybrid sync)' },
+      { feature: 'MFA Tokens Support', a: 'Highly broad (mobile push, SMS, software/hardware OTP, grids)', b: 'Focused (Authenticator App, SMS, hardware FIDO2 keys)' },
+      { feature: 'Cryptographic Signing', a: 'Military-grade, FIPS 140-2 HSM-backed', b: 'Software-backed cloud tenant signing keys' },
+      { feature: 'Sovereignty Options', a: 'Excellent (isolated local data clouds across Europe)', b: 'Moderate (bound to global Azure datacenter clusters)' }
+    ],
+    useCasesA: ['Defense, public sector, and banking mandating physical tokens', 'Securing multi-cloud, non-Azure corporate setups', 'Enforcing compliance across European sovereign clouds'],
+    useCasesB: ['Tightly bound Office 365 & Azure environments', 'Standard enterprise directory services', 'Single cloud workforce directories']
+  },
+  {
+    id: 'onewelcome_vs_okta_ciam',
+    title: 'Thales OneWelcome vs Okta CIAM / Auth0',
+    entityA: 'Thales OneWelcome',
+    entityB: 'Okta Customer Identity (Auth0)',
+    summary: 'Thales OneWelcome is Europe’s leading B2B and Customer IAM platform, prioritizing complex user consent, privacy regulations (GDPR), and partner delegated administration. Okta Customer Identity (Auth0) is a developer-first SaaS CIAM platform focusing on frictionless social logins, extensibility, and rapid SDK integrations.',
+    table: [
+      { feature: 'Primary Jurisdiction', a: 'Europe (GDPR-focused sovereign clouds)', b: 'United States (Global SaaS hosting networks)' },
+      { feature: 'GDPR Consent Tracking', a: 'Deeply native, granular tracking with cryptographic logs', b: 'Customizable via serverless rules/actions' },
+      { feature: 'Delegated B2B Admin', a: 'Outstanding, built-in partner administration consoles', b: 'Requires custom coding or separate enterprise licensing' },
+      { feature: 'Developer Onboarding', a: 'Moderate (structured enterprise integrations)', b: 'Excellent (quickstarts, extensive SDK libraries, social hubs)' }
+    ],
+    useCasesA: ['European digital banking with strict PSD2 KYC requirements', 'B2B/B2B2C partner networks with delegated administration', 'Highly regulated medical and public-sector consumer portals'],
+    useCasesB: ['Consumer mobile apps seeking simple social login setups', 'Early-stage SaaS startups needing rapid MVP integrations', 'Global consumer platforms requiring high developer agility']
   }
 ];
 
@@ -348,6 +393,30 @@ export const LEARNING_TRACKS: LearningTrack[] = [
         title: 'Step 3: Reference Implementations',
         desc: 'See how these protocols are implemented in production.',
         resources: [{ title: 'Enterprise References', path: '/references', type: 'architecture' }]
+      }
+    ]
+  },
+  {
+    level: 'Expert',
+    goal: 'IAM Architect',
+    title: 'Enterprise IAM and Workforce Protection with Thales',
+    description: 'Learn sovereign identity, adaptive access controls, and visual Customer IAM (CIAM) orchestration.',
+    steps: [
+      {
+        title: 'Step 1: Discover Sovereign CIAM',
+        desc: 'Understand GDPR-compliant consent management and delegated administration workflows.',
+        resources: [
+          { title: 'Thales Platform Directory', path: '/vendor', type: 'vendor' },
+          { title: 'PSD2 Banking Case Study', path: '/case-studies', type: 'vendor' }
+        ]
+      },
+      {
+        title: 'Step 2: Adaptive Access Control & MFA',
+        desc: 'Model risk-based authentication rules checking network geolocations and device postures.',
+        resources: [
+          { title: 'Zero Trust (ZTA) Planner', path: '/playground/zta', type: 'playground' },
+          { title: 'Device Trust & Posture Attestation Lab', path: '/playground/device-trust', type: 'playground' }
+        ]
       }
     ]
   }

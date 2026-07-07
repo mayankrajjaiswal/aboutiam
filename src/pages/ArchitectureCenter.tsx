@@ -56,7 +56,7 @@ const ARCHITECTURE_DATA: Record<ArchitectureType, {
         title: 'Identity Provider (IdP) & MFA',
         role: 'Authenticates the user identity and issues cryptographic proof of identity (OIDC ID Tokens).',
         analogy: 'The passport office that verifies your face and documents before issuing a secure, tamper-proof passport.',
-        spec: 'Workforce IdPs (e.g. Entra ID, Okta) managing standard user groups, claims, and coordinating FIDO2/WebAuthn public key challenges.',
+        spec: 'Workforce IdPs (e.g. Thales SafeNet Trusted Access, Microsoft Entra ID, Okta) managing standard user groups, claims, and coordinating FIDO2/WebAuthn public key challenges.',
         threatModel: 'Threat: MFA push-bombing fatigue attacks. Mitigation: Mandate context-aware number matching or pure passwordless FIDO2 keys.',
         bestPractice: 'Centralize identity attributes in a directory with automated joiner/mover/leaver provisioning.'
       },
@@ -100,7 +100,7 @@ const ARCHITECTURE_DATA: Record<ArchitectureType, {
       },
       custom_idp: {
         title: 'Enterprise IdP (Customer IdP)',
-        role: 'The customer’s home identity directory (e.g. Okta, Ping), letting corporate users use their existing credentials.',
+        role: 'The customer’s home identity directory (e.g. Thales OneWelcome, Okta, Ping), letting corporate users use their existing credentials.',
         analogy: 'The corporate office badge that employees already use daily to access their home building.',
         spec: 'Federates with the SaaS application utilizing standard SAML 2.0 or OIDC assertions, sending cryptographically signed XML/JSON payloads.',
         threatModel: 'Threat: XML Signature Wrapping (SSW) attacks. Mitigation: Ensure the signature validates the assertion element, not just the envelope.',

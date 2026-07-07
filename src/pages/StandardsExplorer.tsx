@@ -74,6 +74,7 @@ grant_type=authorization_code
         'Enforce Sender-Constrained tokens (DPoP) on high-risk APIs.'
       ],
       vendorSupport: [
+        'Thales STA and OneWelcome: Complete compliance with visual orchestration.',
         'Okta / Auth0: Complete native compliance.',
         'Keycloak: Enforces OAuth 2.1 constraints out-of-the-box in modern versions.',
         'Microsoft Entra ID: Supports PKCE S256 and auth code flows.'
@@ -130,6 +131,7 @@ grant_type=authorization_code
         'Reject "none" algorithms explicitly in signature verification libraries.'
       ],
       vendorSupport: [
+        'Thales OneWelcome and STA: Extensively supports OIDC federated login, identity assertions, and secure /userinfo claims.',
         'Auth0 / Clerk: Complete native compliance.',
         'Ping Identity: Highly customizable enterprise OIDC configurations.',
         'Microsoft Entra ID: Direct workforce and guest user OIDC flows.'
@@ -187,6 +189,7 @@ grant_type=authorization_code
         'Validate incoming SCIM payloads against strict, defined schema blueprints.'
       ],
       vendorSupport: [
+        'Thales OneWelcome: Fully compliant SCIM 2.0 endpoints for user registration, syncing, and external provisioning.',
         'Okta / Entra ID: Native push-provisioning directories.',
         'Keycloak: Extensible user-sync provisioning modules.',
         'SailPoint: Complete IGA catalog sync hooks.'

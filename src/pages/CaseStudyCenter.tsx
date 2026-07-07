@@ -253,6 +253,84 @@ export default function CaseStudyCenter() {
         { title: 'Device Trust & Posture Attestation Lab', path: '/playground/device-trust', type: 'playground' },
         { title: 'OIDC Discovery Auditor Tool', path: '/tools/oidc-discovery', type: 'tool' }
       ]
+    },
+    {
+      id: 'thales_financial_ciam',
+      title: 'PSD2 Strong Authentication & Delegated Consent CIAM',
+      company: 'Thales OneWelcome Platform',
+      logo: '🛡️',
+      category: 'Financial Services',
+      summary: 'Deconstruct a Tier-1 retail bank’s transition to a frictionless, PSD2-compliant Customer IAM model utilizing Thales OneWelcome’s Identity Orchestrator, mobile biometric signatures, and delegated administration.',
+      problem: 'Heavy user abandonment in digital onboarding due to disjointed KYC verification, coupled with complex PSD2 Strong Customer Authentication (SCA) mandates on wire transfers.',
+      requirements: [
+        'Secure, GDPR-compliant Consent & Preference tracking with cryptographic event receipts.',
+        'Seamless integration with third-party digital KYC/passport liveness checks.',
+        'Phishing-resistant transaction signing via mobile FIDO2 authenticators.'
+      ],
+      challenges: [
+        'Orchestrating diverse localized KYC vendors across multiple European borders dynamically.',
+        'Enabling partner business administrators (delegated admin) to self-manage accounts without central directory burdens.',
+        'Minimizing authentication fatigue during low-risk micro-transactions.'
+      ],
+      architecture: `
++-------------------------------------------------------------+
+|               THALES ONEWELCOME BANKING CIAM FLOW           |
++-------------------------------------------------------------+
+
+                     [ New Retail Customer ]
+                                | (Register & KYC)
+                                v
+               [ OneWelcome Identity Orchestrator ]
+                                |
+             +------------------+------------------+
+             |                                     |
+             v                                     v
+  [ AI Pass-Liveness Scan ]               [ GDPR Consent Registry ]
+             |                                     |
+             +------------------+------------------+
+                                |
+                                v
+                [ Issued Banking Wallet / FIDO2 ]
+`,
+      authModel: 'Customers authenticate utilizing WebAuthn biometrics / Passkeys on registered devices. Wire transfers exceeding PSD2 thresholds prompt a server-initiated mobile push notification triggering a cryptographic signature generated in the device’s Hardware Enclave (TPM).',
+      authzModel: 'Coarse-grained authentication is governed by OneWelcome. Fine-grained transaction thresholds and delegated corporate capabilities are validated against localized banking ABAC rules.',
+      lifecycle: 'External consumer lifecycle events (Onboarding, Account Lockout, Re-KYC verification) are orchestrated via no-code visual workflow graphs, synchronizing directory state dynamically across database clusters.',
+      federation: 'Seamlessly federates identity credentials across secondary banking partners, payment networks, and open banking API gateways utilizing standard OpenID Connect (OIDC) core specifications.',
+      sequence: `
+ Customer Device             OneWelcome Orchestrator         KYC / Passport API
+        |                              |                             |
+        |------ Submit Selfie -------->|                             |
+        |                              |----- Verify Passport ------>|
+        |                              |<==== Liveness Verified =====|
+        |<--- Prompt GDPR Consent -----|                             |
+        |====== Consent Stored =======>|                             |
+`,
+      threatModel: [
+        { risk: 'GDPR user consent audit falsification', mitigation: 'Store consent authorizations as cryptographic events inside the immutable database registry.' },
+        { risk: 'Wire transfer hijack (Man-in-the-Middle)', mitigation: 'Enforce PSD2-compliant mobile push transaction signing containing target account and price hashes.' }
+      ],
+      lessons: [
+        'Visual Identity Orchestrators allow security teams to modify KYC check sequence branches without rewriting main app code.',
+        'Delegated administration is essential for B2B and partner federations, transferring profile helpdesk load directly to the partners.',
+        'Integrating document OCR scanners directly into registration portals cuts bank onboarding times in half.'
+      ],
+      mistakes: [
+        'Failing to tie OIDC session cookies to exact custom domains, which causes modern browsers to drop OIDC authorization cookies.',
+        'Enforcing rigid, multi-character passwords on consumer databases, driving customers back to high-friction SMS recovery paths.'
+      ],
+      bestPractices: [
+        'Enable adaptive risk engines (SafeNet Trusted Access) checking IP speed velocities to skip MFA on familiar customer paths.',
+        'Provide a centralized self-service portal for GDPR consent reviews, satisfying EU Article 7 privacy mandates natively.'
+      ],
+      interviewQuestions: [
+        { q: 'What is PSD2 Strong Customer Authentication (SCA) and how does Thales satisfy it?', a: 'SCA requires logins or transfers to verify at least two independent factors: knowledge (something you know), possession (something you have), or inherence (something you are). Thales achieves this via mobile biometric push notifications or hardware FIDO2 tokens, generating signed cryptographic assertions tied directly to the transfer transaction context.' }
+      ],
+      rfcs: ['RFC 7519 (JSON Web Tokens)', 'RFC 6749 (OAuth 2.0 Framework)', 'W3C WebAuthn'],
+      relatedResources: [
+        { title: 'SAML Metadata Builder Tool', path: '/tools/saml-metadata-builder', type: 'tool' },
+        { title: 'SCIM Provisioning Lab', path: '/playground/scim', type: 'playground' },
+        { title: 'OAuth Request Builder Tool', path: '/tools/oauth-builder', type: 'tool' }
+      ]
     }
   ]
 

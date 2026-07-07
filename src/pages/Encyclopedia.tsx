@@ -340,6 +340,30 @@ export default function Encyclopedia() {
       category: 'Zero Trust',
       analogy: 'A maximum-security military lab. Passing the main front gate isn\'t enough; every single door, terminal, and filing cabinet requires a separate badge scan, device posture check, and authentication, every single time.',
       expert: 'NIST SP 800-207. A security framework based on the premise: "Never Trust, Always Verify." Treats all network traffic as hostile, evaluating access decisions dynamically at Policy Decision Points (PDP).'
+    },
+    {
+      id: 'onewelcome',
+      term: 'OneWelcome',
+      fullName: 'Thales OneWelcome Identity Platform',
+      category: 'Protocols',
+      analogy: 'The highly welcoming and organized reception of a luxury hotel. It seamlessly guides guest registrations, manages GDPR room privacy preferences, and delegates keycard distributions to travel agency partners.',
+      expert: 'A leading European Customer and Partner IAM (CIAM & B2B) platform specializing in no-code visual workflow orchestration, user consent management, and partner-delegated administration.'
+    },
+    {
+      id: 'sta',
+      term: 'STA',
+      fullName: 'SafeNet Trusted Access',
+      category: 'Zero Trust',
+      analogy: 'A secure bank vaults dynamic entrance control. Even if you have a key, it checks your current IP geolocation, monitors device compliance indicators, and prompts dynamic push biometric approvals before opening.',
+      expert: 'Thales\' military-grade access management service delivering adaptive MFA and context-aware Single Sign-On (SSO), using physical HSMs to protect all cryptographic signing keys.'
+    },
+    {
+      id: 'identity_orchestration',
+      term: 'Identity Orchestration',
+      fullName: 'Identity Orchestration & Externalized Authorization',
+      category: 'Authorization',
+      analogy: 'A flight dispatcher mapping coordinate points dynamically. Instead of hardcoding flight paths, the dispatcher visually routes airplanes around storms and delays in real-time.',
+      expert: 'The architectural practice of abstracting user authentication and registration workflows into a separate, visual policy layer (e.g. Thales OneWelcome Orchestrator), allowing organizations to change security paths without rewriting application code.'
     }
   ]
 

@@ -73,9 +73,9 @@ export default function IdentityDecisionMatrix() {
     if (inputs.audience === 'workforce') {
       authnProtocol = inputs.deployment === 'onprem' ? 'SAML 2.0 / LDAP' : 'OIDC / SAML 2.0'
       recommendedIdpClass = inputs.deployment === 'cloud' 
-        ? 'Workforce IdPs (e.g., Microsoft Entra ID, Okta)' 
+        ? 'Workforce IdPs (e.g., Thales SafeNet Trusted Access, Microsoft Entra ID, Okta)' 
         : inputs.deployment === 'hybrid' 
-          ? 'Hybrid IdPs (e.g., Ping Identity, Keycloak)' 
+          ? 'Hybrid IdPs (e.g., Thales SafeNet Trusted Access, Ping Identity, Keycloak)' 
           : 'On-Prem Directory (e.g., Active Directory, openLDAP)'
       federation = 'SAML 2.0 metadata federation'
       standards.push('SAML 2.0 Core Spec', 'NIST SP 800-63B')
@@ -87,7 +87,7 @@ export default function IdentityDecisionMatrix() {
       )
     } else if (inputs.audience === 'ciam') {
       authnProtocol = inputs.securityPriority === 'passwordless' ? 'WebAuthn / Passkeys' : 'OIDC'
-      recommendedIdpClass = 'Customizable Customer IdPs (e.g., Auth0, Clerk, Amazon Cognito, Keycloak)'
+      recommendedIdpClass = 'Customizable Customer IdPs (e.g., Thales OneWelcome, Auth0, Clerk, Keycloak)'
       federation = 'Social OAuth Gateways (Google, Apple, Facebook)'
       standards.push('W3C WebAuthn', 'FIDO2 Core Specifications')
       implChecklist.push('Implement progressive registration profiling to minimize sign-up friction.')
@@ -98,7 +98,7 @@ export default function IdentityDecisionMatrix() {
       )
     } else if (inputs.audience === 'b2b') {
       authnProtocol = 'SAML 2.0 / OpenID Connect'
-      recommendedIdpClass = 'Enterprise B2B IdPs (e.g., WorkOS, Okta B2B, Keycloak)'
+      recommendedIdpClass = 'Enterprise B2B IdPs (e.g., Thales OneWelcome, Okta B2B, Keycloak)'
       federation = 'Multi-Tenant Federated SSO'
       standards.push('RFC 7644 (SCIM 2.0 User Provisioning)', 'SAML 2.0 Metadata')
       implChecklist.push('Publish standard OIDC Discovery endpoints and JWKS signing keys.')

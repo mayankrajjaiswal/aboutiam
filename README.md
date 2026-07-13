@@ -51,6 +51,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Identity Research & CVE Tracker (`/research`):** Searchable identity CVE directory (e.g. Log4Shell, Spring4Shell) with side-by-side vulnerable vs. secure code-remediation patches, and a live IETF RFC protocol registry.
 * **Design Pattern Library (`/patterns`):** Hardened integration patterns, sequence flows, and implementation checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless FIDO2.
 * **Enterprise Certification Hub (`/certifications`):** Study paths, domain focus splits, and interactive mock practice exams with real-time explanations for SC-300, Okta Admin, CyberArk Sentry, and Ping Professional credentials.
+* **Interview & Career Preparation Center (`/career-center`):** Comprehensive role-based interview preparation system. Spans 6 role tracks (Fresher -> Principal) featuring interactive multiple-choice verification, outage incident walkthroughs, real-time system design audits, config code terminals (LDAP filters, OPA Rego rules), timed mock interviews, and copyable high-impact resume bullets.
 * **Security Bulletins & IR Simulator (`/bulletins`):** Active threat bulletins tracking real-world incident post-mortems (Okta support HAR cookie theft, SolarWinds Golden SAML) with an interactive "Crisis Response Console" simulation game.
 * **Interactive Playgrounds (`PlaygroundCatalog.tsx`):** Selection hub connecting to 15+ custom-built detailed simulators.
 * **Interactive Identity Timeline (`/timeline`):** Traces identity history from 1961 mainframes to future ambient trust, with active inline simulators for 6 eras.
@@ -91,7 +92,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. All 26 planned tools are live:
   * **Tokens & Assertions:** JWT Decoder, JWT Generator, JWKS Key-Set Inspector, SAML Decoder, SD-JWT Decoder.
   * **PKI & Certificates:** Basic/Bearer Auth Header Decoder, JWK↔PEM Converter, X.509 Certificate & CSR Decoder, X.509 CSR Generator.
-  * **Hashing, Encoding & Secrets:** Base64/Base64URL Encoder-Decoder, SHA-256 & Hash Generator, HMAC Generator & Verifier, bcrypt Hash Generator, Passphrase & Entropy Strength Calculator.
+  * **Hashing, Encoding & Secrets:** Base64/Base64URL Encoder-Decoder, SHA-256 & Hash Generator, HMAC Generator & Verifier, bcrypt Hash Generator, Passphrase & Entropy Strength Calculator, Ansible Vault Encryptor & Decryptor, Mozilla SOPS GitOps Secrets Simulator.
   * **Auth & Directory Builders:** OAuth PKCE Generator, TOTP Generator & Verifier, LDAP Filter Builder, SCIM Payload Validator, OAuth Request Builder, OIDC Discovery Document Auditor, SAML Metadata Builder, SCIM Diff & Reconciliation Tool.
   * **Emerging & Decentralized Identity:** WebAuthn/Passkey Assertion Decoder, DID Key Generator.
 * Every tool page pairs a **beginner analogy** with an **expert technical specification** (RFC/spec-referenced), matching the Encyclopedia's teaching pattern, plus its own SEO-optimized route, meta tags, and JSON-LD structured data for search discoverability.

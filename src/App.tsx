@@ -47,6 +47,7 @@ import PassphraseEntropy from './pages/Tools/PassphraseEntropy'
 import OidcDiscoveryAuditor from './pages/Tools/OidcDiscoveryAuditor'
 import AnsibleVault from './pages/Tools/AnsibleVault'
 import SopsSimulator from './pages/Tools/SopsSimulator'
+import InterviewCareerCenter from './pages/InterviewCareerCenter'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
@@ -144,6 +145,7 @@ export default function App() {
               <Route path="/patterns" element={<DesignPatternLibrary />} />
               <Route path="/certifications" element={<CertificationHub />} />
               <Route path="/bulletins" element={<SecurityBulletins />} />
+              <Route path="/career-center" element={<InterviewCareerCenter />} />
               <Route path="/playground" element={<PlaygroundCatalog />} />
               <Route path="/tools" element={<ToolsCatalog />} />
               <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />

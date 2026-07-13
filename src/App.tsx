@@ -45,6 +45,9 @@ import JwksInspector from './pages/Tools/JwksInspector'
 import PolicyEvaluator from './pages/Tools/PolicyEvaluator'
 import PassphraseEntropy from './pages/Tools/PassphraseEntropy'
 import OidcDiscoveryAuditor from './pages/Tools/OidcDiscoveryAuditor'
+import AnsibleVault from './pages/Tools/AnsibleVault'
+import SopsSimulator from './pages/Tools/SopsSimulator'
+import InterviewCareerCenter from './pages/InterviewCareerCenter'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
@@ -142,6 +145,7 @@ export default function App() {
               <Route path="/patterns" element={<DesignPatternLibrary />} />
               <Route path="/certifications" element={<CertificationHub />} />
               <Route path="/bulletins" element={<SecurityBulletins />} />
+              <Route path="/career-center" element={<InterviewCareerCenter />} />
               <Route path="/playground" element={<PlaygroundCatalog />} />
               <Route path="/tools" element={<ToolsCatalog />} />
               <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />
@@ -171,6 +175,8 @@ export default function App() {
               <Route path="/tools/policy-evaluator" element={<PolicyEvaluator />} />
               <Route path="/tools/passphrase-entropy" element={<PassphraseEntropy />} />
               <Route path="/tools/oidc-discovery" element={<OidcDiscoveryAuditor />} />
+              <Route path="/tools/ansible-vault" element={<AnsibleVault />} />
+              <Route path="/tools/sops-simulator" element={<SopsSimulator />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />

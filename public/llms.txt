@@ -53,6 +53,8 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [WebAuthn / Passkey Assertion Decoder](https://www.aboutiam.com/tools/webauthn-decoder/): Decode clientDataJSON, authenticatorData, and CBOR attestationObject.
 - [DID Key Generator](https://www.aboutiam.com/tools/did-key-generator/): Generate an Ed25519 keypair and derive its did:key identifier and DID document.
 - [bcrypt Hash Generator & Verifier](https://www.aboutiam.com/tools/bcrypt-generator/): Hash passwords with bcrypt at custom cost factors or verify plaintext passwords against existing hashes.
+- [Ansible Vault Encryptor & Decryptor](https://www.aboutiam.com/tools/ansible-vault/): Encrypt or decrypt secrets client-side using the standard Ansible Vault 1.1/1.2 AES-256 cipher format — 100% browser-native PBKDF2 + AES-CTR + HMAC-SHA256.
+- [Mozilla SOPS GitOps Secrets Simulator](https://www.aboutiam.com/tools/sops-simulator/): Selectively encrypt or decrypt configuration values inside YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys.
 
 ## Advanced Ecosystem & Governance
 
@@ -61,6 +63,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Vulnerability Lab / Wall of Shame](https://www.aboutiam.com/wall-of-shame/): Historic identity breaches, including Golden SAML and MFA push-bombing fatigue.
 - [Developer Playbooks](https://www.aboutiam.com/cheat-sheets/): Compliance checklists for SPAs and machine-to-machine credentials.
 - [GRC Maturity Wizard](https://www.aboutiam.com/assess/): 5-pillar organizational readiness assessment with an exportable roadmap.
+- [Interview & Career Center](https://www.aboutiam.com/career-center/): Role-based interview preparation, multiple-choice mastery, incident scenarios, system design, code terminals, and resume guidance.
 - [Landscape Directory](https://www.aboutiam.com/explore/): Product blueprints with copyable integration code.
 - [AI Architect Chat](https://www.aboutiam.com/assistant/): Simulated RAG assistant producing sample policies and Rego scripts.
 

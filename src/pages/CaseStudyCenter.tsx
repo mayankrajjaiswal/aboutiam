@@ -331,6 +331,204 @@ export default function CaseStudyCenter() {
         { title: 'SCIM Provisioning Lab', path: '/playground/scim', type: 'playground' },
         { title: 'OAuth Request Builder Tool', path: '/tools/oauth-builder', type: 'tool' }
       ]
+    },
+    {
+      id: 'google_beyondcorp',
+      title: 'BeyondCorp Zero Trust Network Access (ZTNA)',
+      company: 'Google',
+      logo: '🌐',
+      category: 'Big Technology',
+      summary: 'Explore Google’s pioneer BeyondCorp Zero Trust model, detailing Access Gateways, strict context-aware device posture audits, client-side certificates, and unified enterprise authorization proxies.',
+      problem: 'Securing administrative and internal corporate resources globally for over 100,000 employees without relying on vulnerable, perimeter-based corporate VPN networks.',
+      requirements: [
+        'Complete removal of network location as an access authorization vector.',
+        'Enforcing client device compliance (OS updates, disk encryption, MDM status) natively.',
+        'Unified reverse proxy acting as a single point of resource egress.'
+      ],
+      challenges: [
+        'Evaluating device telemetry state dynamically on every HTTP request without incurring latencies.',
+        'Migrating thousands of legacy corporate portals to standard OIDC and reverse proxy routes.',
+        'Managing public trust chains for client-side mutual TLS (mTLS) browser certificates.'
+      ],
+      architecture: `
++-------------------------------------------------------------+
+|                     GOOGLE BEYONDCORP ZTNA                  |
++-------------------------------------------------------------+
+
+      [ Employee Device ] ===> [ BeyondCorp Access Proxy ] ===> [ Google Corp Apps ]
+               |                         ^
+        - Client Certificate?            | (Validates context via PDP)
+        - MDM Compliance Check?          v
+               +=============> [ Context Trust Engine ]
+`,
+      authModel: 'Context-aware authentication checking corporate single sign-on (SSO) credentials, client mutual TLS (mTLS) device certificates, and active local posture status synchronously.',
+      authzModel: 'Dynamic Attribute-Based Access Control (ABAC) evaluating user department, device health state, geolocation, and current risk score.',
+      lifecycle: 'Employee accounts are synced directly from corporate Identity Providers (Okta/Entra ID) using SCIM directory loops, ensuring instant account revocation upon termination.',
+      federation: 'Utilizes federated OIDC Single Sign-On (SSO) mapped to Cloudflare Access Gateways, requiring mutual TLS checks on the browser client.',
+      sequence: `
+ Employee Browser        BeyondCorp Access Proxy       Context Engine
+        |                          |                          |
+        |--- Request App --------->|                          |
+        |                          |--- Get Telemetry ------->|
+        |                          |<-- Posture Verified -----|
+        |<== Access Granted =======|                          |
+`,
+      threatModel: [
+        { risk: 'Credential theft via credential stuffing', mitigation: 'Access is completely blocked if the device lacks active corporate MDM posture or is missing the client mTLS certificate.' },
+        { risk: 'Lateral movement after network perimeter compromise', mitigation: 'BeyondCorp removes trust from local networks entirely. Access is evaluated on every application endpoint individually.' }
+      ],
+      lessons: [
+        'Network location (internal IP) must never be trusted. Treat every connection as external.',
+        'Real-time posture evaluations are highly resilient compared to static daily compliance audits.'
+      ],
+      mistakes: [
+        'Initially attempting to roll out posture requirements too aggressively, leading to developer friction and workflow lockouts.',
+        'Allowing fallback access without client-side certificates in remote branch offices.'
+      ],
+      bestPractices: [
+        'Ensure the reverse proxy caches authorization decisions at the edge for sub-millisecond latencies.',
+        'Integrate client-side certificates directly into hardware TPM enclaves.'
+      ],
+      interviewQuestions: [
+        { q: 'What is the core philosophy of Google BeyondCorp?', a: 'To move access controls from the network perimeter to individual users and devices. This enables all employees to work securely from any location without a VPN, by evaluating access context (device state, client certificates, identity) dynamically on every request.' }
+      ],
+      rfcs: ['NIST SP 800-207 (Zero Trust Architecture)', 'RFC 8252 (OAuth 2.0 for Native Apps)'],
+      relatedResources: [
+        { title: 'Zero Trust Architecture (ZTA) Planner', path: '/playground/zta', type: 'playground' },
+        { title: 'Device Posture MDM Attestation Lab', path: '/playground/device-trust', type: 'playground' },
+        { title: 'OIDC Discovery Auditor Tool', path: '/tools/oidc-discovery', type: 'tool' }
+      ]
+    },
+    {
+      id: 'slack_scim_scale',
+      title: 'Scalable SCIM Directory Sync & Org Provisioning',
+      company: 'Slack',
+      logo: '💬',
+      category: 'Big Technology',
+      summary: 'Deconstruct how Slack scales enterprise directories using the SCIM 2.0 protocol, managing millions of workspace members, automated group synchronization, rate-limiting HTTP 429 backqueues, and real-time reconciliation loops.',
+      problem: 'Provisioning and synchronizing millions of channel members and workspaces across hundreds of independent enterprise customers without crashing directory servers during massive hiring/layoff cycles.',
+      requirements: [
+        'Full support for RFC 7643 and 7644 SCIM 2.0 REST specifications.',
+        'Real-time automated group synchronization and workspace assignment mapping.',
+        'Resilient queueing to handle high-velocity bulk updates from Entra ID/Okta.'
+      ],
+      challenges: [
+        'Preventing API server crashes when enterprise clients trigger massive bulk sync dumps.',
+        'Handling SCIM PATCH reconciliation conflicts when user email addresses change.',
+        'Optimizing DB locks during simultaneous user provisioning and group mapping operations.'
+      ],
+      architecture: `
++-------------------------------------------------------------+
+|                     SLACK HIGH-SCALE SCIM FLOW              |
++-------------------------------------------------------------+
+
+      [ Customer IdP (Okta) ] ===> [ SCIM REST API Gateway ] ===> [ Message Queue (Kafka) ]
+                                            |
+                                            v (Processes jobs asynchronously)
+                                    [ Slack Database ]
+`,
+      authModel: 'Identity Providers (IdPs) authenticate against Slack\'s SCIM REST endpoints using highly secure, long-lived, scoped OAuth Bearer Tokens or administrative API keys.',
+      authzModel: 'Coarse-grained route authorization is verified at the API Gateway. Fine-grained user role and channel membership configurations are resolved during queue consumption in the Slack DB.',
+      lifecycle: 'Active account lifecycles (create, update, suspend, delete) are processed asynchronously via queues. When a user is deactivated in the customer directory, a SCIM `active: false` PATCH is dispatched, instantly terminating all active WebSocket connections.',
+      federation: 'Federated directories are managed per enterprise org partition, allowing custom attribute mapping and OIDC-linked SSO connections.',
+      sequence: `
+ Customer IdP             SCIM API Gateway           Slack DB Queue
+      |                          |                          |
+      |--- POST /Users (JSON) -->|                          |
+      |                          |--- Push Sync Job ------->|
+      |<-- 201 Created (JSON) ---|                          |
+`,
+      threatModel: [
+        { risk: 'Orphaned accounts retaining access post-termination', mitigation: 'Enforce real-time SCIM de-provisioning loops that disable the account and invalidate session cookies instantly.' },
+        { risk: 'SCIM API credential leakage', mitigation: 'Utilize short-lived, scoped OAuth client credentials for directory sync operations with strict IP white-listing.' }
+      ],
+      lessons: [
+        'SCIM 2.0 is the gold standard for enterprise lifecycle automation, eliminating manual offboarding slipups.',
+        'Asynchronous job queues are essential to prevent API gateways from timing out during bulk synchronizations.'
+      ],
+      mistakes: [
+        'Initially attempting to run SCIM sync calls synchronously, causing database locks and REST gateway timeouts during enterprise-wide profile updates.',
+        'Ignoring SCIM schema mismatch validations, leading to partial profile corruptions.'
+      ],
+      bestPractices: [
+        'Implement resilient HTTP 429 rate-limiting backoff policies with retry queues.',
+        'Enforce clean, unique constraints on the externalId parameter to prevent duplicate member provisioning.'
+      ],
+      interviewQuestions: [
+        { q: 'Why is SCIM essential for enterprise IAM over simple SSO?', a: 'SSO only authenticates a user once they actively click to log in (just-in-time). SCIM runs continuously in the background, automatically creating, updating, and—most importantly—instantly revoking accounts when employees leave, ensuring absolute access compliance.' }
+      ],
+      rfcs: ['RFC 7643 (SCIM 2.0 Schema)', 'RFC 7644 (SCIM 2.0 Protocol)'],
+      relatedResources: [
+        { title: 'SCIM Provisioning Lab & Sync Engine', path: '/playground/scim', type: 'playground' },
+        { title: 'SCIM Payload Validator Tool', path: '/tools/scim-payload-validator', type: 'tool' },
+        { title: 'SCIM Diff & Reconciliation Tool', path: '/tools/scim-diff', type: 'tool' }
+      ]
+    },
+    {
+      id: 'stripe_api_auth',
+      title: 'API Client Authentication & Secure Token Exchange',
+      company: 'Stripe',
+      logo: '💳',
+      category: 'Financial Services',
+      summary: 'Deconstruct Stripe’s API authentication model, detailing API keys, secure Bearer token exchanges, DPoP, and secure machine-to-machine (M2M) microservice delegation.',
+      problem: 'Authenticating billions of secure financial transactions from third-party developer servers while restricting credentials and preventing API token exposure.',
+      requirements: [
+        'Secure, scoped, and revokable API keys for developers.',
+        'Symmetric signature verification (HMAC) on webhook callbacks.',
+        'Zero-trust workload credential exchange inside microservice meshes.'
+      ],
+      challenges: [
+        'Preventing token theft via man-in-the-middle interception on developer servers.',
+        'Scaling HMAC webhook delivery verification across high-frequency consumer networks.',
+        'Managing M2M credential lifecycles with absolute least privilege.'
+      ],
+      architecture: `
++-------------------------------------------------------------+
+|                     STRIPE M2M ACCESS PIPELINE               |
++-------------------------------------------------------------+
+
+      [ Developer Server ] ===> [ Stripe API Gateway ] ===> [ Security Token Service ]
+                                        |                             ^
+                                 - Validates API Key                  | (Swaps key for scoped DEK)
+                                        +-----------------------------+
+`,
+      authModel: 'Clients authenticate server-side utilizing standard scoped REST API keys (e.g., `sk_live_...`). Internal microservices exchange these developer credentials for highly restricted, short-lived tokens via a central Security Token Service (STS) mapping.',
+      authzModel: 'Explicit role and resource scope restrictions. Webhook callback endpoints utilize HMAC-SHA256 signature hashes containing a timestamp header, blocking replay attacks.',
+      lifecycle: 'API keys are rotated dynamically with zero downtime using rolling key pairs. Workload tokens are ephemeral (10-minute expirations), automatically managed by local SPIRE and OAuth clients.',
+      federation: 'Federates partner developer integrations utilizing custom OAuth 2.0 Connect gateways, allowing third-party platforms to perform actions on behalf of merchant accounts safely.',
+      sequence: `
+ Developer Server           Stripe API Gateway          Security Token Service
+        |                            |                             |
+        |--- POST /Charge (API Key)->|                             |
+        |                            |--- Request Token Swap ----->|
+        |                            |<-- Scoped Downstream Token -|
+        |<-- 200 Paid (JSON) --------|                             |
+`,
+      threatModel: [
+        { risk: 'Leaked API keys in developer repositories', mitigation: 'Implement active GitHub scanning for API key prefixes, instantly triggering auto-revocation and warning alerts.' },
+        { risk: 'Webhook spoofing attacks', mitigation: 'Webhook endpoints verify the HMAC-SHA256 signature generated using a shared webhook secret, confirming payload authenticity.' }
+      ],
+      lessons: [
+        'Workload credentials must follow the least privilege model. Swap broad edge keys for restricted downstream tokens instantly.',
+        'Webhooks require strict signature validation and timestamp assertions to prevent malicious replays.'
+      ],
+      mistakes: [
+        'Allowing wildcard scopes on developer API keys by default, making leaked credentials highly dangerous.',
+        'Initially failing to validate webhook timestamps, leaving endpoints open to replay hacks.'
+      ],
+      bestPractices: [
+        'Prefix API keys (e.g., `sk_live_`) to enable rapid detection by regex scanners.',
+        'Enforce DPoP (Demonstrating Proof-of-Possession) for sensitive partner API integrations.'
+      ],
+      interviewQuestions: [
+        { q: 'Why should an API use Token Exchange instead of forwarding the developer API key?', a: 'To protect the key and enforce least privilege. Forwarding the original key to internal services exposes it unnecessarily. Swapping the key at the gateway for a highly restricted, short-lived token scoped only for the necessary downstream calls prevents lateral movement and token abuse.' }
+      ],
+      rfcs: ['RFC 8693 (Token Exchange)', 'RFC 9449 (DPoP)', 'RFC 6749 (OAuth 2.0 Framework)'],
+      relatedResources: [
+        { title: 'Token Exchange (RFC 8693) Lab', path: '/playground/token-exchange', type: 'playground' },
+        { title: 'HMAC Signature Generator Tool', path: '/tools/hmac-generator', type: 'tool' },
+        { title: 'OIDC Request Builder Tool', path: '/tools/oauth-builder', type: 'tool' }
+      ]
     }
   ]
 

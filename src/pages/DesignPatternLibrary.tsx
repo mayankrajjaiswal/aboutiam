@@ -15,6 +15,7 @@ interface PatternDetails {
   tradeoffs: { title: string; desc: string }[]
   sequenceFlow: string[]
   checklist: string[]
+  sequenceDiagram?: string // Optional ASCII visual sequence flow
 }
 
 const PATTERN_DATA: Record<PatternType, PatternDetails> = {
@@ -62,7 +63,20 @@ const PATTERN_DATA: Record<PatternType, PatternDetails> = {
       'Ensure exchanged downstream tokens have highly restricted lifetimes (e.g. 5 minutes max).',
       'Set up mutual TLS (mTLS) to secure the backchannel transport between API Gateway, STS, and downstream microservices.',
       'Map aud (Audience) claims strictly on exchanged tokens to restrict them to specific backend microservice domains.'
-    ]
+    ],
+    sequenceDiagram: `
++--------------------+            +-------------------+            +--------------------+
+|     Client SPA     |            |  API Edge Gateway |            | Security Token Svc |
++--------------------+            +-------------------+            +--------------------+
+          |                                 |                                 |
+          |--- 1. GET /billing ------------>|                                 |
+          |    (User Access Token)          |--- 2. POST /token ------------->|
+          |                                 |    (Exchange Request)           |
+          |                                 |                                 |
+          |                                 |<-- 3. Exchanged billing JWT ----|
+          |                                 |                                 |
+          |                                 |=== 4. Forward billing JWT ====> | [ Billing Service ]
+`
   },
   passwordless: {
     name: 'Passwordless FIDO2 / WebAuthn Customer Journey',
@@ -269,6 +283,18 @@ export default function DesignPatternLibrary() {
               </div>
             </div>
           </div>
+
+          {/* Dynamic ASCII Diagram card */}
+          {pattern.sequenceDiagram && (
+            <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-md space-y-3 animate-in fade-in duration-200">
+              <span className="text-xs font-bold text-text-primary uppercase tracking-wider block border-b border-border-subtle pb-1.5 flex items-center gap-1.5 font-mono">
+                <Terminal className="w-4 h-4 text-accent-primary animate-pulse" /> Interactive Token Exchange Handshake Tracing (RFC 8693)
+              </span>
+              <pre className="text-[10px] font-mono text-text-secondary bg-bg-nested p-4 rounded-xl border border-border-subtle/50 overflow-x-auto leading-relaxed select-none">
+                <code>{pattern.sequenceDiagram}</code>
+              </pre>
+            </div>
+          )}
 
           {/* Sequence Flow vs Trade-offs split */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

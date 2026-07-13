@@ -143,6 +143,113 @@ async function handleUserProvision(userPayload) {
     <saml:Subject>...</saml:Subject>
   </saml:Assertion>
 </saml:Response>`
+    },
+    {
+      id: 't3',
+      title: 'OAuth 2.0 state vs. nonce: Decoupled CSRF Defenses',
+      author: 'sec_architect_brian',
+      role: 'Lead Security Architect',
+      date: 'July 10, 2026',
+      likes: 31,
+      body: 'We are configuring an OIDC login flow. Some team members argue that the OAuth 2.0 "state" parameter is redundant if we are already asserting the OpenID "nonce" claim inside the ID Token. Are they right, or should we use both?',
+      solution: 'They serve two entirely different security scopes! The "state" parameter is a front-channel CSRF protection that binds the authorization request on the client browser. The "nonce" binds the ID Token directly to the client session context backend-channel. You must use BOTH to protect the full lifecycle.',
+      code: `// Secure OIDC redirection state + nonce configuration
+const state = generateSecureRandomBytes(32);
+const nonce = generateSecureRandomBytes(32);
+
+// Cache in secure client-side cookie or session
+setSessionState({ state, nonce });
+
+// Redirect with both parameters
+const authUrl = \`https://auth.company.com/authorize?
+  response_type=code&
+  client_id=spa-client-1&
+  state=\${state}&
+  nonce=\${nonce}\`;`
+    },
+    {
+      id: 't4',
+      title: 'Axios Interceptor for DPoP Token Bindings (RFC 9449)',
+      author: 'auth_builder_dan',
+      role: 'API Integration Dev',
+      date: 'July 8, 2026',
+      likes: 19,
+      body: 'How can we implement client-side Demonstrating Proof-of-Possession (DPoP - RFC 9449) dynamically on Axios request interceptors? We need to sign a local JWT for every outgoing API call containing the method and URI.',
+      solution: 'You can do this by registering an Axios request interceptor that generates a fresh asymmetric keypair (or uses a cached Web Crypto CryptoKey), compiles a DPoP-JWT containing the dynamic HTTP method, target URL, and a cryptographically unique UUID, signs it, and injects it as a "DPoP" header.',
+      code: `// Axios interceptor injecting secure DPoP headers
+axios.interceptors.request.use(async (config) => {
+  const dpopJwt = await generateDPoPHeader(
+    config.method.toUpperCase(),
+    config.url,
+    privateKey
+  );
+  config.headers['DPoP'] = dpopJwt;
+  return config;
+});`
+    },
+    {
+      id: 't5',
+      title: 'Selective SCIM 2.0 PATCH Multi-Valued Attribute Removal',
+      author: 'sync_guru_sarah',
+      role: 'Identity Operations Engineer',
+      date: 'July 5, 2026',
+      likes: 15,
+      body: 'How do we structure a SCIM 2.0 (RFC 7644) PATCH operation to remove a specific email address from a user\'s multi-valued "emails" attribute list, without completely resetting the whole array?',
+      solution: 'To selectively target items inside multi-valued arrays, you must use a value path filter (e.g. emails[value eq "old@company.com"]) inside the SCIM PATCH "remove" payload. This targets strictly the matched element.',
+      code: `// SCIM 2.0 selective attribute removal PATCH (RFC 7644)
+PATCH /scim/v2/Users/user_id_119a HTTP/1.1
+Host: api.company.com
+Content-Type: application/scim+json
+
+{
+  "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+  "Operations": [{
+    "op": "remove",
+    "path": "emails[value eq 'old@company.com']"
+  }]
+}`
+    },
+    {
+      id: 't6',
+      title: 'Secure JWKS Caching & Missing-Key Rate Limiting',
+      author: 'devops_steve',
+      role: 'Infrastructure Engineer',
+      date: 'July 1, 2026',
+      likes: 42,
+      body: 'Our microservices mesh validates OIDC tokens on every request. Our API Gateway is crashing because it fetches the JWKS (public keys endpoint) from our IdP for every single token validation, hitting rate limits. What is the standard caching strategy?',
+      solution: 'You must implement an in-memory JWKS cache with a short TTL (e.g. 15-60 minutes) and a rate-limiter wrapper on cache-misses. This prevents attackers from DOS-ing your gateway by spamming arbitrary tokens carrying invalid key IDs (kids), which would otherwise force continuous on-the-fly fetches.',
+      code: `// Secure JWKS Caching with missing-key rate limiting
+const jwksCache = new Map();
+async function getPublicKey(kid) {
+  if (jwksCache.has(kid)) return jwksCache.get(kid);
+  
+  // Rate-limit check: Prevent DOS on cache-misses
+  await assertRateLimit('jwks-fetch', 10, '1m');
+  
+  const freshKeys = await fetchJwksFromIdP();
+  freshKeys.forEach(k => jwksCache.set(k.kid, k));
+  return jwksCache.get(kid);
+}`
+    },
+    {
+      id: 't7',
+      title: 'Securing Public Clients Under OAuth 2.1 specifications',
+      author: 'sec_coder_sophie',
+      role: 'Application Security Specialist',
+      date: 'June 25, 2026',
+      likes: 28,
+      body: 'We are migrating our React Single Page Application (SPA) to OAuth 2.1. The auditor flagged that our client secret is hardcoded in our source repository. Can we protect this client secret in the browser using encryption, or how do we secure public client flows?',
+      solution: 'Public clients (like SPAs or Mobile Apps) are physically incapable of maintaining a client secret securely because any code, keys, or credentials stored inside the browser can be extracted via developer tools or memory dumps. Under OAuth 2.1 specifications, public clients MUST NOT use a client_secret. Instead, you must register the client as a "Public Client" on your Authorization Server, disable secret requirements, and strictly enforce Authorization Code Flow with PKCE.',
+      code: `// Secure OAuth 2.1 Public Client Token Exchange (No secret needed)
+POST /token HTTP/1.1
+Host: auth.company.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code
+&code=code_hijacked_prevention_token
+&redirect_uri=https://app.company.com/callback
+&client_id=spa-client-1 // NO client_secret here!
+&code_verifier=dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk`
     }
   ]
 

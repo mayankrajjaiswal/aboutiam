@@ -199,6 +199,64 @@ grant_type=authorization_code
         { title: 'SCIM Diff Tool', path: '/tools/scim-diff', type: 'tool' },
         { title: 'SCIM Sync Provisioning Lab', path: '/playground/scim', type: 'playground' }
       ]
+    },
+    {
+      id: 'webauthn',
+      title: 'WebAuthn',
+      fullname: 'W3C Web Authentication (FIDO2)',
+      rfcs: ['W3C WebAuthn Level 3 Specs'],
+      year: '2019 / 2024',
+      summary: 'W3C WebAuthn standardizes secure, phishing-resistant public-key cryptography (Passkeys) executed natively inside browser clients and hardware TPM enclaves.',
+      problem: 'Passwords are vulnerable to phishing, databases leaks, or local keylogging, while legacy SMS-based MFA remains vulnerable to high-tech SIM swapping.',
+      whyExists: 'To establish a global, passwordless authentication profile using hardware-secured asymmetric keypairs where servers only store the client public key.',
+      flowchart: `
++-------------------------------------------------------------+
+|                WEBAUTHN PASSKEY HANDSHAKE                   |
++-------------------------------------------------------------+
+
+  [ Browser / Client TPM ]              [ Relying Party Server ]
+             |                                     |
+             |--- 1. Get Challenge Options ------->|
+             |<-- 2. Challenge + Allowed Creds ----|
+             |                                     |
+             |--- 3. navigator.credentials.get --->|
+             |                                     |
+             |--- 4. Assertion (Signature) ------->|
+             |<-- 5. Session Verified -------------|
+`,
+      messageFormat: `// WebAuthn Assertion Response Payload (JSON representation)
+{
+  "id": "ARuX_99a...",
+  "rawId": "ARuX_99a...",
+  "type": "public-key",
+  "response": {
+    "authenticatorData": "SZYN5Y...", // Binary authenticator state flags
+    "clientDataJSON": "eyJ0eXBlIj...",  // Challenge, origin, tokenBinding
+    "signature": "MEUCIQ...",           // ECDSA cryptographic signature
+    "userHandle": "dXNlcl8xM..."       // Subject identifier
+  }
+}`,
+      vulnerabilities: [
+        'User session hijacking on local unlocked workstations.',
+        'Platform credential theft inside unhardened guest operating systems.',
+        'Metadata spoofing during key registration (mitigated by Attestation).'
+      ],
+      bestPractices: [
+        'Validate incoming origin domains strictly inside clientDataJSON to prevent phishing.',
+        'Enforce User Verification (UV = biometrics/PIN) on sensitive transaction routes.',
+        'Assert credentials are bound strictly to hardware enclaves (RP ID matching).'
+      ],
+      vendorSupport: [
+        'Thales STA: Support for hardware tokens and smart passkey authenticators.',
+        'Yubico: Complete native FIDO2/WebAuthn L3 hardware compliance.',
+        'Microsoft Entra ID: Cloud Hello and FIDO2 workforce passwordless.',
+        'Okta: Seamless passkey enrollment and verification flows.'
+      ],
+      relatedResources: [
+        { title: 'WebAuthn Assertion Decoder Tool', path: '/tools/webauthn-assertion-decoder', type: 'tool' },
+        { title: 'FIDO2 / WebAuthn Lab', path: '/playground/fido2', type: 'playground' },
+        { title: 'Passkey Internals Playground', path: '/playground/passkey-internals', type: 'playground' }
+      ]
     }
   ]
 

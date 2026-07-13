@@ -83,6 +83,43 @@ export default function ThreatModelingStudio() {
     setShowReport(false)
   }
 
+  // --- MODEL PRESET TEMPLATES ---
+  const loadPreset = (presetName: 'spire_mesh' | 'iot_posture' | 'cicd_runner' | 'reset') => {
+    setShowReport(false)
+    if (presetName === 'spire_mesh') {
+      setActiveNodes([
+        { id: 'node-spire-1', name: 'SPIFFE Workload Server A', type: 'service', mtlsEnforced: false, scimValidation: false },
+        { id: 'node-spire-2', name: 'SPIRE Agent/Attestor Daemon', type: 'gateway', jwtValidation: true, dpopRequired: false },
+        { id: 'node-spire-3', name: 'SPIRE Server Authority', type: 'authority', strongMfa: true, keyRotation: false },
+        { id: 'node-spire-4', name: 'Target Postgres Database', type: 'service', mtlsEnforced: false, scimValidation: false }
+      ])
+      setSelectedNodeId('node-spire-1')
+    } else if (presetName === 'iot_posture') {
+      setActiveNodes([
+        { id: 'node-iot-1', name: 'Smart Hub Client Dashboard', type: 'client', pkceEnforced: false, restrictRedirects: false },
+        { id: 'node-iot-2', name: 'IoT CoAP API Gateway', type: 'gateway', jwtValidation: false, dpopRequired: false },
+        { id: 'node-iot-3', name: 'FIDO2 Auth Server', type: 'authority', strongMfa: false, keyRotation: false }
+      ])
+      setSelectedNodeId('node-iot-1')
+    } else if (presetName === 'cicd_runner') {
+      setActiveNodes([
+        { id: 'node-cicd-1', name: 'GitHub Actions Runner', type: 'client', pkceEnforced: false, restrictRedirects: true },
+        { id: 'node-cicd-2', name: 'HashiCorp Vault Service', type: 'gateway', jwtValidation: true, dpopRequired: false },
+        { id: 'node-cicd-3', name: 'OIDC Identity Provider', type: 'authority', strongMfa: true, keyRotation: false }
+      ])
+      setSelectedNodeId('node-cicd-1')
+    } else {
+      // Default reset
+      setActiveNodes([
+        { id: 'node-1', name: 'SPA Client Portal', type: 'client', pkceEnforced: false, restrictRedirects: false },
+        { id: 'node-2', name: 'Zuul API Gateway', type: 'gateway', jwtValidation: false, dpopRequired: false },
+        { id: 'node-3', name: 'Keycloak Auth Authority', type: 'authority', strongMfa: true, keyRotation: false },
+        { id: 'node-4', name: 'Billing Microservice', type: 'service', mtlsEnforced: false, scimValidation: false }
+      ])
+      setSelectedNodeId('node-1')
+    }
+  }
+
   // --- DYNAMIC SECURITY THREAT COMPILER ---
   const threatFindings: ThreatFinding[] = useMemo(() => {
     const findings: ThreatFinding[] = []
@@ -217,10 +254,10 @@ export default function ThreatModelingStudio() {
 
         {/* CONTROLS BAR */}
         <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-bg-card border border-border-subtle shadow-sm select-none">
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
             <button 
               onClick={() => addNode('client')}
-              className="px-3.5 py-2 rounded-lg bg-bg-sidebar border border-border-subtle hover:bg-bg-nested text-xs text-text-primary font-bold flex items-center gap-1.5 transition-all shadow-sm"
+              className="px-3 py-2 rounded-lg bg-bg-sidebar border border-border-subtle hover:bg-bg-nested text-xs text-text-primary font-bold flex items-center gap-1.5 transition-all shadow-sm"
             >
               <Plus className="w-4 h-4 text-accent-primary" /> + SPA Portal
             </button>
@@ -242,6 +279,20 @@ export default function ThreatModelingStudio() {
             >
               <Plus className="w-4 h-4 text-accent-primary" /> + Microservice
             </button>
+
+            {/* Template Presets Selector */}
+            <div className="flex gap-2 items-center border-l border-border-subtle/30 pl-3.5 ml-2.5">
+              <span className="text-[10px] font-black text-text-muted uppercase">Templates:</span>
+              <select
+                onChange={(e) => loadPreset(e.target.value as 'spire_mesh' | 'iot_posture' | 'cicd_runner' | 'reset')}
+                className="p-1.5 rounded-lg bg-bg-sidebar border border-border-subtle text-xs font-bold text-text-primary focus:outline-none"
+              >
+                <option value="reset">Default Architecture</option>
+                <option value="spire_mesh">Kubernetes SPIRE Workload Mesh</option>
+                <option value="iot_posture">IoT Smart Device Posture</option>
+                <option value="cicd_runner">DevOps CI/CD Runner Hijack</option>
+              </select>
+            </div>
           </div>
 
           {/* Methodology selectors */}

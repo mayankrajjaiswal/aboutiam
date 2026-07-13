@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   Award, ArrowRight, Settings, List, Terminal
@@ -67,6 +67,39 @@ const CERT_DATA: Record<CertType, CertDetails> = {
         ],
         correct: 1,
         explanation: 'Conditional Access policies allow you to define conditions (such as device state = unmanaged) and enforce specific "Authentication Strengths" (such as mandating Phishing-resistant MFA / FIDO2) as a grant control, enforcing contextual adaptive security.'
+      },
+      {
+        q: 'You are configuring a B2B collaboration environment with an external partner. You want to allow external guest users to access specific Microsoft Teams channels without creating separate accounts in your directory, while ensuring their access is reviewed monthly. What should you configure?',
+        options: [
+          'Direct Federation via SAML/OIDC',
+          'Microsoft Entra Connect Cloud Sync',
+          'Entitlement Management Access Packages with monthly Access Reviews',
+          'Cross-tenant access settings with B2B direct connect'
+        ],
+        correct: 2,
+        explanation: 'Entitlement Management allows you to pack resources (like Teams, SharePoint, and Apps) into "Access Packages" assigned to external guest partners. By pairing this with an Access Review schedule, the partner manager or internal leads must actively verify and approve the guests continued access monthly, automating account lifecycles.'
+      },
+      {
+        q: 'Your security operations center (SOC) detects multiple "impossible travel" alerts for several corporate accounts. You need to configure an automated response that immediately prompts these users for step-up MFA and forces a password change. What Entra ID component should you configure?',
+        options: [
+          'Entra ID Protection Sign-in Risk and User Risk Policies',
+          'Entra ID Privileged Identity Management Alert Settings',
+          'Azure Key Vault secret rotational loops',
+          'Custom Entra Connect Sync filtering attributes'
+        ],
+        correct: 0,
+        explanation: 'Entra ID Protection (formerly Azure AD Identity Protection) evaluates real-time telemetry (impossible travel, leaked credentials, suspicious IPs) to calculate "Sign-in Risk" and "User Risk" scores. Conditional Access policies can leverage these scores to trigger automatic actions, such as blocking access, forcing MFA, or mandating password resets via Self-Service Password Reset (SSPR).'
+      },
+      {
+        q: 'When implementing a hybrid identity model, what is the primary benefit of deploying Microsoft Entra Cloud Sync instead of traditional Microsoft Entra Connect Sync?',
+        options: [
+          'Cloud Sync supports larger file attachments inside user mailboxes.',
+          'Cloud Sync runs entirely in the cloud and utilizes a lightweight on-prem agent, simplifying multi-forest directory consolidation and reducing local server footprints.',
+          'Cloud Sync forces local Active Directory schemas to override all cloud policies.',
+          'Cloud Sync is mandatory for setting up local hardware Kerberos keytabs.'
+        ],
+        correct: 1,
+        explanation: 'Unlike traditional Entra Connect Sync which requires a heavy SQL database and synchronization engine installed on-premise, Entra Cloud Sync moves the heavy calculation sync engine to the cloud, utilizing a lightweight, highly-available local agent on-prem. It is highly optimized for organizations consolidating multiple disconnected Active Directory forests.'
       }
     ]
   },
@@ -114,6 +147,39 @@ const CERT_DATA: Record<CertType, CertDetails> = {
         ],
         correct: 2,
         explanation: 'Okta Access Gateway (OAG) acts as a local reverse proxy PEP. It handles modern OIDC federation with Okta cloud and forwards the user session context to the legacy on-prem app using HTTP header injection.'
+      },
+      {
+        q: 'You need to transform a user\'s department attribute from Okta Universal Directory before sending it to a downstream SAML Service Provider. If the department attribute is null, you want to send a default value of "General". What Okta Expression Language expression should you write?',
+        options: [
+          'user.department == null ? "General" : user.department',
+          'if (user.department === "") then "General" else department',
+          'String.coalesce(user.department, "General")',
+          'user.department ? "General"'
+        ],
+        correct: 0,
+        explanation: 'Okta Expression Language utilizes ternary operators (condition ? value_if_true : value_if_false) derived from standard programming syntax. The expression `user.department == null ? "General" : user.department` perfectly handles null checks during assertion compilation.'
+      },
+      {
+        q: 'An attacker is attempting a password-spraying attack against your Okta portal from multiple global IP addresses, triggering lockouts. You want Okta to automatically identify and block these malicious IPs prior to any authentication attempt. What should you configure?',
+        options: [
+          'Okta ThreatInsight Policy',
+          'Custom Okta Sign-On Policy with IP restrictions',
+          'Okta Routing Rules using email domains',
+          'Local Windows Active Directory lockout thresholds'
+        ],
+        correct: 0,
+        explanation: 'Okta ThreatInsight evaluates global threat intelligence telemetry across thousands of Okta tenants. When active in "Block" mode, it automatically identifies and drops requests from suspicious, crawling IP addresses at the API gateway layer, before evaluating credentials, preventing local directory account lockouts.'
+      },
+      {
+        q: 'A customer wants to sync employee profile attributes from an on-premise Active Directory to Okta. You install the Okta AD Agent. What is the correct operational model of this agent regarding network traffic security?',
+        options: [
+          'The agent acts as an inbound firewall listener opening port 389 directly to the internet.',
+          'The agent is entirely outbound-only, polling Okta servers over port 443 (HTTPS), eliminating the need for inbound corporate firewall ports.',
+          'The agent requires setting up a dedicated VPN tunnel between AD and Okta servers.',
+          'The agent acts as a RADIUS proxy listening to local UDP ports.'
+        ],
+        correct: 1,
+        explanation: 'The Okta Active Directory Agent is engineered as an outbound-only service. It communicates strictly via secure HTTPS polling over port 443 to fetch synchronization jobs queued in Okta cloud, completely removing the security risk of opening inbound corporate ports.'
       }
     ]
   },
@@ -148,6 +214,50 @@ const CERT_DATA: Record<CertType, CertDetails> = {
         ],
         correct: 2,
         explanation: 'PSM proxies all RDP/SSH sessions, retrieves the requested credential from the Vault, and injects it directly into the remote session stream. The administrator never sees, knows, or interacts with the password, preventing credential theft on untrusted workstations.'
+      },
+      {
+        q: 'A Central Policy Manager (CPM) fails to rotate the password of a target administrative account on a local Windows Server because the CPM lacks permission to write to the domain controller directly. What PAM configuration should you implement to resolve this?',
+        options: [
+          'Configure a CyberArk Reconcile Account in the Safe settings',
+          'Disable CPM automatic rotation and rely on manual rotation',
+          'Assign local admin rights on the domain controller to the CPM server directly',
+          'Increase the CPM server network polling timeout'
+        ],
+        correct: 0,
+        explanation: 'When target account credentials fail rotation due to password expiration or missing administrative permissions, CyberArk utilizes a pre-configured "Reconcile Account". This high-privilege account is invoked to forcefully reset and synchronize the target account\'s password on the target machine, restoring automation.'
+      },
+      {
+        q: 'You need to configure the highest level of security for the CyberArk Enterprise Password Vault (EPV) server. What is the standard deployment recommendation regarding the operating system and firewall of the Vault server?',
+        options: [
+          'Run on a shared Windows Server alongside Active Directory domain services.',
+          'Install on a dedicated Windows Server, run the CyberArk hardening script to disable unnecessary OS services, and enforce a localized, highly restrictive firewall rejecting all non-vault traffic.',
+          'Deploy on a Linux Kubernetes cluster exposed to corporate load balancers.',
+          'None of the above; cloud databases handle EPV security natively.'
+        ],
+        correct: 1,
+        explanation: 'The CyberArk EPV Vault server must be hardened strictly. The hardening process disables unnecessary OS services, removes non-essential Windows features, closes all generic network ports except the Vault communication port (TCP 1858), and ensures the server operates solely as a cryptographically isolated identity safe.'
+      },
+      {
+        q: 'Your corporate security policy demands that any administrative session targeting critical financial servers must require manual approval from a security manager, except during emergency "break-glass" situations. What CyberArk feature should you configure?',
+        options: [
+          'CyberArk Privileged Threat Analytics (PTA)',
+          'CyberArk Safe Dual-Control (Confirmation) workflows',
+          'Okta Access Gateway proxy rules',
+          'Central Policy Manager rotational intervals'
+        ],
+        correct: 1,
+        explanation: 'Safe Dual-Control (or confirmation workflows) forces administrators to submit a formal request stating business justification and time windows before gaining access to a sensitive credential. This request must be manually authorized by one or more designated Safe Owners before the session can proceed.'
+      },
+      {
+        q: 'A security engineer detects that a domain administrator is executing suspicious PowerShell scripts on a server. CyberArk immediately flags this anomaly and terminates their active SSH session automatically. What CyberArk component is responsible for this detection?',
+        options: [
+          'Central Policy Manager (CPM)',
+          'Privileged Threat Analytics (PTA)',
+          'Enterprise Password Vault (EPV)',
+          'CyberArk Identity Broker'
+        ],
+        correct: 1,
+        explanation: 'Privileged Threat Analytics (PTA) continuously monitors real-time session logs, command history, and credential usage anomalies. If it detects anomalous or malicious commands (like credential harvest attempts or un-vaulted logins), it can trigger automated remediation actions, such as notifying SOC analysts, rotating credentials, or instantly suspending the active session.'
       }
     ]
   },
@@ -183,10 +293,68 @@ const CERT_DATA: Record<CertType, CertDetails> = {
         ],
         correct: 1,
         explanation: 'The HTTP POST Binding transfers the base64-encoded XML `<samlp:Response>` assertion inside an standard HTML form body POST parameter, communicating through the client\'s browser frontchannel.'
+      },
+      {
+        q: 'A partner Service Provider reports that users are getting SAML assertion validation errors when attempting SSO. You discover that the system clocks of the PingFederate server and the partner SP server differ by 8 minutes. What parameter should you adjust to temporarily mitigate this issue?',
+        options: [
+          'SAML assertion validation interval',
+          'SAML Adapter Attribute Mapping expressions',
+          'Allowed Clock Skew tolerance threshold',
+          'OIDC Session Timeout setting'
+        ],
+        correct: 2,
+        explanation: 'Clock Drift is a common SAML federation issue. SAML assertions are stamped with an issue and expiration time. If server clocks differ beyond the default tolerance (typically 3-5 minutes), assertions fail validation. Temporarily increasing the Allowed Clock Skew tolerance (e.g., to 10 minutes) mitigates the block while server times are synchronized via NTP.'
+      },
+      {
+        q: 'You are configuring PingAccess to protect on-premise backend APIs. You want PingAccess to intercept user requests, inspect the OIDC Access Token issued by PingFederate, and securely inject user profile attributes as HTTP header parameters to the backend APIs. What capability is this?',
+        options: [
+          'SAML Assertion Wrapping',
+          'PingAccess Token Exchange and Header Injection',
+          'LDAP directory routing rules',
+          'PingFederate Client Credentials flow'
+        ],
+        correct: 1,
+        explanation: 'PingAccess acts as an API gateway PEP. It validates incoming client-facing tokens and swaps/maps them for backend-facing HTTP headers containing validated claims. This hides token complexity from legacy on-prem APIs, enforcing centralized access management.'
+      },
+      {
+        q: 'Your organization wants to dynamically route incoming employee login requests. Users connecting from the internal corporate network should authenticate via Kerberos (IWA), while external remote workers must use standard passwords + SMS MFA. What PingFederate feature should you configure?',
+        options: [
+          'AD Sync attribute filters',
+          'PingFederate Authentication Policies and Adapter Selectors',
+          'Custom SCIM payload schemas',
+          'PingAccess Reverse Proxy Gateway rules'
+        ],
+        correct: 1,
+        explanation: 'Authentication Policies in PingFederate allow you to construct complex, conditional decision trees. By utilizing "Adapter Selectors" (like an IP Range Selector or Device Selector), PingFederate dynamically routes requests to the correct authentication adapters (e.g. Kerberos on-premise or HTML Form + MFA externally).'
+      },
+      {
+        q: 'Which OAuth 2.0 grant flow should be configured in PingFederate to authenticate a background server-to-server (Machine-to-Machine) service integration that does not involve any end-user interaction?',
+        options: [
+          'Implicit Grant Flow',
+          'Authorization Code Flow with PKCE',
+          'Client Credentials Grant Flow',
+          'Resource Owner Password Credentials Flow'
+        ],
+        correct: 2,
+        explanation: 'The Client Credentials Grant (RFC 6749) is engineered strictly for Machine-to-Machine (M2M) integrations. The calling background server authenticates directly against PingFederate using its client_id and client_secret to receive an access token, requiring no browser redirects or user inputs.'
       }
     ]
   }
 }
+
+interface Flashcard {
+  cert: string
+  q: string
+  a: string
+}
+
+const FLASHCARDS: Flashcard[] = [
+  { cert: 'sc300', q: 'What is considered a "Phishing-Resistant" MFA method in Microsoft Entra ID?', a: 'FIDO2 Security Keys (hardware enclaves), Windows Hello for Business, and Microsoft Authenticator Passwordless. Traditional push and SMS OTP are NOT phishing-resistant.' },
+  { cert: 'sc300', q: 'What occurs during a Privileged Identity Management (PIM) Role Activation request?', a: 'The user swaps their "Eligible" role status for an "Active" state. This triggers JIT elevation, enforcing duration bounds (e.g. 2 hours), manager approvals, and ticket MFA audits.' },
+  { cert: 'okta_admin', q: 'What is the role of Okta Universal Directory (UD) attribute mapping expressions?', a: 'It maps directory properties (AD/LDAP) to standardized Okta attributes using Okta Expression Language. Allows on-the-fly string concatenations, defaults, or conditional transformations (e.g. email lowercasing).' },
+  { cert: 'okta_admin', q: 'What is the functional purpose of Okta Access Gateway (OAG)?', a: 'A reverse proxy that connects on-premise, header-based legacy applications with Okta\'s cloud OIDC/SAML directory. It injects authenticated user headers locally after verifying cloud credentials.' },
+  { cert: 'cyberark_defender', q: 'What is the primary difference between CPM and PSM in CyberArk?', a: 'CPM (Central Policy Manager) is responsible for automatic password rotation and synchronization on target machines. PSM (Privileged Session Manager) acts as a secure jump-server proxy, isolating connections and injecting credentials directly into SSH/RDP streams.' }
+]
 
 export default function CertificationHub() {
   const [activeCert, setActiveCert] = useState<CertType>('sc300')
@@ -198,6 +366,10 @@ export default function CertificationHub() {
   const [showExplanation, setShowExplanation] = useState(false)
   const [score, setScore] = useState(0)
   const [quizFinished, setQuizFinished] = useState(false)
+
+  // Active flashcard state
+  const [flashIndex, setFlashIndex] = useState(0)
+  const [flashFlipped, setFlashFlipped] = useState(false)
 
   const handleOptionClick = (index: number) => {
     if (showExplanation) return
@@ -233,6 +405,8 @@ export default function CertificationHub() {
     setShowExplanation(false)
     setScore(0)
     setQuizFinished(false)
+    setFlashIndex(0)
+    setFlashFlipped(false)
   }
 
   return (
@@ -364,6 +538,90 @@ export default function CertificationHub() {
             </div>
 
           </div>
+
+          {/* Filter and render dynamic study flashcards */}
+          {useMemo(() => {
+            const filteredFlashcards = FLASHCARDS.filter(f => f.cert === activeCert)
+            if (filteredFlashcards.length === 0) return null
+            return (
+              <div className="bg-bg-card border border-border-subtle rounded-xl p-6 shadow-md space-y-4">
+                <span className="text-xs font-bold text-text-primary uppercase tracking-wider block border-b border-border-subtle pb-2 flex items-center gap-1.5">
+                  <Award className="w-4 h-4 text-accent-primary animate-pulse" /> Active Exam Study Flashcards
+                </span>
+
+                <div className="grid md:grid-cols-3 gap-6 items-center">
+                  {/* Flashcard Box (Flip-able) */}
+                  <div className="md:col-span-2">
+                    <button
+                      type="button"
+                      onClick={() => setFlashFlipped(!flashFlipped)}
+                      className="w-full text-left focus:outline-none"
+                    >
+                      <div className="relative min-h-[160px] w-full rounded-xl border border-border-subtle p-5 shadow-inner transition-all flex flex-col justify-between cursor-pointer overflow-hidden bg-bg-sidebar select-none hover:border-accent-primary/40 group">
+                        <div className="absolute top-2 right-2.5 text-[8px] font-black text-text-muted uppercase tracking-wider">
+                          {flashFlipped ? '📖 REVEALED ANSWER' : '❓ STUDY FLASHCARD QUESTION'}
+                        </div>
+                        
+                        <div className="space-y-1.5">
+                          <span className="text-[9px] font-bold text-accent-secondary uppercase tracking-wider">
+                            CARD {flashIndex + 1} OF {filteredFlashcards.length}
+                          </span>
+                          <p className={`font-semibold tracking-tight transition-colors leading-relaxed ${
+                            flashFlipped ? 'text-xs text-text-secondary select-text' : 'text-sm text-text-primary font-bold group-hover:text-accent-primary'
+                          }`}>
+                            {flashFlipped ? filteredFlashcards[flashIndex].a : filteredFlashcards[flashIndex].q}
+                          </p>
+                        </div>
+
+                        <div className="text-[10px] text-accent-primary font-black uppercase text-center mt-3 pt-2 border-t border-border-subtle/30 leading-none">
+                          {flashFlipped ? '↺ Click to view Question' : '💡 Click to Flip and Reveal Answer'}
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Navigation controls */}
+                  <div className="p-4 bg-bg-sidebar border border-border-subtle/50 rounded-xl space-y-3">
+                    <span className="text-[10px] font-black text-text-muted uppercase block border-b border-border-subtle/30 pb-1.5">Study Navigation</span>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        disabled={flashIndex === 0}
+                        onClick={() => {
+                          setFlashIndex(idx => idx - 1)
+                          setFlashFlipped(false)
+                        }}
+                        className="flex-1 py-1.5 bg-bg-card hover:bg-bg-nested border border-border-subtle rounded text-[10px] font-bold text-text-secondary disabled:opacity-40"
+                      >
+                        ← Prev
+                      </button>
+                      <button
+                        type="button"
+                        disabled={flashIndex >= filteredFlashcards.length - 1}
+                        onClick={() => {
+                          setFlashIndex(idx => idx + 1)
+                          setFlashFlipped(false)
+                        }}
+                        className="flex-1 py-1.5 bg-bg-card hover:bg-bg-nested border border-border-subtle rounded text-[10px] font-bold text-text-secondary disabled:opacity-40"
+                      >
+                        Next →
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFlashIndex(0)
+                        setFlashFlipped(false)
+                      }}
+                      className="w-full py-1 bg-bg-card hover:bg-bg-nested border border-border-subtle rounded text-[9px] font-black text-text-muted uppercase"
+                    >
+                      Reset Deck
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )
+          }, [activeCert, flashIndex, flashFlipped])}
 
           {/* Interactive Quiz Panel */}
           <div className="bg-bg-card border border-border-subtle rounded-xl p-6 shadow-md">

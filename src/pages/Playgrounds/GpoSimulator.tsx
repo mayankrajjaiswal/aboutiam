@@ -1,16 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  Network, ArrowRight, ShieldCheck, ShieldAlert, 
-  Terminal, Server, Settings, Lock
+import {
+  ArrowRight,
+  ShieldCheck,
+  ShieldAlert,
+  Terminal,
+  Server,
+  Settings,
+  Lock,
 } from 'lucide-react'
 
 export default function GpoSimulator() {
   // GPO Policy States
   const [minPasswordLength, setMinPasswordLength] = useState(12)
   const [lockoutThreshold, setLockoutThreshold] = useState(5)
-  const [lockoutDuration, setLockoutDuration] = useState(30)
-  const [ticketLifetime, setTicketLifetime] = useState(10)
+  const [lockoutDuration, setLockoutDuration] = useState(15) // Minutes
+  const [ticketLifetime, setTicketLifetime] = useState(10) // Hours
 
   // Simulation parameters
   const [passwordInput, setPasswordInput] = useState('MyPass123!')
@@ -22,7 +27,7 @@ export default function GpoSimulator() {
   const [generatedTicket, setGeneratedTicket] = useState<Record<string, unknown> | null>(null)
 
   const addLog = (msg: string) => {
-    setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`])
+    setLogs((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`])
   }
 
   const resetSimulator = () => {
@@ -39,7 +44,7 @@ export default function GpoSimulator() {
     if (!isLocked) return
 
     const timer: ReturnType<typeof setInterval> = setInterval(() => {
-      setLockoutTimeLeft(prev => {
+      setLockoutTimeLeft((prev) => {
         const next = prev - 1
         if (next <= 0) {
           clearInterval(timer)
@@ -54,6 +59,7 @@ export default function GpoSimulator() {
     }, 1000)
 
     return () => clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLocked])
 
   const attemptLogon = () => {
@@ -65,7 +71,7 @@ export default function GpoSimulator() {
 
     addLog(`Initiating workstation logon request for user "alice.local"...`)
     
-    // Check password length policy
+    // Check password length
     if (passwordInput.length < minPasswordLength) {
       const nextFailed = failedAttempts + 1
       addLog(`❌ Security Event 4625: Failed logon attempt. Password length of ${passwordInput.length} violates the Minimum Password Length GPO of ${minPasswordLength} characters.`)
@@ -101,204 +107,309 @@ export default function GpoSimulator() {
       }
     }
     setGeneratedTicket(ticket)
-    addLog(`🎟️ Ticket-Granting Ticket (TGT) generated securely. Lifetime bound to: ${ticketLifetime} hours.`)
+    addLog(`✓ Ticket Granting Ticket (TGT) generated successfully using AES-256 cipher encryption. Expires: ${expireDate.toLocaleTimeString()}.`)
   }
 
+  // CIS / NIST Baseline Audit Engine
+  const auditResults = useMemo(() => {
+    const findings: { rule: string; ok: boolean; desc: string }[] = []
+    let score = 100
+
+    // 1. Password Length
+    if (minPasswordLength < 14) {
+      score -= 25
+      findings.push({
+        rule: 'Minimum Password Length',
+        ok: false,
+        desc: `Weak length (${minPasswordLength}). CIS/NIST baseline mandates >= 14 characters for domain administrators.`
+      })
+    } else {
+      findings.push({
+        rule: 'Minimum Password Length',
+        ok: true,
+        desc: `Secure length (${minPasswordLength}). Meets CIS and NIST SP 800-63B guidelines.`
+      })
+    }
+
+    // 2. Lockout Threshold
+    if (lockoutThreshold === 0) {
+      score -= 30
+      findings.push({
+        rule: 'Account Lockout Threshold',
+        ok: false,
+        desc: 'Disabled! High risk: vulnerable to infinite automated brute-force attempts.'
+      })
+    } else if (lockoutThreshold > 10) {
+      score -= 15
+      findings.push({
+        rule: 'Account Lockout Threshold',
+        ok: false,
+        desc: `High threshold (${lockoutThreshold}). Baseline mandates locking out after 3–10 consecutive attempts.`
+      })
+    } else {
+      findings.push({
+        rule: 'Account Lockout Threshold',
+        ok: true,
+        desc: `Secure threshold (${lockoutThreshold} attempts). Properly mitigates automated password sprays.`
+      })
+    }
+
+    // 3. Lockout Duration
+    if (lockoutDuration < 15) {
+      score -= 20
+      findings.push({
+        rule: 'Account Lockout Duration',
+        ok: false,
+        desc: `Too short (${lockoutDuration} mins). CIS baseline mandates >= 15 minutes to allow admin response.`
+      })
+    } else {
+      findings.push({
+        rule: 'Account Lockout Duration',
+        ok: true,
+        desc: `Secure duration (${lockoutDuration} mins). Complies with CIS Security controls.`
+      })
+    }
+
+    // 4. Ticket Lifetime
+    if (ticketLifetime > 10) {
+      score -= 15
+      findings.push({
+        rule: 'Kerberos TGT Max Lifetime',
+        ok: false,
+        desc: `Excessive lifetime (${ticketLifetime} hrs). Increases exposure window for Golden Ticket exploits.`
+      })
+    } else {
+      findings.push({
+        rule: 'Kerberos TGT Max Lifetime',
+        ok: true,
+        desc: `Secure lifetime (${ticketLifetime} hrs). Properly caps compromise window durations.`
+      })
+    }
+
+    // Grade calculation
+    let grade = 'A'
+    if (score < 50) grade = 'F'
+    else if (score < 70) grade = 'D'
+    else if (score < 85) grade = 'C'
+    else if (score < 95) grade = 'B'
+
+    return { score, grade, findings }
+  }, [minPasswordLength, lockoutThreshold, lockoutDuration, ticketLifetime])
+
   return (
-    <div className="min-h-screen bg-bg-base text-text-primary font-sans">
-      {/* Header Element */}
-      <div className="border-b border-border-subtle bg-bg-card px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Server className="text-accent-primary w-6 h-6 animate-pulse" />
-          <div>
-            <h1 className="text-lg font-bold tracking-tight">Active Directory GPO Security Simulator</h1>
-            <p className="text-xs text-text-secondary">Configure group policies, simulate logon events, and observe real-time account lockouts and Kerberos ticket lifespans</p>
+    <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Brand Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-gradient-to-r from-bg-card to-bg-sidebar rounded-2xl border border-border-subtle/50 shadow-sm">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">
+            <Server className="w-4 h-4" /> Active Directory Admin
           </div>
+          <h1 className="text-2xl font-black tracking-tight text-text-primary uppercase">
+            Active Directory GPO Baseline Auditor
+          </h1>
+          <p className="text-xs text-text-secondary max-w-xl">
+            Configure standard Active Directory Group Policy Objects (GPO) and audit security baselines dynamically against CIS Benchmarks and NIST SP 800-53 requirements.
+          </p>
         </div>
-        <Link to="/playground" className="text-sm bg-bg-nested hover:bg-border-subtle px-3 py-1.5 rounded text-text-secondary flex items-center gap-1.5 transition">
+        <Link to="/playground" className="text-sm bg-bg-card hover:bg-bg-sidebar border border-border-subtle px-3 py-1.5 rounded-lg text-text-secondary flex items-center gap-1.5 transition">
           <ArrowRight className="rotate-180 w-4 h-4" /> Back to Catalog
         </Link>
       </div>
 
-      {/* Main Grid Workspace */}
-      <div className="p-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* Left pane: GPO Policy Editor */}
-        <div className="lg:col-span-5 bg-bg-card border border-border-subtle rounded-xl p-5 shadow-lg space-y-4">
-          <span className="text-xs font-bold text-text-secondary uppercase tracking-wider block mb-2 border-b border-border-subtle pb-1 flex items-center gap-1.5">
-            <Settings className="w-4 h-4 text-accent-primary" /> DC Group Policy Editor (GPO)
-          </span>
+        {/* LEFT COLUMN: GPO Editor & Authentication Board (lg:col-span-5) */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+            <span className="text-[10px] font-black text-accent-primary uppercase tracking-wider block border-b border-border-subtle pb-1.5 flex items-center gap-1.5">
+              <Settings className="w-4 h-4" /> GPO Policy Configuration
+            </span>
 
-          <p className="text-xs text-text-secondary leading-relaxed">
-            Configure default domain policy variables. These active policies are pushed to all domain workstations and domain controllers in the forest.
-          </p>
-
-          <div className="space-y-4 pt-2 text-xs">
-            {/* Password length */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between items-center font-bold">
-                <span className="text-text-primary">Minimum Password Length</span>
-                <span className="text-accent-primary">{minPasswordLength} chars</span>
+            <div className="space-y-4 text-xs font-bold">
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-[10px] text-text-muted uppercase">
+                  <span>Minimum Password Length</span>
+                  <span className="text-text-primary">{minPasswordLength} Characters</span>
+                </div>
+                <input
+                  type="range"
+                  min="6"
+                  max="20"
+                  value={minPasswordLength}
+                  onChange={(e) => setMinPasswordLength(Number(e.target.value))}
+                  className="w-full accent-accent-primary"
+                />
               </div>
-              <input 
-                type="range" 
-                min="6" 
-                max="20" 
-                value={minPasswordLength} 
-                onChange={e => { setMinPasswordLength(Number(e.target.value)); resetSimulator() }}
-                className="w-full accent-accent-primary cursor-pointer"
-              />
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-[10px] text-text-muted uppercase">
+                  <span>Lockout Threshold</span>
+                  <span className="text-text-primary">{lockoutThreshold === 0 ? 'Disabled' : `${lockoutThreshold} Attempts`}</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="15"
+                  value={lockoutThreshold}
+                  onChange={(e) => setLockoutThreshold(Number(e.target.value))}
+                  className="w-full accent-accent-primary"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-[10px] text-text-muted uppercase">
+                  <span>Lockout Duration</span>
+                  <span className="text-text-primary">{lockoutDuration} Minutes</span>
+                </div>
+                <input
+                  type="range"
+                  min="5"
+                  max="60"
+                  value={lockoutDuration}
+                  onChange={(e) => setLockoutDuration(Number(e.target.value))}
+                  className="w-full accent-accent-primary"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-[10px] text-text-muted uppercase">
+                  <span>Kerberos TGT Max Lifetime</span>
+                  <span className="text-text-primary">{ticketLifetime} Hours</span>
+                </div>
+                <input
+                  type="range"
+                  min="2"
+                  max="24"
+                  value={ticketLifetime}
+                  onChange={(e) => setTicketLifetime(Number(e.target.value))}
+                  className="w-full accent-accent-primary"
+                />
+              </div>
             </div>
+          </div>
 
-            {/* Lockout threshold */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between items-center font-bold">
-                <span className="text-text-primary">Account Lockout Threshold</span>
-                <span className="text-accent-primary">{lockoutThreshold} attempts</span>
-              </div>
-              <input 
-                type="range" 
-                min="1" 
-                max="10" 
-                value={lockoutThreshold} 
-                onChange={e => { setLockoutThreshold(Number(e.target.value)); resetSimulator() }}
-                className="w-full accent-accent-primary cursor-pointer"
-              />
-            </div>
+          {/* Test Logon Authentication Board */}
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+            <span className="text-[10px] font-black text-text-muted uppercase block border-b border-border-subtle pb-1.5">
+              🔑 Logon Authentication Test
+            </span>
 
-            {/* Lockout duration */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between items-center font-bold">
-                <span className="text-text-primary">Lockout Duration</span>
-                <span className="text-accent-primary">{lockoutDuration} seconds</span>
+            <div className="space-y-3.5 text-xs">
+              <div className="space-y-1">
+                <label htmlFor="pass-test-box" className="block text-[10px] font-bold text-text-muted uppercase">Alice's Password</label>
+                <input
+                  id="pass-test-box"
+                  type="text"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  disabled={isLocked}
+                  className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary font-mono text-xs focus:outline-none"
+                />
               </div>
-              <input 
-                type="range" 
-                min="5" 
-                max="120" 
-                value={lockoutDuration} 
-                onChange={e => { setLockoutDuration(Number(e.target.value)); resetSimulator() }}
-                className="w-full accent-accent-primary cursor-pointer"
-              />
-            </div>
 
-            {/* Kerberos ticket lifetime */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between items-center font-bold">
-                <span className="text-text-primary">Max Kerberos Ticket Lifetime</span>
-                <span className="text-accent-primary">{ticketLifetime} hours</span>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={attemptLogon}
+                  className="flex-grow py-2.5 bg-accent-primary hover:bg-accent-hover text-white rounded-lg text-xs font-black shadow transition"
+                >
+                  Attempt Kerberos Logon
+                </button>
+                <button
+                  type="button"
+                  onClick={resetSimulator}
+                  className="px-4 py-2.5 bg-bg-sidebar hover:bg-bg-nested border border-border-subtle rounded-lg text-xs font-bold text-text-secondary transition"
+                >
+                  ResetDC
+                </button>
               </div>
-              <input 
-                type="range" 
-                min="1" 
-                max="24" 
-                value={ticketLifetime} 
-                onChange={e => { setTicketLifetime(Number(e.target.value)); resetSimulator() }}
-                className="w-full accent-accent-primary cursor-pointer"
-              />
+
+              {/* Logon Result Alert */}
+              {handshakeResult && (
+                <div className={`p-3 rounded-lg border text-xs font-bold flex items-center gap-2 ${
+                  handshakeResult === 'success' ? 'bg-status-success/10 border-status-success/30 text-status-success' :
+                  handshakeResult === 'locked' ? 'bg-status-danger/10 border-status-danger/30 text-status-danger animate-pulse' :
+                  'bg-status-warning/10 border-status-warning/30 text-status-warning'
+                }`}>
+                  {handshakeResult === 'success' ? <ShieldCheck className="w-4.5 h-4.5" /> : <ShieldAlert className="w-4.5 h-4.5" />}
+                  {handshakeResult === 'success' ? 'LOGON APPROVED: Kerberos ticket granted.' :
+                   handshakeResult === 'locked' ? `ACCOUNT LOCKED OUT: Wait ${lockoutTimeLeft}s.` :
+                   `LOGON FAILED: Violates active GPO policies.`}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Right pane: Workstation & logs */}
+        {/* RIGHT COLUMN: CIS Baseline Audit Results & Logs (lg:col-span-7) */}
         <div className="lg:col-span-7 space-y-6">
-          
-          <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-lg min-h-[460px] flex flex-col justify-between">
-            <div>
-              <div className="flex justify-between items-center mb-4 border-b border-border-subtle pb-2.5">
-                <span className="text-sm font-bold text-text-primary flex items-center gap-1.5">
-                  <Network className="w-4 h-4 text-accent-primary" /> Workstation Logon Client (alice.local)
-                </span>
-                <button 
-                  onClick={resetSimulator}
-                  className="text-xs bg-bg-nested text-text-secondary hover:text-text-primary border border-border-subtle px-2.5 py-1.5 rounded transition"
-                >
-                  Reset Client Status
-                </button>
+          {/* Dynamic Audit Grade Card */}
+          <div className="p-6 bg-bg-card border border-border-subtle rounded-xl shadow-lg space-y-5">
+            <div className="flex justify-between items-center border-b border-border-subtle pb-3">
+              <span className="text-[10px] font-black text-text-muted uppercase block">
+                CIS & NIST GPO Security Audit Scorecard
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold text-text-muted uppercase">Grade:</span>
+                <span className={`text-2xl font-black ${
+                  auditResults.grade === 'A' ? 'text-status-success' :
+                  auditResults.grade === 'B' ? 'text-accent-secondary' :
+                  auditResults.grade === 'C' ? 'text-status-warning' : 'text-status-danger'
+                }`}>{auditResults.grade}</span>
               </div>
-
-              {/* Status Outcome Banner */}
-              <div className="mb-4">
-                {isLocked && (
-                  <div className="p-3.5 rounded-xl bg-status-danger/10 text-status-danger border border-status-danger/35 flex items-start gap-2.5 animate-fadeIn">
-                    <ShieldAlert className="w-5 h-5 text-status-danger shrink-0 mt-0.5 animate-bounce" />
-                    <div className="text-[11px] leading-relaxed">
-                      <span className="font-extrabold block">ACCOUNT TEMPORARILY LOCKED OUT!</span>
-                      Security lockout engaged. Remaining cooldown time: <strong className="font-bold text-status-danger">{lockoutTimeLeft} seconds</strong>.
-                    </div>
-                  </div>
-                )}
-
-                {handshakeResult === 'success' && (
-                  <div className="p-3.5 rounded-xl bg-status-success/15 text-status-success border border-status-success/30 flex items-start gap-2.5 animate-fadeIn">
-                    <ShieldCheck className="w-5 h-5 text-status-success shrink-0 mt-0.5 animate-bounce" />
-                    <div className="text-[11px] leading-relaxed">
-                      <span className="font-extrabold block">LOGON SUCCESSFUL!</span>
-                      Workstation unlocked. Secure Kerberos ticket session issued.
-                    </div>
-                  </div>
-                )}
-
-                {handshakeResult === 'failed' && (
-                  <div className="p-3.5 rounded-xl bg-status-danger/10 text-status-danger border border-status-danger/35 flex items-start gap-2.5 animate-fadeIn">
-                    <ShieldAlert className="w-5 h-5 text-status-danger shrink-0 mt-0.5 animate-bounce" />
-                    <div className="text-[11px] leading-relaxed">
-                      <span className="font-extrabold block">LOGON FAILED!</span>
-                      Incorrect password. Failed logon attempts: <strong className="font-bold text-status-danger">{failedAttempts} / {lockoutThreshold}</strong>.
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Password simulation login form */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end p-4 border border-border-subtle bg-bg-base rounded-xl mb-4 text-xs font-mono">
-                <div className="md:col-span-3 space-y-1.5">
-                  <span className="text-text-muted block text-[10px] font-bold uppercase">Enter Password for alice.local</span>
-                  <input
-                    type="text"
-                    value={passwordInput}
-                    onChange={e => setPasswordInput(e.target.value)}
-                    disabled={isLocked}
-                    className="w-full bg-bg-card border border-border-subtle/80 rounded px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent-primary font-bold font-mono"
-                  />
-                </div>
-
-                <button
-                  onClick={attemptLogon}
-                  disabled={isLocked}
-                  className={`py-1.5 px-3 rounded-lg text-xs font-bold border text-center transition flex items-center justify-center gap-1.5 ${isLocked ? 'bg-bg-nested text-text-muted border-border-subtle cursor-not-allowed' : 'bg-accent-primary hover:bg-accent-hover text-white border-accent-primary'}`}
-                >
-                  <Lock className="w-3.5 h-3.5" /> Logon
-                </button>
-              </div>
-
-              {/* Ticket payload visualization */}
-              {generatedTicket && (
-                <div className="mt-4 border border-border-subtle bg-bg-base p-4 rounded-xl animate-fadeIn">
-                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest block mb-2 font-mono">Active Ticket-Granting Ticket (TGT)</span>
-                  <pre className="text-[10px] font-mono text-accent-secondary overflow-x-auto leading-normal">
-                    {JSON.stringify(generatedTicket, null, 2)}
-                  </pre>
-                </div>
-              )}
             </div>
 
-            {/* Simulated DC command logs */}
-            <div className="border border-border-subtle bg-bg-nested rounded-lg p-3 font-mono text-xs text-text-primary h-36 overflow-y-auto mt-4 leading-normal">
-              <div className="flex items-center gap-1.5 border-b border-border-subtle pb-1.5 mb-1.5 text-[10px] text-text-muted font-bold uppercase tracking-wider">
-                <Terminal className="w-3.5 h-3.5" /> Domain Controller Security Audit Logs
-              </div>
+            {/* Findings List */}
+            <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
+              {auditResults.findings.map((f, idx) => (
+                <div key={idx} className="p-3 bg-bg-base border border-border-subtle rounded-xl flex items-start gap-3 text-xs leading-normal">
+                  {f.ok ? (
+                    <ShieldCheck className="w-5 h-5 text-status-success shrink-0 mt-0.5" />
+                  ) : (
+                    <ShieldAlert className="w-5 h-5 text-status-danger shrink-0 mt-0.5" />
+                  )}
+                  <div>
+                    <span className={`font-black uppercase text-[9px] tracking-wider block ${f.ok ? 'text-status-success' : 'text-status-danger'}`}>
+                      {f.rule} (Audit: {f.ok ? 'PASS' : 'WARNING'})
+                    </span>
+                    <p className="text-text-secondary mt-0.5 font-medium">{f.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Ticket Viewer & Active Logs */}
+          {generatedTicket && (
+            <div className="p-5 rounded-xl bg-bg-card border border-border-subtle shadow-sm space-y-2 animate-fadeIn">
+              <span className="text-xs font-black text-text-primary flex items-center gap-2"><Lock className="w-4 h-4 text-accent-secondary" /> Issued Kerberos TGT (Ticket-Granting-Ticket)</span>
+              <pre className="text-[9px] font-mono text-text-secondary bg-bg-nested p-3 rounded border border-border-subtle/50 whitespace-pre-wrap max-h-32 overflow-auto">
+                {JSON.stringify(generatedTicket, null, 2)}
+              </pre>
+            </div>
+          )}
+
+          {/* Active Logs Terminal */}
+          <div className="p-5 rounded-xl bg-black border border-zinc-800 font-mono text-[10px]">
+            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider block border-b border-zinc-800 pb-1.5 flex items-center gap-1.5">
+              <Terminal className="w-3.5 h-3.5 text-accent-secondary" /> Domain Controller Event logs
+            </span>
+
+            <div className="h-28 overflow-y-auto text-emerald-400 space-y-1 mt-3 pr-1 leading-relaxed">
               {logs.length === 0 ? (
-                <span className="text-text-muted italic select-none">Console ready. Perform logon events on the left to start recording Security Event log codes.</span>
+                <span className="text-zinc-600 italic select-none">Awaiting logon attempts…</span>
               ) : (
                 logs.map((log, idx) => (
-                  <div key={idx} className="leading-relaxed text-text-secondary">
+                  <div key={idx} className={
+                    log.includes('Security Event 4624') || log.includes('unlocked') ? 'text-status-success font-black' :
+                    log.includes('Security Event 4625') ? 'text-status-warning' :
+                    log.includes('Security Event 4740') ? 'text-status-danger font-black animate-pulse' : ''
+                  }>
                     {log}
                   </div>
                 ))
               )}
             </div>
-
           </div>
         </div>
 

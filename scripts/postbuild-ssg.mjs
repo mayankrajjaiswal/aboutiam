@@ -85,6 +85,8 @@ const ROUTES = [
   { path: '/playground/vc-did', title: 'Verifiable Credentials & DID Lab', description: 'Issuer, Holder, and Verifier flow signing and verifying a real Ed25519 Verifiable Credential and Presentation in-browser.' },
   { path: '/explore/matchmaker', title: 'Auth Matchmaker', description: 'Wizard that recommends an authentication stack with copyable boilerplate code.' },
   { path: '/assess', title: 'GRC Maturity Assessments', description: '5-pillar organizational readiness assessment with an exportable roadmap.' },
+  { path: '/tools/key-ring', title: 'Hardware Key Ring & HSM Emulator', description: 'Generate, store, and execute asymmetric and symmetric cryptographic keys locally inside your browser\'s secure sandbox — emulating a corporate Hardware Security Module (HSM).' },
+  { path: '/playground/identity-broker', title: 'Identity Broker & Federation Sandbox', description: 'Explore multi-tenant single sign-on (SSO), federation routing, and real-time SAML-to-OIDC token translation topologies.' },
   { path: '/career-center', title: 'Interview & Career Preparation Center', description: 'Role-based interview preparation, multiple-choice mastery, incident scenarios, system design, code terminals, and resume guidance.' },
   { path: '/scenario-builder', title: 'Identity Scenario Builder & Architect', description: 'Describe your custom corporate footprint and receive an instant vendor-neutral secure architecture design blueprint.' },
   { path: '/labs', title: 'Interactive Identity Labs Academy', description: 'Solve real-world identity security vulnerabilities (OAuth, JWT, SAML, SCIM) in our browser-native pen-test sandbox.' },

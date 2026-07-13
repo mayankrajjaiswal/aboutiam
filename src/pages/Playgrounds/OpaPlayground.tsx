@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { KeySquare, Play, RotateCcw, ShieldCheck, ShieldAlert, FileCode, Sliders, AlertTriangle } from 'lucide-react'
+import { evaluateRego } from '../../lib/tools/regoEvaluator'
 
 const DEFAULT_CONTEXT_INPUT = `{
   "user": {
@@ -40,7 +41,7 @@ export default function OpaPlayground() {
   const [logs, setLogs] = useState<string[]>([])
   const [jsonError, setJsonError] = useState<string | null>(null)
 
-  // Run the OPA Rego evaluation logic natively
+  // Run the OPA Rego evaluation logic natively using our custom client-side engine!
   const handleEvaluate = () => {
     setEvaluating(true)
     setVerdict(null)
@@ -56,64 +57,16 @@ export default function OpaPlayground() {
       try {
         const inputObj = JSON.parse(contextInput)
         
-        // Mock Rego compiler parsing and evaluating rules
+        // Execute real, browser-native Rego evaluation!
+        const result = evaluateRego(regoPolicy, inputObj)
+        
         setLogs(prev => [
           ...prev,
           `✔ Context JSON syntax valid.`,
-          `[EVAL] Compiling rules for package 'authz'...`,
-          `[EVAL] Checking 'default allow = false' default rule... MATCH.`,
-          `[EVAL] Evaluating Rule 1: Doctor Read Access...`
+          ...result.logs
         ])
-
-        const user = inputObj.user || {}
-        const action = inputObj.action || ''
-        const resource = inputObj.resource || {}
-
-        let rule1Passed = false
-        let rule2Passed = false
-
-        // Evaluate Rule 1: Doctor same-department check
-        if (user.role === 'doctor' && action === 'read' && resource.type === 'patient-record' && user.department && user.department === resource.department) {
-          rule1Passed = true
-        }
-
-        // Evaluate Rule 2: Admin override
-        if (user.role === 'admin') {
-          rule2Passed = true
-        }
-
-        setTimeout(() => {
-          if (rule1Passed) {
-            setLogs(prev => [
-              ...prev,
-              `  [RULE-MATCH] input.user.role == "doctor" -> TRUE`,
-              `  [RULE-MATCH] input.action == "read" -> TRUE`,
-              `  [RULE-MATCH] input.user.department == input.resource.department ("${user.department}") -> TRUE`,
-              `[OPA] Rule 'allow' matched: TRUE ✔`,
-              `[GATEWAY] Evaluation Complete: ALLOWED`
-            ])
-            setVerdict(true)
-          } else if (rule2Passed) {
-            setLogs(prev => [
-              ...prev,
-              `  [RULE-MATCH] input.user.role == "admin" -> TRUE (Admin Override)`,
-              `[OPA] Rule 'allow' matched: TRUE ✔`,
-              `[GATEWAY] Evaluation Complete: ALLOWED`
-            ])
-            setVerdict(true)
-          } else {
-            setLogs(prev => [
-              ...prev,
-              `  [RULE-FAILED] No matching true allow rules found inside package 'authz'.`,
-              `  Fallback to: 'default allow = false'.`,
-              `[OPA] Rule 'allow' matched: FALSE ❌`,
-              `[GATEWAY] Evaluation Complete: DENIED`
-            ])
-            setVerdict(false)
-          }
-          setEvaluating(false)
-        }, 1200)
-
+        setVerdict(result.allowed)
+        setEvaluating(false)
       } catch (e) {
         setJsonError(e instanceof Error ? e.message : 'Malformed JSON. Confirm quotes and commas.')
         setLogs(prev => [...prev, `🚨 ERROR: Context Input parsing failed! Aborting OPA evaluation.`])

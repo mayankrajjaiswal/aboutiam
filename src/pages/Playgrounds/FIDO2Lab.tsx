@@ -1,12 +1,80 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Fingerprint, Terminal, Copy, Info, Cpu, CheckCircle2
+  Fingerprint, Terminal, Copy, Info, Cpu, CheckCircle2, ShieldCheck, ShieldAlert
 } from 'lucide-react'
 
 export default function FIDO2Lab() {
   const [step, setStep] = useState(0)
   const [isCopied, setIsCopied] = useState<string | null>(null)
+
+  interface RealCredentialDetails {
+    id: string
+    type: string
+    clientData: unknown
+    flags: { up: boolean; uv: boolean }
+    authDataHex: string
+  }
+
+  // Real Hardware WebAuthn States
+  const [realCred, setRealCred] = useState<RealCredentialDetails | null>(null)
+  const [realHandshakeError, setRealHandshakeError] = useState<string | null>(null)
+  const [realHandshakeActive, setRealHandshakeActive] = useState(false)
+
+  const handleTriggerRealWebAuthn = async () => {
+    setRealHandshakeActive(true)
+    setRealCred(null)
+    setRealHandshakeError(null)
+
+    try {
+      const challenge = new Uint8Array(32)
+      window.crypto.getRandomValues(challenge)
+
+      const credential = await navigator.credentials.create({
+        publicKey: {
+          challenge: challenge,
+          rp: { id: window.location.hostname || "localhost", name: "AboutIAM Sandbox" },
+          user: {
+            id: new TextEncoder().encode("user_aboutiam_99c1"),
+            name: "passkey-tester@aboutiam.com",
+            displayName: "Passkey Tester"
+          },
+          pubKeyCredParams: [{ alg: -7, type: "public-key" }], // ES256
+          authenticatorSelection: {
+            userVerification: "preferred"
+          },
+          timeout: 60000
+        }
+      }) as unknown as { id: string; type: string; response: { clientDataJSON: ArrayBuffer; authenticatorData: ArrayBuffer } }
+
+      if (credential) {
+        // Decode clientDataJSON
+        const clientDataBytes = new Uint8Array(credential.response.clientDataJSON)
+        const clientDataText = new TextDecoder().decode(clientDataBytes)
+        const clientDataObj = JSON.parse(clientDataText)
+
+        // Decode authenticatorData
+        const authDataBytes = new Uint8Array(credential.response.authenticatorData)
+        // Extract flags (UP is Bit 0, UV is Bit 2)
+        const flags = authDataBytes[37]
+        const up = (flags & 0x01) !== 0
+        const uv = (flags & 0x04) !== 0
+
+        setRealCred({
+          id: credential.id,
+          type: credential.type,
+          clientData: clientDataObj,
+          flags: { up, uv },
+          authDataHex: Array.from(authDataBytes.slice(0, 40)).map(b => b.toString(16).padStart(2, '0')).join(' ') + '...'
+        })
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err)
+      setRealHandshakeError(msg || 'Verification or registration canceled.')
+    } finally {
+      setRealHandshakeActive(false)
+    }
+  }
 
   const steps = [
     {
@@ -97,6 +165,63 @@ Device security chip (TPM / Secure Enclave) generates a brand new asymmetric key
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* LIVE HARDWARE HANDSHAKE BOX */}
+          <div className="p-6 rounded-xl bg-bg-card border border-border-subtle space-y-4 shadow-sm">
+            <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
+              <Fingerprint className="w-4.5 h-4.5 text-accent-primary animate-pulse" /> Live TPM / Hardware Handshake
+            </h4>
+            <p className="text-xs text-text-secondary leading-relaxed font-semibold font-sans">
+              Test your device's actual hardware security chip (TPM / Secure Enclave)! Click below to trigger a real, browser-native WebAuthn passkey registration ceremony.
+            </p>
+
+            <button
+              type="button"
+              disabled={realHandshakeActive}
+              onClick={handleTriggerRealWebAuthn}
+              className="w-full py-2.5 bg-accent-primary hover:bg-accent-hover disabled:opacity-40 text-white font-black rounded-lg text-xs transition shadow flex items-center justify-center gap-1.5"
+            >
+              {realHandshakeActive ? (
+                <>⏳ Complete Fingerprint/Key Scan...</>
+              ) : (
+                <>🔑 Trigger Live WebAuthn Ceremony</>
+              )}
+            </button>
+
+            {realHandshakeError && (
+              <div className="p-3 rounded-lg bg-status-danger/10 border border-status-danger/20 text-[10px] font-mono text-status-danger flex items-start gap-1.5">
+                <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{realHandshakeError}</span>
+              </div>
+            )}
+
+            {realCred && (
+              <div className="p-4 rounded-xl bg-status-success/5 border border-status-success/20 text-xs space-y-3 font-mono">
+                <span className="text-[10px] font-bold text-status-success uppercase flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4" /> Hardware Credentials Registered!
+                </span>
+
+                <div className="space-y-1 text-[10px] text-text-secondary">
+                  <p className="font-bold">Credential Details:</p>
+                  <p>Type: <strong className="font-bold">{realCred.type}</strong></p>
+                  <p className="truncate">ID: {realCred.id}</p>
+                </div>
+
+                <div className="space-y-1 text-[10px] text-text-secondary">
+                  <p className="font-bold">authenticatorData Flags:</p>
+                  <p>✔ User Present (UP): <strong className="font-bold text-status-success">{realCred.flags.up ? 'TRUE' : 'FALSE'}</strong></p>
+                  <p>✔ User Verified (UV): <strong className="font-bold text-status-success">{realCred.flags.uv ? 'TRUE' : 'FALSE'}</strong></p>
+                </div>
+
+                <div className="space-y-1 text-[10px] text-text-secondary">
+                  <p className="font-bold">Binary Attestation Object (Hex Slices):</p>
+                  <p className="bg-bg-nested p-1.5 rounded border border-border-subtle/50 break-all text-[9px]">
+                    {realCred.authDataHex}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

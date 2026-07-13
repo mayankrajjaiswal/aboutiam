@@ -515,6 +515,22 @@ export const TOOLS: ToolMeta[] = [
       { q: 'How does the regex matching work?', a: 'SOPS accepts a regular expression (like "^(password|secret)$"). Only keys whose names match this regex will have their values encrypted; all other configuration remains plain.' }
     ],
   },
+  {
+    slug: 'keyring-manager',
+    title: 'Hardware Key Ring & HSM Emulator',
+    description: 'Generate, store, and execute asymmetric and symmetric cryptographic keys locally inside your browser\'s secure sandbox — emulating a corporate Hardware Security Module (HSM).',
+    category: 'Hashing, Encoding & Secrets',
+    icon: KeySquare,
+    phase: 3,
+    status: 'live',
+    keywords: ['hsm emulator', 'cryptographic keyring', 'rsa keygen online', 'aes-gcm generator'],
+    analogy: 'A Hardware Security Module (HSM) is like an un-hackable, armored bank vault where security keys are stamped and used. Instead of carrying keys around in your pocket (where they can be copied or lost), keys are locked inside the vault forever. When you need to sign a letter, you slide it through a tiny slot in the vault door, and the vault stamps it securely and slides it back out—the key itself never, ever leaves the vault.',
+    expert: 'Utilizes the browser\'s native Web Crypto API and IndexedDB to emulate HSM boundaries. Private and symmetric keys are marked extractable: false on generation, ensuring they can never be extracted or leaked via JavaScript or XSS. Signed assertions use RSASSA-PKCS1-v1_5 or ECDSA P-256 signatures, while data encryption leverages AES-GCM-256 authenticated ciphers with unique 12-byte initialization vectors.',
+    faqs: [
+      { q: 'Can my private keys be stolen from this web page?', a: 'No. On generation, keys are marked as non-extractable (extractable: false) and stored directly in the browser\'s IndexedDB. This mimics physical HSM boundaries: the private key resides in a secure memory register and cannot be read, copied, or serialized by JavaScript, protecting you from XSS theft.' },
+      { q: 'Is it safe to generate keys here?', a: 'Yes. All key generation, signing, and encryption are executed 100% locally inside your device using standard browser-native hardware entropy sources. No data is ever transmitted over the network.' }
+    ],
+  },
 ]
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {

@@ -47,7 +47,7 @@ function AccordionGroup({
       {!collapsed ? (
         <button
           onClick={onToggle}
-          className={`w-full flex items-center justify-between py-2 px-4 text-[10px] font-black uppercase tracking-wider text-text-muted hover:text-text-primary transition-colors text-left focus:outline-none`}
+          className={`w-full flex items-center justify-between py-2.5 px-4 text-[11px] font-black uppercase tracking-wider text-text-muted hover:text-text-primary transition-colors text-left focus:outline-none`}
         >
           <span className="flex items-center gap-1.5">
             {groupKey === 'core' ? '🚀' : groupKey === 'tools' ? '🛠️' : groupKey === 'architecture' ? '📊' : groupKey === 'ecosystem' ? '🏢' : '💬'} {title}
@@ -75,7 +75,7 @@ function AccordionGroup({
                   onClick={handleLinkClick}
                   title={collapsed ? item.name : undefined}
                   aria-label={item.name}
-                  className={`flex items-center gap-2.5 py-1.5 mx-2 rounded-lg text-xs font-bold transition-all group ${
+                  className={`flex items-center gap-2.5 py-2 mx-2 rounded-lg text-[13px] font-bold transition-all group ${
                     collapsed ? 'justify-center px-2' : 'px-3.5 pl-5'
                   } ${
                     active

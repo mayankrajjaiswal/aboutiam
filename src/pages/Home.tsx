@@ -393,7 +393,7 @@ export default function Home() {
           <Sparkles className="w-5 h-5 text-accent-primary animate-pulse-slow" />
           <h3 className="text-2xl font-extrabold text-text-primary">Identity Trivia & Curious Cases</h3>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Fact 1 */}
           <div className="p-5 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/20 transition-all space-y-3 shadow-sm">
             <span className="text-[9px] font-black text-accent-primary uppercase bg-accent-glow px-2 py-0.5 rounded border border-accent-primary/10 w-fit block">1961 | The First Password</span>
@@ -413,6 +413,41 @@ export default function Home() {
             <span className="text-[9px] font-black text-status-danger uppercase bg-status-danger/5 px-2 py-0.5 rounded border border-status-danger/10 w-fit block">SolarWinds | Golden SAML</span>
             <p className="text-xs text-text-secondary leading-relaxed font-semibold">
               Attackers stole on-premises private token-signing certificates to forge SAML assertions offline, bypassing cloud-passwords, MFA, and conditional access policies completely undetected.
+            </p>
+          </div>
+          {/* Fact 4 */}
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/20 transition-all space-y-3 shadow-sm">
+            <span className="text-[9px] font-black text-accent-primary uppercase bg-accent-glow px-2 py-0.5 rounded border border-accent-primary/10 w-fit block">1986 | RSA SecurID Token</span>
+            <p className="text-xs text-text-secondary leading-relaxed font-semibold">
+              Patented by RSA Security, the hardware token revolutionized MFA by generating numeric, time-syncing passcodes from local internal crystal oscillators, introducing seed key synchronization.
+            </p>
+          </div>
+          {/* Fact 5 */}
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/20 transition-all space-y-3 shadow-sm">
+            <span className="text-[9px] font-black text-accent-secondary uppercase bg-accent-glow px-2 py-0.5 rounded border border-accent-secondary/10 w-fit block">1997 | CAPTCHA Invention</span>
+            <p className="text-xs text-text-secondary leading-relaxed font-semibold">
+              CMU researchers invented Completely Automated Public Turing tests to tell Computers and Humans Apart (CAPTCHA) to block automated bot crawler scripts from registering spam accounts.
+            </p>
+          </div>
+          {/* Fact 6 */}
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/20 transition-all space-y-3 shadow-sm">
+            <span className="text-[9px] font-black text-status-success uppercase bg-status-success/5 px-2 py-0.5 rounded border border-status-success/10 w-fit block">1960 | Magnetic Stripe Badges</span>
+            <p className="text-xs text-text-secondary leading-relaxed font-semibold">
+              IBM engineer Forrest Parry struggled to adhere magnetic tape to plastic badges. His wife Dorothea suggested ironing the tape directly onto the plastic—inventing the universal security badge standard!
+            </p>
+          </div>
+          {/* Fact 7 */}
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/20 transition-all space-y-3 shadow-sm">
+            <span className="text-[9px] font-black text-accent-primary uppercase bg-accent-glow px-2 py-0.5 rounded border border-accent-primary/10 w-fit block">1977 | The Smart Card</span>
+            <p className="text-xs text-text-secondary leading-relaxed font-semibold">
+              Patented by French inventor Roland Moreno, the smart card embedded a tiny silicon microchip into plastic, introducing tamper-resistant local cryptographic enclaves paving the way for SIM cards.
+            </p>
+          </div>
+          {/* Fact 8 */}
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/20 transition-all space-y-3 shadow-sm">
+            <span className="text-[9px] font-black text-accent-secondary uppercase bg-accent-glow px-2 py-0.5 rounded border border-accent-secondary/10 w-fit block">2014 | STS Broker Inception</span>
+            <p className="text-xs text-text-secondary leading-relaxed font-semibold">
+              The Security Token Service (STS) broker decoupled identity federation, enabling enterprises to swap legacy AD Kerberos tickets for web-friendly cloud SAML/OIDC assertions on-the-fly.
             </p>
           </div>
         </div>

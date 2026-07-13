@@ -8,7 +8,7 @@ type MuseumTab = 'evolution' | 'breaches' | 'resources'
 export default function WallOfShame() {
   const [activeTab, setActiveTab] = useState<MuseumTab>('evolution')
   const [activeEra, setActiveEra] = useState(0)
-  const [activeLab, setActiveLab] = useState<'goldensaml' | 'pushfatigue' | 'wildcard'>('goldensaml')
+  const [activeLab, setActiveLab] = useState<'goldensaml' | 'pushfatigue' | 'wildcard' | 'oktahar' | 'silversaml' | 'lastpass'>('goldensaml')
 
   // Set visited flag on mount
   useEffect(() => {
@@ -30,6 +30,17 @@ export default function WallOfShame() {
   // Wildcard Redirect Lab State
   const [redirectPattern, setRedirectPattern] = useState('https://*.attacker-domain.com')
   const [leakedCode, setLeakedCode] = useState<string | null>(null)
+
+  // Okta HAR Theft Lab State
+  const [harStolenCookie, setHarStolenCookie] = useState('')
+  const [harMitigationActive, setHarMitigationActive] = useState(false)
+
+  // Silver SAML Lab State
+  const [silverSamlStep, setSilverSamlStep] = useState(0)
+  const [silverStolenAppKey, setSilverStolenAppKey] = useState(false)
+
+  // LastPass Vault Lab State
+  const [lastpassIterations, setLastPassIterations] = useState(5000)
 
   // --- TAB 1: EVOLUTION OF IAM DATA ---
   const eras = [
@@ -207,11 +218,24 @@ export default function WallOfShame() {
             {([
               { id: 'goldensaml', label: '🇷🇺 SolarWinds: Golden SAML', sub: 'Russian Nobelium attack (2020)' },
               { id: 'pushfatigue', label: '📱 MFA Push Fatigue Bombing', sub: 'Uber/Cisco password overrides (2022)' },
-              { id: 'wildcard', label: '🔗 OAuth Wildcard Redirects', sub: 'Front-channel URL interceptions' }
-            ] as { id: 'goldensaml' | 'pushfatigue' | 'wildcard'; label: string; sub: string }[]).map(l => (
+              { id: 'wildcard', label: '🔗 OAuth Wildcard Redirects', sub: 'Front-channel URL interceptions' },
+              { id: 'oktahar', label: '🚫 Okta 2023: Support HAR Theft', sub: 'Session cookie hijacking via logs (2023)' },
+              { id: 'silversaml', label: '🥈 Entra ID: Silver SAML', sub: 'Target App Signing Key Theft (2024)' },
+              { id: 'lastpass', label: '🔑 LastPass: Offline Vault Cracking', sub: 'Weak PBKDF2 Iterations (2022)' }
+            ] as { id: 'goldensaml' | 'pushfatigue' | 'wildcard' | 'oktahar' | 'silversaml' | 'lastpass'; label: string; sub: string }[]).map(l => (
               <button
                 key={l.id}
-                onClick={() => { setActiveLab(l.id); setSamlStep(0); setSigningKeyStolen(false); setForgedToken('') }}
+                onClick={() => {
+                  setActiveLab(l.id)
+                  setSamlStep(0)
+                  setSigningKeyStolen(false)
+                  setForgedToken('')
+                  setHarStolenCookie('')
+                  setHarMitigationActive(false)
+                  setSilverSamlStep(0)
+                  setSilverStolenAppKey(false)
+                  setLastPassIterations(5000)
+                }}
                 className={`w-full text-left p-4 rounded-xl border transition-all ${
                   activeLab === l.id
                     ? 'border-status-danger bg-status-danger/5 text-status-danger shadow-sm'
@@ -456,6 +480,282 @@ export default function WallOfShame() {
                         <p className="text-[10px]">Secure redirects enforce strict, character-by-character matches.</p>
                       </div>
                     )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* LAB 4: OKTA HAR SUPPORT THEFT */}
+            {activeLab === 'oktahar' && (
+              <div className="p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-6">
+                <div className="space-y-1.5 border-b border-border-subtle pb-6">
+                  <span className="text-[10px] font-bold text-status-danger uppercase tracking-wider block">SUPPORT LOG INTEGRITY VULNERABILITY</span>
+                  <h3 className="text-2xl font-black text-text-primary">Okta Support Portal HAR Cookie Theft</h3>
+                  <p className="text-xs text-text-secondary leading-relaxed font-semibold">
+                    In 2023, threat actors compromised Okta\'s customer support database. They extracted uploaded HTTP Archive (HAR) troubleshooting logs containing valid administrative session cookies (such as `sid=okta_admin_99c1`). The attackers then loaded these cookies into their own browsers to hijack enterprise portals without triggering MFA!
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6 items-center">
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Simulator Controls</span>
+                    
+                    <div className="p-4 bg-bg-sidebar rounded-xl border border-border-subtle space-y-3 text-xs font-semibold">
+                      <div className="flex items-center gap-2">
+                        <input 
+                          type="checkbox" 
+                          id="har-mitigation" 
+                          checked={harMitigationActive} 
+                          onChange={(e) => {
+                            setHarMitigationActive(e.target.checked)
+                            setHarStolenCookie('')
+                          }}
+                          className="rounded border-border-subtle text-accent-primary focus:ring-accent-primary" 
+                        />
+                        <label htmlFor="har-mitigation" className="text-xs font-bold text-text-primary">Sanitize & Redact Headers before Uploading</label>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        if (harMitigationActive) {
+                          setHarStolenCookie('REDACTED (Access Token Removed)')
+                        } else {
+                          setHarStolenCookie('sid=okta_admin_99c1_auth_token_stolen')
+                        }
+                      }}
+                      className="w-full py-2 bg-status-danger hover:bg-status-danger/90 text-white font-bold rounded-lg text-xs transition-colors"
+                    >
+                      Analyze & Extract Session Cookie from HAR file
+                    </button>
+                  </div>
+
+                  {/* Terminal Output */}
+                  <div className="p-5 rounded-xl bg-bg-sidebar border border-border-subtle font-mono text-xs min-h-[160px] flex flex-col justify-between">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block border-b border-border-subtle/30 pb-1.5">Attacker Cookie Parser Terminal</span>
+                    {harStolenCookie ? (
+                      <div className="space-y-2 animate-fadeIn">
+                        {harMitigationActive ? (
+                          <>
+                            <p className="text-status-success font-bold">➜ HAR SANITIZED SUCCESSFULLY</p>
+                            <p className="text-text-muted text-[10px]">No session tokens or active cookies were detected inside the HTTP headers. Upload is completely secure.</p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-status-danger font-bold">➜ EXPLOIT SUCCESS: Session Hijacked!</p>
+                            <p className="text-text-primary p-2 bg-bg-nested rounded border border-border-subtle text-[10px] break-all select-all">
+                              Cookie extracted: {harStolenCookie}
+                            </p>
+                            <p className="text-text-muted italic text-[9px]">The attacker successfully bypassed MFA by injecting this valid session token directly into their browser cookies.</p>
+                          </>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-2 text-text-muted py-4 text-center font-sans">
+                        <p>Awaiting HAR upload simulation…</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Side-by-side Remediation Code */}
+                <div className="border-t border-border-subtle/30 pt-4 space-y-2.5">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Vulnerable vs. Secure Code Deconstruction</span>
+                  <div className="grid md:grid-cols-2 gap-4 text-[11px] font-mono leading-relaxed">
+                    <div className="p-4 bg-status-danger/5 border border-status-danger/10 text-text-secondary rounded-lg">
+                      <p className="font-bold text-status-danger mb-1.5">// Vulnerable: Writing Raw Headers to Logs</p>
+                      <pre className="text-[10px] bg-bg-nested p-2 rounded overflow-x-auto select-all">
+{`// Logs full HTTP headers to HAR file
+const harLog = {
+  request: {
+    url: req.url,
+    headers: req.headers // UNSAFE: Includes Cookie & Auth!
+  }
+};`}
+                      </pre>
+                    </div>
+                    <div className="p-4 bg-status-success/5 border border-status-success/10 text-text-secondary rounded-lg">
+                      <p className="font-bold text-status-success mb-1.5">// Secure Remediation: Header Sanitization</p>
+                      <pre className="text-[10px] bg-bg-nested p-2 rounded overflow-x-auto select-all">
+{`// Sanitizes headers before logging
+const sanitizeHeaders = (headers) => {
+  const sensitive = ['authorization', 'cookie', 'set-cookie'];
+  return headers.map(h => 
+    sensitive.includes(h.name.toLowerCase()) 
+      ? { name: h.name, value: "[REDACTED]" } 
+      : h
+  );
+};`}
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* LAB 5: SILVER SAML 2024 */}
+            {activeLab === 'silversaml' && (
+              <div className="p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-6">
+                <div className="space-y-1.5 border-b border-border-subtle pb-6">
+                  <span className="text-[10px] font-bold text-status-danger uppercase tracking-wider block">ENTERPRISE FEDERATION VULNERABILITY</span>
+                  <h3 className="text-2xl font-black text-text-primary">Entra ID "Silver SAML" Attack</h3>
+                  <p className="text-xs text-text-secondary leading-relaxed font-semibold">
+                    In 2024, researchers disclosed "Silver SAML". Unlike Golden SAML which requires stealing the IdP\'s master token-signing key, Silver SAML exploits custom self-signed application signing keys. If an attacker gains access to the specific signing key of an enterprise application integration, they can forge SAML assertions strictly for that app, completely bypassing Entra ID’s central domain controller and MFA!
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6 items-center">
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Attack Stepper Simulator</span>
+                    <div className="space-y-2 text-xs">
+                      <button 
+                        onClick={() => { setSilverSamlStep(0); setSilverStolenAppKey(true) }}
+                        className={`w-full text-left p-3 rounded-lg border font-semibold transition-all ${
+                          silverSamlStep >= 0 ? 'border-status-danger bg-status-danger/5 text-status-danger font-bold' : 'border-border-subtle text-text-secondary'
+                        }`}
+                      >
+                        1. Extract Targeted SaaS App Key from local backup
+                      </button>
+                      <button 
+                        disabled={!silverStolenAppKey}
+                        onClick={() => setSilverSamlStep(1)}
+                        className={`w-full text-left p-3 rounded-lg border font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                          silverSamlStep >= 1 ? 'border-status-danger bg-status-danger/5 text-status-danger font-bold' : 'border-border-subtle text-text-secondary'
+                        }`}
+                      >
+                        2. Forge Signed SAML Assertion strictly for that SaaS app
+                      </button>
+                      <button 
+                        disabled={silverSamlStep < 1}
+                        onClick={() => setSilverSamlStep(2)}
+                        className={`w-full text-left p-3 rounded-lg border font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                          silverSamlStep >= 2 ? 'border-status-danger bg-status-danger/5 text-status-danger font-bold' : 'border-border-subtle text-text-secondary'
+                        }`}
+                      >
+                        3. Present forged token to target app Gateway $\rightarrow$ Local App Takeover
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Terminal Output */}
+                  <div className="p-5 rounded-xl bg-bg-sidebar border border-border-subtle font-mono text-xs min-h-[160px] flex flex-col justify-between">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block border-b border-border-subtle/30 pb-1.5">Offline Attacker Toolkit</span>
+                    {silverSamlStep === 0 && (
+                      <div className="space-y-2 animate-fadeIn">
+                        <p className="text-status-danger">➜ TARGET APP SIGNING KEY RETRIEVED</p>
+                        <p className="text-text-secondary">Key: [target_app_saml_signing_key.pfx]</p>
+                        <p className="text-text-muted text-[10px] italic">You can now sign SAML Responses locally. Bypasses central Entra ID audits.</p>
+                      </div>
+                    )}
+                    {silverSamlStep === 1 && (
+                      <div className="space-y-2 animate-fadeIn">
+                        <p className="text-status-danger">➜ FORGED SAML ASSERTION READY</p>
+                        <p className="text-text-muted text-[10px] break-all select-all">{"<saml:Assertion ID=\"_stolen_app_assertion_99\" ...>"}</p>
+                      </div>
+                    )}
+                    {silverSamlStep === 2 && (
+                      <div className="space-y-2 text-center py-4 animate-fadeIn">
+                        <p className="text-status-danger font-black uppercase text-sm tracking-widest animate-bounce">🚨 APP CO-OPTED!</p>
+                        <p className="text-xs text-text-primary font-bold">Successfully logged in as administrator on the targeted SaaS tool (e.g. Salesforce or AWS Portal) offline.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Secure Code Deconstruction */}
+                <div className="border-t border-border-subtle/30 pt-4 space-y-2.5">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Vulnerable vs. Secure Code Deconstruction</span>
+                  <div className="grid md:grid-cols-2 gap-4 text-[11px] font-mono leading-relaxed">
+                    <div className="p-4 bg-status-danger/5 border border-status-danger/10 text-text-secondary rounded-lg">
+                      <p className="font-bold text-status-danger mb-1.5">// Vulnerable: Self-Signed Key with weak verification</p>
+                      <pre className="text-[10px] bg-bg-nested p-2 rounded overflow-x-auto select-all">
+{`// Accepts any self-signed assertion
+const verifySAML = (xml) => {
+  const cert = getCertFromXML(xml);
+  return crypto.verify(xml, cert); // UNSAFE!
+};`}
+                      </pre>
+                    </div>
+                    <div className="p-4 bg-status-success/5 border border-status-success/10 text-text-secondary rounded-lg">
+                      <p className="font-bold text-status-success mb-1.5">// Secure Remediation: Metadata Pinning</p>
+                      <pre className="text-[10px] bg-bg-nested p-2 rounded overflow-x-auto select-all">
+{`// Enforces strictly pinned IdP certificate
+const verifySAML = (xml) => {
+  const trustedCert = getPinnedCertFromMetadata();
+  return crypto.verify(xml, trustedCert); // SECURE!
+};`}
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* LAB 6: LASTPASS OFFLINE VAULT CRACKING */}
+            {activeLab === 'lastpass' && (
+              <div className="p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-6">
+                <div className="space-y-1.5 border-b border-border-subtle pb-6">
+                  <span className="text-[10px] font-bold text-status-danger uppercase tracking-wider block">PASSWORD CRYPTOGRAPHY VULNERABILITY</span>
+                  <h3 className="text-2xl font-black text-text-primary">LastPass Vault Extraction & PBKDF2 Iterations</h3>
+                  <p className="text-xs text-text-secondary leading-relaxed font-semibold">
+                    In 2022, threat actors compromised LastPass backup vaults. While vaults were encrypted, older corporate accounts utilized outdated, low PBKDF2 iteration counts (such as 5,000 or less). This allowed attackers to run highly optimized offline brute-force attacks on hijacked GPUs, cracking master passwords in seconds. Setting iterations to the OWASP-recommended 600,000+ renders offline dictionary attacks impractically slow.
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8 items-center justify-around">
+                  {/* Slider Control */}
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Simulator Parameters</span>
+                    
+                    <div className="p-4 bg-bg-sidebar rounded-xl border border-border-subtle space-y-3">
+                      <label htmlFor="iteration-slider" className="block text-xs font-bold text-text-primary flex justify-between">
+                        <span>PBKDF2 Iteration Count:</span>
+                        <span className="font-mono text-accent-primary font-black">{lastpassIterations.toLocaleString()}</span>
+                      </label>
+                      <input 
+                        type="range" 
+                        id="iteration-slider"
+                        min="1000" 
+                        max="600000" 
+                        step="5000" 
+                        value={lastpassIterations} 
+                        onChange={(e) => setLastPassIterations(Number(e.target.value))}
+                        className="w-full accent-accent-primary bg-bg-nested rounded-lg appearance-none h-1.5 cursor-pointer" 
+                      />
+                    </div>
+
+                    <div className="p-4 bg-bg-sidebar rounded-xl border border-border-subtle space-y-1.5 text-xs font-semibold leading-relaxed">
+                      <p className="text-[9px] font-bold text-text-muted uppercase tracking-wider">Estimated Offline Cracking Time</p>
+                      <p className="text-lg font-black text-status-danger animate-pulse">
+                        {lastpassIterations <= 5000 ? '⏱️ Under 5 Seconds (Instantly Cracked)' : 
+                         lastpassIterations <= 100000 ? '⏱️ Under 12 Hours' : 
+                         lastpassIterations <= 300000 ? '⏱️ Under 4 Months' : '⏱️ 450+ Years (Impractically Slow)'}
+                      </p>
+                      <p className="text-[10px] text-text-muted mt-1 leading-normal">Cracking speed calculated assuming attacker uses a standard GPU hash-cracker dictionary rig.</p>
+                    </div>
+                  </div>
+
+                  {/* Secure Code Deconstruction */}
+                  <div className="p-5 rounded-xl bg-bg-sidebar border border-border-subtle space-y-3 font-mono text-xs">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block border-b border-border-subtle/30 pb-1.5">Symmetric Key Stretching (TS)</span>
+                    <p className="text-[10px] text-text-secondary leading-relaxed">
+                      To prevent offline dictionary attacks, the key-derivation routine must stretch passwords using massive iteration loops:
+                    </p>
+                    <pre className="text-[9px] bg-bg-nested p-2.5 rounded border border-border-subtle/50 text-text-primary select-all leading-normal">
+{`// Secure PBKDF2 stretching via Web Crypto
+const deriveKey = async (pass, salt) => {
+  const base = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(pass),
+    'PBKDF2', false, ['deriveBits']
+  );
+  return crypto.subtle.deriveBits({
+    name: 'PBKDF2',
+    hash: 'SHA-256',
+    salt,
+    iterations: 600000 // OWASP Standard!
+  }, base, 256);
+};`}
+                    </pre>
                   </div>
                 </div>
               </div>

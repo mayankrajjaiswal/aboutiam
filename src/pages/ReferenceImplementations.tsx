@@ -328,6 +328,133 @@ scim-provisioning-server/
         { mistake: 'Returning raw user password strings inside GET payloads.', fix: 'User passwords must be designated with returned: "none" in schemas, never returning credential hashes to query clients.' },
         { mistake: 'Treating costCenter, employeeNumber, or groups as unrestricted attributes.', fix: 'Strictly validate costume attributes. Unsanitized strings in SCIM payloads can trigger database SQL injection.' }
       ]
+    },
+    {
+      id: 'github-aws-oidc',
+      title: 'GitHub Actions to AWS OIDC Federation Trust',
+      tech: 'AWS IAM / GitHub Actions',
+      rfc: 'RFC 7519, OpenID Connect Core 1.0',
+      description: 'Configure a secure, keyless Trust Relationship between GitHub Actions runners and AWS IAM. Swaps short-lived GitHub JWT id_tokens dynamically for temporary AWS session credentials, completely eliminating the need to store static, long-lived AWS Access Keys in repository secrets.',
+      diagram: `
++----------------+        1. OIDC Token (IdToken)        +----------------+
+| GitHub Runner  | ------------------------------------> | AWS IAM Role   |
++----------------+                                       | (AssumeRole)   |
+        ^                                                +----------------+
+        |                                                        |
+        |      2. Temporary Session Credentials (AccessKey, Sec) | Validates JWT issuer
+        +<-------------------------------------------------------+ and claims (aud/sub)
+`,
+      folderStructure: `
+github-aws-oidc-trust/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+└── aws-iam/
+    └── trust-relationship.json
+`,
+      codeFile: 'trust-relationship.json',
+      codeLang: 'json',
+      code: `{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "token.actions.githubusercontent.com:sub": "repo:my-org/my-repo:ref:refs/heads/main"
+        }
+      }
+    }
+  ]
+}`,
+      deployment: [
+        '1. Create an OIDC Identity Provider in AWS IAM with URL: https://token.actions.githubusercontent.com and audience: sts.amazonaws.com.',
+        '2. Create an IAM Role and assign this trust relationship JSON to its Trust Policy.',
+        '3. Authorize permissions on the IAM Role (e.g. S3 upload or ECR push) for deployments.'
+      ],
+      securityChecklist: [
+        'Strictly bound the sub condition to your specific organization, repository, and branch (never use generic wildcards like *).',
+        'Verify the aud condition equals "sts.amazonaws.com" strictly.',
+        'Apply an AWS session policy boundary to the assumed role to restrict deployment permissions.'
+      ],
+      pitfalls: [
+        { mistake: 'Configuring StringLike subject conditions to "repo:my-org/*".', fix: 'This permits ANY repository inside your organization (including public forks) to assume the AWS deployer role. Enforce strict repository and branch rules.' },
+        { mistake: 'Omitting the audience aud check from the condition block.', fix: 'The aud check is mandatory. Without it, any client receiving a GitHub actions token can attempt to spoof AWS IAM.' }
+      ]
+    },
+    {
+      id: 'aws-iam-boundary',
+      title: 'AWS Least-Privilege Administrative Boundary Policy',
+      tech: 'AWS IAM (JSON Policy)',
+      rfc: 'NIST SP 800-207 (Zero Trust Policy)',
+      description: 'Establish a robust AWS IAM Policy boundary that restricts administrative access based on mandatory MFA checks, corporate IP-whitelists, and regional boundaries, preventing account takeover from leaked master credentials.',
+      diagram: `
++-------------------+        Request with API Key / Role        +-------------------+
+| Admin Workstation | ----------------------------------------> | AWS IAM Gateway   |
++-------------------+                                           +-------------------+
+                                                                          |
+                                                                          v (Asserts conditions)
+                                                                - Active MFA?
+                                                                - Corporate IP?
+                                                                - Allowed Region?
+`,
+      folderStructure: `
+aws-iam-boundary/
+└── policies/
+    ├── admin-boundary-policy.json
+    └── developer-policy.json
+`,
+      codeFile: 'admin-boundary-policy.json',
+      codeLang: 'json',
+      code: `{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnforceMFAAndCorporateIPForAdministrativeActions",
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "BoolIfExists": {
+          "aws:MultiFactorAuthPresent": "false"
+        },
+        "NotIpAddressIfExists": {
+          "aws:SourceIp": [
+            "192.0.2.0/24",
+            "198.51.100.0/22"
+          ]
+        },
+        "StringNotEqualsIfExists": {
+          "aws:RequestedRegion": [
+            "us-east-1",
+            "eu-central-1"
+          ]
+        }
+      }
+    }
+  ]
+}`,
+      deployment: [
+        '1. Create an AWS IAM Policy and paste the JSON boundary.',
+        '2. Attach the policy as a Permissions Boundary to all administrative users and roles.',
+        '3. Ensure root accounts are excluded from boundaries to prevent lockouts.'
+      ],
+      securityChecklist: [
+        'Enforce explicit Deny on lack of MultiFactorAuthPresent or SourceIp blocks.',
+        'Use "IfExists" operators (e.g. BoolIfExists) to prevent blocking non-human/workload service accounts that authenticate without IP/MFA.',
+        'Restrict deployment actions to strictly permitted, authorized regions (e.g. us-east-1, eu-central-1).'
+      ],
+      pitfalls: [
+        { mistake: 'Enforcing a strict SourceIp block on API-only workload roles.', fix: 'Service roles (e.g. ECS agents or Lambdas) invoke AWS APIs from internal AWS addresses, not corporate IPs. Use "NotIpAddressIfExists" or exclude workloads.' },
+        { mistake: 'Blocking administrative regions without verifying global service dependencies.', fix: 'Global services (like Route53 or CloudFront) execute endpoints in us-east-1 strictly. Always allow us-east-1.' }
+      ]
     }
   ]
 

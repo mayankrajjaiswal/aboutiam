@@ -106,6 +106,17 @@ export default function CheatSheets() {
         { id: 'gdpr_3', task: 'Art. 25: Privacy-by-Design Least-Privilege Access', desc: 'Design access to personal data stores around least-privilege defaults, granting the minimum necessary scope by default.' },
         { id: 'gdpr_4', task: 'Art. 33: 72-Hour Breach Notification Readiness', desc: 'Maintain sufficient audit logging and detection capability to identify a personal data breach and notify the supervisory authority within 72 hours.' }
       ]
+    },
+    {
+      id: 'fedramp_high',
+      title: 'FedRAMP High - Baseline Access & Cryptographic Controls',
+      target: 'Federal Agency Providers & SaaS Contractors',
+      checks: [
+        { id: 'fedramp_1', task: 'AC-2: Automated Account Management & PIM', desc: 'Configure strict automated provisioning integrations (SCIM) and Just-in-Time (JIT) administrative elevations, ensuring all accounts are audited and deactivated on inactivity.' },
+        { id: 'fedramp_2', task: 'IA-2(1): Phishing-Resistant MFA (FIDO2 / PIV / CAC)', desc: 'Enforce verifier-impersonation-resistant multi-factor authentication (PIV/CAC cards or hardware FIDO2 keys) for all local and network access.' },
+        { id: 'fedramp_3', task: 'SC-13: FIPS 140-3 Validated Cryptographic Modules', desc: 'Enforce strictly validated FIPS 140-3 cryptographic modules for all digital signatures, secure key exchanges (mTLS), and database encryption-at-rest.' },
+        { id: 'fedramp_4', task: 'AU-2: Comprehensive Audit Event Logs (SIEM)', desc: 'Configure central security logging recording identity handshakes, session revocations, and configuration modifications, streaming to a secure, write-once SIEM vault.' }
+      ]
     }
   ]
 

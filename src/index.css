@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Light Theme Color Tokens */
-  --color-bg-base: #f8fafc;          /* slate-50 */
-  --color-bg-card: #ffffff;          /* pure white */
-  --color-bg-sidebar: #f1f5f9;       /* slate-100 */
-  --color-bg-nested: #e2e8f0;        /* slate-200 */
-  --color-text-primary: #0f172a;     /* slate-900 */
-  --color-text-secondary: #475569;   /* slate-600 */
-  --color-text-muted: #64748b;       /* slate-500 */
-  --color-border-subtle: #e2e8f0;    /* slate-200 */
+  /* Light Theme Color Tokens - High Contrast & Crisp Distinguishability */
+  --color-bg-base: #f1f5f9;          /* slate-100 (creates beautiful contrast with white cards) */
+  --color-bg-card: #ffffff;          /* pure white cards now stand out gorgeously */
+  --color-bg-sidebar: #ffffff;       /* clean white sidebar, clearly separated */
+  --color-bg-nested: #f8fafc;        /* slate-50 for nested blocks */
+  --color-text-primary: #0f172a;     /* slate-900 (crisp and readable) */
+  --color-text-secondary: #334155;   /* slate-700 (higher contrast than slate-600) */
+  --color-text-muted: #475569;       /* slate-600 (higher contrast for muted text) */
+  --color-border-subtle: #cbd5e1;    /* slate-300 (clearly defines card outlines, tiles, and button borders) */
   
   --color-accent-primary: #2563eb;    /* blue-600 */
   --color-accent-secondary: #0d9488;  /* teal-600 */

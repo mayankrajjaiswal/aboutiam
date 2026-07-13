@@ -364,6 +364,86 @@ export default function Encyclopedia() {
       category: 'Authorization',
       analogy: 'A flight dispatcher mapping coordinate points dynamically. Instead of hardcoding flight paths, the dispatcher visually routes airplanes around storms and delays in real-time.',
       expert: 'The architectural practice of abstracting user authentication and registration workflows into a separate, visual policy layer (e.g. Thales OneWelcome Orchestrator), allowing organizations to change security paths without rewriting application code.'
+    },
+    {
+      id: 'dpop',
+      term: 'DPoP',
+      fullName: 'Demonstrating Proof-of-Possession (RFC 9449)',
+      category: 'Protocols',
+      analogy: 'Like wrapping your bearer keycard in a fingerprint-locked sleeve. Even if a pickpocket steals the card, they cannot use it because it will only unlock if presented alongside your active biometric thumbprint (the client\'s private key signature).',
+      expert: 'RFC 9449. A security extension for OAuth 2.0 Access and Refresh tokens. Requires the client to generate a local asymmetric key pair and sign a JWS containing the target HTTP request parameters (method, URI, timestamp). This binds the token to that specific client, preventing token replay attacks if intercepted.'
+    },
+    {
+      id: 'fapi',
+      term: 'FAPI',
+      fullName: 'Financial-grade API Security Profile',
+      category: 'Protocols',
+      analogy: 'An armored bank transport truck instead of a standard courier envelope. Every single lock, hinge, and dispatch time is cryptographically audited and verified to prevent high-value bank robberies.',
+      expert: 'An OpenID Foundation security profile. Establishes a highly hardened layer on top of OAuth 2.0 and OIDC. Mandates mutual TLS (mTLS), strict asymmetric public key authentication, cryptographic request object signings (PAR), and sender-constrained DPoP tokens to secure financial Open Banking APIs.'
+    },
+    {
+      id: 'gnap',
+      term: 'GNAP',
+      fullName: 'Grant Negotiation and Authorization Protocol',
+      category: 'Protocols',
+      analogy: 'Like a digital lawyer drawing up a bespoke contract. Instead of just showing a generic badge (a token), the client and server negotiate exact, custom access boundaries and parameters on the spot before any key is issued.',
+      expert: 'A prospective successor framework to OAuth 2.0 (RFC 6749). Decouples client authentication, user consent, and token issuance into a highly expressive, single negotiation request-response protocol, eliminating the need for complex browser redirects and implicit flow hacks.'
+    },
+    {
+      id: 'scim_patch',
+      term: 'SCIM PATCH',
+      fullName: 'SCIM 2.0 Attribute-Level Reconciliation',
+      category: 'Provisioning',
+      analogy: 'Making a minor edit on page 4 of a document instead of completely discarding the book, rewriting everything, and printing a new copy from scratch.',
+      expert: 'RFC 7644. A REST API method enabling partial, attribute-level modifications inside SCIM 2.0 directories. Supports "add", "remove", and "replace" operations, dramatically reducing network payload overhead and preventing race-conditions.'
+    },
+    {
+      id: 'mtls',
+      term: 'mTLS',
+      fullName: 'Mutual Transport Layer Security',
+      category: 'Cryptography',
+      analogy: 'A bank teller verifying your ID, while you simultaneously demand to see the teller\'s official badge. Both parties must prove who they are before any money is slid through the slot.',
+      expert: 'Mutual Transport Layer Security. An extension of TLS where both the client and server validate each other\'s X.509 digital certificates before establishing an encrypted tunnel, forming the core perimeter control for zero-trust microservices.'
+    },
+    {
+      id: 'par',
+      term: 'PAR',
+      fullName: 'Pushed Authorization Requests (RFC 9126)',
+      category: 'Protocols',
+      analogy: 'Handing your confidential medical records directly to the doctor behind closed doors, and getting a tiny claims ticket to show the receptionist, instead of walking through the crowded lobby waving your records in the air.',
+      expert: 'RFC 9126. An OAuth 2.0 security extension. The client "pushes" sensitive authorization parameters (like scopes and request URIs) directly to the IdP backchannel over HTTPS, receiving a short-lived "request_uri" ticket. The client browser redirect is then executed strictly with this ticket, preventing parameter tampering.'
+    },
+    {
+      id: 'dmarc',
+      term: 'DMARC',
+      fullName: 'Domain-based Message Authentication, Reporting, and Conformance',
+      category: 'Governance',
+      analogy: 'A corporate mailroom stamping every outgoing envelope with a wax seal, and telling all post offices to shred any envelope claiming to be from them that lacks the seal.',
+      expert: 'RFC 7489. An email authentication protocol that builds upon SPF and DKIM. Enables domain owners to publish strict DNS policy records specifying how receiving mail servers should handle unauthorized spoofs (e.g. p=reject), protecting identity domains from phishing.'
+    },
+    {
+      id: 'zkp',
+      term: 'ZKP',
+      fullName: 'Zero-Knowledge Proof (Decentralized Identity)',
+      category: 'Decentralized',
+      analogy: 'Proving to a bartender you are over 21 by showing a glowing green light on your phone, without revealing your actual driver\'s license, name, or birthdate.',
+      expert: 'A cryptographic method by which one party (the prover) can prove to another party (the verifier) that a given statement is true, without conveying any information beyond the statement\'s validity (e.g. proof of credential ownership or mathematical bounds).'
+    },
+    {
+      id: 'kms',
+      term: 'KMS',
+      fullName: 'Key Management Service & Hardware HSMs',
+      category: 'Cryptography',
+      analogy: 'A locked room inside a secure bank vault where keys are generated, stored, and used to sign/decrypt documents. The keys never leave the locked room, and any signing request is executed inside under strict surveillance.',
+      expert: 'A cloud or hardware-backed (HSM) system offering centralized key generation, lifecycle management, rotation, and cryptographic operations, securing Master Keys and DEKs.'
+    },
+    {
+      id: 'abac_policy_engine',
+      term: 'ABAC Policy Engine',
+      fullName: 'Dynamic Attribute-Based Evaluation Gateway',
+      category: 'Authorization',
+      analogy: 'A smart digital bouncer that checks if the customer is on the list (identity), if they have their ID (credentials), if the bar is not full (resource), and if it\'s before midnight (context) before granting entry.',
+      expert: 'A Policy Decision Point (PDP) evaluating incoming access requests against Attribute-Based rules, utilizing context (time, location), user attributes (clearance, roles), and resource metadata dynamically.'
     }
   ]
 

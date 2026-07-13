@@ -80,6 +80,20 @@
     <priority>0.5</priority>
   </url>
 
+  <!-- Today's Modifications (Released 2026-07-13) -->
+  <url>
+    <loc>https://www.aboutiam.com/tools/ansible-vault/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/sops-simulator/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Today's Modifications (Released 2026-07-02) -->
   <url>
     <loc>https://www.aboutiam.com/tools/bcrypt-generator/</loc>

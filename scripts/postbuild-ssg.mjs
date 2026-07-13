@@ -50,6 +50,8 @@ const ROUTES = [
   { path: '/tools/jwks-inspector', title: 'JWKS JSON Web Key Set Inspector', description: 'Parse, inspect, and validate public JSON Web Key Sets (JWKS) representing cryptographic signing keys used for JWT verification.' },
   { path: '/tools/policy-evaluator', title: 'ABAC & RBAC Client-Side Policy Evaluator', description: 'An interactive sandbox to evaluate custom JSON-based access policies against simulated user, device, and resource contexts.' },
   { path: '/tools/oidc-discovery', title: 'OIDC Discovery Document Auditor', description: 'Parse, visualize, and audit modern Identity Provider metadata profiles containing standard OIDC endpoint registries.' },
+  { path: '/tools/ansible-vault', title: 'Ansible Vault Encryptor & Decryptor', description: 'Encrypt or decrypt secrets client-side using the standard Ansible Vault 1.1/1.2 AES-256 cipher format — 100% browser-native PBKDF2 + AES-CTR + HMAC-SHA256.' },
+  { path: '/tools/sops-simulator', title: 'Mozilla SOPS — GitOps Secrets Simulator', description: 'An interactive envelope encryption playground. Selectively encrypt configuration values in YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys, preserving key paths for Git diffs.' },
   { path: '/playground/jwt', title: 'JWT Studio & Exploit Arena', description: 'Browser-native HS256 JWT signing, plus the none-algorithm and JWKS-spoofing exploits.' },
   { path: '/playground/oauth', title: 'OAuth 2.0 / OIDC Handshake Visualizer', description: 'Step-by-step front/back-channel OAuth 2.0 and OIDC flow animation with PKCE and raw HTTP inspection.' },
   { path: '/playground/saml', title: 'SAML 2.0 XML Workbench', description: 'SAML assertion builder and Signature Wrapping (SSW) attack simulator.' },

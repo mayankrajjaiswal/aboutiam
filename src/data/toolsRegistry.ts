@@ -481,6 +481,40 @@ export const TOOLS: ToolMeta[] = [
     ],
     relatedLinks: [{ label: 'Build standard OIDC requests visually →', href: '/tools/oauth-builder' }],
   },
+  {
+    slug: 'ansible-vault',
+    title: 'Ansible Vault Encryptor & Decryptor',
+    description: 'Encrypt or decrypt files and string secrets client-side using the standard Ansible Vault 1.1/1.2 AES-256 cipher format — 100% browser-native PBKDF2 + AES-CTR + HMAC-SHA256.',
+    category: 'Hashing, Encoding & Secrets',
+    icon: LockKeyhole,
+    phase: 3,
+    status: 'live',
+    keywords: ['ansible vault encrypt', 'ansible vault decrypt online', 'unvault online', 'ansible-vault'],
+    analogy: 'Ansible Vault is like a key-coded storage safe inside your repository: it lets you lock up sensitive inventory credentials (like passwords or private keys) in an encrypted metal vault, ensuring they are only readable when the correct master padlock code (vault password) is supplied.',
+    expert: 'Implements the official Ansible Vault 1.1 and 1.2 specifications. Stretches the passphrase using PBKDF2-HMAC-SHA256 (10,000 iterations) over a cryptographically secure 32-byte salt to derive an 80-byte block. Slices this block into a 256-bit AES cipher key, a 256-bit HMAC verification key, and a 128-bit Initialization Vector (IV). Plaintext is padded with PKCS#7, encrypted with AES-256-CTR, and signed via Encrypt-then-MAC with HMAC-SHA256.',
+    faqs: [
+      { q: 'Is it safe to decrypt my Ansible Vault files here?', a: 'Yes. Decryption and encryption are performed 100% locally inside your browser using the standard Web Crypto API. No data is sent over the network, which you can verify in your browser\'s developer tools.' },
+      { q: 'What is the difference between Vault format 1.1 and 1.2?', a: 'Version 1.1 is the standard format containing just the encrypted payload. Version 1.2 supports Vault ID labels (e.g. $ANSIBLE_VAULT;1.2;AES256;production), which allow Ansible to coordinate multiple passwords for different environments.' },
+      { q: 'Why does decryption fail even with the right password?', a: 'Ensure you include the full Ansible Vault header (e.g., $ANSIBLE_VAULT;1.1;AES256) and that the block hasn\'t been corrupted or improperly wrapped.' }
+    ],
+  },
+  {
+    slug: 'sops-simulator',
+    title: 'Mozilla SOPS — GitOps Secrets Simulator',
+    description: 'An interactive envelope encryption playground. Selectively encrypt specific configuration values in YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys, preserving key paths for Git diffs.',
+    category: 'Hashing, Encoding & Secrets',
+    icon: Layers,
+    phase: 3,
+    status: 'live',
+    keywords: ['mozilla sops', 'sops encrypt online', 'sops simulator', 'gitops secrets', 'envelope encryption'],
+    analogy: 'Mozilla SOPS is like an automated inventory scanner: instead of wrapping a whole spreadsheet in bubble wrap (which makes it impossible to see the item count or labels), it places tiny lockboxes strictly over individual secret items (values) while leaving the row names (keys) fully visible.',
+    expert: 'Demonstrates modern cloud-native envelope encryption. Generates an ephemeral 256-bit AES-GCM symmetric Data Encryption Key (DEK) used to encrypt the payload values. The DEK itself is then wrapped (encrypted) with one or more Key Encryption Keys (KEKs) from AWS KMS, Azure Key Vault, HashiCorp Vault, or Age. Values are encrypted into ENC[AES256_GCM,...] payloads, and the wrapped DEK + metadata is appended as a sops block.',
+    faqs: [
+      { q: 'Why use SOPS instead of full file encryption?', a: 'Because SOPS only encrypts values, Git can track modifications to the YAML structure (adding, deleting, or reordering non-sensitive keys) in clean, readable diffs, without exposing the actual secrets.' },
+      { q: 'What is Envelope Encryption?', a: 'It is a hierarchical key management practice. A local Data Encryption Key (DEK) encrypts the bulk data, and a secure cloud/hardware Key Encryption Key (KEK) is used to encrypt and protect that DEK.' },
+      { q: 'How does the regex matching work?', a: 'SOPS accepts a regular expression (like "^(password|secret)$"). Only keys whose names match this regex will have their values encrypted; all other configuration remains plain.' }
+    ],
+  },
 ]
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {

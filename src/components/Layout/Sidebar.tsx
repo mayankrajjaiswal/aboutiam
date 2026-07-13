@@ -102,6 +102,7 @@ const coreItems = [
   { name: "Beginner's Primer", path: '/primer', icon: GraduationCap },
   { name: 'Learning Pathways', path: '/roadmap', icon: Map },
   { name: 'IAM Academy', path: '/learn', icon: BookOpen },
+  { name: 'Master A-Z Encyclopedia', path: '/encyclopedia', icon: BookOpen },
   { name: 'Interactive Playgrounds', path: '/playground', icon: Cpu },
   { name: 'Identity Labs Academy', path: '/labs', icon: Award },
 ]

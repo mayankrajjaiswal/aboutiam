@@ -1,5 +1,21 @@
 import { useState, useEffect } from 'react'
-import { Fingerprint, RotateCcw, Sliders, Lock, Cpu, AlertTriangle, FileCode, RefreshCw } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import {
+  Fingerprint,
+  Sliders,
+  ArrowRight,
+  Terminal,
+} from 'lucide-react'
+
+interface ByteSegment {
+  name: string
+  start: number
+  end: number
+  length: number
+  color: string
+  hexValue: string
+  description: string
+}
 
 export default function PasskeyInternals() {
   const [origin, setOrigin] = useState('https://app.aboutiam.com')
@@ -13,9 +29,76 @@ export default function PasskeyInternals() {
   const [logs, setLogs] = useState<string[]>([])
   
   // Decoded payload segments
-  const [clientDataJson, setClientDataJson] = useState('')
   const [authDataHex, setAuthDataHex] = useState('')
-  const [cosePublicKey, setCosePublicKey] = useState('')
+
+  // Selected hover segment
+  const [hoveredSegment, setHoveredSegment] = useState<ByteSegment | null>(null)
+
+  // Byte structure decomposition
+  const flagsByte = (upFlag ? 0x01 : 0x00) | (uvFlag ? 0x04 : 0x00) | 0x40 // AT flag set
+  const flagsHex = flagsByte.toString(16).padStart(2, '0')
+  const rpIdHashHex = '49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d9763'
+  const signCountHex = '0000002c'
+  const aaguidHex = '00000000000000000000000000000000'
+  const credIdLenHex = '0010'
+  const credIdHex = '61326233633464356536663738393061'
+
+  const segments: ByteSegment[] = [
+    {
+      name: 'RP ID Hash',
+      start: 0,
+      end: 31,
+      length: 32,
+      color: 'bg-blue-500/20 border-blue-500 text-blue-400',
+      hexValue: rpIdHashHex,
+      description: 'The SHA-256 hash of the relying party domain (origin). Verification ensures the credential is bound to this website only, completely preventing phishing!'
+    },
+    {
+      name: 'Flags',
+      start: 32,
+      end: 32,
+      length: 1,
+      color: 'bg-amber-500/20 border-amber-500 text-amber-400',
+      hexValue: flagsHex,
+      description: `Flags byte indicating UP (User Presence) = Bit 0, UV (User Verification) = Bit 2, and AT (Attestation Data Present) = Bit 6. Active bits set: ${upFlag ? 'UP' : ''} ${uvFlag ? 'UV' : ''} AT.`
+    },
+    {
+      name: 'Sign Counter',
+      start: 33,
+      end: 36,
+      length: 4,
+      color: 'bg-purple-500/20 border-purple-500 text-purple-400',
+      hexValue: signCountHex,
+      description: 'A big-endian monotonic signature counter. The server validates that the counter increments on each login, mitigating device-cloning or replay attacks.'
+    },
+    {
+      name: 'AAGUID',
+      start: 37,
+      end: 52,
+      length: 16,
+      color: 'bg-teal-500/20 border-teal-500 text-teal-400',
+      hexValue: aaguidHex,
+      description: 'Authenticator Attestation GUID. A unique identifier indicating the specific hardware model of the enclave / FIDO2 security key.'
+    },
+    {
+      name: 'Cred ID Len',
+      start: 53,
+      end: 54,
+      length: 2,
+      color: 'bg-orange-500/20 border-orange-500 text-orange-400',
+      hexValue: credIdLenHex,
+      description: 'The big-endian length of the generated credential ID (16 bytes).'
+    },
+    {
+      name: 'Credential ID',
+      start: 55,
+      end: 70,
+      length: 16,
+      color: 'bg-rose-500/20 border-rose-500 text-rose-400',
+      hexValue: credIdHex,
+      description: 'The unique cryptographically-random identifier assigned to this public-key credential by the secure hardware.'
+    }
+  ]
 
   const handleSimulate = async () => {
     setGenerating(true)
@@ -26,39 +109,9 @@ export default function PasskeyInternals() {
     ])
 
     setTimeout(async () => {
-      // 1. Generate clientDataJSON
-      const clientDataObj = {
-        type: "webauthn.create",
-        challenge: btoa(challenge).replace(/=/g, ''),
-        origin: origin,
-        crossOrigin: false
-      }
-      const clientDataStr = JSON.stringify(clientDataObj, null, 2)
-      setClientDataJson(clientDataStr)
-
-      // 2. Generate authenticatorData (AuthData) byte-by-byte hex
-      // rpIdHash (32 bytes) + flags (1 byte) + signCount (4 bytes) + AAGUID (16 bytes) + CredIDLen (2 bytes) + CredID (16 bytes)
-      const flagsByte = (upFlag ? 0x01 : 0x00) | (uvFlag ? 0x04 : 0x00) | 0x40 // AT (Attestation) flag set
-      const flagsHex = flagsByte.toString(16).padStart(2, '0')
-      
-      const rpIdHashHex = '49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d9763' // SHA256 of app.aboutiam.com
-      const signCountHex = '0000002c' // 44 logins
-      const aaguidHex = '00000000000000000000000000000000' // Packed zero AAGUID
-      const credIdLenHex = '0010' // 16 bytes
-      const credIdHex = '61326233633464356536663738393061' // "a2b3c4d5e6f7890a" in ASCII hex
-
+      // 1. clientDataJSON
       const completedAuthDataHex = `${rpIdHashHex}${flagsHex}${signCountHex}${aaguidHex}${credIdLenHex}${credIdHex}`
       setAuthDataHex(completedAuthDataHex)
-
-      // 3. Generate CBOR COSE Public Key structure
-      const coseObj = {
-        "1": 2, // kty: EC2
-        "3": -7, // alg: ES256
-        "-1": 1, // crv: P-256
-        "-2": "764bb78b30d35e165416b9b32cd586a1170f44bc17ef654261", // x-coord
-        "-3": "f68e3a2b4cd5e6c71a2bc38f12a4bb5612f0a12e5f6e" // y-coord
-      }
-      setCosePublicKey(JSON.stringify(coseObj, null, 2))
 
       setLogs(prev => [
         ...prev,
@@ -68,240 +121,189 @@ export default function PasskeyInternals() {
         `✔ SUCCESS: Credentials generated. Transmitting ClientData & AuthenticatorData! 🎉`
       ])
       setGenerating(false)
-    }, 1500)
+    }, 1200)
   }
 
   useEffect(() => {
-    setTimeout(() => handleSimulate(), 0)
+    const timer = setTimeout(() => {
+      handleSimulate()
+    }, 0)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [origin, challenge, upFlag, uvFlag])
 
   return (
-    <div className="space-y-12 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Header Info */}
-      <div className="space-y-3 max-w-4xl">
-        <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">
-          <Fingerprint className="w-3.5 h-3.5" /> Passkey Sandbox
+    <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Brand Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-gradient-to-r from-bg-card to-bg-sidebar rounded-2xl border border-border-subtle/50 shadow-sm">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">
+            <Fingerprint className="w-3.5 h-3.5" /> TPM Enclave Internals
+          </div>
+          <h1 className="text-2xl font-black tracking-tight text-text-primary uppercase">
+            Passkey CBOR Byte-Offset Visualizer
+          </h1>
+          <p className="text-xs text-text-secondary max-w-xl">
+            Deconstruct the raw binary payloads generated inside secure hardware Trusted Platform Modules (TPM) during WebAuthn registrations.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
-          Passkey Internals Playground
-        </h2>
-        <p className="text-text-secondary">
-          Deconstruct the cryptographic and binary metadata generated inside hardware Trusted Platform Modules (TPM) during WebAuthn public-key registrations. Inspect raw `clientDataJSON`, decode binary `authenticatorData` byte-by-byte, and parse COSE CBOR public key maps natively.
-        </p>
+        <Link to="/playground" className="text-sm bg-bg-card hover:bg-bg-sidebar border border-border-subtle px-3 py-1.5 rounded-lg text-text-secondary flex items-center gap-1.5 transition">
+          <ArrowRight className="rotate-180 w-4 h-4" /> Back to Catalog
+        </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        {/* LEFT COLUMN: Input parameters (lg:col-span-4) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* LEFT COLUMN: Controls */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
-            <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border-subtle pb-2 flex items-center gap-1.5">
-              <Sliders className="w-4 h-4 text-accent-primary" /> Key Creation Parameters
-            </h4>
-
-            {/* Relying Party Origin */}
-            <div className="space-y-1.5">
-              <label className="text-[10px] text-text-muted font-bold block uppercase" htmlFor="origin-input">Relying Party Origin</label>
-              <input
-                id="origin-input"
-                type="text"
-                value={origin}
-                onChange={(e) => setOrigin(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-bg-nested border border-border-subtle text-xs font-mono text-text-primary focus:outline-none focus:border-accent-primary"
-              />
-            </div>
-
-            {/* Cryptographic Challenge */}
-            <div className="space-y-1.5">
-              <label className="text-[10px] text-text-muted font-bold block uppercase" htmlFor="challenge-input">Server Challenge String</label>
-              <input
-                id="challenge-input"
-                type="text"
-                value={challenge}
-                onChange={(e) => setChallenge(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-bg-nested border border-border-subtle text-xs font-mono text-text-primary focus:outline-none focus:border-accent-primary"
-              />
-            </div>
-
-            {/* Authenticator Flags */}
-            <div className="space-y-3.5 border-t border-border-subtle/50 pt-4">
-              <span className="text-[10px] text-text-muted font-bold block uppercase">Enclave Authenticator Flags</span>
-              
-              {/* UP Flag */}
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-black text-text-primary block leading-tight">User Presence (UP)</span>
-                  <span className="text-[8px] text-text-muted block">Verify physical touch button was pressed</span>
-                </div>
-                <button
-                  onClick={() => setUpFlag(!upFlag)}
-                  className={`w-9 h-5 rounded-full p-0.5 transition-colors shrink-0 ${
-                    upFlag ? 'bg-accent-primary' : 'bg-border-subtle'
-                  }`}
-                  aria-label="Toggle User Presence flag"
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white transition-transform ${
-                    upFlag ? 'translate-x-4' : 'translate-x-0'
-                  }`} />
-                </button>
-              </div>
-
-              {/* UV Flag */}
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-black text-text-primary block leading-tight">User Verification (UV)</span>
-                  <span className="text-[8px] text-text-muted block">Verify biometric match (FaceID / TouchID)</span>
-                </div>
-                <button
-                  onClick={() => setUvFlag(!uvFlag)}
-                  className={`w-9 h-5 rounded-full p-0.5 transition-colors shrink-0 ${
-                    uvFlag ? 'bg-accent-primary' : 'bg-border-subtle'
-                  }`}
-                  aria-label="Toggle User Verification flag"
-                >
-                  <div className={`w-4 h-4 rounded-full bg-white transition-transform ${
-                    uvFlag ? 'translate-x-4' : 'translate-x-0'
-                  }`} />
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* MIDDLE COLUMN: Byte-Offset Analyzer Panel (lg:col-span-5) */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="flex items-center justify-between gap-4">
-            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider flex items-center gap-1.5">
-              <Cpu className="w-4 h-4 text-accent-primary animate-pulse" /> Binary AuthData byte analyzer
-            </h3>
-            <button
-              onClick={handleSimulate}
-              className="px-3 py-1.5 bg-bg-card hover:bg-bg-sidebar border border-border-subtle text-text-secondary text-xs font-bold rounded-lg transition-all flex items-center gap-1 shadow-sm select-none"
-              title="Force key regeneration"
-            >
-              <RotateCcw className="w-3.5 h-3.5" /> Force Keygen
-            </button>
-          </div>
-
-          {generating ? (
-            <div className="p-12 text-center flex items-center justify-center bg-bg-card border border-border-subtle rounded-2xl h-[340px]">
-              <RefreshCw className="w-8 h-8 text-accent-primary animate-spin" />
-            </div>
-          ) : (
-            <div className="p-4 rounded-2xl bg-bg-card border border-border-subtle shadow-inner h-[380px] overflow-y-auto space-y-4">
-              
-              {/* rpIdHash block */}
-              <div className="space-y-1.5">
-                <span className="text-[9px] font-black text-text-muted uppercase font-mono block">Bytes 0-31: rpIdHash (SHA-256 hash of origin domain)</span>
-                <div className="p-2.5 rounded bg-bg-nested font-mono text-[9px] text-text-secondary break-all">
-                  {authDataHex.substring(0, 64)}
-                </div>
-              </div>
-
-              {/* Flags byte */}
-              <div className="space-y-1.5 border-t border-border-subtle/40 pt-3">
-                <span className="text-[9px] font-black text-text-primary uppercase font-mono block flex items-center justify-between">
-                  <span>Byte 32: flags ({authDataHex.substring(64, 66)})</span>
-                  <span className="text-[8px] bg-accent-glow text-accent-primary px-1.5 py-0.5 rounded">Binary parsed</span>
-                </span>
-                <div className="grid grid-cols-3 gap-2 text-[9px] font-mono leading-relaxed font-bold">
-                  <div className="p-2 rounded bg-bg-nested border border-border-subtle text-center">
-                    <span className="block text-text-muted text-[8px]">UP (Presence)</span>
-                    <span className={upFlag ? 'text-emerald-500' : 'text-text-muted'}>{upFlag ? '1 (Active)' : '0'}</span>
-                  </div>
-                  <div className="p-2 rounded bg-bg-nested border border-border-subtle text-center">
-                    <span className="block text-text-muted text-[8px]">UV (Verified)</span>
-                    <span className={uvFlag ? 'text-emerald-500' : 'text-text-muted'}>{uvFlag ? '1 (Active)' : '0'}</span>
-                  </div>
-                  <div className="p-2 rounded bg-bg-nested border border-border-subtle text-center">
-                    <span className="block text-text-muted text-[8px]">AT (Attestation)</span>
-                    <span className="text-emerald-500">1 (Active)</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* signCount bytes */}
-              <div className="space-y-1.5 border-t border-border-subtle/40 pt-3">
-                <span className="text-[9px] font-black text-text-muted uppercase font-mono block">Bytes 33-36: signCount (4-byte signature counter)</span>
-                <div className="p-2.5 rounded bg-bg-nested font-mono text-[9px] text-text-secondary">
-                  {authDataHex.substring(66, 74)} <span className="text-text-muted font-sans font-bold ml-1">(Decoded value: 44 client logins)</span>
-                </div>
-              </div>
-
-              {/* Credential ID and coordinates */}
-              <div className="space-y-1.5 border-t border-border-subtle/40 pt-3">
-                <span className="text-[9px] font-black text-text-muted uppercase font-mono block">Bytes 53+: Attested Credential data bytes</span>
-                <div className="p-2.5 rounded bg-bg-nested font-mono text-[9px] text-text-secondary break-all">
-                  <span className="text-purple-400 font-semibold">{authDataHex.substring(106, 110)}</span>
-                  <span className="text-blue-400 font-semibold">{authDataHex.substring(110)}</span>
-                  <span className="text-text-muted font-sans font-bold block mt-1">
-                    (Parsed Credential Length: 16 bytes | ID: 'a2b3c4d5e6f7890a')
-                  </span>
-                </div>
-              </div>
-
-            </div>
-          )}
-
-          {/* DIAGNOSTIC CONSOLE */}
-          <div className="p-4 rounded-xl bg-black border border-zinc-800 space-y-2 font-mono text-[10px]">
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-1.5 text-zinc-500 uppercase tracking-wider font-bold">
-              <span>Biometric Handshake Terminal</span>
-              <span>STATE: {generating ? 'GENERATING' : 'READY'}</span>
-            </div>
-            <div className="h-24 overflow-y-auto text-emerald-400 space-y-1 select-text">
-              {logs.map((log, idx) => (
-                <div key={idx} className={
-                  log.startsWith('✔') || log.includes('SUCCESS') ? 'text-emerald-500 font-bold' :
-                  log.startsWith('[HARDWARE]') ? 'text-blue-400' : ''
-                }>
-                  {log}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN: clientDataJSON & COSE Public Key displays (lg:col-span-3) */}
-        <div className="lg:col-span-3 space-y-6">
-          {/* clientDataJSON card */}
-          <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex flex-col justify-between h-[210px]">
-            <span className="text-[9px] text-text-muted font-bold uppercase font-mono border-b border-border-subtle pb-1.5 mb-1 flex items-center gap-1">
-              <FileCode className="w-3.5 h-3.5 text-accent-primary" /> clientDataJSON Structure
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+            <span className="text-[10px] font-black text-accent-primary uppercase tracking-wider block border-b border-border-subtle pb-1.5 flex items-center gap-1.5">
+              <Sliders className="w-4 h-4 shrink-0" /> Configuration Parameters
             </span>
-            <textarea
-              aria-label="clientDataJSON Structure"
-              readOnly
-              value={clientDataJson}
-              className="flex-grow w-full font-mono text-[9px] leading-relaxed bg-bg-nested border border-border-subtle rounded-xl p-2.5 focus:outline-none resize-none h-full text-text-secondary"
-            />
+
+            <div className="space-y-3.5 text-xs">
+              <div className="space-y-1">
+                <label htmlFor="origin-input" className="block text-[10px] font-bold text-text-muted uppercase">Relying Party Origin</label>
+                <input
+                  id="origin-input"
+                  type="text"
+                  value={origin}
+                  onChange={(e) => setOrigin(e.target.value)}
+                  className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary font-mono text-xs focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label htmlFor="challenge-input" className="block text-[10px] font-bold text-text-muted uppercase">Secure Session Challenge</label>
+                <input
+                  id="challenge-input"
+                  type="text"
+                  value={challenge}
+                  onChange={(e) => setChallenge(e.target.value)}
+                  className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-text-primary font-mono text-xs focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-2 border-t border-border-subtle/50 pt-3">
+                <label className="block text-[10px] font-bold text-text-muted uppercase mb-1">Hardware Flag Overrides</label>
+                <label className="flex items-center justify-between cursor-pointer">
+                  <span className="text-xs text-text-secondary">User Presence (UP)</span>
+                  <input
+                    type="checkbox"
+                    checked={upFlag}
+                    onChange={(e) => setUpFlag(e.target.checked)}
+                    className="accent-accent-primary"
+                  />
+                </label>
+                <label className="flex items-center justify-between cursor-pointer">
+                  <span className="text-xs text-text-secondary">User Verification (UV)</span>
+                  <input
+                    type="checkbox"
+                    checked={uvFlag}
+                    onChange={(e) => setUvFlag(e.target.checked)}
+                    className="accent-accent-primary"
+                  />
+                </label>
+              </div>
+
+              <button
+                type="button"
+                disabled={generating}
+                onClick={handleSimulate}
+                className="w-full py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg text-xs font-black shadow-sm transition"
+              >
+                Regenerate Credentials
+              </button>
+            </div>
           </div>
 
-          {/* COSE Key display */}
-          <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex flex-col justify-between h-[210px]">
-            <span className="text-[9px] text-text-muted font-bold uppercase font-mono border-b border-border-subtle pb-1.5 mb-1 flex items-center gap-1">
-              <Lock className="w-3.5 h-3.5 text-accent-secondary" /> COSE CBOR Public Key Map
+          {/* Micro-guide */}
+          <div className="p-5 rounded-xl bg-bg-card border border-border-subtle shadow-sm space-y-3">
+            <span className="text-[10px] font-black text-text-muted uppercase block border-b border-border-subtle pb-1.5">
+              💡 Interactive Verification Hint
             </span>
-            <textarea
-              aria-label="COSE CBOR Public Key Map"
-              readOnly
-              value={cosePublicKey}
-              className="flex-grow w-full font-mono text-[9px] leading-relaxed bg-bg-nested border border-border-subtle rounded-xl p-2.5 focus:outline-none resize-none h-full text-text-secondary"
-            />
-          </div>
-
-          {/* CBOR Analogy takeaway */}
-          <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm text-[11px] leading-relaxed text-text-secondary space-y-2.5 font-sans">
-            <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border-subtle pb-2 flex items-center gap-1.5">
-              <AlertTriangle className="w-4 h-4 text-accent-secondary" /> CBOR & COSE standards
-            </h4>
-            <p>
-              To fit inside lightweight hardware security keys, standard JSON is replaced by **CBOR (Concise Binary Object Representation)**—a binary serialization format. Public keys are packed inside a **COSE (CBOR Object Signing and Encryption)** key map, defining curves and coordinates.
+            <p className="text-xs text-text-secondary leading-normal">
+              Hover your mouse over any segment of the binary **authenticatorData** box on the right. It will instantly highlight the offset ranges, decoding the binary layout in real-time.
             </p>
           </div>
         </div>
 
+        {/* RIGHT COLUMN: Offset map visualizer */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Main Visualizer Board */}
+          <div className="p-6 bg-bg-card border border-border-subtle rounded-xl shadow-lg space-y-5">
+            <span className="text-[10px] font-black text-text-muted uppercase block border-b border-border-subtle pb-1.5">
+              Hardware AuthenticatorData Binary Structure
+            </span>
+
+            {/* Render segments layout */}
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-text-muted uppercase block">Binary Layout (Color-Coded Segments):</span>
+              <div className="flex flex-wrap gap-1.5 p-3.5 bg-bg-sidebar border border-border-subtle rounded-xl">
+                {segments.map((s) => {
+                  const hovered = hoveredSegment?.name === s.name
+                  return (
+                    <div
+                      key={s.name}
+                      onMouseEnter={() => setHoveredSegment(s)}
+                      onMouseLeave={() => setHoveredSegment(null)}
+                      className={`p-2.5 rounded-lg border cursor-help transition-all text-center flex-1 min-w-[80px] font-mono text-xs font-bold truncate ${s.color} ${
+                        hovered ? 'scale-105 ring-2 ring-accent-primary/20' : ''
+                      }`}
+                    >
+                      <div className="text-[10px] uppercase font-black tracking-wider opacity-85 truncate mb-0.5">{s.name}</div>
+                      <div className="truncate text-[9px] font-semibold opacity-70">{s.hexValue.substring(0, 10)}...</div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Hover Segment Details panel */}
+            <div className="p-4 rounded-xl bg-bg-nested border border-border-subtle min-h-[100px] flex flex-col justify-center animate-fadeIn">
+              {hoveredSegment ? (
+                <div className="space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-black text-accent-primary uppercase tracking-wide">{hoveredSegment.name} segment</span>
+                    <span className="text-[10px] font-mono text-text-muted font-bold">
+                      Bytes: {hoveredSegment.start} – {hoveredSegment.end} (Length: {hoveredSegment.length} byte{hoveredSegment.length > 1 ? 's' : ''})
+                    </span>
+                  </div>
+                  <p className="text-xs text-text-secondary leading-normal font-medium">{hoveredSegment.description}</p>
+                </div>
+              ) : (
+                <div className="text-center text-text-muted text-xs italic">
+                  Hover over any color-coded segment above to deconstruct its binary cryptographic parameters…
+                </div>
+              )}
+            </div>
+
+            {/* Complete hexadecimal dump stream */}
+            <div className="space-y-2">
+              <span className="text-[10px] font-bold text-text-muted uppercase block">Full Hexadecimal Attestation Dump:</span>
+              <pre className="p-4 bg-black border border-zinc-800 text-[10px] font-mono text-emerald-400 rounded-xl leading-relaxed whitespace-pre-wrap select-all break-all shadow-inner">
+                {authDataHex}
+              </pre>
+            </div>
+          </div>
+
+          {/* Logs terminal */}
+          <div className="p-5 rounded-xl bg-black border border-zinc-800 font-mono text-[10px]">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-1.5 text-zinc-500 uppercase tracking-wider font-bold">
+              <span className="flex items-center gap-1.5"><Terminal className="w-3.5 h-3.5 text-accent-secondary" /> TPM Call Trace Logs</span>
+            </div>
+            <div className="h-28 overflow-y-auto text-emerald-400 space-y-1 mt-3 leading-relaxed">
+              {logs.length === 0 ? (
+                <span className="text-zinc-600">Awaiting TPM execution...</span>
+              ) : (
+                logs.map((log, idx) => (
+                  <div key={idx} className={log.startsWith('✔') ? 'text-emerald-500 font-black' : ''}>
+                    {log}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -48,6 +48,8 @@ import OidcDiscoveryAuditor from './pages/Tools/OidcDiscoveryAuditor'
 import AnsibleVault from './pages/Tools/AnsibleVault'
 import SopsSimulator from './pages/Tools/SopsSimulator'
 import InterviewCareerCenter from './pages/InterviewCareerCenter'
+import KeyRingManager from './pages/Tools/KeyRingManager'
+import IdentityBrokerSandbox from './pages/Playgrounds/IdentityBrokerSandbox'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
 import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
@@ -177,6 +179,7 @@ export default function App() {
               <Route path="/tools/oidc-discovery" element={<OidcDiscoveryAuditor />} />
               <Route path="/tools/ansible-vault" element={<AnsibleVault />} />
               <Route path="/tools/sops-simulator" element={<SopsSimulator />} />
+              <Route path="/tools/key-ring" element={<KeyRingManager />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />
@@ -209,6 +212,7 @@ export default function App() {
               <Route path="/playground/gnap" element={<GnapVisualizer />} />
               <Route path="/playground/caep" element={<CaepLab />} />
               <Route path="/playground/vc-did" element={<VcDidLab />} />
+              <Route path="/playground/identity-broker" element={<IdentityBrokerSandbox />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />

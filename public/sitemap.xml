@@ -88,6 +88,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/tools/key-ring/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/playground/identity-broker/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/tools/ansible-vault/</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>

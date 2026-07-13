@@ -233,6 +233,14 @@ export default function PlaygroundCatalog() {
       icon: BadgeCheck,
       link: "/playground/vc-did",
       badge: "Active (Advanced)",
+    },
+    {
+      title: "Identity Broker & Federation Sandbox",
+      desc: "Explore multi-tenant single sign-on (SSO), federation routing, and real-time SAML-to-OIDC token translation topologies.",
+      icon: Network,
+      link: "/playground/identity-broker",
+      badge: "Active (Advanced)",
+      enterpriseProducts: "Okta, Azure AD, PingIdentity, Thales OneWelcome"
     }
   ]
 

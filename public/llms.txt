@@ -30,6 +30,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [GNAP Grant Negotiation Visualizer](https://www.aboutiam.com/playground/gnap/): RFC 9635 grant request, interaction, continuation, and key-bound token issuance timeline.
 - [CAEP Continuous Access Evaluation Lab](https://www.aboutiam.com/playground/caep/): Shared Signals Framework transmitter pushing signed SETs to receivers in real time.
 - [Verifiable Credentials & DID Lab](https://www.aboutiam.com/playground/vc-did/): Issuer/Holder/Verifier flow signing and verifying a real Ed25519 VC and Presentation.
+- [Identity Broker & Federation Sandbox](https://www.aboutiam.com/playground/identity-broker/): Explore multi-tenant single sign-on (SSO), federation routing, and real-time SAML-to-OIDC token translation topologies.
 
 ## Security Tools (free, client-side utilities)
 
@@ -55,6 +56,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [bcrypt Hash Generator & Verifier](https://www.aboutiam.com/tools/bcrypt-generator/): Hash passwords with bcrypt at custom cost factors or verify plaintext passwords against existing hashes.
 - [Ansible Vault Encryptor & Decryptor](https://www.aboutiam.com/tools/ansible-vault/): Encrypt or decrypt secrets client-side using the standard Ansible Vault 1.1/1.2 AES-256 cipher format — 100% browser-native PBKDF2 + AES-CTR + HMAC-SHA256.
 - [Mozilla SOPS GitOps Secrets Simulator](https://www.aboutiam.com/tools/sops-simulator/): Selectively encrypt or decrypt configuration values inside YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys.
+- [Hardware Key Ring & HSM Emulator](https://www.aboutiam.com/tools/key-ring/): Generate and execute RSA, ECDSA, and AES-GCM-256 keys locally in browser-native IndexedDB securely, emulating hardware HSM vaults.
 
 ## Advanced Ecosystem & Governance
 

@@ -390,7 +390,7 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
                 )}
 
                 {/* Subtab products: OneWelcome, STA, IdCloud */}
-                {(['onewelcome', 'sta', 'idcloud'] as const).includes(thalesTab as any) && (
+                {(thalesTab === 'onewelcome' || thalesTab === 'sta' || thalesTab === 'idcloud') && (
                   (() => {
                     const prod = THALES_PRODUCTS.find(p => p.id === thalesTab)!
                     return (
@@ -661,7 +661,7 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
                   {/* Category Filter selector */}
                   <select
                     value={newsFilter}
-                    onChange={(e: any) => setNewsFilter(e.target.value)}
+                    onChange={(e) => setNewsFilter(e.target.value as 'All' | 'News' | 'Advisory' | 'Research' | 'Announcement')}
                     className="text-[10px] bg-bg-nested border border-border-subtle p-1.5 rounded-lg text-text-secondary font-bold focus:outline-none"
                   >
                     <option value="All">All Categories</option>

@@ -270,4 +270,32 @@ const promptPayload = serializePlaygroundStateForAI({
   userVariables: { alg: 'none', sub: 'admin' }
 })
 ```
+---
+
+### 🏛️ G. How to Leverage the Offline Resilience Simulator (Airplane Mode)
+
+All developer utilities, playgrounds, or features should integrate cleanly with our **Simulated Offline Resilience Simulator** to demonstrate network-constrained, secure air-gapped environments.
+
+#### **1. Read Offline States Natively via `useAirplaneModeStore`**
+Import the store hook to check for simulated disconnections, latencies, or packet drops:
+```typescript
+import { useAirplaneModeStore } from '../store/airplaneModeStore'
+
+const { isEnabled, simulateLatency, simulatePacketLoss } = useAirplaneModeStore()
+```
+
+#### **2. Model IdP Outages & Latency in Playgrounds**
+In your network mock actions (e.g. OIDC authentication requests, SAML redirect mappings, or SCIM sync loops), inject simulated constraints:
+```typescript
+if (isEnabled) {
+  // Trigger simulated 503 Outage
+  log("🚨 Central IdP Outage Detected. Fallback to cached key structures.")
+  return { status: 503, error: 'Service Unavailable' }
+}
+
+if (simulateLatency > 0) {
+  // Inject simulated delay
+  await new Promise(resolve => setTimeout(resolve, simulateLatency))
+}
+```
 

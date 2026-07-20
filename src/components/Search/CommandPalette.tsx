@@ -5,7 +5,7 @@ import {
   Search, Terminal, ShieldAlert, History, Sparkles, 
   Wrench, Book, Flame, CornerDownLeft, Command, X
 } from 'lucide-react'
-import { getSearchIndex, parseSlashCommand } from '../../lib/search/searchService'
+import { getSearchIndex } from '../../lib/search/searchService'
 import type { SearchItem } from '../../lib/search/searchService'
 import { useSearchHistoryStore } from '../../lib/search/useSearchHistory'
 import { useThemeStore } from '../../store/themeStore'
@@ -27,8 +27,19 @@ interface CommandPaletteItem {
   isCommand?: boolean
   isHistory?: boolean
   isStarter?: boolean
+  isAction?: 'theme' | 'reset' | 'redirect' | 'airplane'
   icon?: React.ComponentType<{ className?: string }>
 }
+
+const COMMANDS_LIST: CommandPaletteItem[] = [
+  { id: 'cmd-airplane', title: '/airplane', description: 'Toggle Simulated Offline Mode (Airplane Mode) to verify local identity survivability and client-side air-gap privacy.', link: '#', isCommand: true, isAction: 'airplane' },
+  { id: 'cmd-offline', title: '/offline', description: 'Toggle Simulated Offline Mode (Airplane Mode).', link: '#', isCommand: true, isAction: 'airplane' },
+  { id: 'cmd-theme', title: '/theme', description: 'Toggle console theme styles (System light & dark mode).', link: '#', isCommand: true, isAction: 'theme' },
+  { id: 'cmd-reset', title: '/reset', description: 'Clear all learning progress, lab credentials, and simulator scores from local storage.', link: '#', isCommand: true, isAction: 'reset' },
+  { id: 'cmd-ctf', title: '/ctf', description: 'Jump to the client-side Identity CTF hacking arena.', link: '/playground/ctf', isCommand: true, isAction: 'redirect' },
+  { id: 'cmd-labs', title: '/labs', description: 'Filter index to display all interactive simulators.', link: '/playground', isCommand: true, isAction: 'redirect' },
+  { id: 'cmd-tools', title: '/tools', description: 'Filter index to browse browser-native security utilities.', link: '/tools', isCommand: true, isAction: 'redirect' }
+]
 
 export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const [query, setQuery] = useState('')
@@ -104,11 +115,6 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
     }
   }, [query, isOpen])
 
-  // Handle slash commands
-  const slashCommand = useMemo(() => {
-    return parseSlashCommand(query)
-  }, [query])
-
   // Group search results by category for categorized layout rendering
   const groupedResults = useMemo(() => {
     const groups: { [key: string]: CommandPaletteItem[] } = {}
@@ -124,8 +130,9 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
 
   // Flattened array of active items (either results or starters/history) to assist arrow navigation
   const flatSelectableItems = useMemo<CommandPaletteItem[]>(() => {
-    if (slashCommand) {
-      return [{ id: 'slash-command', title: query, link: '#', isCommand: true }]
+    if (query.trim().startsWith('/')) {
+      const q = query.trim().toLowerCase()
+      return COMMANDS_LIST.filter(c => c.title.startsWith(q))
     }
 
     if (query.trim() === '') {
@@ -153,7 +160,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
     }
 
     return results
-  }, [results, query, recentQueries, slashCommand])
+  }, [results, query, recentQueries])
 
   // Auto-scroll selection container into view
   useEffect(() => {
@@ -181,31 +188,32 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
 
   // Handle selecting an item
   const handleSelectItem = (
-    item: { id: string; title: string; link?: string; isCommand?: boolean; isHistory?: boolean; isStarter?: boolean } | null | undefined, 
+    item: CommandPaletteItem | null | undefined, 
     openInNewTab = false
   ) => {
     if (!item) return
 
     // Execute system slash commands
     if (item.isCommand) {
-      if (slashCommand) {
-        if (slashCommand.type === 'theme') {
-          const nextTheme = theme === 'dark' ? 'light' : 'dark'
-          setTheme(nextTheme)
-          onClose()
-        } else if (slashCommand.type === 'airplane') {
-          const { isEnabled: planeEnabled, setEnabled: setPlaneEnabled } = useAirplaneModeStore.getState()
-          setPlaneEnabled(!planeEnabled, true)
-          onClose()
-        } else if (slashCommand.type === 'reset') {
-          if (confirm('Are you sure you want to clear all learning modules, CTF completion badges, and high scores from local storage? This action is permanent.')) {
-            localStorage.clear()
-            window.location.reload()
-          }
-        } else if (slashCommand.type === 'redirect' && slashCommand.actionUrl) {
-          navigate(slashCommand.actionUrl)
-          onClose()
+      const action = item.isAction
+      const targetLink = item.link
+
+      if (action === 'theme') {
+        const nextTheme = theme === 'dark' ? 'light' : 'dark'
+        setTheme(nextTheme)
+        onClose()
+      } else if (action === 'airplane') {
+        const { isEnabled: planeEnabled, setEnabled: setPlaneEnabled } = useAirplaneModeStore.getState()
+        setPlaneEnabled(!planeEnabled, true)
+        onClose()
+      } else if (action === 'reset') {
+        if (confirm('Are you sure you want to clear all learning progress, lab credentials, and scores from local storage? This action is permanent.')) {
+          localStorage.clear()
+          window.location.reload()
         }
+      } else if (action === 'redirect' && targetLink && targetLink !== '#') {
+        navigate(targetLink)
+        onClose()
       }
       return
     }
@@ -305,36 +313,51 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
               <div className="flex-1 overflow-y-auto p-3 scrollbar-thin max-h-[50vh]">
                 
                 {/* 1. Slash Command Mode */}
-                {slashCommand && (
+                {/* 1. Slash Command Mode */}
+                {query.trim().startsWith('/') && (
                   <div className="space-y-2 py-1">
-                    <span className="text-[10px] text-accent-secondary font-mono font-black uppercase tracking-wider block px-2.5 mb-1 flex items-center gap-1.5">
-                      <Terminal className="w-3.5 h-3.5" /> Console Command Mode
+                    <span className="text-[10px] text-accent-secondary font-mono font-black uppercase tracking-wider block px-2.5 mb-1.5 flex items-center gap-1.5">
+                      <Terminal className="w-3.5 h-3.5 animate-pulse" /> Console Command Mode
                     </span>
-                    <button
-                      ref={el => { itemRefs.current[0] = el }}
-                      onClick={() => handleSelectItem(flatSelectableItems[0])}
-                      className={`w-full text-left p-3.5 rounded-xl border flex items-center justify-between transition-all ${
-                        selectedIndex === 0 
-                          ? 'bg-accent-glow border-accent-secondary text-text-primary shadow-sm scale-[1.01]' 
-                          : 'bg-bg-nested/10 border-border-subtle text-text-secondary hover:bg-bg-nested/30'
-                      }`}
-                    >
-                      <div className="flex gap-3 items-start">
-                        <Terminal className="w-5 h-5 text-accent-secondary shrink-0 mt-0.5 animate-pulse" />
-                        <div>
-                          <span className="font-mono font-bold text-xs text-text-primary block">{query}</span>
-                          <span className="text-[11px] text-text-secondary font-semibold leading-normal block mt-1">{slashCommand.message}</span>
-                        </div>
+                    
+                    {flatSelectableItems.length > 0 ? (
+                      <div className="space-y-1">
+                        {flatSelectableItems.map((item, idx) => (
+                          <button
+                            key={item.id}
+                            ref={el => { itemRefs.current[idx] = el }}
+                            onClick={() => handleSelectItem(item)}
+                            className={`w-full text-left p-3.5 rounded-xl border flex items-center justify-between transition-all ${
+                              selectedIndex === idx 
+                                ? 'bg-accent-glow border-accent-secondary text-text-primary shadow-sm scale-[1.01]' 
+                                : 'bg-bg-nested/10 border-transparent text-text-secondary hover:bg-bg-nested/30'
+                            }`}
+                          >
+                            <div className="flex gap-3 items-start min-w-0 pr-4">
+                              <Terminal className={`w-4 h-4 mt-0.5 shrink-0 ${selectedIndex === idx ? 'text-accent-secondary animate-pulse' : 'text-text-muted'}`} />
+                              <div className="min-w-0">
+                                <span className="font-mono font-bold text-xs text-text-primary block">{item.title}</span>
+                                <span className="text-[10px] text-text-muted font-semibold leading-normal block mt-1 truncate">{item.description}</span>
+                              </div>
+                            </div>
+                            <div className={`flex items-center gap-1 font-mono text-[9px] font-bold text-text-muted bg-bg-nested/60 border border-border-subtle/50 px-2 py-0.5 rounded shrink-0 transition-opacity ${
+                              selectedIndex === idx ? 'opacity-100' : 'opacity-0'
+                            }`}>
+                              <span>EXECUTE</span> <CornerDownLeft className="w-3 h-3" />
+                            </div>
+                          </button>
+                        ))}
                       </div>
-                      <div className="flex items-center gap-1 font-mono text-[9px] font-bold text-text-muted bg-bg-nested/60 border border-border-subtle/50 px-2 py-0.5 rounded">
-                        <span>EXECUTE</span> <CornerDownLeft className="w-3 h-3" />
+                    ) : (
+                      <div className="text-center py-6 text-[11px] text-text-muted font-semibold">
+                        ❌ Unknown Command. Type <kbd className="bg-bg-nested border border-border-subtle px-1 py-0.5 rounded font-mono text-[10px]">/theme</kbd> or <kbd className="bg-bg-nested border border-border-subtle px-1 py-0.5 rounded font-mono text-[10px]">/airplane</kbd>.
                       </div>
-                    </button>
+                    )}
                   </div>
                 )}
 
                 {/* 2. Empty Query State: Recent History & Starters */}
-                {query.trim() === '' && !slashCommand && (
+                {query.trim() === '' && (
                   <div className="space-y-5 py-1">
                     {/* Recent Search Queries */}
                     {recentQueries.length > 0 && (
@@ -411,7 +434,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                 )}
 
                 {/* 3. Search Results State */}
-                {query.trim() !== '' && !slashCommand && results.length > 0 && (
+                {query.trim() !== '' && results.length > 0 && (
                   <div className="space-y-4">
                     {(() => {
                       let globalItemCounter = -1
@@ -466,7 +489,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                 )}
 
                 {/* 4. No Results State */}
-                {query.trim() !== '' && !slashCommand && results.length === 0 && (
+                {query.trim() !== '' && results.length === 0 && (
                   <div className="text-center py-12 px-4 space-y-2">
                     <div className="w-12 h-12 bg-bg-nested/50 border border-border-subtle rounded-xl flex items-center justify-center mx-auto text-text-muted text-lg">
                       ❓

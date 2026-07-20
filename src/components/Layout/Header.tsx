@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
 import { getRouteMeta } from '../../routeMeta'
+import CommandPalette from '../Search/CommandPalette'
 
 const SITE_URL = 'https://www.aboutiam.com'
 
@@ -64,6 +65,19 @@ export default function Header() {
 
   const pageMeta = getRouteMeta(location.pathname)
   const isHome = location.pathname === '/'
+
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setIsSearchOpen(prev => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleGlobalKeyDown)
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown)
+  }, [])
 
   useEffect(() => {
     // location.pathname already carries a trailing slash for every real
@@ -136,10 +150,21 @@ export default function Header() {
 
       {/* Persistent Theme and Repo Controls */}
       <div className="flex items-center gap-3">
+        {/* Search / Command Console button */}
+        <button
+          onClick={() => setIsSearchOpen(true)}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary text-xs font-semibold transition-colors focus:outline-none cursor-pointer"
+          title="Search / Command Console (⌘K)"
+        >
+          <Search className="w-4 h-4 text-text-muted" />
+          <span className="hidden md:inline">Search</span>
+          <kbd className="hidden sm:inline bg-bg-card border border-border-subtle px-1 py-0.5 rounded font-mono text-[9px]">⌘K</kbd>
+        </button>
+
         {/* Theme Cycling Selector */}
         <button
           onClick={cycleTheme}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary text-xs font-semibold transition-colors focus:outline-none"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary text-xs font-semibold transition-colors focus:outline-none cursor-pointer"
           title="Cycle appearance theme (Light -> Dark -> System)"
         >
           {renderThemeIcon()}
@@ -159,6 +184,9 @@ export default function Header() {
           </svg>
         </a>
       </div>
+
+      {/* Global Search Command Palette overlay modal */}
+      <CommandPalette isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   )
 }

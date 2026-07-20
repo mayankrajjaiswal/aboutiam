@@ -28,6 +28,19 @@ export default function VendorCenter() {
   const vendor = VENDOR_CATALOG[activeVendor]
   const [thalesTab, setThalesTab] = useState<ThalesTabType>('overview')
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const v = params.get('v') || params.get('vendor') || params.get('active')
+      if (v && Object.keys(VENDOR_CATALOG).includes(v)) {
+        setTimeout(() => {
+          setActiveVendor(v as VendorType)
+          setActiveSection('vendors')
+        }, 0)
+      }
+    }
+  }, [])
+
   // --- SECTION 2: INTELLIGENCE HUB STATE ---
   const [newsFilter, setNewsFilter] = useState<'All' | 'News' | 'Advisory' | 'Research' | 'Announcement'>('All')
   const [cveSearch, setCveSearch] = useState('')

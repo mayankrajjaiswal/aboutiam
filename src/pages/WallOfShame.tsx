@@ -13,6 +13,23 @@ export default function WallOfShame() {
   // Set visited flag on mount
   useEffect(() => {
     localStorage.setItem('aboutiam-museum-visited', 'true')
+    
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const tab = params.get('tab') as MuseumTab | null
+      const lab = params.get('lab') as 'goldensaml' | 'pushfatigue' | 'wildcard' | 'oktahar' | 'silversaml' | 'lastpass' | null
+      if (tab === 'evolution' || tab === 'breaches' || tab === 'resources') {
+        setTimeout(() => {
+          setActiveTab(tab)
+        }, 0)
+      }
+      if (lab && ['goldensaml', 'pushfatigue', 'wildcard', 'oktahar', 'silversaml', 'lastpass'].includes(lab)) {
+        setTimeout(() => {
+          setActiveLab(lab)
+          setActiveTab('breaches')
+        }, 0)
+      }
+    }
   }, [])
 
   // Golden SAML Lab State

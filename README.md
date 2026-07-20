@@ -35,6 +35,7 @@ Many developers and security architects find Identity and Access Management dry,
 The AboutIAM platform houses a fully integrated identity workspace, organized into three distinct structural columns:
 
 ### 🚀 A. Core Platform & Reference Centers
+* **Global Search & Command Palette Console (⌘K / Ctrl+K):** A high-performance, browser-native command console powered by `MiniSearch`. Features instant in-memory fuzzy searching, term highlighting, persistent search history caching, deep-linking, and interactive console slash commands (`/theme`, `/reset`, `/ctf`, `/labs`, `/tools`) wrapped in a security terminal layout.
 * **Overview Dashboard (`Home.tsx`):** Displays overall progress, track graduations, and historical **Identity Trivia cards** (including MIT's first 1961 password bypass and Kerberos mythology).
 * **Beginner's Onboarding Primer (`BeginnerPrimer.tsx`):** Specifically designed for students, interns, and laymen. Explains the 4 chronological pillars (**Identify $\rightarrow$ Authenticate $\rightarrow$ Authorize $\rightarrow$ Audit**) in plain English.
 * **IAM Academy (`Learn.tsx`):** 6 guided course tracks and 36 expanding modules. Toggling "Completed" persists progress inside browser `localStorage` and animates progress bars. (Phase 3 Milestone)
@@ -110,6 +111,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 ## 🛠️ Technology Stack
 
 * **Framework:** React 19, TypeScript, Vite 7.x
+* **Search Core:** MiniSearch (lightweight, client-side indexing with full-text TF-IDF relevance weighting, prefix search, and fuzzy matching)
 * **State & Storage:** Zustand + Persist Middleware (local storage)
 * **Design & Theme:** Tailwind CSS 4.x (fully fluid responsive grids, supporting system-matching Light & Dark themes)
 * **Animation Canvas:** Framer Motion (animated vector flow paths)
@@ -160,4 +162,4 @@ This repository is equipped with a fully automated CI/CD pipeline inside `.githu
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details. 
 All contributions are welcome! Review our [Contributing Guidelines](CONTRIBUTING.md) to join the mission of making digital identity safer for everyone.
 
-Created with 💙 by **[Mayank Raj Jaiswal](https://github.com/mayankrajjaiswal/)** (Lead Architect & Founder).
+Created by **[Mayank Raj Jaiswal](https://github.com/mayankrajjaiswal/)** and Rajat.

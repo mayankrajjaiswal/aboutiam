@@ -14,6 +14,7 @@ AboutIAM is engineered as a **100% Client-Side, Zero-Backend Application**, ensu
 - **Core Runtime:** React 19 (TypeScript) + Vite 7.x (instant HMR compiling).
 - **Routing & SEO:** React Router 7 (`BrowserRouter`, clean URLs) plus a post-build static pre-render step (`scripts/postbuild-ssg.mjs`) that writes a real, indexable `index.html` per route — required because GitHub Pages has no server-side rewrites, so a route without its own physical file would 404 for crawlers.
 - **Styling Engine:** Tailwind CSS 4.x (fully fluid responsive viewports, supporting system-matching Light & Dark themes).
+- **Search Engine Core:** MiniSearch (~9kb high-performance client-side indexing with TF-IDF relevance weighting, prefix searches, and fuzzy matching).
 - **State Management:** Zustand + Persist middleware (persisting user course completions and layout states in `localStorage`).
 - **Motion Canvas:** Framer Motion (handling animated vector SVG flow paths and popup transitions).
 - **Testing Core:** Vitest (Vite-native unit testing with mock SSR safeguards).

@@ -16,6 +16,7 @@
     "bcryptjs": "^3.0.3",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.25.0",
+    "minisearch": "^7.2.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.1",

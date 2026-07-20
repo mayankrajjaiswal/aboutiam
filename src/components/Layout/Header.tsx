@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
+import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
 import { getRouteMeta } from '../../routeMeta'
 import CommandPalette from '../Search/CommandPalette'
+import { useAirplaneModeStore } from '../../store/airplaneModeStore'
+import AirplaneSelector from '../Search/AirplaneSelector'
 
 const SITE_URL = 'https://www.aboutiam.com'
 
@@ -67,6 +69,8 @@ export default function Header() {
   const isHome = location.pathname === '/'
 
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isAirplaneOpen, setIsAirplaneOpen] = useState(false)
+  const { isEnabled: isAirplaneEnabled } = useAirplaneModeStore()
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -160,6 +164,24 @@ export default function Header() {
           <span className="hidden md:inline">Search</span>
           <kbd className="hidden sm:inline bg-bg-card border border-border-subtle px-1 py-0.5 rounded font-mono text-[9px]">⌘K</kbd>
         </button>
+
+        {/* Airplane Mode / Offline Resilience button */}
+        <div className="relative flex items-center justify-center">
+          <button
+            onClick={() => setIsAirplaneOpen(!isAirplaneOpen)}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-colors focus:outline-none cursor-pointer ${
+              isAirplaneEnabled
+                ? 'bg-status-danger/10 border-status-danger/30 text-status-danger hover:bg-status-danger/20'
+                : 'bg-bg-sidebar border-border-subtle hover:bg-bg-nested text-text-secondary hover:text-text-primary'
+            }`}
+            title="Simulated network resilience and air-gapped status panel"
+          >
+            <Plane className={`w-4 h-4 ${isAirplaneEnabled ? 'animate-bounce text-status-danger' : ''}`} />
+            {isAirplaneEnabled && <span className="hidden lg:inline text-[10px] uppercase font-black tracking-wider text-status-danger">Offline</span>}
+          </button>
+          
+          <AirplaneSelector isOpen={isAirplaneOpen} onClose={() => setIsAirplaneOpen(false)} />
+        </div>
 
         {/* Theme Cycling Selector */}
         <button

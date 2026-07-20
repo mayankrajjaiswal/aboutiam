@@ -148,7 +148,7 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
 }
 
 export interface CommandAction {
-  type: 'theme' | 'reset' | 'redirect'
+  type: 'theme' | 'reset' | 'redirect' | 'airplane'
   message: string
   actionUrl?: string
 }
@@ -156,6 +156,13 @@ export interface CommandAction {
 export function parseSlashCommand(query: string): CommandAction | null {
   const q = query.trim().toLowerCase()
   if (!q.startsWith('/')) return null
+
+  if (q === '/airplane' || q === '/offline') {
+    return {
+      type: 'airplane',
+      message: 'Toggle Simulated Offline Mode (Airplane Mode) to test local identity survivability and client air-gap.',
+    }
+  }
 
   if (q === '/theme') {
     return {

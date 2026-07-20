@@ -9,6 +9,7 @@ import { getSearchIndex, parseSlashCommand } from '../../lib/search/searchServic
 import type { SearchItem } from '../../lib/search/searchService'
 import { useSearchHistoryStore } from '../../lib/search/useSearchHistory'
 import { useThemeStore } from '../../store/themeStore'
+import { useAirplaneModeStore } from '../../store/airplaneModeStore'
 
 interface CommandPaletteProps {
   isOpen: boolean
@@ -191,6 +192,10 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
         if (slashCommand.type === 'theme') {
           const nextTheme = theme === 'dark' ? 'light' : 'dark'
           setTheme(nextTheme)
+          onClose()
+        } else if (slashCommand.type === 'airplane') {
+          const { isEnabled: planeEnabled, setEnabled: setPlaneEnabled } = useAirplaneModeStore.getState()
+          setPlaneEnabled(!planeEnabled, true)
           onClose()
         } else if (slashCommand.type === 'reset') {
           if (confirm('Are you sure you want to clear all learning modules, CTF completion badges, and high scores from local storage? This action is permanent.')) {

@@ -174,7 +174,7 @@ export default function Header() {
                 ? 'bg-status-danger/10 border-status-danger/30 text-status-danger hover:bg-status-danger/20'
                 : 'bg-bg-sidebar border-border-subtle hover:bg-bg-nested text-text-secondary hover:text-text-primary'
             }`}
-            title="Simulated network resilience and air-gapped status panel"
+            title="✈️ Air-Gap & Resilience Console (Verify 100% offline privacy)"
           >
             <Plane className={`w-4 h-4 ${isAirplaneEnabled ? 'animate-bounce text-status-danger' : ''}`} />
             {isAirplaneEnabled && <span className="hidden lg:inline text-[10px] uppercase font-black tracking-wider text-status-danger">Offline</span>}

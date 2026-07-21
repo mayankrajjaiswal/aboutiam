@@ -26,4 +26,20 @@ describe('getSearchIndex deep-link entries', () => {
     ].filter((r) => r.id.startsWith('standard-') || r.id.startsWith('arch-'))
     expect(all.length).toBeGreaterThan(0)
   })
+
+  it('indexes sidebar/nav pages not covered by other categories', () => {
+    const index = getSearchIndex()
+
+    const reportResult = index.search('report', { prefix: true })
+      .find((r) => (r as unknown as { link: string }).link === '/reports')
+    expect(reportResult).toBeTruthy()
+
+    const termsResult = index.search('terms', { prefix: true })
+      .find((r) => (r as unknown as { link: string }).link === '/terms')
+    expect(termsResult).toBeTruthy()
+
+    const assessResult = index.search('assess', { prefix: true })
+      .find((r) => (r as unknown as { link: string }).link === '/assess')
+    expect(assessResult).toBeTruthy()
+  })
 })

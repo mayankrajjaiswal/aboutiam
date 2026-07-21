@@ -90,12 +90,12 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts, downloadable SVG roadmaps, and a `?a=<digits>` shareable, URL-hydrated read-only report link (scoring logic lives in `src/lib/assess/scoring.ts`). |
 | **`/explore`** | `Explore.tsx` | Landscape Directory. Product blueprints with copyable integration code blocks. |
 | **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Intelligent platform navigator, protocol comparison engine, and customized learning planner. |
-| **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 36 categorized standard terms with analogies and specs. |
+| **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 65 categorized standard terms with analogies and specs. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. |
 | **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards, interactive forms, and a static "Security & Transparency" section summarizing shipped CI/CSP hardening with a link to the GitHub Security tab. |
 | **`/terms`** | `Terms.tsx` | Terms, License & Disclaimer. MIT license summary, an educational/simulated-environment disclaimer for the attack-technique labs, and a no-warranty clause. Linked from Contributors; intentionally excluded from the Sidebar nav. |
 | **`/timeline`** | `IdentityTimeline.tsx` | Interactive historical identity timeline from mainframes to post-2030 ambient trust with inline simulators. |
-| **`/community`** | `CommunityHub.tsx` | Community Achievements and dynamic contributor badges matched with local storage progression. |
+| **`/community`** | `CommunityHub.tsx` | Community Achievements and dynamic contributor badges matched with local storage progression, including cross-module milestone badges (Academy track graduations, cumulative Playground completions) derived via `src/lib/achievements/achievementRules.ts`. |
 | **`/community-forums`** | `CommunityForums.tsx` | Threaded developer forums (SCIM conflicts, SSW bypasses) and custom architectural showcase. |
 | **`/events`** | `EventsCalendar.tsx` | IAM Events & Conferences. Chronologically sorted, hand-curated directory of major industry conferences and summits (EIC, Identiverse, RSAC, Gartner IAM Summit, Authenticate, Oktane, Identity Week, KuppingerCole Impact Days), rendered from `src/data/eventsRegistry.ts`, with dates, locations, and direct links to official agendas. Past events auto-filter out via `getUpcomingEvents()`. |
 | **`/reports`** | `IamReports.tsx` | IAM Analyst Reports & Research. Publisher-grouped directory of Gartner Magic Quadrant, Forrester Wave, and KuppingerCole Leadership Compass reports (Access Management, PAM, CIAM, Passwordless) plus Thales's annual Data Threat Report, rendered from `src/data/reportsRegistry.ts`. Each entry carries a `confidence` flag and `verifiedVia`/`verifiedDate` provenance note (single-vendor corroboration vs. cross-checked across independent sources). A **Cross-Analyst Leaderboard** (`getVendorLeaderboard()`) surfaces vendors named a Leader by 2+ independent publishers, and named-leader chips deep-link to their `/vendor?v=<key>` profile via `LEADER_VENDOR_LINKS`. |
@@ -191,7 +191,7 @@ To add a new learning track or module to the **IAM Academy**, open `src/pages/Le
 ### 🧭 D. How to Add a New Page/Route
 Adding a page touches **three** files, because routes are statically pre-rendered for SEO (see §1) rather than resolved purely client-side:
 1. **`src/App.tsx`** — add the `<Route path="..." element={<YourPage />} />`.
-2. **`src/routeMeta.ts`** — add a `{ path, title, description }` entry. This drives the browser tab title, `<meta name="description">`, and canonical link that `Header.tsx` syncs on navigation.
+2. **`src/routeMeta.ts`** — add a `{ path, title, description }` entry. This drives the browser tab title, `<meta name="description">`, and canonical link that `Header.tsx` syncs on navigation. It also automatically makes the page searchable in the command palette (see §4I) — no separate search-registration step needed for a generic page.
 3. **`scripts/postbuild-ssg.mjs`** — add the *same* `{ path, title, description }` entry to its `ROUTES` array. This script runs in plain Node after `vite build` and intentionally keeps its own copy instead of importing the `.ts` file (avoids depending on a specific Node TypeScript-execution feature in CI) — it's what writes the real `dist/<route>/index.html` GitHub Pages serves. Skipping this step means the route works for in-app navigation but 404s for anyone (or any crawler) linking to it directly.
 
 Optionally add a `Sidebar.tsx` nav entry and a `public/sitemap.xml` `<url>` entry if the page should be discoverable from the main nav / search engines.
@@ -327,7 +327,14 @@ To add a custom feed update without shipping a new tool or CVE, simply insert an
 
 ---
 
-### 🏛️ I. How to Add Deep-Linkable Query Params to a Page
+### 🏛️ I. How to Keep a New Page Searchable (and Add Deep-Linkable Query Params)
+
+`getSearchIndex()` in `src/lib/search/searchService.ts` builds its MiniSearch index from two layers:
+
+1. **Rich, hand-curated categories** — Simulators, Security Tools (from `toolsRegistry.ts`), Encyclopedia terms, Vendor profiles, Breaches, Living Standards, and Reference Architectures — each with its own keyword list and category label.
+2. **A generic fallback pass over `ROUTE_META`** (`src/routeMeta.ts`) that indexes any route path *not already covered* by layer 1, under a `'📄 Site Pages'` category, deriving keywords from the route's title. Because every route is already required to have a `ROUTE_META` entry (§4D), **this means a brand-new plain page is searchable automatically the moment it's added there — no `searchService.ts` edit required.**
+
+Only touch `searchService.ts` directly when a page deserves a *richer* entry than the generic fallback gives it — e.g. adding a new simulator to `SIMULATORS_LIST`, a new vendor to `VENDOR_CATALOG`, a new breach to `BREACHES_LIST`, or a new deep-linkable standard/architecture (see below) — since those hand-curated categories carry more specific keywords and a nicer category label than the generic one.
 
 Several pages (`VendorCenter.tsx`, `StandardsExplorer.tsx`, `ArchitectureCenter.tsx`) support landing directly on a specific item via a query param, so search results and the command palette (`src/lib/search/searchService.ts`) can link straight into a specific vendor, standard, or architecture instead of just the index page. The codebase's convention is a manual mount-time `useEffect` reading `window.location.search` — not React Router's `useSearchParams` — to stay consistent across pages:
 ```typescript

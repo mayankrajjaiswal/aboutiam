@@ -5,6 +5,7 @@ import { ENCYCLOPEDIA_TERMS } from '../../data/encyclopediaData'
 import type { Term } from '../../pages/Encyclopedia'
 import { VENDOR_CATALOG } from '../../data/vendorCatalog'
 import type { VendorType } from '../../data/vendorCatalog'
+import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
   id: string
@@ -191,6 +192,28 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
       category: '🏛️ Reference Architectures',
       link: `/architecture?arch=${a.id}`,
       keywords: a.kw
+    })
+  })
+
+  // 8. Add every remaining site page (sidebar/nav pages not covered above)
+  // sourced from routeMeta.ts — the same table already required to be kept
+  // in sync for SEO, so new routes get indexed here automatically.
+  const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))
+  ROUTE_META.forEach(route => {
+    if (coveredPaths.has(route.path)) return
+    coveredPaths.add(route.path)
+    const keywords = route.title
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter(w => w.length > 2)
+    items.push({
+      id: `page-${route.path.replace(/\//g, '-') || 'home'}`,
+      title: route.title,
+      fullName: 'Site Page',
+      description: route.description,
+      category: '📄 Site Pages',
+      link: route.path,
+      keywords
     })
   })
 

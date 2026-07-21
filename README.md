@@ -60,6 +60,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Interactive Identity Timeline (`/timeline`):** Traces identity history from 1961 mainframes to future ambient trust, with active inline simulators for 6 eras.
 * **Community Achievements & Badge Hub (`/community`):** Dynamic contributor achievements, monthly challenges, and leaderboards driven by browser states.
 * **Community Forums & Showcase Hub (`/community-forums`):** Threaded SecOps discussion boards (SCIM conflicts, SSW bypasses) and custom reference architecture showcases.
+* **IAM Events & Conferences (`/events`):** Hand-curated, chronologically sorted calendar of major identity industry conferences and summits — EIC, Identiverse, RSAC, Gartner IAM Summit, Authenticate, Oktane, Identity Week, and KuppingerCole Impact Days — with dates, locations, and direct links to official agendas. Past events automatically drop off the list.
 * **AI Knowledge Assistant 2.0 (`/assistant`):** Multi-tabbed platform navigator featuring highly context-aware chat with automatic tool recommendations, side-by-side protocol comparisons, and customized dynamic career roadmaps.
 
 ### 💻 B. Simulators & Playgrounds (`/playground`)

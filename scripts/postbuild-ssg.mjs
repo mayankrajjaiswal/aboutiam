@@ -96,6 +96,7 @@ const ROUTES = [
   { path: '/threat-modeling', title: 'Interactive Threat Modeling Studio', description: 'Visually build an IAM architecture and run threat analysis against STRIDE, MITRE ATT&CK, and OWASP. Calculate dynamic risk scores and generate mitigation reports.' },
   { path: '/design-review', title: 'IAM Design Review Assistant', description: 'Interactive design reviewer executing automated structural audits on OAuth parameters, SAML XML, and JWT payload configurations.' },
   { path: '/standards', title: 'Living Standards & RFC Explorer', description: 'Visually explore standard specifications and RFC timelines across OAuth, OpenID Connect, SCIM, SAML, and WebAuthn.' },
+  { path: '/events', title: 'IAM Events & Conferences', description: 'Upcoming Identity and Access Management conferences and summits — EIC, Identiverse, Gartner IAM Summit, Authenticate, RSA Conference, and KuppingerCole Impact Days — with dates, locations, and official links.' },
   { path: '/explore', title: 'IAM Landscape Directory', description: 'Identity product blueprints with copyable integration code.' },
   { path: '/assistant', title: 'AI Knowledge Assistant 2.0', description: 'Intelligent IAM platform navigator, side-by-side protocol comparison engine, learning planner, and interview prep simulator.' },
   { path: '/encyclopedia', title: 'Master IAM Glossary', description: 'Searchable A-Z glossary of 35+ Identity and Access Management standards and acronyms.' },

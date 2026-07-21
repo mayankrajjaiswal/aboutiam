@@ -108,6 +108,7 @@ import IdentityDecisionMatrix from './pages/IdentityDecisionMatrix'
 import ThreatModelingStudio from './pages/ThreatModelingStudio'
 import DesignReviewAssistant from './pages/DesignReviewAssistant'
 import StandardsExplorer from './pages/StandardsExplorer'
+import EventsCalendar from './pages/EventsCalendar'
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
@@ -223,7 +224,7 @@ export default function App() {
               <Route path="/threat-modeling" element={<ThreatModelingStudio />} />
               <Route path="/design-review" element={<DesignReviewAssistant />} />
               <Route path="/standards" element={<StandardsExplorer />} />
-              <Route path="/refrences" element={<ReferenceImplementations />} />
+              <Route path="/events" element={<EventsCalendar />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/encyclopedia" element={<Encyclopedia />} />

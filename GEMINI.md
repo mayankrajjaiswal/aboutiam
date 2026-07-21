@@ -96,6 +96,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/timeline`** | `IdentityTimeline.tsx` | Interactive historical identity timeline from mainframes to post-2030 ambient trust with inline simulators. |
 | **`/community`** | `CommunityHub.tsx` | Community Achievements and dynamic contributor badges matched with local storage progression. |
 | **`/community-forums`** | `CommunityForums.tsx` | Threaded developer forums (SCIM conflicts, SSW bypasses) and custom architectural showcase. |
+| **`/events`** | `EventsCalendar.tsx` | IAM Events & Conferences. Chronologically sorted, hand-curated directory of major industry conferences and summits (EIC, Identiverse, RSAC, Gartner IAM Summit, Authenticate, Oktane, Identity Week, KuppingerCole Impact Days), rendered from `src/data/eventsRegistry.ts`, with dates, locations, and direct links to official agendas. Past events auto-filter out via `getUpcomingEvents()`. |
 | **`/playground/reference-builder`** | `Playgrounds/ReferenceBuilder.tsx` | Visual drag-and-drop identity topology architect with dynamic SVG connectors, OIDC/SAML redirects, and SCIM sync animations. |
 | **`/playground/session-hijacking`** | `Playgrounds/SessionHijackingLab.tsx` | Simulates session cookie theft via infostealers, pasting stolen tokens, and applying DPoP, IP-binding, and CAEP. |
 | **`/playground/conditional-access`** | `Playgrounds/ConditionalAccess.tsx` | Models conditional policy evaluations testing device compliance, networks, geolocations, and risk scores. |

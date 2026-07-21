@@ -40,8 +40,8 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/decision-matrix`** | `IdentityDecisionMatrix.tsx` | Identity Decision Matrix. Intelligent interactive architecture recommender engine. (Phase 6) |
 | **`/threat-modeling`** | `ThreatModelingStudio.tsx` | Interactive Threat Modeling Studio. Visual security modeling workspace with STRIDE/OWASP validations. (Phase 6) |
 | **`/design-review`** | `DesignReviewAssistant.tsx` | IAM Design Review Assistant. Automated structural audits on OAuth, SAML, and JWT blueprints. (Phase 6) |
-| **`/standards`** | `StandardsExplorer.tsx` | Living Standards & RFC Explorer. Visually explore standard specs and RFC timelines across OIDC, SAML, SCIM. (Phase 6) |
-| **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs for Zero Trust, B2B SaaS, and Multi-Cloud SPIRE. |
+| **`/standards`** | `StandardsExplorer.tsx` | Living Standards & RFC Explorer. Visually explore standard specs and RFC timelines across OIDC, SAML, SCIM. Supports `?standard=<id>&tab=<tab>` deep links. (Phase 6) |
+| **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs for Zero Trust, B2B SaaS, and Multi-Cloud SPIRE. Supports `?arch=<type>` deep links. |
 | **`/vendor`** | `VendorCenter.tsx` | Enterprise Ecosystem & Vendor Intelligence Portal. Comprehensive profiles for 18 major platforms, including a flagship featured profile for Thales (OneWelcome, SafeNet Trusted Access, IdCloud) with inner ASCII diagrams, Troubleshooting, and custom Interview Prep. Integrates the Live Identity Intelligence Hub (news, searchable CVE code patch repairs, and visual AI Ingestion Pipeline Simulator), Community Events Calendars with alerts, and Social dashboards with AI Weekly Digest builders. |
 | **`/research`** | `ResearchCenter.tsx` | Searchable identity CVE directory with side-by-side remediation code patches and active standard IETF RFC drafts. |
 | **`/patterns`** | `DesignPatternLibrary.tsx` | Hardened design patterns, sequence flows, and checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless. |
@@ -87,12 +87,13 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/playground/ambient-trust`** | `AmbientTrust.tsx` | Tracks continuous, ambient biometric telemetry and decays session trust scores. |
 | **`/playground/workload-mesh`** | `WorkloadMesh.tsx` | Demonstrates SPIFFE/SPIRE attestations and X.509 SVID credentials. |
 | **`/explore/matchmaker`** | `AuthMatchmaker.tsx` | Startup Auth Matchmaker wizard with copyable boilerplates. |
-| **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts and downloadable SVG roadmaps. |
+| **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts, downloadable SVG roadmaps, and a `?a=<digits>` shareable, URL-hydrated read-only report link (scoring logic lives in `src/lib/assess/scoring.ts`). |
 | **`/explore`** | `Explore.tsx` | Landscape Directory. Product blueprints with copyable integration code blocks. |
 | **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Intelligent platform navigator, protocol comparison engine, and customized learning planner. |
 | **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 36 categorized standard terms with analogies and specs. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. |
-| **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards and interactive forms. |
+| **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards, interactive forms, and a static "Security & Transparency" section summarizing shipped CI/CSP hardening with a link to the GitHub Security tab. |
+| **`/terms`** | `Terms.tsx` | Terms, License & Disclaimer. MIT license summary, an educational/simulated-environment disclaimer for the attack-technique labs, and a no-warranty clause. Linked from Contributors; intentionally excluded from the Sidebar nav. |
 | **`/timeline`** | `IdentityTimeline.tsx` | Interactive historical identity timeline from mainframes to post-2030 ambient trust with inline simulators. |
 | **`/community`** | `CommunityHub.tsx` | Community Achievements and dynamic contributor badges matched with local storage progression. |
 | **`/community-forums`** | `CommunityForums.tsx` | Threaded developer forums (SCIM conflicts, SSW bypasses) and custom architectural showcase. |
@@ -324,4 +325,26 @@ The generation process is guarded by Vitest. The test suite is defined in `scrip
 #### **3. Custom Feed Maintenance**
 To add a custom feed update without shipping a new tool or CVE, simply insert an item into `IDENTITY_NEWS_FEED` inside `src/data/identityIntelligence.ts`. The RSS compilation script automatically picks up your changes on the next build.
 
+---
 
+### 🏛️ I. How to Add Deep-Linkable Query Params to a Page
+
+Several pages (`VendorCenter.tsx`, `StandardsExplorer.tsx`, `ArchitectureCenter.tsx`) support landing directly on a specific item via a query param, so search results and the command palette (`src/lib/search/searchService.ts`) can link straight into a specific vendor, standard, or architecture instead of just the index page. The codebase's convention is a manual mount-time `useEffect` reading `window.location.search` — not React Router's `useSearchParams` — to stay consistent across pages:
+```typescript
+useEffect(() => {
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search)
+    const id = params.get('yourParam')
+    if (id && KNOWN_IDS.includes(id)) {
+      // Per §3D, wrap the setState calls in setTimeout so the purity/
+      // set-state-in-effect lint rules don't flag a synchronous effect-driven update.
+      setTimeout(() => {
+        setActiveItem(id)
+      }, 0)
+    }
+  }
+}, [])
+```
+To make a new page discoverable this way: add the effect above, then add a matching `SearchItem` entry (or a small static list of them) inside `getSearchIndex()` in `searchService.ts` with a `link` like `/your-page?yourParam=<id>`.
+
+The one exception is `/assess`'s shareable report link, which uses a synchronous `useState` lazy initializer instead of an effect (see `Assess.tsx` and `src/lib/assess/scoring.ts`) — because the whole results view, not just an active tab, needs to be seeded before first paint, a `useEffect` would cause a visible flash of the empty wizard first.

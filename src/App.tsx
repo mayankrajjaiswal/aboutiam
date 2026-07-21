@@ -89,6 +89,7 @@ import WallOfShame from './pages/WallOfShame'
 import CheatSheets from './pages/CheatSheets'
 import BeginnerPrimer from './pages/BeginnerPrimer'
 import Contributors from './pages/Contributors'
+import Terms from './pages/Terms'
 import Roadmap from './pages/Roadmap'
 
 // Phase 7: Next-Gen Modules
@@ -236,6 +237,7 @@ export default function App() {
               <Route path="/wall-of-shame" element={<WallOfShame />} />
               <Route path="/cheat-sheets" element={<CheatSheets />} />
               <Route path="/contributors" element={<Contributors />} />
+              <Route path="/terms" element={<Terms />} />
               {/* Fallback Redirection */}
               <Route path="*" element={<Home />} />
             </Routes>

@@ -1,155 +1,24 @@
 import { useState } from 'react'
-import { 
-  Award, Download, LineChart, ShieldCheck, 
-  RefreshCw, Clipboard, ArrowRight, Check
+import {
+  Award, Download, LineChart, ShieldCheck,
+  RefreshCw, Clipboard, ArrowRight, Check, Link2
 } from 'lucide-react'
+import { questions, computeScores, getMaturityTier, encodeAnswers, decodeAnswers } from '../lib/assess/scoring'
 
-interface Question {
-  dimension: string
-  title: string
-  q: string
-  options: {
-    score: number
-    label: string
-    desc: string
-    remediation: string
-  }[]
+function getSharedParam(): string | null {
+  if (typeof window === 'undefined') return null
+  return new URLSearchParams(window.location.search).get('a')
 }
 
 export default function Assess() {
-  const [inProgress, setInActive] = useState(false)
+  const sharedAnswers = useState(() => decodeAnswers(getSharedParam()))[0]
+  const [inProgress, setInActive] = useState(!!sharedAnswers)
   const [activeStep, setActiveStep] = useState(0)
-  const [answers, setAnswers] = useState<Record<number, number>>({})
-  const [showResults, setShowResults] = useState(false)
+  const [answers, setAnswers] = useState<Record<number, number>>(() => sharedAnswers ?? {})
+  const [showResults, setShowResults] = useState(!!sharedAnswers)
   const [isDownloaded, setIsDownloaded] = useState(false)
-
-  const questions: Question[] = [
-    {
-      dimension: 'Identity Governance (IGA)',
-      title: 'User Lifecycle Management',
-      q: 'How are employee lifecycles (Joiner-Mover-Leaver events) managed across corporate applications?',
-      options: [
-        {
-          score: 1,
-          label: 'Tier 1: Ad-hoc & Manual',
-          desc: 'Manual email tickets, spreadsheets, and manual account creations by IT administrators.',
-          remediation: 'Migrate manual tickets to a centralized directory sync schema and automate basic scripting.'
-        },
-        {
-          score: 3,
-          label: 'Tier 2: Defined & Scripted',
-          desc: 'Accounts are provisioned via scheduled scripts parsing active directory templates or CSV file loads.',
-          remediation: 'Upgrade to automatic API-driven provisioning (SCIM 2.0) triggered from a single source of truth.'
-        },
-        {
-          score: 5,
-          label: 'Tier 3: Automated & Continuous',
-          desc: 'Real-time API provisioning (SCIM) triggered natively by HR events (e.g. Workday), with immediate, automated de-provisioning on leaver detection.',
-          remediation: 'Review and audit SCIM group mappings quarterly to identify privilege drift.'
-        }
-      ]
-    },
-    {
-      dimension: 'Privileged Access (PAM)',
-      title: 'Infrastructure & Key Secrets',
-      q: 'How are administrative passwords, server credentials, and cloud secrets protected?',
-      options: [
-        {
-          score: 1,
-          label: 'Tier 1: Shared Passwords',
-          desc: 'Shared administrative passwords or static SSH keys kept in text files or unencrypted vaults.',
-          remediation: 'Enforce individual admin accounts and transition all keys to an encrypted shared vault immediately.'
-        },
-        {
-          score: 3,
-          label: 'Tier 2: Centralized Vaulting',
-          desc: 'Secrets are stored in an encrypted vault (e.g. HashiCorp Vault) with individual logging but standing permanent privileges.',
-          remediation: 'Adopt Just-In-Time (JIT) access, issuing short-lived SSH keys or session cookies that auto-expire.'
-        },
-        {
-          score: 5,
-          label: 'Tier 3: Just-in-Time (JIT) Access',
-          desc: 'No standing permanent administrative accounts. Ephemeral, short-lived certificates or keys are generated dynamically and auto-expire within minutes, with session audit recording.',
-          remediation: 'Integrate PAM alerts directly into your Security Operations Center (SIEM/SOC) for real-time bypass audits.'
-        }
-      ]
-    },
-    {
-      dimension: 'Customer Identity (CIAM)',
-      title: 'Customer Registration & Login',
-      q: 'What authentication standards are used for customer-facing interfaces or social federation?',
-      options: [
-        {
-          score: 1,
-          label: 'Tier 1: Local DB Passwords',
-          desc: 'Homegrown SQL tables storing hashed passwords. No federated identity standard or social login support.',
-          remediation: 'Outsource password management to an external OIDC Identity Provider (e.g., Keycloak, Auth0).'
-        },
-        {
-          score: 3,
-          label: 'Tier 2: Standard Federated SSO',
-          desc: 'Built on standardized OAuth 2.0 / OpenID Connect (OIDC) protocols with social login integration and basic MFA.',
-          remediation: 'Implement passwordless login methods (FIDO2 / WebAuthn Passkeys) and progressive user profiling.'
-        },
-        {
-          score: 5,
-          label: 'Tier 3: Passwordless & Risk-Adaptive',
-          desc: 'Mandatory passwordless login utilizing WebAuthn / Passkeys. Progressive profiling limits friction, and dynamic anomaly detection terminates suspect connections.',
-          remediation: 'Enforce synced vs. device-bound passkey policy auditing depending on user data risk profiles.'
-        }
-      ]
-    },
-    {
-      dimension: 'Workforce Access (AM)',
-      title: 'Employee Authentication & MFA',
-      q: 'What Multi-Factor Authentication (MFA) standards apply to employees accessing internal systems?',
-      options: [
-        {
-          score: 1,
-          label: 'Tier 1: Basic Passwords',
-          desc: 'Passwords only, or MFA is only enforced on select administrative boundaries.',
-          remediation: 'Enforce mandatory MFA across all user boundaries using mobile authentication apps.'
-        },
-        {
-          score: 3,
-          label: 'Tier 2: Push & TOTP Apps',
-          desc: 'Mandatory MFA using mobile push notifications, SMS texts, or timed authenticator apps (TOTP).',
-          remediation: 'Enforce phishing-resistant MFA (FIDO2 Security Keys or Passkeys) to bypass interception tricks.'
-        },
-        {
-          score: 5,
-          label: 'Tier 3: Phishing-Resistant MFA',
-          desc: 'Mandatory phishing-resistant authentication (FIDO2 or platform passkeys), enforced globally under context-based conditional rules.',
-          remediation: 'Review device compliance rules to ensure access is denied if local firewalls or system patches fail.'
-        }
-      ]
-    },
-    {
-      dimension: 'Zero Trust and Dynamic Risk',
-      title: 'Session Verification Engine',
-      q: 'How is user authorization evaluated after initial login has occurred?',
-      options: [
-        {
-          score: 1,
-          label: 'Tier 1: Permanent Session Cookies',
-          desc: 'Sessions remain valid indefinitely or require manual timeouts. No context validation after login.',
-          remediation: 'Configure absolute session timeouts (e.g., maximum 8 to 12 hours) and implement IP geofence audits.'
-        },
-        {
-          score: 3,
-          label: 'Tier 2: Fixed Timeout Windows',
-          desc: 'Access tokens expire and refresh after a fixed, standard timeframe (e.g. 1 hour access, 24 hours refresh).',
-          remediation: 'Transition to Continuous Adaptive Trust, setting up Shared Signals (CAEP/SSF) to capture security events.'
-        },
-        {
-          score: 5,
-          label: 'Tier 3: Continuous Adaptive Trust',
-          desc: 'Real-time session monitoring using Continuous Access Evaluation Protocol (CAEP / SSF). IP shifts or compliance failures instantly trigger revocation.',
-          remediation: 'Establish joint threat-sharing circles with key partners using unified SSF event feeds.'
-        }
-      ]
-    }
-  ]
+  const [isCopied, setIsCopied] = useState(false)
+  const isSharedReport = !!sharedAnswers
 
   const handleSelectOption = (score: number) => {
     setAnswers({ ...answers, [activeStep]: score })
@@ -177,18 +46,15 @@ export default function Assess() {
   }
 
   // Scoring Metrics Calculations
-  const totalScore = Object.values(answers).reduce((a, b) => a + b, 0)
-  const maxScore = questions.length * 5
-  const percentage = Math.round((totalScore / maxScore) * 100)
-  const averageScore = Number((totalScore / questions.length).toFixed(1))
+  const { percentage, averageScore } = computeScores(answers)
+  const maturityTier = getMaturityTier(averageScore)
 
-  const getMaturityTier = () => {
-    if (averageScore <= 1.8) return { label: 'Tier 1: Ad-Hoc & Siloed', color: 'text-status-danger bg-status-danger/5 border-status-danger/20', desc: 'Your IAM systems are highly fragmented, rely on manual tasks, and are vulnerable to password interception or shared-secret leakages.' }
-    if (averageScore <= 3.4) return { label: 'Tier 2: Standardized & Defined', color: 'text-status-warning bg-status-warning/5 border-status-warning/20', desc: 'You have established central directory controls and standard SSO patterns. Security is defined but vulnerable to standing privileges and push-fatigue attacks.' }
-    return { label: 'Tier 3: Adaptive Zero Trust', color: 'text-status-success bg-status-success/5 border-status-success/20', desc: 'Outstanding! Your environment is driven by automated SCIM loops, Just-In-Time access controls, phishing-resistant Passkeys, and continuous CAEP session audits.' }
+  const copyShareableLink = () => {
+    const url = `${window.location.origin}${window.location.pathname}?a=${encodeAnswers(answers)}`
+    navigator.clipboard.writeText(url)
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 2000)
   }
-
-  const maturityTier = getMaturityTier()
 
   // Generate downloadable SVG roadmap dynamically
   const triggerDownload = () => {
@@ -409,6 +275,19 @@ export default function Assess() {
       {showResults && (
         /* Results Executive Panel */
         <div className="space-y-8 animate-fadeIn">
+          {isSharedReport && (
+            <div className="p-4 rounded-xl bg-accent-glow border border-accent-primary/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+              <span className="text-text-secondary font-medium">
+                You're viewing a <span className="font-bold text-accent-primary">shared maturity report</span>.
+              </span>
+              <button
+                onClick={startAssessment}
+                className="px-4 py-2 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shrink-0"
+              >
+                Start Your Own Assessment
+              </button>
+            </div>
+          )}
           {/* Main Scoring Header */}
           <div className="p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm grid md:grid-cols-3 gap-8 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-80 h-80 bg-accent-primary/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -460,6 +339,13 @@ export default function Assess() {
                 >
                   {isDownloaded ? <Check className="w-4 h-4 text-white" /> : <Download className="w-4 h-4" />}
                   {isDownloaded ? 'Roadmap Downloaded!' : 'Download SVG Roadmap'}
+                </button>
+                <button
+                  onClick={copyShareableLink}
+                  className="px-4 py-2.5 rounded-lg border border-border-subtle hover:bg-bg-sidebar text-text-primary text-xs font-bold transition-colors flex items-center gap-1.5"
+                >
+                  {isCopied ? <Check className="w-4 h-4 text-status-success" /> : <Link2 className="w-4 h-4" />}
+                  {isCopied ? 'Link Copied!' : 'Copy Shareable Link'}
                 </button>
                 <button
                   onClick={startAssessment}

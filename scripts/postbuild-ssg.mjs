@@ -107,6 +107,7 @@ const ROUTES = [
   { path: '/wall-of-shame', title: 'Vulnerability Lab', description: 'Historic identity breaches, including Golden SAML and MFA push-bombing fatigue attacks.' },
   { path: '/cheat-sheets', title: 'Developer Playbooks', description: 'Compliance checklists for SPAs and machine-to-machine credentials.' },
   { path: '/contributors', title: 'Team & Contact', description: 'Meet the AboutIAM contributors and get in touch.' },
+  { path: '/terms', title: 'Terms, License & Disclaimer', description: 'MIT license details and educational-use disclaimer for AboutIAM\'s interactive identity security labs.' },
 ]
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

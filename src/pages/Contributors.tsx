@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
-  Users, Mail, Heart, Send, CheckCircle2, Globe
+  Users, Mail, Heart, Send, CheckCircle2, Globe, ShieldCheck, ExternalLink, Lock, GitBranch, Bot, FileCheck
 } from 'lucide-react'
 import mayankPhoto from '../assets/contributors/mayank.jpg'
 import rajatPhoto from '../assets/contributors/rajat.jpg'
@@ -49,6 +50,21 @@ const contributors: Contributor[] = [
 ]
 
 const CONTACT_EMAIL = 'mayankrajjaiswal@gmail.com'
+const GITHUB_SECURITY_URL = 'https://github.com/mayankrajjaiswal/aboutiam/security'
+
+interface SecurityControl {
+  icon: typeof ShieldCheck
+  title: string
+  desc: string
+}
+
+const SECURITY_CONTROLS: SecurityControl[] = [
+  { icon: Lock, title: 'Content-Security-Policy', desc: "Strict CSP with connect-src 'none' enforced via meta tag, since GitHub Pages serves no custom HTTP headers." },
+  { icon: ShieldCheck, title: 'Referrer-Policy Hardening', desc: 'Restrictive referrer policy prevents leaking full URLs (including query params) to third-party destinations.' },
+  { icon: GitBranch, title: 'SHA-Pinned GitHub Actions', desc: 'Every third-party Action in CI/CD is pinned to an immutable commit SHA, not a mutable tag, closing a supply-chain attack vector.' },
+  { icon: Bot, title: 'Automated Dependabot Updates', desc: 'Dependabot keeps both npm packages and GitHub Actions pins current against newly disclosed CVEs.' },
+  { icon: FileCheck, title: 'CI `npm audit` Gate', desc: 'Every build and deploy runs npm audit --audit-level=moderate, failing the pipeline on newly introduced moderate+ severity vulnerabilities.' },
+]
 
 function LinkIcon({ type }: { type: ContributorLink['type'] }) {
   if (type === 'github') {
@@ -168,6 +184,36 @@ export default function Contributors() {
         </div>
       </div>
 
+      {/* Security & Transparency */}
+      <div className="space-y-6">
+        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Security & Transparency</span>
+
+        <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-sm font-bold text-text-primary">
+              <ShieldCheck className="w-4.5 h-4.5 text-accent-secondary" /> Shipped Hardening Controls
+            </div>
+            <a
+              href={GITHUB_SECURITY_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-primary hover:text-accent-hover"
+            >
+              View on GitHub Security <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {SECURITY_CONTROLS.map((control) => (
+              <div key={control.title} className="p-4 rounded-xl bg-bg-sidebar/50 border border-border-subtle space-y-2">
+                <control.icon className="w-4 h-4 text-accent-primary" />
+                <h5 className="text-xs font-bold text-text-primary">{control.title}</h5>
+                <p className="text-[11px] text-text-secondary leading-relaxed font-semibold">{control.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Join Open Source invitation card */}
         <div className="lg:col-span-1 space-y-6">
@@ -275,6 +321,12 @@ export default function Contributors() {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="text-center">
+        <Link to="/terms" className="text-[11px] text-text-muted hover:text-text-secondary underline">
+          Terms, License & Disclaimer
+        </Link>
       </div>
     </div>
   )

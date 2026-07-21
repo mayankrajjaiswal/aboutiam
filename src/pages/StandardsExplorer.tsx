@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   BookOpen, Search, ArrowLeft, Layers, ShieldCheck, 
@@ -259,6 +259,22 @@ grant_type=authorization_code
       ]
     }
   ]
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const standard = params.get('standard')
+      const tab = params.get('tab')
+      if (standard && STANDARDS.some(s => s.id === standard)) {
+        setTimeout(() => {
+          setActiveStandardId(standard)
+          if (tab === 'summary' || tab === 'flow' || tab === 'security' || tab === 'vendors') {
+            setActiveTab(tab)
+          }
+        }, 0)
+      }
+    }
+  }, [])
 
   // Filter and search logic
   const filteredStandards = useMemo(() => {

@@ -109,6 +109,7 @@ import ThreatModelingStudio from './pages/ThreatModelingStudio'
 import DesignReviewAssistant from './pages/DesignReviewAssistant'
 import StandardsExplorer from './pages/StandardsExplorer'
 import EventsCalendar from './pages/EventsCalendar'
+import IamReports from './pages/IamReports'
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
@@ -225,6 +226,7 @@ export default function App() {
               <Route path="/design-review" element={<DesignReviewAssistant />} />
               <Route path="/standards" element={<StandardsExplorer />} />
               <Route path="/events" element={<EventsCalendar />} />
+              <Route path="/reports" element={<IamReports />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/encyclopedia" element={<Encyclopedia />} />

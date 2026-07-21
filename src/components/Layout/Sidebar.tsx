@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, Briefcase, CalendarDays
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, Briefcase, CalendarDays, FileBarChart
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -139,6 +139,7 @@ const ecosystemItems = [
 const communityItems = [
   { name: 'Identity Timeline', path: '/timeline', icon: History },
   { name: 'Events & Conferences', path: '/events', icon: CalendarDays },
+  { name: 'Industry Reports', path: '/reports', icon: FileBarChart },
   { name: 'Community Forums', path: '/community-forums', icon: Network },
   { name: 'Community Achievements', path: '/community', icon: Users },
   { name: 'Team & Bio Cards', path: '/contributors', icon: Users },

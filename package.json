@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/postbuild-ssg.mjs",
+    "build": "tsc -b && vite build && node scripts/postbuild-ssg.mjs && node --experimental-strip-types scripts/generate-rss.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",

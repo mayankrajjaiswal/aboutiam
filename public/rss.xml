@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AboutIAM - Identity &amp; Access Management Academy</title>
+    <link>https://www.aboutiam.com</link>
+    <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 21 Jul 2026 09:35:55 GMT</lastBuildDate>
+    <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title><![CDATA[New Security Tool: JWT Decoder — Inspect & Verify Tokens Online]]></title>
+      <link>https://www.aboutiam.com/tools/jwt-decoder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/jwt-decoder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Paste any JSON Web Token to instantly decode its header, payload, and signature, check expiry, and flag insecure algorithms — 100% client-side, nothing is uploaded.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: JWT Generator — Build & Sign Tokens (HS256/RS256)]]></title>
+      <link>https://www.aboutiam.com/tools/jwt-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/jwt-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Create and cryptographically sign JSON Web Tokens with custom claims using HS256, HS384, HS512, or RS256 — computed locally with the Web Crypto API.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Base64 & Base64URL Encoder / Decoder]]></title>
+      <link>https://www.aboutiam.com/tools/base64-encoder-decoder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/base64-encoder-decoder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Encode or decode text, JSON, and files to Base64 or URL-safe Base64 (used by JWTs) instantly in your browser — no data ever leaves your device.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: SHA-256 & Hash Generator — Text and File Checksums]]></title>
+      <link>https://www.aboutiam.com/tools/sha256-hash-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/sha256-hash-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes for text or files directly in your browser using the Web Crypto API — no uploads, ever.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: HMAC Generator & Verifier (SHA-256/SHA-1/SHA-512)]]></title>
+      <link>https://www.aboutiam.com/tools/hmac-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/hmac-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Compute and verify HMAC signatures with a shared secret key using SHA-1, SHA-256, or SHA-512 — the same primitive that signs your JWTs, run locally.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: UUID & ULID Generator (v4, v7, Bulk)]]></title>
+      <link>https://www.aboutiam.com/tools/uuid-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/uuid-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Generate cryptographically random UUIDv4, time-sortable UUIDv7, or ULID identifiers in bulk, with one-click copy — 100% client-side randomness.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Password Generator & Entropy Strength Checker]]></title>
+      <link>https://www.aboutiam.com/tools/password-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/password-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Generate strong random passwords or passphrases with custom rules, and see the exact entropy bits and estimated crack time — computed locally.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: OAuth PKCE Code Generator (code_verifier / code_challenge)]]></title>
+      <link>https://www.aboutiam.com/tools/oauth-pkce-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/oauth-pkce-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Generate an RFC 7636-compliant PKCE code_verifier and S256 code_challenge, and build a full OAuth 2.0 authorization URL — no backend required.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: TOTP Generator & Verifier (RFC 6238 Authenticator Codes)]]></title>
+      <link>https://www.aboutiam.com/tools/totp-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/totp-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Generate live, time-based one-time passwords (TOTP) from any Base32 secret and verify 6-digit codes — the same algorithm behind Google Authenticator.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: LDAP Filter Builder — Visual RFC 4515 Query Composer]]></title>
+      <link>https://www.aboutiam.com/tools/ldap-filter-builder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/ldap-filter-builder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Compose valid LDAP search filters visually with AND/OR/NOT groups, then copy the exact RFC 4515 filter string — no directory connection needed.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: SCIM Payload Validator & Builder (RFC 7643/7644)]]></title>
+      <link>https://www.aboutiam.com/tools/scim-payload-validator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/scim-payload-validator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Validate or scaffold SCIM 2.0 User and Group JSON payloads against the core schema, with inline errors for missing or malformed attributes.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Basic & Bearer Auth Header Decoder]]></title>
+      <link>https://www.aboutiam.com/tools/basic-auth-decoder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/basic-auth-decoder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Decode HTTP Basic Authentication headers to reveal the username/password, or inspect Bearer tokens — a quick, private, client-side debugging utility.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: bcrypt Hash Generator & Verifier Online]]></title>
+      <link>https://www.aboutiam.com/tools/bcrypt-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/bcrypt-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Hash passwords with bcrypt at a custom cost factor, or verify a password against an existing bcrypt hash — computed entirely client-side, in pure JavaScript.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: JWK to PEM Converter (and back) + Thumbprint]]></title>
+      <link>https://www.aboutiam.com/tools/jwk-pem-converter</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/jwk-pem-converter</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Convert RSA/EC JSON Web Keys (JWK) to PEM format and back, and compute the RFC 7638 JWK thumbprint — all cryptography runs in your browser.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: X.509 Certificate Decoder — Parse PEM Certs & CSRs]]></title>
+      <link>https://www.aboutiam.com/tools/x509-certificate-decoder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/x509-certificate-decoder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Decode X.509 certificates and PKCS#10 CSRs to view subject, issuer, validity dates, SANs, key usage, and fingerprints — parsed locally, never uploaded.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: SAML Decoder — Inspect SAMLRequest/Response & Metadata]]></title>
+      <link>https://www.aboutiam.com/tools/saml-decoder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/saml-decoder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Decode Base64/deflate-encoded SAMLRequest and SAMLResponse parameters, or pretty-print SP/IdP metadata XML — no server round-trip, fully client-side.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: SAML Metadata Builder — Generate SP & IdP Metadata XML]]></title>
+      <link>https://www.aboutiam.com/tools/saml-metadata-builder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/saml-metadata-builder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Visually configure compliant SAML 2.0 Service Provider (SP) or Identity Provider (IdP) XML metadata configurations, endpoints, certificates, and export completed files.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: SCIM Diff & Reconciliation Tool — Calculate Sync Drift]]></title>
+      <link>https://www.aboutiam.com/tools/scim-diff</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/scim-diff</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Input Identity Provider (IdP) and Service Provider (SP) user records to visually calculate attribute sync drift and programmatically generate standard-compliant SCIM PATCH reconciliation scripts.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: X.509 CSR Generator — Compile PKCS#10 Requests Online]]></title>
+      <link>https://www.aboutiam.com/tools/csr-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/csr-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Visually construct secure X.509 Certificate Signing Requests (CSR) with Subject DN attributes and SAN fields, generate browser-native private/public keys, and inspect their ASN.1 DER-parsed structure.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: SD-JWT Decoder — Selective Disclosure JWT Inspector]]></title>
+      <link>https://www.aboutiam.com/tools/sd-jwt-decoder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/sd-jwt-decoder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Decode Selective Disclosure JWTs (SD-JWT), reveal individual disclosures, and verify each digest binding against the issuer-signed JWT — entirely in-browser.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: WebAuthn / Passkey Assertion & Attestation Decoder]]></title>
+      <link>https://www.aboutiam.com/tools/webauthn-decoder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/webauthn-decoder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Decode clientDataJSON, authenticatorData, and CBOR attestationObject from a WebAuthn credential to inspect flags, counters, and public keys.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: DID Generator — Create a did:key Identifier]]></title>
+      <link>https://www.aboutiam.com/tools/did-key-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/did-key-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Generate an Ed25519 keypair entirely in your browser and derive its did:key decentralized identifier and DID document — no wallet, no blockchain.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: OAuth 2.0 / OIDC Request Builder & Handshake Debugger]]></title>
+      <link>https://www.aboutiam.com/tools/oauth-builder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/oauth-builder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Visually construct standard-compliant OAuth 2.0 and OpenID Connect authorization URLs and token exchange payloads with copyable curl commands.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: JWKS JSON Web Key Set Inspector]]></title>
+      <link>https://www.aboutiam.com/tools/jwks-inspector</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/jwks-inspector</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Parse, inspect, and validate public JSON Web Key Sets (JWKS) representing cryptographic signing keys used for JWT verification.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: ABAC & RBAC Client-Side Policy Evaluator]]></title>
+      <link>https://www.aboutiam.com/tools/policy-evaluator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/policy-evaluator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[An interactive sandbox to evaluate custom JSON-based access policies against simulated user, device, and resource contexts.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Diceware Passphrase & Entropy Strength Calculator]]></title>
+      <link>https://www.aboutiam.com/tools/passphrase-entropy</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/passphrase-entropy</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Compare standard character-shuffled passwords against word-based dictionary passphrases to calculate mathematical entropy bits and offline GPU cracking times.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: OIDC Discovery Document Auditor]]></title>
+      <link>https://www.aboutiam.com/tools/oidc-discovery</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/oidc-discovery</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Parse, visualize, and audit modern Identity Provider metadata profiles containing standard OIDC endpoint registries.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Ansible Vault Encryptor & Decryptor]]></title>
+      <link>https://www.aboutiam.com/tools/ansible-vault</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/ansible-vault</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Encrypt or decrypt files and string secrets client-side using the standard Ansible Vault 1.1/1.2 AES-256 cipher format — 100% browser-native PBKDF2 + AES-CTR + HMAC-SHA256.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Mozilla SOPS — GitOps Secrets Simulator]]></title>
+      <link>https://www.aboutiam.com/tools/sops-simulator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/sops-simulator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[An interactive envelope encryption playground. Selectively encrypt specific configuration values in YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys, preserving key paths for Git diffs.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Hardware Key Ring & HSM Emulator]]></title>
+      <link>https://www.aboutiam.com/tools/keyring-manager</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/keyring-manager</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Generate, store, and execute asymmetric and symmetric cryptographic keys locally inside your browser's secure sandbox — emulating a corporate Hardware Security Module (HSM).]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[Thales Launches Sovereign Cloud CIAM to Meet Toughest EU Privacy Mandates]]></title>
+      <link>https://www.thalesgroup.com/</link>
+      <guid isPermaLink="false">aboutiam-news-n1</guid>
+      <pubDate>Wed, 01 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Thales announces dedicated European sovereign data hosting regions for the OneWelcome Identity Platform, ensuring full GDPR compliance and isolated tenant directories for European banks and public institutions. (Source: Thales Official Blog)]]></description>
+      <category>Announcement</category>
+    </item>
+    <item>
+      <title><![CDATA[Advisory: Wildcard Subdomains Exploited in Open OAuth Redirect Attacks]]></title>
+      <link>https://www.cisa.gov</link>
+      <guid isPermaLink="false">aboutiam-news-n2</guid>
+      <pubDate>Sun, 28 Jun 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[CISA warns organizations that lax wildcard validation in OAuth redirect URIs is actively being leveraged by threat actors to harvest authentication authorization codes. (Source: NIST / CISA Advisory)]]></description>
+      <category>Advisory</category>
+    </item>
+    <item>
+      <title><![CDATA[Okta Enforces Default MFA and Device Attestation for Support Portal Admins]]></title>
+      <link>https://www.okta.com</link>
+      <guid isPermaLink="false">aboutiam-news-n3</guid>
+      <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Following social engineering post-mortems, Okta mandates phishing-proof FIDO2 MFA and managed device posture attestation for all support-related administrative credentials. (Source: Okta Engineering Blog)]]></description>
+      <category>Announcement</category>
+    </item>
+    <item>
+      <title><![CDATA[Draft RFC: Ephemeral TLS Session Bindings for Cross-Domain Tokens]]></title>
+      <link>https://www.ietf.org</link>
+      <guid isPermaLink="false">aboutiam-news-n4</guid>
+      <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A new draft proposes embedding TLS session hashes inside JWT claims to bind access tokens cryptographically to the TLS tunnel, preventing session cookie theft bypasses. (Source: IETF OAuth Working Group)]]></description>
+      <category>Research</category>
+    </item>
+    <item>
+      <title><![CDATA[Critical Golden SAML Exploit Vectors Highlighted in Active Directory Configurations]]></title>
+      <link>https://www.mitre.org</link>
+      <guid isPermaLink="false">aboutiam-news-n5</guid>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Attackers compromising on-prem ADFS signing certificates can bypass all MFA to forge assertions of any user. Moving signing keys to HSMs prevents certificate extraction. (Source: MITRE Security Center)]]></description>
+      <category>Advisory</category>
+    </item>
+    <item>
+      <title><![CDATA[CVE-2026-99182: Keycloak JWT Header Algorithm Confusions Bypass]]></title>
+      <link>https://www.aboutiam.com/research</link>
+      <guid isPermaLink="false">aboutiam-cve-cve-1</guid>
+      <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Vulnerability score: 8.8/10. A flaw in Keycloak’s token signature verification wrapper allowed an attacker to execute algorithm confusion attacks when verifying custom tokens signed with asymmetric public keys, leading to signature bypasses.
+
+Remediation: Update to Keycloak version 26.1 or higher. Ensure that token validation libraries explicitly declare the exact expected signature algorithms (e.g., algorithms: ["RS256"]) and reject alternative types.]]></description>
+      <category>Vulnerability Advisory</category>
+    </item>
+    <item>
+      <title><![CDATA[CVE-2025-44912: OAuth PKCE Bypass via S256 Verifier Truncation]]></title>
+      <link>https://www.aboutiam.com/research</link>
+      <guid isPermaLink="false">aboutiam-cve-cve-2</guid>
+      <pubDate>Fri, 14 Nov 2025 00:00:00 GMT</pubDate>
+      <description><![CDATA[Vulnerability score: 7.5/10. Multiple open-source OAuth authorization libraries failed to validate the correct length constraints of the PKCE code_verifier, allowing hackers to forge codes using truncated or blank code_verifier parameters.
+
+Remediation: Enforce minimum length requirements (43 to 128 characters) and character sets (A-Z, a-z, 0-9, -._~) on all incoming code_verifier validations as mandated by RFC 7636.]]></description>
+      <category>Vulnerability Advisory</category>
+    </item>
+  </channel>
+</rss>

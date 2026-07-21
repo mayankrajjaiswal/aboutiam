@@ -299,3 +299,27 @@ if (simulateLatency > 0) {
 }
 ```
 
+---
+
+### 🏛️ H. Build-Time Programmatic RSS Generation
+
+AboutIAM implements a fully automated, compile-time RSS Feed generation engine. Every production build programmatically compiles `rss.xml` containing the latest tools, security advisories (CVEs), and news releases.
+
+#### **1. Architecture Flow**
+During the `npm run build` command, Vite triggers `scripts/generate-rss.ts` via the Node.js native `--experimental-strip-types` engine:
+- Reads structured updates directly from:
+  - `src/data/identityIntelligence.ts` (`IDENTITY_NEWS_FEED`, `IDENTITY_CVE_DIRECTORY`)
+  - `src/data/toolsRegistry.ts` (`TOOLS`)
+- Performs UTC date-sorting to place the newest item first.
+- Generates `rss.xml` inside `public/rss.xml` (dev copy & fallback source) and `dist/rss.xml` (production bundle file).
+
+#### **2. Automated Validation**
+The generation process is guarded by Vitest. The test suite is defined in `scripts/generate-rss.test.ts`. Whenever any data update is committed, running the test pipeline ensures that:
+- Structural integrity of the feed remains correct.
+- All items format HTML descriptions within standard XML CDATA elements safely.
+- No unreleased/planned tools leak into the subscriber notifications feed.
+
+#### **3. Custom Feed Maintenance**
+To add a custom feed update without shipping a new tool or CVE, simply insert an item into `IDENTITY_NEWS_FEED` inside `src/data/identityIntelligence.ts`. The RSS compilation script automatically picks up your changes on the next build.
+
+

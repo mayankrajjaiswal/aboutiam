@@ -34,7 +34,7 @@ function main() {
     { name: 'TypeScript Compilation Checks', cmd: 'npx tsc -b' },
     { name: 'ESLint Code Quality Audits', cmd: 'npm run lint' },
     { name: 'Vitest Unit Testing Suite', cmd: 'npx vitest run' },
-    { name: 'Vite Production Build & SSG Pre-render', cmd: 'node node_modules/vite/bin/vite.js build' }
+    { name: 'Vite Production Build & SSG Pre-render & RSS Generation', cmd: 'npm run build' }
   ];
 
   for (const stage of stages) {

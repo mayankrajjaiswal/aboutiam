@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane } from 'lucide-react'
+import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
 import { getRouteMeta } from '../../routeMeta'
@@ -192,6 +192,17 @@ export default function Header() {
           {renderThemeIcon()}
           <span className="hidden sm:inline">{getThemeLabel()}</span>
         </button>
+
+        {/* RSS Feed Reference Link */}
+        <a
+          href="/rss.xml"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
+          title="Subscribe to RSS Feed"
+        >
+          <Rss className="w-4 h-4 text-text-secondary hover:text-text-primary" />
+        </a>
 
         {/* GitHub Repository Reference Link */}
         <a

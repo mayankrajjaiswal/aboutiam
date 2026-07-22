@@ -57,6 +57,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Ansible Vault Encryptor & Decryptor](https://www.aboutiam.com/tools/ansible-vault/): Encrypt or decrypt secrets client-side using the standard Ansible Vault 1.1/1.2 AES-256 cipher format — 100% browser-native PBKDF2 + AES-CTR + HMAC-SHA256.
 - [Mozilla SOPS GitOps Secrets Simulator](https://www.aboutiam.com/tools/sops-simulator/): Selectively encrypt or decrypt configuration values inside YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys.
 - [Hardware Key Ring & HSM Emulator](https://www.aboutiam.com/tools/key-ring/): Generate and execute RSA, ECDSA, and AES-GCM-256 keys locally in browser-native IndexedDB securely, emulating hardware HSM vaults.
+- [Standards Conformance Checker](https://www.aboutiam.com/tools/conformance-checker/): Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules.
 
 ## Advanced Ecosystem & Governance
 

@@ -42,4 +42,13 @@ describe('getSearchIndex deep-link entries', () => {
       .find((r) => (r as unknown as { link: string }).link === '/assess')
     expect(assessResult).toBeTruthy()
   })
+
+  it('indexes compliance deadlines under the deadlines category with a deep link', () => {
+    const index = getSearchIndex()
+    const results = index.search('DORA')
+    const match = results.find((r) => r.id === 'deadline-dora-application')
+    expect(match).toBeTruthy()
+    expect((match as unknown as { link: string; category: string }).link).toBe('/standards?view=deadlines')
+    expect((match as unknown as { category: string }).category).toBe('📅 Compliance Deadlines')
+  })
 })

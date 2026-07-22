@@ -27,6 +27,17 @@ export default function VendorCenter() {
   const [activeVendor, setActiveVendor] = useState<VendorType>('thales')
   const vendor = VENDOR_CATALOG[activeVendor]
   const [thalesTab, setThalesTab] = useState<ThalesTabType>('overview')
+  const [compareMode, setCompareMode] = useState(false)
+  const [compareSelection, setCompareSelection] = useState<VendorType[]>([])
+  const MAX_COMPARE = 3
+
+  const toggleCompareVendor = (key: VendorType) => {
+    setCompareSelection((prev) => {
+      if (prev.includes(key)) return prev.filter((k) => k !== key)
+      if (prev.length >= MAX_COMPARE) return prev
+      return [...prev, key]
+    })
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -37,6 +48,18 @@ export default function VendorCenter() {
           setActiveVendor(v as VendorType)
           setActiveSection('vendors')
         }, 0)
+      }
+
+      const compareParam = params.get('compare')
+      if (compareParam) {
+        const keys = compareParam.split(',').filter((k) => Object.keys(VENDOR_CATALOG).includes(k)) as VendorType[]
+        if (keys.length >= 2) {
+          setTimeout(() => {
+            setCompareMode(true)
+            setCompareSelection(keys.slice(0, MAX_COMPARE))
+            setActiveSection('vendors')
+          }, 0)
+        }
       }
     }
   }, [])
@@ -229,28 +252,48 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
           {/* Left Column: 18-Vendor List Selector */}
           <div className="lg:col-span-3 space-y-4">
             <div className="bg-bg-card border border-border-subtle rounded-2xl p-4 shadow-sm">
-              <span className="text-[10px] text-text-muted font-black uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1">
-                Select Platform Profile
-              </span>
-              
+              <div className="flex items-center justify-between mb-3 border-b border-border-subtle pb-2">
+                <span className="text-[10px] text-text-muted font-black uppercase tracking-wider">
+                  {compareMode ? `Compare (${compareSelection.length}/${MAX_COMPARE})` : 'Select Platform Profile'}
+                </span>
+                <button
+                  onClick={() => {
+                    setCompareMode((v) => !v)
+                    setCompareSelection([])
+                  }}
+                  className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider border transition ${
+                    compareMode ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-nested/30 text-text-secondary border-border-subtle hover:text-text-primary'
+                  }`}
+                >
+                  <ArrowLeftRight className="w-3 h-3" /> {compareMode ? 'Exit Compare' : 'Compare'}
+                </button>
+              </div>
+
               <div className="flex flex-col gap-1.5 max-h-[460px] overflow-y-auto pr-1 scrollbar-thin">
                 {(Object.keys(VENDOR_CATALOG) as VendorType[]).map((key) => {
                   const item = VENDOR_CATALOG[key]
-                  const isAct = activeVendor === key
+                  const isAct = compareMode ? compareSelection.includes(key) : activeVendor === key
                   return (
                     <button
                       key={key}
                       onClick={() => {
-                        setActiveVendor(key)
-                        if (key === 'thales') setThalesTab('overview')
+                        if (compareMode) {
+                          toggleCompareVendor(key)
+                        } else {
+                          setActiveVendor(key)
+                          if (key === 'thales') setThalesTab('overview')
+                        }
                       }}
-                      className={`w-full text-left px-3 py-2.5 rounded-xl text-[11px] font-bold border transition flex items-center justify-between ${isAct ? 'bg-accent-glow border-accent-primary text-accent-primary font-black shadow-sm' : 'bg-bg-nested/30 border-transparent text-text-secondary hover:bg-bg-nested/60 hover:border-border-subtle'}`}
+                      disabled={compareMode && !compareSelection.includes(key) && compareSelection.length >= MAX_COMPARE}
+                      className={`w-full text-left px-3 py-2.5 rounded-xl text-[11px] font-bold border transition flex items-center justify-between disabled:opacity-40 disabled:cursor-not-allowed ${isAct ? 'bg-accent-glow border-accent-primary text-accent-primary font-black shadow-sm' : 'bg-bg-nested/30 border-transparent text-text-secondary hover:bg-bg-nested/60 hover:border-border-subtle'}`}
                     >
                       <span className="flex items-center gap-2">
                         <span className="text-xs">{item.logo || '🏢'}</span>
                         <span className="truncate">{key === 'thales' ? 'Thales (Featured)' : item.fullName.split(' (')[0].split(' by ')[0]}</span>
                       </span>
-                      {item.isFeatured && (
+                      {compareMode ? (
+                        <span className={`w-3.5 h-3.5 rounded border shrink-0 ${isAct ? 'bg-accent-primary border-accent-primary' : 'border-border-subtle'}`} />
+                      ) : item.isFeatured && (
                         <span className="text-[8px] bg-accent-primary text-bg-card font-black uppercase px-1.5 py-0.5 rounded leading-none shrink-0 scale-90">Flagship</span>
                       )}
                     </button>
@@ -279,9 +322,99 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
 
           {/* Right Column: Platform Information */}
           <div className="lg:col-span-9 space-y-6">
-            
-            {/* THALES HIGHLY CUSTOM FLAGSHIP EXPERIENCE */}
-            {activeVendor === 'thales' ? (
+            {compareMode ? (
+              <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 shadow-sm space-y-4">
+                <div>
+                  <h3 className="text-lg font-black text-text-primary flex items-center gap-2">
+                    <ArrowLeftRight className="w-4.5 h-4.5 text-accent-primary" /> Vendor Comparison
+                  </h3>
+                  <p className="text-xs text-text-secondary mt-1">
+                    Select 2-{MAX_COMPARE} vendors on the left to compare side by side. Deep-linkable via <code className="text-[10px] bg-bg-nested px-1.5 py-0.5 rounded">?compare=key1,key2</code>.
+                  </p>
+                </div>
+
+                {compareSelection.length < 2 ? (
+                  <div className="p-8 text-center border border-dashed border-border-subtle rounded-xl text-sm text-text-muted font-semibold">
+                    Select at least 2 vendors from the list on the left to see a comparison.
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs border-collapse">
+                      <thead>
+                        <tr>
+                          <th className="p-3 text-[10px] font-black text-text-muted uppercase tracking-wider border-b border-border-subtle w-40">Attribute</th>
+                          {compareSelection.map((key) => (
+                            <th key={key} className="p-3 border-b border-b-border-subtle border-l border-l-border-subtle/50 min-w-55">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="font-black text-text-primary text-sm flex items-center gap-1.5">
+                                  <span>{VENDOR_CATALOG[key].logo || '🏢'}</span>
+                                  {VENDOR_CATALOG[key].fullName.split(' (')[0].split(' by ')[0]}
+                                </span>
+                                <button
+                                  onClick={() => toggleCompareVendor(key)}
+                                  className="text-[9px] text-status-danger hover:underline font-bold shrink-0"
+                                  title="Remove from comparison"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Category</td>
+                          {compareSelection.map((key) => (
+                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].category}</td>
+                          ))}
+                        </tr>
+                        <tr>
+                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Licensing Model</td>
+                          {compareSelection.map((key) => (
+                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].licensingModel}</td>
+                          ))}
+                        </tr>
+                        <tr>
+                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Key Strengths</td>
+                          {compareSelection.map((key) => (
+                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top">
+                              <ul className="space-y-1 list-disc list-inside text-text-secondary">
+                                {VENDOR_CATALOG[key].strengths.slice(0, 4).map((s, i) => <li key={i} className="marker:text-status-success">{s}</li>)}
+                              </ul>
+                            </td>
+                          ))}
+                        </tr>
+                        <tr>
+                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Engineering Tradeoffs</td>
+                          {compareSelection.map((key) => (
+                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top">
+                              <ul className="space-y-1 list-disc list-inside text-text-secondary">
+                                {VENDOR_CATALOG[key].limitations.slice(0, 4).map((s, i) => <li key={i} className="marker:text-status-danger">{s}</li>)}
+                              </ul>
+                            </td>
+                          ))}
+                        </tr>
+                        <tr>
+                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Certifications</td>
+                          {compareSelection.map((key) => (
+                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].certifications.length} available</td>
+                          ))}
+                        </tr>
+                        <tr>
+                          <td className="p-3 font-bold text-text-secondary align-top">Target Industries</td>
+                          {compareSelection.map((key) => (
+                            <td key={key} className="p-3 border-l border-border-subtle/30 align-top text-text-secondary">
+                              {VENDOR_CATALOG[key].targetIndustries?.join(', ') || '—'}
+                            </td>
+                          ))}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            ) : activeVendor === 'thales' ? (
               <div className="space-y-6">
                 
                 {/* Hero Platform Overview Header */}

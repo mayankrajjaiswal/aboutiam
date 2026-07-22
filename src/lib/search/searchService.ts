@@ -5,6 +5,7 @@ import { ENCYCLOPEDIA_TERMS } from '../../data/encyclopediaData'
 import type { Term } from '../../pages/Encyclopedia'
 import { VENDOR_CATALOG } from '../../data/vendorCatalog'
 import type { VendorType } from '../../data/vendorCatalog'
+import { COMPLIANCE_DEADLINES } from '../../data/complianceDeadlines'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -195,7 +196,20 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 8. Add every remaining site page (sidebar/nav pages not covered above)
+  // 8. Add Compliance Deadlines
+  COMPLIANCE_DEADLINES.forEach(d => {
+    items.push({
+      id: `deadline-${d.id}`,
+      title: d.regulation,
+      fullName: `${d.jurisdiction} Compliance Deadline`,
+      description: d.description,
+      category: '📅 Compliance Deadlines',
+      link: '/standards?view=deadlines',
+      keywords: [d.jurisdiction, d.deadlineDate, 'compliance', 'regulation', 'deadline']
+    })
+  })
+
+  // 9. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

@@ -40,16 +40,16 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/decision-matrix`** | `IdentityDecisionMatrix.tsx` | Identity Decision Matrix. Intelligent interactive architecture recommender engine. (Phase 6) |
 | **`/threat-modeling`** | `ThreatModelingStudio.tsx` | Interactive Threat Modeling Studio. Visual security modeling workspace with STRIDE/OWASP validations. (Phase 6) |
 | **`/design-review`** | `DesignReviewAssistant.tsx` | IAM Design Review Assistant. Automated structural audits on OAuth, SAML, and JWT blueprints. (Phase 6) |
-| **`/standards`** | `StandardsExplorer.tsx` | Living Standards & RFC Explorer. Visually explore standard specs and RFC timelines across OIDC, SAML, SCIM. Supports `?standard=<id>&tab=<tab>` deep links. (Phase 6) |
+| **`/standards`** | `StandardsExplorer.tsx` | Living Standards & RFC Explorer. Visually explore standard specs and RFC timelines across OIDC, SAML, SCIM. Supports `?standard=<id>&tab=<tab>` deep links. A "Compliance Deadlines" tab (`?view=deadlines`) tracks regulatory deadlines (NIS2, DORA, PCI DSS 4.0, eIDAS 2.0, etc.) from `src/data/complianceDeadlines.ts`, filterable by jurisdiction with a past/upcoming toggle. (Phase 6) |
 | **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs for Zero Trust, B2B SaaS, and Multi-Cloud SPIRE. Supports `?arch=<type>` deep links. |
-| **`/vendor`** | `VendorCenter.tsx` | Enterprise Ecosystem & Vendor Intelligence Portal. Comprehensive profiles for 18 major platforms, including a flagship featured profile for Thales (OneWelcome, SafeNet Trusted Access, IdCloud) with inner ASCII diagrams, Troubleshooting, and custom Interview Prep. Integrates the Live Identity Intelligence Hub (news, searchable CVE code patch repairs, and visual AI Ingestion Pipeline Simulator), Community Events Calendars with alerts, and Social dashboards with AI Weekly Digest builders. |
+| **`/vendor`** | `VendorCenter.tsx` | Enterprise Ecosystem & Vendor Intelligence Portal. Comprehensive profiles for 18 major platforms, including a flagship featured profile for Thales (OneWelcome, SafeNet Trusted Access, IdCloud) with inner ASCII diagrams, Troubleshooting, and custom Interview Prep. Integrates the Live Identity Intelligence Hub (news, searchable CVE code patch repairs, and visual AI Ingestion Pipeline Simulator), Community Events Calendars with alerts, and Social dashboards with AI Weekly Digest builders. A "Compare" toggle switches the vendor list to multi-select checkboxes (up to 3) and renders a side-by-side attribute table; deep-linkable via `?compare=<key1>,<key2>`. |
 | **`/research`** | `ResearchCenter.tsx` | Searchable identity CVE directory with side-by-side remediation code patches and active standard IETF RFC drafts. |
 | **`/patterns`** | `DesignPatternLibrary.tsx` | Hardened design patterns, sequence flows, and checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless. |
 | **`/certifications`** | `CertificationHub.tsx` | Exam domains, study paths, and interactive practice tests for Microsoft, Okta, Ping, and CyberArk credentials. |
 | **`/career-center`** | `InterviewCareerCenter.tsx` | Comprehensive role-based interview preparation system spanning 6 role tracks featuring MCQs, scenarios, design simulations, coding terminals, timed mocks, and resume guidelines. |
 | **`/bulletins`** | `SecurityBulletins.tsx` | Active threat bulletins tracking real-world incident post-mortems (Okta support, SolarWinds) with an interactive "Crisis Response Console" simulation game. |
-| **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 15+ completed simulators. |
-| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (all 23 tools live). |
+| **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 15+ completed simulators, each bookmarkable via `BookmarkButton`. |
+| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (32 tools live). Every tool page (`ToolPageShell`) is bookmarkable via `BookmarkButton`. |
 | **`/tools/jwt-decoder`** | `Tools/JwtDecoder.tsx` | Decodes a JWT's header/payload/signature; flags `alg: none`; optional HMAC verify. |
 | **`/tools/jwt-generator`** | `Tools/JwtGenerator.tsx` | Signs a JWT client-side with HS256/384/512 or an ephemeral RS256 keypair. |
 | **`/tools/base64-encoder-decoder`** | `Tools/Base64EncoderDecoder.tsx` | Base64/Base64URL encode-decode for text and files. |
@@ -90,10 +90,10 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts, downloadable SVG roadmaps, and a `?a=<digits>` shareable, URL-hydrated read-only report link (scoring logic lives in `src/lib/assess/scoring.ts`). |
 | **`/explore`** | `Explore.tsx` | Landscape Directory. Product blueprints with copyable integration code blocks. |
 | **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Intelligent platform navigator, protocol comparison engine, and customized learning planner. |
-| **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 65 categorized standard terms with analogies and specs. |
-| **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. |
+| **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 65 categorized standard terms with analogies and specs. Each term supports bookmarking (`BookmarkButton`) and carries a `ContentFeedback` accuracy widget. |
+| **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. Each breach lab carries a `ContentFeedback` accuracy widget. |
 | **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards, interactive forms, and a static "Security & Transparency" section summarizing shipped CI/CSP hardening with a link to the GitHub Security tab. |
-| **`/terms`** | `Terms.tsx` | Terms, License & Disclaimer. MIT license summary, an educational/simulated-environment disclaimer for the attack-technique labs, and a no-warranty clause. Linked from Contributors; intentionally excluded from the Sidebar nav. |
+| **`/terms`** | `Terms.tsx` | Terms, License & Disclaimer. MIT license summary, an educational/simulated-environment disclaimer for the attack-technique labs, and a no-warranty clause. Linked from Contributors and from the first-visit `DisclaimerModal`; intentionally excluded from the Sidebar nav. |
 | **`/timeline`** | `IdentityTimeline.tsx` | Interactive historical identity timeline from mainframes to post-2030 ambient trust with inline simulators. |
 | **`/community`** | `CommunityHub.tsx` | Community Achievements and dynamic contributor badges matched with local storage progression, including cross-module milestone badges (Academy track graduations, cumulative Playground completions) derived via `src/lib/achievements/achievementRules.ts`. |
 | **`/community-forums`** | `CommunityForums.tsx` | Threaded developer forums (SCIM conflicts, SSW bypasses) and custom architectural showcase. |
@@ -112,6 +112,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/tools/csr-generator`** | `Tools/CsrGenerator.tsx` | Visually compile standard PKCS#10 Certificate Signing Requests, generate local browser keypairs, and walk ASN.1 DER structures. |
 | **`/tools/ansible-vault`** | `Tools/AnsibleVault.tsx` | Encrypt or decrypt secrets client-side using the standard Ansible Vault 1.1/1.2 AES-256 cipher format — 100% browser-native PBKDF2 + AES-CTR + HMAC-SHA256. |
 | **`/tools/sops-simulator`** | `Tools/SopsSimulator.tsx` | Selectively encrypt configuration values inside YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys. |
+| **`/tools/conformance-checker`** | `Tools/ConformanceChecker.tsx` | Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules (`src/lib/tools/conformance.ts`). |
 
 ---
 
@@ -136,6 +137,8 @@ if (typeof window !== 'undefined') {
   // Safe to access localStorage or window.matchMedia
 }
 ```
+
+`DisclaimerModal.tsx` and `GuidedTour.tsx` (§4M/§4N) are further examples of this SSR-guard combined with a persisted "seen" flag (`disclaimerStore.ts` / `tourStore.ts`) driving a first-visit-only overlay.
 
 ### 🧪 C. Testing Standards (`npm run test`)
 We mandate the inclusion of Vitest unit tests for all state mutations, mathematical calculations, and helper utility libraries. Running `npm run test` executes tests in our custom safe environments.
@@ -355,3 +358,105 @@ useEffect(() => {
 To make a new page discoverable this way: add the effect above, then add a matching `SearchItem` entry (or a small static list of them) inside `getSearchIndex()` in `searchService.ts` with a `link` like `/your-page?yourParam=<id>`.
 
 The one exception is `/assess`'s shareable report link, which uses a synchronous `useState` lazy initializer instead of an effect (see `Assess.tsx` and `src/lib/assess/scoring.ts`) — because the whole results view, not just an active tab, needs to be seeded before first paint, a `useEffect` would cause a visible flash of the empty wizard first.
+
+---
+
+### 🏛️ J. How to Add a New Achievement Rule
+
+`CommunityHub.tsx`'s Security Badges list is a single flat array of `Achievement` objects. Most badges hardcode a specific unlock condition directly (e.g. `unlocked: completedLabs.includes('lab-oauth')`), but *cross-module milestone* badges — ones that scale off a count rather than a single named module/lab — live as pure functions in `src/lib/achievements/achievementRules.ts` instead, so they can be independently unit-tested (`achievementRules.test.ts`) without rendering the page:
+
+```typescript
+export function getYourMilestoneBadges(someCount: number): RuleBadge[] {
+  return THRESHOLDS.map((t) => ({
+    id: `badge-your-milestone-${t.count}`,
+    title: t.label,
+    // ...
+    unlocked: someCount >= t.count
+  }))
+}
+```
+
+Import the function into `CommunityHub.tsx` and spread its output into the existing `achievements` `useMemo` array (alongside its dependency in the `useMemo`'s dependency list). Only add a new rule function here if the underlying progress is already tracked somewhere in `localStorage` (Academy `aboutiam-academy-progress`, Playgrounds `aboutiam_labs_completed`, etc.) — do not invent new persisted state solely to power a badge.
+
+---
+
+### 🏛️ K. How to Make an Item Bookmarkable
+
+`src/store/bookmarksStore.ts` is a Zustand + persist store (same SSR-guarded pattern as `themeStore.ts`, §3B) holding a flat `bookmarks: { id, title, link }[]` array — richer than a plain id list so `CommunityHub.tsx`'s "Bookmarked" panel can render a title and link without needing a separate id-to-content resolver. To make any new content item bookmarkable, drop the shared button in with a stable, globally-unique id:
+
+```tsx
+import BookmarkButton from '../components/BookmarkButton'
+
+<BookmarkButton item={{ id: `yourtype-${item.slug}`, title: item.title, link: `/your-route/${item.slug}` }} />
+```
+
+Existing id prefixes: `tool-<slug>` (`ToolPageShell.tsx`), `playground-<link>` (`PlaygroundCatalog.tsx`), `term-<id>` (`Encyclopedia.tsx`). Keep the prefix convention when adding a new bookmarkable content type so ids stay collision-free across types. `CommunityHub.tsx` reads `useBookmarksStore((s) => s.bookmarks)` directly — no changes needed there when a new content type is wired up.
+
+---
+
+### 🏛️ L. How to Add Content Feedback (Endorse/Flag) to a Content Item
+
+`src/components/ContentFeedback.tsx` renders a 👍 Helpful / 🚩 Flag pair that deep-links to a pre-filled GitHub issue (`src/lib/contentFeedback.ts::buildIssueUrl`, unit-tested in `contentFeedback.test.ts`) — no backend, no new persisted state beyond a per-id "already voted" flag in `localStorage`. Wire it into any content detail view with a stable id and a human-readable title:
+
+```tsx
+import ContentFeedback from '../components/ContentFeedback'
+
+<ContentFeedback id={`yourtype-${item.id}`} title={item.title} />
+```
+
+Currently wired into Encyclopedia term details (`term-<id>`) and Wall of Shame breach labs (`breach-<labId>`). Reuse the same id prefix already established for that content type (see §4K) so a single item's bookmark id and feedback id stay recognizably related.
+
+---
+
+### 🏛️ M. Guided Feature Tour
+
+`src/components/GuidedTour.tsx` renders a 5-step, centered onboarding modal (Academy → Playgrounds → Tools → Assess → Global Search) backed by `src/store/tourStore.ts` (Zustand + persist, only the `hasSeenTour` boolean is persisted — `isOpen` is ephemeral, same `partialize` pattern as `layoutStore.ts`). It auto-opens once per browser on mount (checked via `useTourStore.getState()` inside a mount-only effect, so no reactive dependency is needed) and is mounted once at `Header.tsx` alongside `CommandPalette`, so it's available on every route. A "Replay tour" icon button in the Header calls `openTour()` directly to re-trigger it on demand.
+
+To add a new step: append a `TourStep` object (`title`, `description`, `icon`, optional `link`/`linkLabel`) to the `STEPS` array — the progress dots, step counter, and Back/Next/Skip controls all derive from `STEPS.length` automatically.
+
+---
+
+### 🏛️ N. First-Visit Disclaimer Modal
+
+`src/components/DisclaimerModal.tsx` is a separate first-visit overlay (`disclaimerStore.ts`, same Zustand + persist + `partialize` shape as §4M's tour store) summarizing the 3 Core Principles from `README.md` plus a one-line educational-use notice linking to `/terms`. It is deliberately a **separate** concern from the Guided Tour — legal/safety notice vs. feature orientation — but the two are sequenced so they never stack:
+
+- `DisclaimerModal`'s mount effect auto-opens it if `!hasSeenDisclaimer`.
+- `GuidedTour`'s mount effect only auto-opens itself if `hasSeenDisclaimer` is already `true` — on a first-ever visit it stays closed and waits.
+- `DisclaimerModal`'s dismiss handler explicitly calls `useTourStore.getState().openTour()` (if the tour hasn't been seen yet) right after closing itself, so the tour opens immediately after the disclaimer instead of both fighting for the same overlay.
+
+If a third first-visit overlay is ever added, follow the same "each auto-opens only if all prior-in-sequence flags are already true" pattern rather than giving every modal an independent, uncoordinated mount-timer.
+
+---
+
+### 🏛️ O. How to Add a Compliance Deadline
+
+`src/data/complianceDeadlines.ts` is the registry backing the `/standards` "Compliance Deadlines" tab, following the same hand-curated-registry convention as `eventsRegistry.ts`/`reportsRegistry.ts`. Append a `ComplianceDeadline` object:
+
+```typescript
+{
+  id: 'your-regulation-id',
+  regulation: 'Full Regulation / Standard Name',
+  jurisdiction: 'European Union', // groups into the tab's jurisdiction filter buttons
+  deadlineDate: '2027-01-01',     // ISO date; drives the past/upcoming split automatically
+  description: 'One or two sentences on what this deadline requires and why it matters for IAM.',
+  relatedStandardId: 'oidc',      // optional — id from StandardsExplorer's STANDARDS array, adds a "Related Standard →" jump link
+  officialLink: 'https://...',    // the regulator/publisher's own page — always required
+  verifiedDate: '2027-01-01',     // when you last checked officialLink
+  confidence: 'confirmed',        // 'confirmed' = fixed in an enacted law/standard; 'estimated' = depends on further implementing acts or a proposed rule
+}
+```
+
+No UI changes needed — `getUpcomingDeadlines()`/`getPastDeadlines()`/`getJurisdictions()` and the search index (`searchService.ts`, category `📅 Compliance Deadlines`) all derive from this array automatically. Only mark an entry `confirmed` if the date is fixed directly in an enacted regulation; anything still dependent on a phased rollout or a not-yet-finalized rule should be `estimated` so the UI's "Estimated Date" badge sets the right expectation.
+
+---
+
+### 🏛️ P. Unified Personalization System (Content Depth + Career Track)
+
+`src/store/preferenceStore.ts` (Zustand + persist) holds two independent, non-persisted-separately preferences behind one Header control (`PersonalizationSelector.tsx`, opened from the `Layers` icon button next to Airplane Mode):
+
+- `depthMode: 'beginner' | 'expert' | 'both'` (default `'both'`, unchanged from every page's original behavior). `BeginnerExpertExplainer.tsx` (§4E's shared tool-page component) reads it to default-collapse the analogy or expert-spec column it doesn't want, but always exposes a local "Show Both" override (component `useState`, not written back to the store) so a single page view never permanently loses content.
+- `roleTrack: RoleTrackId | null` (one of the 6 `InterviewCareerCenter.tsx` career track ids, default `null`). Two pages key off it:
+  - `InterviewCareerCenter.tsx` lazy-initializes its `activeTrackId` from `roleTrack` (its ids already match `RoleTrackId` 1:1) and shows a small confirmation banner.
+  - `Learn.tsx` maps `roleTrack` to a recommended Academy track via the local `ROLE_TRACK_RECOMMENDATIONS` record and shows a "Recommended for `<role>`: `<track>`" banner with a "Jump to Track →" button that calls `setExpandedTrack`.
+
+To make a new tool page depth-aware, render it through `ToolPageShell`/`BeginnerExpertExplainer` as usual (§4E) — no extra wiring needed, since that shared component already reads the store. To key new content off `roleTrack`, follow the `Learn.tsx` pattern: a small local id-to-recommendation map plus a dismiss-free banner, not a new store field.

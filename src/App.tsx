@@ -49,6 +49,7 @@ import AnsibleVault from './pages/Tools/AnsibleVault'
 import SopsSimulator from './pages/Tools/SopsSimulator'
 import InterviewCareerCenter from './pages/InterviewCareerCenter'
 import KeyRingManager from './pages/Tools/KeyRingManager'
+import ConformanceChecker from './pages/Tools/ConformanceChecker'
 import IdentityBrokerSandbox from './pages/Playgrounds/IdentityBrokerSandbox'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
@@ -183,6 +184,7 @@ export default function App() {
               <Route path="/tools/ansible-vault" element={<AnsibleVault />} />
               <Route path="/tools/sops-simulator" element={<SopsSimulator />} />
               <Route path="/tools/key-ring" element={<KeyRingManager />} />
+              <Route path="/tools/conformance-checker" element={<ConformanceChecker />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />

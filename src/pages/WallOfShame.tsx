@@ -1,14 +1,25 @@
 import { useState, useEffect } from 'react'
-import { 
+import {
   ShieldAlert, Smartphone, Globe, Sparkles
 } from 'lucide-react'
+import ContentFeedback from '../components/ContentFeedback'
 
 type MuseumTab = 'evolution' | 'breaches' | 'resources'
+type BreachLabId = 'goldensaml' | 'pushfatigue' | 'wildcard' | 'oktahar' | 'silversaml' | 'lastpass'
+
+const BREACH_LAB_TITLES: Record<BreachLabId, string> = {
+  goldensaml: 'SolarWinds Golden SAML Hack',
+  pushfatigue: 'MFA Push Fatigue Prompt Bombing',
+  wildcard: 'OAuth Wildcard Redirect Hijacks',
+  oktahar: 'Okta HAR Support Ticket Cookie Theft',
+  silversaml: 'Entra ID Silver SAML Attack',
+  lastpass: 'LastPass Offline Vault Cracking'
+}
 
 export default function WallOfShame() {
   const [activeTab, setActiveTab] = useState<MuseumTab>('evolution')
   const [activeEra, setActiveEra] = useState(0)
-  const [activeLab, setActiveLab] = useState<'goldensaml' | 'pushfatigue' | 'wildcard' | 'oktahar' | 'silversaml' | 'lastpass'>('goldensaml')
+  const [activeLab, setActiveLab] = useState<BreachLabId>('goldensaml')
 
   // Set visited flag on mount
   useEffect(() => {
@@ -239,7 +250,7 @@ export default function WallOfShame() {
               { id: 'oktahar', label: '🚫 Okta 2023: Support HAR Theft', sub: 'Session cookie hijacking via logs (2023)' },
               { id: 'silversaml', label: '🥈 Entra ID: Silver SAML', sub: 'Target App Signing Key Theft (2024)' },
               { id: 'lastpass', label: '🔑 LastPass: Offline Vault Cracking', sub: 'Weak PBKDF2 Iterations (2022)' }
-            ] as { id: 'goldensaml' | 'pushfatigue' | 'wildcard' | 'oktahar' | 'silversaml' | 'lastpass'; label: string; sub: string }[]).map(l => (
+            ] as { id: BreachLabId; label: string; sub: string }[]).map(l => (
               <button
                 key={l.id}
                 onClick={() => {
@@ -266,7 +277,10 @@ export default function WallOfShame() {
           </div>
 
           {/* Active Lab Board */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 space-y-4">
+            <div className="flex justify-end">
+              <ContentFeedback id={`breach-${activeLab}`} title={BREACH_LAB_TITLES[activeLab]} />
+            </div>
             {/* LAB 1: GOLDEN SAML */}
             {activeLab === 'goldensaml' && (
               <div className="p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-6">

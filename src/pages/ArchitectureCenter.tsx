@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import type { LucideIcon } from 'lucide-react'
 import {
@@ -655,6 +655,28 @@ export default function ArchitectureCenter() {
     else if (type === 'retail') setSelectedNode('pos_terminal')
     setSimLogs([])
   }
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const arch = params.get('arch')
+      if (arch && Object.keys(ARCHITECTURE_DATA).includes(arch)) {
+        const type = arch as ArchitectureType
+        let defaultNode = 'client'
+        if (type === 'b2b_saas') defaultNode = 'tenant_router'
+        else if (type === 'multi_cloud') defaultNode = 'aws_workload'
+        else if (type === 'banking') defaultNode = 'customer_channel'
+        else if (type === 'healthcare') defaultNode = 'patient_portal'
+        else if (type === 'government') defaultNode = 'piv_card'
+        else if (type === 'manufacturing') defaultNode = 'plant_operator'
+        else if (type === 'retail') defaultNode = 'pos_terminal'
+        setTimeout(() => {
+          setActiveArch(type)
+          setSelectedNode(defaultNode)
+        }, 0)
+      }
+    }
+  }, [])
 
   const runSimulation = async () => {
     if (isSimulating) return

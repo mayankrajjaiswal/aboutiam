@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck } from 'lucide-react'
+import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
   const playgrounds = [
@@ -266,13 +267,16 @@ export default function PlaygroundCatalog() {
                 <div className="w-10 h-10 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
                   <pg.icon className="w-5 h-5" />
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
-                  pg.badge.includes('v1') 
-                    ? 'bg-status-success/10 border-status-success/20 text-status-success' 
-                    : 'bg-text-muted/10 border-border-subtle text-text-secondary'
-                }`}>
-                  {pg.badge}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
+                    pg.badge.includes('v1')
+                      ? 'bg-status-success/10 border-status-success/20 text-status-success'
+                      : 'bg-text-muted/10 border-border-subtle text-text-secondary'
+                  }`}>
+                    {pg.badge}
+                  </span>
+                  <BookmarkButton item={{ id: `playground-${pg.link}`, title: pg.title, link: pg.link }} />
+                </div>
               </div>
               <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
                 {pg.title}

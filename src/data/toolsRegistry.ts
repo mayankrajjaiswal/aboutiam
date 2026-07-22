@@ -7,7 +7,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
-  Layers, Fingerprint, Wallet,
+  Layers, Fingerprint, Wallet, ClipboardCheck,
 } from 'lucide-react'
 
 export type ToolCategory =
@@ -529,6 +529,26 @@ export const TOOLS: ToolMeta[] = [
     faqs: [
       { q: 'Can my private keys be stolen from this web page?', a: 'No. On generation, keys are marked as non-extractable (extractable: false) and stored directly in the browser\'s IndexedDB. This mimics physical HSM boundaries: the private key resides in a secure memory register and cannot be read, copied, or serialized by JavaScript, protecting you from XSS theft.' },
       { q: 'Is it safe to generate keys here?', a: 'Yes. All key generation, signing, and encryption are executed 100% locally inside your device using standard browser-native hardware entropy sources. No data is ever transmitted over the network.' }
+    ],
+  },
+  {
+    slug: 'conformance-checker',
+    title: 'Standards Conformance Checker — OIDC Discovery & SAML Metadata',
+    description: 'Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules — 100% client-side.',
+    category: 'Auth & Directory Builders',
+    icon: ClipboardCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['oidc conformance checker', 'saml metadata validator', 'openid-configuration checklist', 'saml metadata conformance'],
+    analogy: 'Like a pre-flight checklist a pilot runs before takeoff: it doesn\'t fly the plane for you, but it methodically confirms every required instrument and safety item is present before you trust the metadata to a real integration.',
+    expert: 'Runs a static rule-set against a pasted document: for OIDC discovery documents, validates required OIDC Discovery Core 1.0 / RFC 8414 fields (issuer, authorization_endpoint, token_endpoint, jwks_uri, and required capability arrays) plus basic security hygiene (HTTPS issuer, no "none" alg advertised). For SAML 2.0 metadata, validates the SAML 2.0 Metadata §2.3.1 structure (EntityDescriptor root, entityID, an IdP or SP role descriptor, a signing certificate, and the matching SSO/ACS endpoint).',
+    faqs: [
+      { q: 'Does this replace a full conformance test suite?', a: 'No. It is a fast structural sanity check for common misconfigurations, not a substitute for the OpenID Foundation\'s or your vendor\'s official conformance test suites.' },
+      { q: 'Is my metadata uploaded anywhere?', a: 'No. Everything is parsed and checked entirely in your browser tab — open your Network tab and confirm no request fires while you check a document.' },
+    ],
+    relatedLinks: [
+      { label: 'Decode & pretty-print OIDC discovery docs →', href: '/tools/oidc-discovery' },
+      { label: 'Build SAML SP/IdP metadata XML →', href: '/tools/saml-metadata-builder' },
     ],
   },
 ]

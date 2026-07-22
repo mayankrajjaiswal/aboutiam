@@ -49,6 +49,7 @@ import AnsibleVault from './pages/Tools/AnsibleVault'
 import SopsSimulator from './pages/Tools/SopsSimulator'
 import InterviewCareerCenter from './pages/InterviewCareerCenter'
 import KeyRingManager from './pages/Tools/KeyRingManager'
+import ConformanceChecker from './pages/Tools/ConformanceChecker'
 import IdentityBrokerSandbox from './pages/Playgrounds/IdentityBrokerSandbox'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
@@ -89,6 +90,7 @@ import WallOfShame from './pages/WallOfShame'
 import CheatSheets from './pages/CheatSheets'
 import BeginnerPrimer from './pages/BeginnerPrimer'
 import Contributors from './pages/Contributors'
+import Terms from './pages/Terms'
 import Roadmap from './pages/Roadmap'
 
 // Phase 7: Next-Gen Modules
@@ -108,6 +110,8 @@ import IdentityDecisionMatrix from './pages/IdentityDecisionMatrix'
 import ThreatModelingStudio from './pages/ThreatModelingStudio'
 import DesignReviewAssistant from './pages/DesignReviewAssistant'
 import StandardsExplorer from './pages/StandardsExplorer'
+import EventsCalendar from './pages/EventsCalendar'
+import IamReports from './pages/IamReports'
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
@@ -180,6 +184,7 @@ export default function App() {
               <Route path="/tools/ansible-vault" element={<AnsibleVault />} />
               <Route path="/tools/sops-simulator" element={<SopsSimulator />} />
               <Route path="/tools/key-ring" element={<KeyRingManager />} />
+              <Route path="/tools/conformance-checker" element={<ConformanceChecker />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />
@@ -223,7 +228,8 @@ export default function App() {
               <Route path="/threat-modeling" element={<ThreatModelingStudio />} />
               <Route path="/design-review" element={<DesignReviewAssistant />} />
               <Route path="/standards" element={<StandardsExplorer />} />
-              <Route path="/refrences" element={<ReferenceImplementations />} />
+              <Route path="/events" element={<EventsCalendar />} />
+              <Route path="/reports" element={<IamReports />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/encyclopedia" element={<Encyclopedia />} />
@@ -233,6 +239,7 @@ export default function App() {
               <Route path="/wall-of-shame" element={<WallOfShame />} />
               <Route path="/cheat-sheets" element={<CheatSheets />} />
               <Route path="/contributors" element={<Contributors />} />
+              <Route path="/terms" element={<Terms />} />
               {/* Fallback Redirection */}
               <Route path="*" element={<Home />} />
             </Routes>

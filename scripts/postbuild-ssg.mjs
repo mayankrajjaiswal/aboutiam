@@ -86,6 +86,7 @@ const ROUTES = [
   { path: '/explore/matchmaker', title: 'Auth Matchmaker', description: 'Wizard that recommends an authentication stack with copyable boilerplate code.' },
   { path: '/assess', title: 'GRC Maturity Assessments', description: '5-pillar organizational readiness assessment with an exportable roadmap.' },
   { path: '/tools/key-ring', title: 'Hardware Key Ring & HSM Emulator', description: 'Generate, store, and execute asymmetric and symmetric cryptographic keys locally inside your browser\'s secure sandbox — emulating a corporate Hardware Security Module (HSM).' },
+  { path: '/tools/conformance-checker', title: 'Standards Conformance Checker', description: 'Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules — 100% client-side.' },
   { path: '/playground/identity-broker', title: 'Identity Broker & Federation Sandbox', description: 'Explore multi-tenant single sign-on (SSO), federation routing, and real-time SAML-to-OIDC token translation topologies.' },
   { path: '/career-center', title: 'Interview & Career Preparation Center', description: 'Role-based interview preparation, multiple-choice mastery, incident scenarios, system design, code terminals, and resume guidance.' },
   { path: '/scenario-builder', title: 'Identity Scenario Builder & Architect', description: 'Describe your custom corporate footprint and receive an instant vendor-neutral secure architecture design blueprint.' },
@@ -96,6 +97,8 @@ const ROUTES = [
   { path: '/threat-modeling', title: 'Interactive Threat Modeling Studio', description: 'Visually build an IAM architecture and run threat analysis against STRIDE, MITRE ATT&CK, and OWASP. Calculate dynamic risk scores and generate mitigation reports.' },
   { path: '/design-review', title: 'IAM Design Review Assistant', description: 'Interactive design reviewer executing automated structural audits on OAuth parameters, SAML XML, and JWT payload configurations.' },
   { path: '/standards', title: 'Living Standards & RFC Explorer', description: 'Visually explore standard specifications and RFC timelines across OAuth, OpenID Connect, SCIM, SAML, and WebAuthn.' },
+  { path: '/events', title: 'IAM Events & Conferences', description: 'Upcoming Identity and Access Management conferences and summits — EIC, Identiverse, Gartner IAM Summit, Authenticate, RSA Conference, and KuppingerCole Impact Days — with dates, locations, and official links.' },
+  { path: '/reports', title: 'IAM Analyst Reports & Research', description: 'Curated abstracts, named leaders, and a cross-analyst leaderboard from the Gartner Magic Quadrant, Forrester Wave, and KuppingerCole Leadership Compass reports on Access Management, PAM, and CIAM, plus Thales\'s annual Data Threat Report research.' },
   { path: '/explore', title: 'IAM Landscape Directory', description: 'Identity product blueprints with copyable integration code.' },
   { path: '/assistant', title: 'AI Knowledge Assistant 2.0', description: 'Intelligent IAM platform navigator, side-by-side protocol comparison engine, learning planner, and interview prep simulator.' },
   { path: '/encyclopedia', title: 'Master IAM Glossary', description: 'Searchable A-Z glossary of 35+ Identity and Access Management standards and acronyms.' },
@@ -105,6 +108,7 @@ const ROUTES = [
   { path: '/wall-of-shame', title: 'Vulnerability Lab', description: 'Historic identity breaches, including Golden SAML and MFA push-bombing fatigue attacks.' },
   { path: '/cheat-sheets', title: 'Developer Playbooks', description: 'Compliance checklists for SPAs and machine-to-machine credentials.' },
   { path: '/contributors', title: 'Team & Contact', description: 'Meet the AboutIAM contributors and get in touch.' },
+  { path: '/terms', title: 'Terms, License & Disclaimer', description: 'MIT license details and educational-use disclaimer for AboutIAM\'s interactive identity security labs.' },
 ]
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

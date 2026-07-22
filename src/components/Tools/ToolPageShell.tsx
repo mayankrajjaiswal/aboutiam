@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import type { ToolMeta } from '../../data/toolsRegistry'
 import PrivacyNotice from './PrivacyNotice'
+import BookmarkButton from '../BookmarkButton'
 
 const SITE_URL = 'https://www.aboutiam.com'
 
@@ -50,8 +51,14 @@ export default function ToolPageShell({ tool, children }: ToolPageShellProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(tool)).replace(/</g, '\\u003c') }} />
 
       <div className="space-y-3 max-w-3xl">
-        <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">
-          <Icon className="w-3.5 h-3.5" /> {tool.category}
+        <div className="flex items-center justify-between gap-2">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">
+            <Icon className="w-3.5 h-3.5" /> {tool.category}
+          </div>
+          <BookmarkButton
+            item={{ id: `tool-${tool.slug}`, title: shortTitle(tool.title), link: `/tools/${tool.slug}` }}
+            className="p-1.5 rounded-lg border border-border-subtle bg-bg-card hover:border-accent-primary/30"
+          />
         </div>
         <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
           {shortTitle(tool.title)}

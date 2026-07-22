@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Sparkles, Wrench, Network, Building, ScanSearch, History } from 'lucide-react'
+import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Sparkles, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -382,6 +382,48 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
               Open Bulletins <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+
+          {/* Events & Conferences */}
+          <Link
+            to="/events"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <CalendarDays className="w-5 h-5" />
+              </div>
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                Events & Conferences
+              </h4>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Upcoming IAM conferences and summits — EIC, Identiverse, Gartner IAM Summit, Authenticate, RSAC — with dates, locations, and official links.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
+              View Calendar <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+
+          {/* Industry Reports */}
+          <Link
+            to="/reports"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <FileBarChart className="w-5 h-5" />
+              </div>
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                Industry Reports
+              </h4>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Gartner Magic Quadrant, Forrester Wave, and KuppingerCole Leadership Compass abstracts, named leaders, and a cross-analyst vendor leaderboard, plus Thales's annual Data Threat Report research.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
+              Browse Reports <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </div>
           </Link>
         </div>

@@ -19,9 +19,14 @@ import {
 import { motion, AnimatePresence } from 'framer-motion'
 import { useClipboardCopy } from '../components/Tools/useClipboardCopy'
 import { CAREER_TRACKS } from '../data/interviewData'
+import { usePreferenceStore } from '../store/preferenceStore'
 
 export default function InterviewCareerCenter() {
-  const [activeTrackId, setActiveTrackId] = useState('fresher')
+  const roleTrack = usePreferenceStore((s) => s.roleTrack)
+  const [activeTrackId, setActiveTrackId] = useState<string>(() => {
+    if (roleTrack && CAREER_TRACKS.some((t) => t.id === roleTrack)) return roleTrack
+    return 'fresher'
+  })
   const [activeSection, setActiveSection] = useState<'mcq' | 'scenario' | 'design' | 'coding' | 'mock' | 'resume'>('mcq')
 
   const track = CAREER_TRACKS.find((t) => t.id === activeTrackId)!
@@ -86,7 +91,7 @@ export default function InterviewCareerCenter() {
   }
 
   // --- 4. CODING STATE ---
-  const [codingInput, setCodingInput] = useState(CAREER_TRACKS[0].codingExercises[0].starterCode)
+  const [codingInput, setCodingInput] = useState(track.codingExercises[0].starterCode)
   const [codingStatus, setCodingStatus] = useState<'idle' | 'success' | 'failed'>('idle')
   const [codingHintVisible, setCodingHintVisible] = useState(false)
 
@@ -217,6 +222,15 @@ export default function InterviewCareerCenter() {
           </div>
         </div>
       </div>
+
+      {roleTrack && roleTrack === activeTrackId && (
+        <div className="p-3 rounded-xl bg-accent-glow border border-accent-primary/20 flex items-center gap-2.5">
+          <Briefcase className="w-4 h-4 text-accent-primary shrink-0" />
+          <p className="text-xs font-semibold text-text-primary">
+            Pre-selected based on your Header career-track preference — switch anytime on the left.
+          </p>
+        </div>
+      )}
 
       {/* Main Grid: Left Roles Rail, Right Section Tabs */}
       <div className="grid lg:grid-cols-4 gap-6 items-start">

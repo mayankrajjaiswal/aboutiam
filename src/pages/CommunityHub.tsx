@@ -1,9 +1,13 @@
 import { useState, useMemo } from 'react'
 import {
   Users, Award, Shield, ShieldAlert, CheckCircle2, RotateCcw,
-  Trophy, User, Star, Flame, Check, Lock, 
+  Trophy, User, Star, Flame, Check, Lock,
   Printer, Globe, Cpu, Database, ShieldCheck
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { getTrackGraduationBadges, getPlaygroundMilestoneBadges } from '../lib/achievements/achievementRules'
+import { useBookmarksStore } from '../store/bookmarksStore'
+import BookmarkButton from '../components/BookmarkButton'
 
 interface Achievement {
   id: string
@@ -11,7 +15,7 @@ interface Achievement {
   desc: string
   requirement: string
   unlocked: boolean
-  category: 'Protocols' | 'Enterprise' | 'Core'
+  category: 'Protocols' | 'Enterprise' | 'Core' | 'Milestone'
 }
 
 interface LeaderboardUser {
@@ -31,6 +35,8 @@ interface MonthlyChallenge {
 }
 
 export default function CommunityHub() {
+  const bookmarks = useBookmarksStore((s) => s.bookmarks)
+
   // Load Academy Completed Modules Progress
   const [completedModules] = useState<Record<string, boolean>>(() => {
     if (typeof window === 'undefined') return {}
@@ -213,8 +219,12 @@ export default function CommunityHub() {
       requirement: 'Visit the incident bulletins board or ITDR Lab',
       category: 'Core',
       unlocked: museumVisited || builderConfigured
-    }
-  ], [completedLabs, completedModules, scenarioRun, museumVisited, builderConfigured])
+    },
+    // Cross-module milestone badges: aggregate Academy track completion and total Playground
+    // completions already tracked via `aboutiam-academy-progress` / `aboutiam_labs_completed`.
+    ...getTrackGraduationBadges(completedModules),
+    ...getPlaygroundMilestoneBadges(labsCompletedCount)
+  ], [completedLabs, completedModules, scenarioRun, museumVisited, builderConfigured, labsCompletedCount])
 
   // Monthly Security Challenges list
   const challenges: MonthlyChallenge[] = [
@@ -534,7 +544,29 @@ export default function CommunityHub() {
 
           {/* RIGHT SIDE: MONTHLY CHALLENGES HUB */}
           <div className="lg:col-span-4 space-y-6">
-            
+
+            {/* Bookmarked Items */}
+            {bookmarks.length > 0 && (
+              <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-3">
+                <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border-subtle pb-2 flex items-center gap-1.5">
+                  <Star className="w-4 h-4 text-accent-primary" /> Bookmarked ({bookmarks.length})
+                </h4>
+                <div className="space-y-1.5 max-h-[220px] overflow-y-auto pr-1 custom-scrollbar">
+                  {bookmarks.map((b) => (
+                    <div
+                      key={b.id}
+                      className="flex items-center justify-between gap-2 p-2 rounded-lg border border-border-subtle bg-bg-nested/30 hover:border-accent-primary/30 transition-colors"
+                    >
+                      <Link to={b.link} className="text-[11px] font-semibold text-text-primary hover:text-accent-primary truncate min-w-0">
+                        {b.title}
+                      </Link>
+                      <BookmarkButton item={b} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Challenge Selector */}
             <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
               <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border-subtle pb-2 flex items-center gap-1.5">

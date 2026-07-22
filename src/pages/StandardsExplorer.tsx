@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  BookOpen, Search, ArrowLeft, Layers, ShieldCheck, 
+import {
+  BookOpen, Search, ArrowLeft, Layers, ShieldCheck,
   Terminal, Check, ShieldAlert, Network,
-  Info, Calendar, Building
+  Info, Calendar, Building, CalendarClock, ExternalLink
 } from 'lucide-react'
+import { getUpcomingDeadlines, getPastDeadlines, getJurisdictions } from '../data/complianceDeadlines'
 
 // Define Standard Types
 interface IdentityStandard {
@@ -28,6 +29,9 @@ export default function StandardsExplorer() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeStandardId, setActiveStandardId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'summary' | 'flow' | 'security' | 'vendors'>('summary')
+  const [pageView, setPageView] = useState<'standards' | 'deadlines'>('standards')
+  const [deadlineJurisdiction, setDeadlineJurisdiction] = useState('All')
+  const [showPastDeadlines, setShowPastDeadlines] = useState(false)
 
   // Curated Living Identity Standards Directory
   const STANDARDS: IdentityStandard[] = [
@@ -260,6 +264,28 @@ grant_type=authorization_code
     }
   ]
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const standard = params.get('standard')
+      const tab = params.get('tab')
+      if (standard && STANDARDS.some(s => s.id === standard)) {
+        setTimeout(() => {
+          setActiveStandardId(standard)
+          if (tab === 'summary' || tab === 'flow' || tab === 'security' || tab === 'vendors') {
+            setActiveTab(tab)
+          }
+        }, 0)
+      }
+
+      if (params.get('view') === 'deadlines') {
+        setTimeout(() => {
+          setPageView('deadlines')
+        }, 0)
+      }
+    }
+  }, [])
+
   // Filter and search logic
   const filteredStandards = useMemo(() => {
     return STANDARDS.filter(std => {
@@ -270,6 +296,14 @@ grant_type=authorization_code
       return matchQuery
     })
   }, [searchQuery])
+
+  const jurisdictions = useMemo(() => ['All', ...getJurisdictions()], [])
+
+  const filteredDeadlines = useMemo(() => {
+    const list = showPastDeadlines ? getPastDeadlines() : getUpcomingDeadlines()
+    if (deadlineJurisdiction === 'All') return list
+    return list.filter((d) => d.jurisdiction === deadlineJurisdiction)
+  }, [deadlineJurisdiction, showPastDeadlines])
 
   const activeStandard = useMemo(() => {
     return STANDARDS.find(s => s.id === activeStandardId)
@@ -291,20 +325,110 @@ grant_type=authorization_code
             Deconstruct complex digital identity standards and specifications visually. Trace sequences, raw payloads, and security considerations in-browser.
           </p>
         </div>
-        {activeStandardId && (
+        {activeStandardId ? (
           <button
             onClick={() => { setActiveStandardId(null); setActiveTab('summary'); }}
             className="text-xs bg-bg-card border border-border-subtle hover:bg-bg-sidebar px-4 py-2.5 rounded-xl text-text-secondary flex items-center gap-1.5 transition-colors font-bold shadow-sm"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Standards Inventory
           </button>
+        ) : (
+          <div className="flex bg-bg-nested p-1.5 rounded-xl border border-border-subtle gap-1 shrink-0">
+            <button
+              onClick={() => setPageView('standards')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'standards' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            >
+              <BookOpen className="w-3.5 h-3.5" /> Standards
+            </button>
+            <button
+              onClick={() => setPageView('deadlines')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'deadlines' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            >
+              <CalendarClock className="w-3.5 h-3.5" /> Compliance Deadlines
+            </button>
+          </div>
         )}
       </div>
 
-      {/* STANDARDS DIRECTORY LIST VIEW */}
-      {!activeStandardId ? (
+      {/* COMPLIANCE DEADLINES TRACKER VIEW */}
+      {pageView === 'deadlines' ? (
+        <div className="space-y-6 overflow-y-auto">
+          <div className="p-4 rounded-2xl bg-status-warning/5 border border-status-warning/20 flex items-start gap-3 text-xs text-text-secondary leading-relaxed">
+            <ShieldAlert className="w-4 h-4 text-status-warning shrink-0 mt-0.5" />
+            <span>Regulatory deadlines can shift with implementing acts and phased rollouts. Always re-verify against each entry's official source before relying on these dates for compliance planning — this is an educational starting point, not compliance advice.</span>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
+            <div className="flex flex-wrap gap-1.5">
+              {jurisdictions.map((j) => (
+                <button
+                  key={j}
+                  onClick={() => setDeadlineJurisdiction(j)}
+                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border transition ${
+                    deadlineJurisdiction === j ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-nested/30 text-text-secondary border-border-subtle hover:text-text-primary'
+                  }`}
+                >
+                  {j}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowPastDeadlines((v) => !v)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 border ${
+                showPastDeadlines ? 'bg-bg-nested text-text-primary border-border-subtle' : 'bg-accent-glow text-accent-primary border-accent-primary/20'
+              }`}
+            >
+              <CalendarClock className="w-3.5 h-3.5" /> {showPastDeadlines ? 'Showing Past' : 'Showing Upcoming'}
+            </button>
+          </div>
+
+          {filteredDeadlines.length === 0 ? (
+            <div className="p-8 text-center border border-dashed border-border-subtle rounded-xl text-sm text-text-muted font-semibold">
+              No {showPastDeadlines ? 'past' : 'upcoming'} deadlines for this jurisdiction.
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {filteredDeadlines.map((d) => (
+                <div key={d.id} className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-sm font-black text-text-primary">{d.regulation}</span>
+                      <span className="text-[9px] bg-bg-nested border border-border-subtle text-text-secondary font-black px-2 py-0.5 rounded uppercase tracking-wider">{d.jurisdiction}</span>
+                      {d.confidence === 'estimated' && (
+                        <span className="text-[9px] bg-status-warning/10 border border-status-warning/30 text-status-warning font-black px-2 py-0.5 rounded uppercase tracking-wider">Estimated Date</span>
+                      )}
+                    </div>
+                    <span className="text-xs font-mono font-bold text-accent-primary flex items-center gap-1.5 shrink-0">
+                      <Calendar className="w-3.5 h-3.5" /> {d.deadlineDate}
+                    </span>
+                  </div>
+                  <p className="text-xs text-text-secondary leading-relaxed">{d.description}</p>
+                  <div className="flex items-center justify-between pt-2 border-t border-border-subtle/40">
+                    <a
+                      href={d.officialLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] font-bold text-accent-primary hover:text-accent-hover flex items-center gap-1"
+                    >
+                      Official Source <ExternalLink className="w-3 h-3" />
+                    </a>
+                    {d.relatedStandardId && (
+                      <button
+                        onClick={() => { setPageView('standards'); setActiveStandardId(d.relatedStandardId!); setActiveTab('summary'); }}
+                        className="text-[10px] font-bold text-text-secondary hover:text-accent-primary"
+                      >
+                        Related Standard →
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : !activeStandardId ? (
         <div className="space-y-6">
-          
+
           {/* SEARCH BAR */}
           <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex gap-4 items-center">
             <div className="relative w-full md:w-96">

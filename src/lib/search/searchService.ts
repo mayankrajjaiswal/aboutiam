@@ -5,6 +5,8 @@ import { ENCYCLOPEDIA_TERMS } from '../../data/encyclopediaData'
 import type { Term } from '../../pages/Encyclopedia'
 import { VENDOR_CATALOG } from '../../data/vendorCatalog'
 import type { VendorType } from '../../data/vendorCatalog'
+import { COMPLIANCE_DEADLINES } from '../../data/complianceDeadlines'
+import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
   id: string
@@ -55,6 +57,32 @@ const BREACHES_LIST = [
   { id: 'breach-oktahar', title: 'Okta HAR Support Ticket Cookie Theft', desc: 'Session hijacking incident (2023). Support HAR logs contained active admin session cookies loaded directly into attacker browsers.', link: '/wall-of-shame?tab=breaches&lab=oktahar', kw: ['okta', 'har', 'cookie', 'session', 'stolen', 'support', '2023'] },
   { id: 'breach-silversaml', title: 'Entra ID Silver SAML Attack', desc: 'Targeted SaaS hijacking (2024). Attackers steal self-signed application signing keys to bypass central AD domain rules.', link: '/wall-of-shame?tab=breaches&lab=silversaml', kw: ['silver saml', 'entra id', 'entra', 'microsoft', 'saas', 'signing key', '2024'] },
   { id: 'breach-lastpass', title: 'LastPass Offline Vault Cracking', desc: 'Offline brute force attack (2022). Weak corporate PBKDF2 iteration counts allowed rapid GPU hash dictionary cracking.', link: '/wall-of-shame?tab=breaches&lab=lastpass', kw: ['lastpass', 'vault', 'pbkdf2', 'iterations', 'crack', 'brute force', '2022'] }
+]
+
+// Statically define the 4 living standards
+const STANDARDS_LIST = [
+  { id: 'oauth21', title: 'OAuth 2.1', desc: 'Consolidated authorization framework deprecating legacy Implicit and Password grants, mandating PKCE.', kw: ['oauth', 'oauth 2.1', 'pkce', 'rfc 6749', 'authorization'] },
+  { id: 'oidc', title: 'OpenID Connect (OIDC)', desc: 'Identity layer on top of OAuth 2.0 introducing ID Tokens, UserInfo endpoints, and Discovery documents.', kw: ['oidc', 'openid connect', 'id token', 'discovery', 'userinfo'] },
+  { id: 'scim20', title: 'SCIM 2.0', desc: 'System for Cross-domain Identity Management standard for automated user/group provisioning across IdPs and SaaS apps.', kw: ['scim', 'provisioning', 'user lifecycle', 'rfc 7644'] },
+  { id: 'webauthn', title: 'WebAuthn / FIDO2', desc: 'W3C standard for passwordless public-key authentication using hardware authenticators and platform passkeys.', kw: ['webauthn', 'fido2', 'passkey', 'authenticator', 'public key'] }
+]
+
+// Statically define the 14 reference architectures
+const ARCHITECTURES_LIST = [
+  { id: 'zero_trust', title: 'Workforce Zero Trust (NIST SP 800-207)', desc: 'Dynamic authentication, device posture, and Policy Decision Point evaluations for workforce access.', kw: ['zero trust', 'nist', 'pdp', 'pep'] },
+  { id: 'b2b_saas', title: 'Multi-Tenant B2B SaaS Identity Architecture', desc: 'Tenant isolation, federated SSO, and SCIM provisioning patterns for B2B SaaS platforms.', kw: ['b2b', 'saas', 'multi-tenant', 'federation'] },
+  { id: 'multi_cloud', title: 'Multi-Cloud Identity & Machine Workloads (SPIFFE/SPIRE)', desc: 'Non-human identity attestation and X.509 SVID issuance across multi-cloud workloads.', kw: ['spiffe', 'spire', 'multi-cloud', 'workload identity'] },
+  { id: 'ciam_social', title: 'Customer Identity & Social Login Federation (CIAM)', desc: 'Consumer registration, social login federation, and progressive profiling architecture.', kw: ['ciam', 'social login', 'consumer identity'] },
+  { id: 'oauth_oidc', title: 'OAuth 2.0 & OIDC Authorization Code Flow', desc: 'Reference sequence flow for the authorization code grant with PKCE across front and back channels.', kw: ['oauth', 'oidc', 'authorization code', 'pkce'] },
+  { id: 'saml', title: 'SAML 2.0 Enterprise Web SSO', desc: 'Enterprise browser SSO reference architecture using SAML assertions and IdP-initiated flows.', kw: ['saml', 'sso', 'assertion', 'enterprise'] },
+  { id: 'pam', title: 'Privileged Access Management (PAM) Vaulting', desc: 'Credential vaulting, session brokering, and Just-in-Time privileged access architecture.', kw: ['pam', 'privileged access', 'vault', 'jit'] },
+  { id: 'pki', title: 'Public Key Infrastructure (PKI) & mTLS', desc: 'Certificate authority hierarchies, mTLS handshakes, and revocation checking architecture.', kw: ['pki', 'mtls', 'certificate authority', 'x509'] },
+  { id: 'k8s_identity', title: 'Kubernetes Identity (OIDC & RBAC)', desc: 'Cluster authentication via OIDC and fine-grained authorization via Kubernetes RBAC.', kw: ['kubernetes', 'k8s', 'rbac', 'oidc'] },
+  { id: 'banking', title: 'Banking & Financial Services Identity Architecture (PCI-DSS & PSD2)', desc: 'Customer channel, strong customer authentication, and PCI-DSS/PSD2-aligned identity controls.', kw: ['banking', 'pci-dss', 'psd2', 'financial services'] },
+  { id: 'healthcare', title: 'Healthcare Identity Architecture (HIPAA & HL7 FHIR)', desc: 'Patient portal identity, HIPAA-aligned access controls, and HL7 FHIR integration patterns.', kw: ['healthcare', 'hipaa', 'hl7', 'fhir', 'patient portal'] },
+  { id: 'government', title: 'Government & Public Sector Identity Architecture (FedRAMP & NIST 800-63)', desc: 'PIV card authentication, FedRAMP-aligned controls, and NIST 800-63 identity assurance levels.', kw: ['government', 'fedramp', 'piv', 'nist 800-63'] },
+  { id: 'manufacturing', title: 'Industrial OT/ICS Identity Architecture (IEC 62443)', desc: 'Plant operator access, OT/ICS segmentation, and IEC 62443-aligned identity controls.', kw: ['manufacturing', 'ot', 'ics', 'iec 62443'] },
+  { id: 'retail', title: 'Retail & Point-of-Sale Identity Architecture (PCI-DSS & Omnichannel)', desc: 'POS terminal identity, omnichannel session continuity, and PCI-DSS aligned controls.', kw: ['retail', 'pos', 'pci-dss', 'omnichannel'] }
 ]
 
 let searchIndex: MiniSearch<SearchItem> | null = null
@@ -139,6 +167,67 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
       category: '💣 Breach Museum Cases',
       link: b.link,
       keywords: b.kw
+    })
+  })
+
+  // 6. Add Living Standards
+  STANDARDS_LIST.forEach(s => {
+    items.push({
+      id: `standard-${s.id}`,
+      title: s.title,
+      fullName: 'Living Standard & RFC Reference',
+      description: s.desc,
+      category: '📜 Living Standards & RFCs',
+      link: `/standards?standard=${s.id}`,
+      keywords: s.kw
+    })
+  })
+
+  // 7. Add Reference Architectures
+  ARCHITECTURES_LIST.forEach(a => {
+    items.push({
+      id: `arch-${a.id}`,
+      title: a.title,
+      fullName: 'Reference Architecture',
+      description: a.desc,
+      category: '🏛️ Reference Architectures',
+      link: `/architecture?arch=${a.id}`,
+      keywords: a.kw
+    })
+  })
+
+  // 8. Add Compliance Deadlines
+  COMPLIANCE_DEADLINES.forEach(d => {
+    items.push({
+      id: `deadline-${d.id}`,
+      title: d.regulation,
+      fullName: `${d.jurisdiction} Compliance Deadline`,
+      description: d.description,
+      category: '📅 Compliance Deadlines',
+      link: '/standards?view=deadlines',
+      keywords: [d.jurisdiction, d.deadlineDate, 'compliance', 'regulation', 'deadline']
+    })
+  })
+
+  // 9. Add every remaining site page (sidebar/nav pages not covered above)
+  // sourced from routeMeta.ts — the same table already required to be kept
+  // in sync for SEO, so new routes get indexed here automatically.
+  const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))
+  ROUTE_META.forEach(route => {
+    if (coveredPaths.has(route.path)) return
+    coveredPaths.add(route.path)
+    const keywords = route.title
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter(w => w.length > 2)
+    items.push({
+      id: `page-${route.path.replace(/\//g, '-') || 'home'}`,
+      title: route.title,
+      fullName: 'Site Page',
+      description: route.description,
+      category: '📄 Site Pages',
+      link: route.path,
+      keywords
     })
   })
 

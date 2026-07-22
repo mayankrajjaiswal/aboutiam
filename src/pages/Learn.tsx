@@ -3,8 +3,19 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Compass, Key, Lock, Fingerprint,
   Users, Server, CheckCircle2, ChevronDown, ChevronUp, HelpCircle,
-  Info, AwardIcon, Sparkles, LayoutGrid, RotateCcw
+  Info, AwardIcon, Sparkles, LayoutGrid, RotateCcw, Briefcase
 } from 'lucide-react'
+import { usePreferenceStore, type RoleTrackId } from '../store/preferenceStore'
+
+// Maps a Career Center role track to the single Academy track most relevant to it.
+const ROLE_TRACK_RECOMMENDATIONS: Record<RoleTrackId, { trackId: string; roleLabel: string }> = {
+  fresher: { trackId: 'track-1', roleLabel: 'Fresher / Entry-Level' },
+  developer: { trackId: 'track-3', roleLabel: 'Developer' },
+  security_engineer: { trackId: 'track-6', roleLabel: 'Security Engineer' },
+  iam_engineer: { trackId: 'track-2', roleLabel: 'IAM Engineer' },
+  architect: { trackId: 'track-5', roleLabel: 'Enterprise Architect' },
+  principal: { trackId: 'track-5', roleLabel: 'Principal / Director' },
+}
 
 interface SubModule {
   id: string
@@ -99,6 +110,7 @@ const ACADEMY_QUIZZES: Record<string, AcademyQuiz> = {
 }
 
 export default function Learn() {
+  const roleTrack = usePreferenceStore((s) => s.roleTrack)
   const [expandedTrack, setExpandedTrack] = useState<string | null>(null)
   const [expandedModule, setExpandedExpandedModule] = useState<string | null>(null)
   const [completedModules, setCompletedModules] = useState<Record<string, boolean>>(() => {
@@ -574,12 +586,30 @@ export default function Learn() {
         </div>
       </div>
 
+      {/* Recommended Track Banner (personalized via Header's career-track preference) */}
+      {roleTrack && ROLE_TRACK_RECOMMENDATIONS[roleTrack] && (
+        <div className="p-4 rounded-xl bg-accent-glow border border-accent-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <Briefcase className="w-4 h-4 text-accent-primary shrink-0" />
+            <p className="text-xs font-semibold text-text-primary">
+              Recommended for <strong>{ROLE_TRACK_RECOMMENDATIONS[roleTrack].roleLabel}</strong>: {tracks.find((t) => t.id === ROLE_TRACK_RECOMMENDATIONS[roleTrack].trackId)?.title}
+            </p>
+          </div>
+          <button
+            onClick={() => setExpandedTrack(ROLE_TRACK_RECOMMENDATIONS[roleTrack].trackId)}
+            className="text-xs font-black text-accent-primary hover:text-accent-hover uppercase tracking-wider shrink-0 cursor-pointer"
+          >
+            Jump to Track →
+          </button>
+        </div>
+      )}
+
       {/* Main Two Column Workspace */}
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Left Side Track Selector Accordion (2 Columns) */}
         <div className="lg:col-span-2 space-y-4">
           <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Academy Tracks</span>
-          
+
           {tracks.map((track) => {
             const { completed, total, pct } = getTrackProgress(track)
             const isTrackExpanded = expandedTrack === track.id

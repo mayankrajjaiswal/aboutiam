@@ -410,5 +410,127 @@ export const ENCYCLOPEDIA_TERMS: Term[] = [
       category: 'Authorization',
       analogy: 'A smart digital bouncer that checks if the customer is on the list (identity), if they have their ID (credentials), if the bar is not full (resource), and if it\'s before midnight (context) before granting entry.',
       expert: 'A Policy Decision Point (PDP) evaluating incoming access requests against Attribute-Based rules, utilizing context (time, location), user attributes (clearance, roles), and resource metadata dynamically.'
+    },
+    {
+      id: 'ciba',
+      term: 'CIBA',
+      fullName: 'Client-Initiated Backchannel Authentication',
+      category: 'Protocols',
+      analogy: 'A waiter bringing the payment terminal directly to your table instead of walking you to a register at the front counter. The approval happens on a separate device (your phone) while you keep sitting at a completely different one (a smart TV or kiosk).',
+      expert: 'An OpenID Foundation extension to OIDC enabling decoupled authentication: a consumption device (smart TV, kiosk, call center agent) initiates a login request via the backchannel, and the actual user approval happens asynchronously on a separate authentication device (e.g. a mobile app push).'
+    },
+    {
+      id: 'rar',
+      term: 'RAR',
+      fullName: 'Rich Authorization Requests (RFC 9396)',
+      category: 'Authorization',
+      analogy: 'Instead of asking for a vague "shopping" pass, you request a precise permission slip: "$50 max, only at Store X, only until Friday." The merchant can read the exact fine print before approving anything.',
+      expert: 'RFC 9396. Extends OAuth 2.0 beyond flat string `scope` values by letting clients request fine-grained, structured JSON authorization details (exact amounts, resource identifiers, actions), commonly used in Open Banking and FAPI-profile deployments.'
+    },
+    {
+      id: 'sd_jwt',
+      term: 'SD-JWT',
+      fullName: 'Selective Disclosure JSON Web Token',
+      category: 'Cryptography',
+      analogy: 'Handing someone a diploma where individual lines (your major, your GPA, your graduation date) are each covered by a removable sticker. You peel off only the stickers relevant to the person asking, without invalidating the university\'s original seal.',
+      expert: 'An IETF format layering selective disclosure over JWTs: the issuer hashes and commits individual claims as separate disclosable blocks, letting a holder reveal only a subset of claims to a verifier while the original issuer signature still validates the presented subset.',
+      toolUrl: '/tools/sd-jwt-decoder'
+    },
+    {
+      id: 'mdl',
+      term: 'mDL / mDoc',
+      fullName: 'Mobile Driver\'s License (ISO/IEC 18013-5)',
+      category: 'Decentralized',
+      analogy: 'Tapping your phone at airport security instead of handing over a plastic driver\'s license. The scanner only learns "yes, over 21, photo matches" — not your home address or license number, unless you explicitly approve sharing more.',
+      expert: 'ISO/IEC 18013-5. A standardized, cryptographically signed mobile credential format for government-issued IDs, supporting offline BLE/NFC device engagement and selective attribute disclosure to a verifying reader without contacting the issuing authority in real time.'
+    },
+    {
+      id: 'radius',
+      term: 'RADIUS',
+      fullName: 'Remote Authentication Dial-In User Service',
+      category: 'Protocols',
+      analogy: 'The badge-check intercom at an old office building\'s parking gate: your car radio badge talks to a central guard booth, which checks a logbook and buzzes the gate open — the network switch or VPN box never needs its own user database.',
+      expert: 'RFC 2865. A legacy but still widely deployed AAA protocol used by network devices (VPN concentrators, Wi-Fi access points, switches) to centralize authentication, authorization, and accounting against a shared server, typically backed by Active Directory or LDAP.'
+    },
+    {
+      id: 'ocsp',
+      term: 'OCSP',
+      fullName: 'Online Certificate Status Protocol',
+      category: 'Cryptography',
+      analogy: 'Calling the DMV\'s hotline to ask "is this specific driver\'s license still valid right now?" instead of downloading their entire multi-thousand-page ledger of every revoked license ever issued.',
+      expert: 'RFC 6960. A real-time protocol allowing a relying party to query a Certificate Authority (or its designated responder) about the current revocation status of a single X.509 certificate, avoiding the need to download a full Certificate Revocation List.'
+    },
+    {
+      id: 'crl',
+      term: 'CRL',
+      fullName: 'Certificate Revocation List',
+      category: 'Cryptography',
+      analogy: 'A bouncer\'s printed clipboard listing every banned patron\'s name. It works, but it can be huge, gets stale between reprints, and must be fully re-read every time.',
+      expert: 'RFC 5280. A digitally signed, timestamped list published periodically by a Certificate Authority enumerating serial numbers of X.509 certificates that have been revoked before their natural expiry, checked by clients as an alternative or fallback to OCSP.'
+    },
+    {
+      id: 'token_binding',
+      term: 'Token Binding',
+      category: 'Protocols',
+      fullName: 'Token Binding Protocol (RFC 8471)',
+      analogy: 'Welding a hotel keycard directly to your specific wristband at check-in. Even if someone photocopies the keycard, it won\'t open any door unless it\'s still attached to your original wristband.',
+      expert: 'RFC 8471/8473. A TLS-layer mechanism cryptographically binding security tokens (session cookies, OAuth tokens) to the underlying TLS connection\'s key pair, so a stolen bearer token cannot be replayed from a different client — a conceptual precursor to DPoP.'
+    },
+    {
+      id: 'step_up_auth',
+      term: 'Step-Up Authentication',
+      category: 'Foundations',
+      fullName: 'Step-Up (Adaptive) Authentication',
+      analogy: 'A bank letting you check your balance with just a PIN, but demanding a manager\'s signature and photo ID the moment you try to wire $50,000 out of the account.',
+      expert: 'An authentication pattern where a session initially authenticated at a lower assurance level is prompted to re-authenticate with a stronger factor (biometric, hardware key, fresh MFA challenge) before permitting a higher-risk or higher-value operation.'
+    },
+    {
+      id: 'rba',
+      term: 'RBA',
+      fullName: 'Risk-Based Authentication',
+      category: 'Zero Trust',
+      analogy: 'A doorman who waves you through instantly on your usual daily visit, but suddenly demands your full ID and a phone call to your host the one time you show up at 3 AM from a city you\'ve never been to.',
+      expert: 'An adaptive authentication approach that scores each login attempt in real time against signals (IP reputation, device fingerprint, geovelocity, behavioral biometrics) and dynamically escalates to additional MFA challenges or blocks the attempt when the computed risk score exceeds a threshold.'
+    },
+    {
+      id: 'jit_provisioning',
+      term: 'JIT Provisioning',
+      fullName: 'Just-in-Time User Provisioning',
+      category: 'Provisioning',
+      analogy: 'A hotel that only prints your room keycard the moment you walk up to the front desk with a valid reservation, rather than pre-printing keycards for every guest who might ever book a room.',
+      expert: 'A provisioning pattern where a user account is created or updated in a Service Provider at the moment of their first successful SSO assertion (SAML/OIDC), populated directly from IdP-asserted attributes, instead of being pre-provisioned via SCIM ahead of time.'
+    },
+    {
+      id: 'entitlement_management',
+      term: 'Entitlement Management',
+      fullName: 'Cloud Infrastructure Entitlement Management (CIEM) & Fine-Grained Entitlements',
+      category: 'Governance',
+      analogy: 'An inventory clerk who tracks not just which employees have a master key, but exactly which specific drawers, cabinets, and shelves that master key happens to unlock across every warehouse in the company.',
+      expert: 'The governance discipline of discovering, cataloging, and right-sizing the granular permissions ("entitlements") granted to human and non-human identities across cloud IaaS/PaaS/SaaS resources, commonly surfaced via CIEM tooling to detect excessive standing privilege.'
+    },
+    {
+      id: 'access_recertification',
+      term: 'Access Recertification',
+      fullName: 'Access Recertification & Attestation Campaigns',
+      category: 'Governance',
+      analogy: 'A quarterly fire-drill roll call where every floor manager must explicitly re-confirm, in writing, that each person on their floor still needs the badge they were issued — or have it revoked.',
+      expert: 'A recurring IGA control (often driven by SOX, SOC2, or ISO 27001 requirements) where resource/application owners formally review and re-approve or revoke each user\'s existing entitlements on a fixed cadence, producing an auditable attestation trail.'
+    },
+    {
+      id: 'ws_federation',
+      term: 'WS-Federation',
+      fullName: 'Web Services Federation Language',
+      category: 'Protocols',
+      analogy: 'An older, more formal cousin of SAML\'s passport-and-visa system — same basic idea of a trusted stamp from a home authority, just written in a stricter, more verbose legal dialect that\'s gradually falling out of everyday use.',
+      expert: 'A legacy XML-based federated identity protocol (closely associated with Microsoft ADFS) predating widespread SAML 2.0 and OIDC adoption, still encountered in older enterprise SSO integrations but generally being phased out in favor of SAML 2.0 or OIDC.'
+    },
+    {
+      id: 'spiffe_spire',
+      term: 'SPIFFE / SPIRE',
+      fullName: 'Secure Production Identity Framework for Everyone',
+      category: 'Zero Trust',
+      analogy: 'A factory that stamps a unique, forgery-proof serial number and birth-certificate onto every single machine part the moment it comes off the line, so any other machine on the floor can instantly verify exactly which part it\'s talking to.',
+      expert: 'An open standard (CNCF) and its reference implementation (SPIRE) for issuing short-lived, cryptographically verifiable identities (SVIDs, typically X.509 or JWT) to non-human workloads in dynamic, multi-cloud, or Kubernetes environments, removing the need for long-lived static API keys or shared secrets.',
+      toolUrl: '/playground/workload-mesh'
     }
 ]

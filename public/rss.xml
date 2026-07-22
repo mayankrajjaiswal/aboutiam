@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 21 Jul 2026 09:35:55 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 22 Jul 2026 04:20:07 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: JWT Decoder — Inspect & Verify Tokens Online]]></title>
@@ -245,6 +245,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/keyring-manager</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Generate, store, and execute asymmetric and symmetric cryptographic keys locally inside your browser's secure sandbox — emulating a corporate Hardware Security Module (HSM).]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Standards Conformance Checker — OIDC Discovery & SAML Metadata]]></title>
+      <link>https://www.aboutiam.com/tools/conformance-checker</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/conformance-checker</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules — 100% client-side.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

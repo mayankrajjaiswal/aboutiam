@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Book, Search, Lightbulb, ShieldCheck, FileText, ChevronRight, Wrench, ArrowRight } from 'lucide-react'
 import { ENCYCLOPEDIA_TERMS } from '../data/encyclopediaData'
+import BookmarkButton from '../components/BookmarkButton'
+import ContentFeedback from '../components/ContentFeedback'
 
 export interface Term {
   id: string
@@ -87,7 +89,7 @@ export default function Encyclopedia() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full p-2.5 pl-10 rounded-lg bg-bg-sidebar border border-border-subtle text-sm text-text-primary focus:outline-none focus:border-accent-primary" 
-              placeholder="Search 35 terms (e.g. PKCE)..." 
+              placeholder="Search 65 terms (e.g. PKCE)..."
             />
             <Search className="w-4 h-4 text-text-muted absolute left-3 top-3.5" />
           </div>
@@ -110,16 +112,19 @@ export default function Encyclopedia() {
 
           <div className="space-y-2 max-h-[500px] overflow-y-auto pr-2 mt-4 custom-scrollbar">
             {filteredTerms.map(t => (
-              <button
+              <div
                 key={t.id}
+                role="button"
+                tabIndex={0}
                 onClick={() => setSelectedTerm(t)}
-                className={`w-full text-left p-3 rounded-xl border flex items-center justify-between transition-all ${
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedTerm(t) }}
+                className={`w-full text-left p-3 rounded-xl border flex items-center justify-between gap-2 transition-all cursor-pointer ${
                   selectedTerm?.id === t.id
                     ? 'border-accent-primary bg-accent-glow shadow-sm'
                     : 'border-border-subtle bg-bg-card hover:border-accent-primary/30'
                 }`}
               >
-                <div className="space-y-0.5">
+                <div className="space-y-0.5 min-w-0">
                   <span className={`block text-sm font-black ${selectedTerm?.id === t.id ? 'text-accent-primary' : 'text-text-primary'}`}>
                     {t.term}
                   </span>
@@ -127,8 +132,11 @@ export default function Encyclopedia() {
                     {t.category}
                   </span>
                 </div>
-                <ChevronRight className={`w-4 h-4 ${selectedTerm?.id === t.id ? 'text-accent-primary' : 'text-text-muted'}`} />
-              </button>
+                <div className="flex items-center gap-1 shrink-0">
+                  <BookmarkButton item={{ id: `term-${t.id}`, title: t.term, link: `/encyclopedia?term=${t.id}` }} />
+                  <ChevronRight className={`w-4 h-4 ${selectedTerm?.id === t.id ? 'text-accent-primary' : 'text-text-muted'}`} />
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -140,9 +148,15 @@ export default function Encyclopedia() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-accent-primary/5 rounded-full blur-3xl pointer-events-none"></div>
 
               <div className="space-y-2 border-b border-border-subtle pb-6 relative z-10">
-                <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-accent-glow text-accent-primary border border-accent-primary/10">
-                  {selectedTerm.category}
-                </span>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-accent-glow text-accent-primary border border-accent-primary/10">
+                    {selectedTerm.category}
+                  </span>
+                  <BookmarkButton
+                    item={{ id: `term-${selectedTerm.id}`, title: selectedTerm.term, link: `/encyclopedia?term=${selectedTerm.id}` }}
+                    className="p-1.5 rounded-lg border border-border-subtle bg-bg-sidebar/50 hover:border-accent-primary/30"
+                  />
+                </div>
                 <h3 className="text-3xl font-black text-text-primary">{selectedTerm.term}</h3>
                 <p className="text-base text-text-secondary font-medium">{selectedTerm.fullName}</p>
               </div>
@@ -194,6 +208,10 @@ export default function Encyclopedia() {
                   <span>Want to see how {selectedTerm.term} fits into active code or real handshakes? Browse the Playgrounds or play with our visual OIDC handshakes!</span>
                 </div>
               )}
+
+              <div className="flex justify-end pt-2 border-t border-border-subtle/50 relative z-10">
+                <ContentFeedback id={`term-${selectedTerm.id}`} title={selectedTerm.term} />
+              </div>
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center text-center p-12 border border-dashed border-border-subtle rounded-2xl bg-bg-card/50">

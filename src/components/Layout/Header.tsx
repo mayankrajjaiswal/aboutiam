@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss } from 'lucide-react'
+import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss, HelpCircle, Layers } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
+import { useTourStore } from '../../store/tourStore'
 import { getRouteMeta } from '../../routeMeta'
 import CommandPalette from '../Search/CommandPalette'
+import GuidedTour from '../GuidedTour'
+import DisclaimerModal from '../DisclaimerModal'
+import PersonalizationSelector from '../PersonalizationSelector'
 import { useAirplaneModeStore } from '../../store/airplaneModeStore'
 import AirplaneSelector from '../Search/AirplaneSelector'
 
@@ -70,7 +74,9 @@ export default function Header() {
 
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isAirplaneOpen, setIsAirplaneOpen] = useState(false)
+  const [isPersonalizeOpen, setIsPersonalizeOpen] = useState(false)
   const { isEnabled: isAirplaneEnabled } = useAirplaneModeStore()
+  const openTour = useTourStore((s) => s.openTour)
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -183,6 +189,19 @@ export default function Header() {
           <AirplaneSelector isOpen={isAirplaneOpen} onClose={() => setIsAirplaneOpen(false)} />
         </div>
 
+        {/* Personalization: content depth + career track */}
+        <div className="relative flex items-center justify-center">
+          <button
+            onClick={() => setIsPersonalizeOpen(!isPersonalizeOpen)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary text-xs font-semibold transition-colors focus:outline-none cursor-pointer"
+            title="Personalize content depth and career track"
+          >
+            <Layers className="w-4 h-4" />
+          </button>
+
+          <PersonalizationSelector isOpen={isPersonalizeOpen} onClose={() => setIsPersonalizeOpen(false)} />
+        </div>
+
         {/* Theme Cycling Selector */}
         <button
           onClick={cycleTheme}
@@ -191,6 +210,16 @@ export default function Header() {
         >
           {renderThemeIcon()}
           <span className="hidden sm:inline">{getThemeLabel()}</span>
+        </button>
+
+        {/* Replay Guided Tour */}
+        <button
+          onClick={openTour}
+          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
+          title="Replay the guided feature tour"
+          aria-label="Replay the guided feature tour"
+        >
+          <HelpCircle className="w-4 h-4" />
         </button>
 
         {/* RSS Feed Reference Link */}
@@ -220,6 +249,12 @@ export default function Header() {
 
       {/* Global Search Command Palette overlay modal */}
       <CommandPalette isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+
+      {/* First-visit / replayable Guided Feature Tour overlay modal */}
+      <GuidedTour />
+
+      {/* First-visit Educational/Privacy Disclaimer overlay modal */}
+      <DisclaimerModal />
     </header>
   )
 }

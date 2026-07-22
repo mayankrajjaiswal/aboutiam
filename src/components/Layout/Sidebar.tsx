@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
-  CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building, 
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, Briefcase
+  CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, Briefcase, CalendarDays, FileBarChart
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -126,6 +126,7 @@ const architectureItems = [
 
 const ecosystemItems = [
   { name: 'Vendor Knowledge Center', path: '/vendor', icon: Building },
+  { name: 'IAM Landscape Directory', path: '/explore', icon: Compass },
   { name: 'Certification Hub', path: '/certifications', icon: Award },
   { name: 'Interview & Career Center', path: '/career-center', icon: Briefcase },
   { name: 'Research & CVE Tracker', path: '/research', icon: ScanSearch },
@@ -137,6 +138,8 @@ const ecosystemItems = [
 
 const communityItems = [
   { name: 'Identity Timeline', path: '/timeline', icon: History },
+  { name: 'Events & Conferences', path: '/events', icon: CalendarDays },
+  { name: 'Industry Reports', path: '/reports', icon: FileBarChart },
   { name: 'Community Forums', path: '/community-forums', icon: Network },
   { name: 'Community Achievements', path: '/community', icon: Users },
   { name: 'Team & Bio Cards', path: '/contributors', icon: Users },

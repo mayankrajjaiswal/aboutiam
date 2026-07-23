@@ -41,7 +41,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/threat-modeling`** | `ThreatModelingStudio.tsx` | Interactive Threat Modeling Studio. Visual security modeling workspace with STRIDE/OWASP validations. (Phase 6) |
 | **`/design-review`** | `DesignReviewAssistant.tsx` | IAM Design Review Assistant. Automated structural audits on OAuth, SAML, and JWT blueprints. (Phase 6) |
 | **`/standards`** | `StandardsExplorer.tsx` | Living Standards & RFC Explorer. Visually explore standard specs and RFC timelines across OIDC, SAML, SCIM. Supports `?standard=<id>&tab=<tab>` deep links. A "Compliance Deadlines" tab (`?view=deadlines`) tracks regulatory deadlines (NIS2, DORA, PCI DSS 4.0, eIDAS 2.0, etc.) from `src/data/complianceDeadlines.ts`, filterable by jurisdiction with a past/upcoming toggle. (Phase 6) |
-| **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs for Zero Trust, B2B SaaS, and Multi-Cloud SPIRE. Supports `?arch=<type>` deep links. |
+| **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs — 24 architectures spanning Beginner (session/cookie auth, LDAP bind, social login, API keys, basic RBAC), Intermediate (JWT stateless APIs, SSO reverse proxy, step-up MFA, IGA access reviews, JIT PAM), and Advanced (Zero Trust, B2B SaaS, Multi-Cloud SPIFFE/SPIRE, PKI, banking/healthcare/government/manufacturing/retail) tiers, backed by `src/data/architectureData.ts` (§4S). Supports `?arch=<id>` deep links and a difficulty filter. |
 | **`/vendor`** | `VendorCenter.tsx` | Enterprise Ecosystem & Vendor Intelligence Portal. Comprehensive profiles for 18 major platforms, including a flagship featured profile for Thales (OneWelcome, SafeNet Trusted Access, IdCloud) with inner ASCII diagrams, Troubleshooting, and custom Interview Prep. Integrates the Live Identity Intelligence Hub (news, searchable CVE code patch repairs, and visual AI Ingestion Pipeline Simulator), Community Events Calendars with alerts, and Social dashboards with AI Weekly Digest builders. A "Compare" toggle switches the vendor list to multi-select checkboxes (up to 3) and renders a side-by-side attribute table; deep-linkable via `?compare=<key1>,<key2>`. |
 | **`/research`** | `ResearchCenter.tsx` | Searchable identity CVE directory with side-by-side remediation code patches and active standard IETF RFC drafts. |
 | **`/patterns`** | `DesignPatternLibrary.tsx` | Hardened design patterns, sequence flows, and checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless. |
@@ -543,3 +543,38 @@ No route-wiring needed (§4D) — the `?ref=<id>` deep link reuses the existing 
 ```
 
 When adding a new category value, also add it to the exported `CASE_STUDY_CATEGORIES` array in the same file so the filter-button UI stays in sync automatically (this is exactly the drift bug that previously left `Government`/`Healthcare`/`Retail`/`Education` as always-empty filter buttons). No route-wiring needed (§4D) — the `?study=<id>` deep link reuses the existing `/case-studies` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `CASE_STUDIES` and fails if any one of them isn't indexed, and separately asserts every difficulty tier and every category has at least one case study, catching both a search-sync regression and a reintroduced empty-category bug immediately.
+
+---
+
+### 🏛️ T. How to Add a New Reference Architecture (`/architecture`)
+
+`src/data/architectureData.ts` is the single source of truth for the `/architecture` "Interactive Architecture Center" — `ArchitectureCenter.tsx` and the search index (`searchService.ts`) both import the same `ARCHITECTURES` array, so appending one `Architecture` object makes it searchable/deep-linkable (`?arch=<id>`) automatically. This closes a drift bug identical to the one fixed for standards/case-studies/references (§4Q-S): `ArchitectureCenter.tsx` used to define its 14 architectures inline with no `difficulty` field, while `searchService.ts` hand-maintained a second, independently-typed `ARCHITECTURES_LIST` array — a 15th architecture added to the page only would silently never appear in search.
+
+```typescript
+{
+  id: 'your-architecture-id',
+  name: 'Full, Descriptive Architecture Name',
+  description: '...',
+  difficulty: 'Beginner', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips and dropdown grouping
+  group: 'fundamentals', // 'fundamentals' | 'protocol' | 'industry' — which dropdown section it renders under
+  defaultNode: 'first_node_id', // which node the diagram highlights by default when this architecture is selected
+  tags: ['keyword', 'standard-acronym'], // hand-picked search keywords not already present in the name
+  nodes: {
+    first_node_id: {
+      title: 'Node Display Title',
+      role: 'What this component does in the flow.',
+      analogy: 'A plain-English analogy for the beginner track.',
+      spec: 'The expert-level technical specification (RFC/standard reference).',
+      threatModel: 'Threat: ... Mitigation: ...',
+      bestPractice: 'One actionable best practice.'
+    }
+    // 3-6 nodes total is typical
+  }
+}
+```
+
+Unlike standards/case-studies/references, the architecture's *diagram* (the clickable node layout) and its *simulation* (the "Run Simulation Handshake" trace log) are presentation-only and still live in `ArchitectureCenter.tsx` rather than the data file, since they're tightly coupled to the interactive canvas:
+- Add a `{activeArch === 'your-architecture-id' && (...)}` block to the diagram workspace, following an existing compact 3-4 node example (e.g. `api_key_auth` or `jwt_stateless_api`) as a template — reuse an already-imported `lucide-react` icon per node where possible.
+- Add an entry to the `SIMULATION_STEPS` map (keyed by id) with one `{ node, msg }` step per node the simulation should visit, in order — `runSimulation` itself is a single generic loop over whichever architecture's steps are active, so no control-flow changes are needed.
+
+No route-wiring needed (§4D) — the `?arch=<id>` deep link reuses the existing `/architecture` route via the same mount-effect pattern described in §4I, and both the dropdown's default-node selection and the deep-link's default-node selection read the same `defaultNode` field (previously these were two independently hand-maintained if/else chains that could silently drift — switching architectures via the dropdown for `oauth_oidc`/`saml`/`pam`/`pki`/`k8s_identity` used to leave the previous architecture's `selectedNode` stale, breaking the detail panel, since only the `?arch=` deep-link effect had a correct per-architecture default). Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `ARCHITECTURES` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers are represented.

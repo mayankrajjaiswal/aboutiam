@@ -3,6 +3,7 @@ import { getSearchIndex } from './searchService'
 import { STANDARDS } from '../../data/standardsData'
 import { CASE_STUDIES, CASE_STUDY_CATEGORIES } from '../../data/caseStudiesData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
+import { ARCHITECTURES } from '../../data/architectureData'
 
 describe('getSearchIndex deep-link entries', () => {
   it('indexes all living standards with ?standard= deep links', () => {
@@ -29,6 +30,29 @@ describe('getSearchIndex deep-link entries', () => {
     const match = results.find((r) => r.id === 'arch-zero_trust')
     expect(match).toBeTruthy()
     expect((match as unknown as { link: string }).link).toBe('/architecture?arch=zero_trust')
+  })
+
+  it('indexes every entry in architectureData.ts by id — closes the architecture/search drift bug', () => {
+    const index = getSearchIndex()
+    ARCHITECTURES.forEach((arch) => {
+      const results = index.search(arch.name, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `arch-${arch.id}`)
+      expect(match, `expected "${arch.name}" (${arch.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/architecture?arch=${arch.id}`)
+      expect((match as unknown as { category: string }).category).toBe('🏛️ Reference Architectures')
+    })
+  })
+
+  it('covers reference architectures across all three difficulty tiers', () => {
+    const difficulties = new Set(ARCHITECTURES.map((a) => a.difficulty))
+    expect(difficulties.has('Beginner')).toBe(true)
+    expect(difficulties.has('Intermediate')).toBe(true)
+    expect(difficulties.has('Advanced')).toBe(true)
+  })
+
+  it('gives every reference architecture a unique id', () => {
+    const ids = ARCHITECTURES.map((a) => a.id)
+    expect(new Set(ids).size).toBe(ids.length)
   })
 
   it('gives every standards/architecture item a non-empty category and keywords', () => {

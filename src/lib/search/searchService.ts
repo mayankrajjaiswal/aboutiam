@@ -8,6 +8,7 @@ import type { VendorType } from '../../data/vendorCatalog'
 import { COMPLIANCE_DEADLINES } from '../../data/complianceDeadlines'
 import { STANDARDS } from '../../data/standardsData'
 import { CASE_STUDIES } from '../../data/caseStudiesData'
+import { ARCHITECTURES } from '../../data/architectureData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { ROUTE_META } from '../../routeMeta'
 
@@ -72,24 +73,6 @@ const BREACHES_LIST = [
   { id: 'breach-oktahar', title: 'Okta HAR Support Ticket Cookie Theft', desc: 'Session hijacking incident (2023). Support HAR logs contained active admin session cookies loaded directly into attacker browsers.', link: '/wall-of-shame?tab=breaches&lab=oktahar', kw: ['okta', 'har', 'cookie', 'session', 'stolen', 'support', '2023'] },
   { id: 'breach-silversaml', title: 'Entra ID Silver SAML Attack', desc: 'Targeted SaaS hijacking (2024). Attackers steal self-signed application signing keys to bypass central AD domain rules.', link: '/wall-of-shame?tab=breaches&lab=silversaml', kw: ['silver saml', 'entra id', 'entra', 'microsoft', 'saas', 'signing key', '2024'] },
   { id: 'breach-lastpass', title: 'LastPass Offline Vault Cracking', desc: 'Offline brute force attack (2022). Weak corporate PBKDF2 iteration counts allowed rapid GPU hash dictionary cracking.', link: '/wall-of-shame?tab=breaches&lab=lastpass', kw: ['lastpass', 'vault', 'pbkdf2', 'iterations', 'crack', 'brute force', '2022'] }
-]
-
-// Statically define the 14 reference architectures
-const ARCHITECTURES_LIST = [
-  { id: 'zero_trust', title: 'Workforce Zero Trust (NIST SP 800-207)', desc: 'Dynamic authentication, device posture, and Policy Decision Point evaluations for workforce access.', kw: ['zero trust', 'nist', 'pdp', 'pep'] },
-  { id: 'b2b_saas', title: 'Multi-Tenant B2B SaaS Identity Architecture', desc: 'Tenant isolation, federated SSO, and SCIM provisioning patterns for B2B SaaS platforms.', kw: ['b2b', 'saas', 'multi-tenant', 'federation'] },
-  { id: 'multi_cloud', title: 'Multi-Cloud Identity & Machine Workloads (SPIFFE/SPIRE)', desc: 'Non-human identity attestation and X.509 SVID issuance across multi-cloud workloads.', kw: ['spiffe', 'spire', 'multi-cloud', 'workload identity'] },
-  { id: 'ciam_social', title: 'Customer Identity & Social Login Federation (CIAM)', desc: 'Consumer registration, social login federation, and progressive profiling architecture.', kw: ['ciam', 'social login', 'consumer identity'] },
-  { id: 'oauth_oidc', title: 'OAuth 2.0 & OIDC Authorization Code Flow', desc: 'Reference sequence flow for the authorization code grant with PKCE across front and back channels.', kw: ['oauth', 'oidc', 'authorization code', 'pkce'] },
-  { id: 'saml', title: 'SAML 2.0 Enterprise Web SSO', desc: 'Enterprise browser SSO reference architecture using SAML assertions and IdP-initiated flows.', kw: ['saml', 'sso', 'assertion', 'enterprise'] },
-  { id: 'pam', title: 'Privileged Access Management (PAM) Vaulting', desc: 'Credential vaulting, session brokering, and Just-in-Time privileged access architecture.', kw: ['pam', 'privileged access', 'vault', 'jit'] },
-  { id: 'pki', title: 'Public Key Infrastructure (PKI) & mTLS', desc: 'Certificate authority hierarchies, mTLS handshakes, and revocation checking architecture.', kw: ['pki', 'mtls', 'certificate authority', 'x509'] },
-  { id: 'k8s_identity', title: 'Kubernetes Identity (OIDC & RBAC)', desc: 'Cluster authentication via OIDC and fine-grained authorization via Kubernetes RBAC.', kw: ['kubernetes', 'k8s', 'rbac', 'oidc'] },
-  { id: 'banking', title: 'Banking & Financial Services Identity Architecture (PCI-DSS & PSD2)', desc: 'Customer channel, strong customer authentication, and PCI-DSS/PSD2-aligned identity controls.', kw: ['banking', 'pci-dss', 'psd2', 'financial services'] },
-  { id: 'healthcare', title: 'Healthcare Identity Architecture (HIPAA & HL7 FHIR)', desc: 'Patient portal identity, HIPAA-aligned access controls, and HL7 FHIR integration patterns.', kw: ['healthcare', 'hipaa', 'hl7', 'fhir', 'patient portal'] },
-  { id: 'government', title: 'Government & Public Sector Identity Architecture (FedRAMP & NIST 800-63)', desc: 'PIV card authentication, FedRAMP-aligned controls, and NIST 800-63 identity assurance levels.', kw: ['government', 'fedramp', 'piv', 'nist 800-63'] },
-  { id: 'manufacturing', title: 'Industrial OT/ICS Identity Architecture (IEC 62443)', desc: 'Plant operator access, OT/ICS segmentation, and IEC 62443-aligned identity controls.', kw: ['manufacturing', 'ot', 'ics', 'iec 62443'] },
-  { id: 'retail', title: 'Retail & Point-of-Sale Identity Architecture (PCI-DSS & Omnichannel)', desc: 'POS terminal identity, omnichannel session continuity, and PCI-DSS aligned controls.', kw: ['retail', 'pos', 'pci-dss', 'omnichannel'] }
 ]
 
 // Statically define the 19 design patterns (Beginner -> Advanced) in the Pattern Library
@@ -214,16 +197,17 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 7. Add Reference Architectures
-  ARCHITECTURES_LIST.forEach(a => {
+  // 7. Add Reference Architectures (derived from the shared architectureData.ts — every
+  // architecture added there is automatically searchable, no separate list to sync)
+  ARCHITECTURES.forEach(a => {
     items.push({
       id: `arch-${a.id}`,
-      title: a.title,
-      fullName: 'Reference Architecture',
-      description: a.desc,
+      title: a.name,
+      fullName: `Reference Architecture · ${a.difficulty}`,
+      description: a.description,
       category: '🏛️ Reference Architectures',
       link: `/architecture?arch=${a.id}`,
-      keywords: a.kw
+      keywords: [a.difficulty, a.group, ...a.tags]
     })
   })
 

@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, Briefcase, CalendarDays, FileBarChart
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -128,7 +128,6 @@ const ecosystemItems = [
   { name: 'Vendor Knowledge Center', path: '/vendor', icon: Building },
   { name: 'IAM Landscape Directory', path: '/explore', icon: Compass },
   { name: 'Certification Hub', path: '/certifications', icon: Award },
-  { name: 'Interview & Career Center', path: '/career-center', icon: Briefcase },
   { name: 'Research & CVE Tracker', path: '/research', icon: ScanSearch },
   { name: 'Security Bulletins & Crisis Game', path: '/bulletins', icon: ShieldAlert },
   { name: 'Vulnerability Museum', path: '/wall-of-shame', icon: ShieldAlert },

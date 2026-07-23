@@ -11,6 +11,7 @@ import DisclaimerModal from '../DisclaimerModal'
 import PersonalizationSelector from '../PersonalizationSelector'
 import { useAirplaneModeStore } from '../../store/airplaneModeStore'
 import AirplaneSelector from '../Search/AirplaneSelector'
+import { getBreadcrumbTrail } from '../../lib/seo/breadcrumbs'
 
 const SITE_URL = 'https://www.aboutiam.com'
 
@@ -19,48 +20,18 @@ function setMetaContent(selector: string, content: string) {
 }
 
 function buildBreadcrumbJsonLd(pathname: string, pageTitle: string) {
-  const parts = pathname.split('/').filter(Boolean)
-  if (parts.length < 2) return null
-
-  const items = [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: `${SITE_URL}/`,
-    },
-  ]
-
-  let currentPath = ''
-  for (let i = 0; i < parts.length; i++) {
-    currentPath += `/${parts[i]}`
-    const isLast = i === parts.length - 1
-
-    let name: string
-    if (parts[i] === 'tools') {
-      name = 'Security Tools'
-    } else if (parts[i] === 'playground') {
-      name = 'Playgrounds'
-    } else if (parts[i] === 'explore') {
-      name = 'Explore'
-    } else if (isLast) {
-      name = pageTitle.split(' — ')[0].split(' | ')[0]
-    } else {
-      name = parts[i].charAt(0).toUpperCase() + parts[i].slice(1)
-    }
-
-    items.push({
-      '@type': 'ListItem',
-      position: i + 2,
-      name,
-      item: `${SITE_URL}${currentPath}/`,
-    })
-  }
+  const trail = getBreadcrumbTrail(pathname, pageTitle)
+  if (trail.length === 0) return null
 
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: items,
+    itemListElement: trail.map((segment, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: segment.name,
+      item: `${SITE_URL}${segment.path}`,
+    })),
   }
 }
 

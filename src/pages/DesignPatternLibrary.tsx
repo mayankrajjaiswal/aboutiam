@@ -25,6 +25,8 @@ interface PatternDetails {
   checklist: string[]
   sequenceDiagram?: string // Optional ASCII visual sequence flow
   sequenceDiagramTitle?: string
+  /** Optional cross-links to hands-on tools/playgrounds that validate this pattern — same shape as standardsData.ts/architectureData.ts. */
+  relatedResources?: { title: string; path: string; type: 'tool' | 'playground' | 'references' }[]
 }
 
 const LEVEL_LABELS: Record<PatternLevel, string> = {
@@ -57,6 +59,11 @@ const PATTERN_DATA: Record<PatternType, PatternDetails> = {
       'Support both metadata-URL-syncing and manual XML upload for customer SAML certificates.',
       'Expose standard, token-secured `/Users` and `/Groups` SCIM 2.0 endpoints.',
       'Enable strict SAML Assertion signature validation, ensuring XML signature wrapping (SSW) is prevented.'
+    ],
+    relatedResources: [
+      { title: 'SAML Metadata Builder', path: '/tools/saml-metadata-builder', type: 'tool' },
+      { title: 'SCIM Payload Validator & Builder', path: '/tools/scim-payload-validator', type: 'tool' },
+      { title: 'Identity Broker & Federation Sandbox', path: '/playground/identity-broker', type: 'playground' }
     ]
   },
   token_exchange: {
@@ -96,7 +103,12 @@ const PATTERN_DATA: Record<PatternType, PatternDetails> = {
           |                                 |                                 |
           |                                 |=== 4. Forward billing JWT ====> | [ Billing Service ]
 `,
-    sequenceDiagramTitle: 'Interactive Token Exchange Handshake Tracing (RFC 8693)'
+    sequenceDiagramTitle: 'Interactive Token Exchange Handshake Tracing (RFC 8693)',
+    relatedResources: [
+      { title: 'Token Exchange Lab (RFC 8693)', path: '/playground/token-exchange', type: 'playground' },
+      { title: 'JWT Decoder', path: '/tools/jwt-decoder', type: 'tool' },
+      { title: 'JWT Generator', path: '/tools/jwt-generator', type: 'tool' }
+    ]
   },
   passwordless: {
     name: 'Passwordless FIDO2 / WebAuthn Customer Journey',
@@ -121,6 +133,11 @@ const PATTERN_DATA: Record<PatternType, PatternDetails> = {
       'Verify that the incoming `origin` matches the registered application custom domain exactly to prevent phishing relays.',
       'Validate and record the signature counter to detect cloned or replayed authenticator payloads.',
       'Provide fallback authentication options (e.g., recovery codes) during initial passkey setup.'
+    ],
+    relatedResources: [
+      { title: 'WebAuthn / Passkey Assertion Decoder', path: '/tools/webauthn-decoder', type: 'tool' },
+      { title: 'FIDO2 & WebAuthn Playground', path: '/playground/fido2', type: 'playground' },
+      { title: 'Passkey Internals Playground', path: '/playground/passkey-internals', type: 'playground' }
     ]
   },
   banking: {
@@ -713,6 +730,30 @@ export default function DesignPatternLibrary() {
               ))}
             </div>
           </div>
+
+          {/* Related Tools & Playgrounds */}
+          {pattern.relatedResources && pattern.relatedResources.length > 0 && (
+            <div className="bg-bg-card border border-border-subtle rounded-xl p-6 shadow-md">
+              <span className="text-xs font-bold text-text-primary uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1.5 flex items-center gap-1.5">
+                <Layers className="w-4 h-4 text-accent-primary" /> Related Tools & Playgrounds
+              </span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {pattern.relatedResources.map((res, i) => (
+                  <Link
+                    key={i}
+                    to={res.path}
+                    className="p-4 rounded-xl bg-bg-nested/40 border border-border-subtle hover:bg-bg-nested hover:border-accent-primary/40 transition-all text-left flex flex-col justify-between group"
+                  >
+                    <div>
+                      <span className="text-[8px] font-mono uppercase text-accent-primary font-bold">{res.type}</span>
+                      <h4 className="text-xs font-black text-text-primary group-hover:text-accent-primary mt-0.5 leading-snug">{res.title}</h4>
+                    </div>
+                    <span className="text-[10px] text-text-secondary hover:text-text-primary mt-3 font-semibold">&rarr; Open</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
 

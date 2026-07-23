@@ -11,5 +11,14 @@ export default defineConfig({
   ],
   build: {
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (['react', 'react-dom', 'react-router-dom', 'framer-motion', 'lucide-react', 'zustand', 'minisearch'].some((pkg) => id.includes(`node_modules/${pkg}`))) {
+            return 'vendor'
+          }
+        },
+      },
+    },
   },
 })

@@ -26,6 +26,8 @@ export interface Architecture {
   /** Hand-picked search/filter terms not already present in the name (standards, acronyms, etc.). */
   tags: string[]
   nodes: Record<string, ArchitectureNode>
+  /** Optional cross-links to hands-on tools/playgrounds that validate this architecture's protocols — same shape as standardsData.ts/caseStudiesData.ts. */
+  relatedResources?: { title: string; path: string; type: 'tool' | 'playground' | 'references' }[]
 }
 
 export const ARCHITECTURES: Architecture[] = [
@@ -268,7 +270,12 @@ export const ARCHITECTURES: Architecture[] = [
         threatModel: 'Threat: A compromised token cannot be revoked before its natural expiry, since there is no server-side session to invalidate. Mitigation: Keep access-token TTLs short and maintain a small denylist cache for the rare "revoke immediately" case (e.g. detected account compromise).',
         bestPractice: 'Scale API instances horizontally with zero shared session infrastructure — that is the entire point of this pattern.'
       }
-    }
+    },
+    relatedResources: [
+      { title: 'JWT Decoder', path: '/tools/jwt-decoder', type: 'tool' },
+      { title: 'JWT Generator', path: '/tools/jwt-generator', type: 'tool' },
+      { title: 'JWT Playground', path: '/playground/jwt', type: 'playground' }
+    ]
   },
   {
     id: 'sso_reverse_proxy',
@@ -487,7 +494,12 @@ export const ARCHITECTURES: Architecture[] = [
         threatModel: 'Threat: Replay attacks. Mitigation: Enforce Sender-Constrained tokens (DPoP or mTLS).',
         bestPractice: 'Validate token signature, expiration, issuer, and audience on every single API request.'
       }
-    }
+    },
+    relatedResources: [
+      { title: 'OAuth 2.0 / OIDC Request Builder', path: '/tools/oauth-builder', type: 'tool' },
+      { title: 'OAuth 2.0 & OIDC Flow Visualizer', path: '/playground/oauth', type: 'playground' },
+      { title: 'OAuth PKCE Code Generator', path: '/tools/oauth-pkce-generator', type: 'tool' }
+    ]
   },
   {
     id: 'saml',
@@ -522,7 +534,12 @@ export const ARCHITECTURES: Architecture[] = [
         threatModel: 'Threat: Forged assertions via stolen private keys. Mitigation: Store IdP signing certificates in hardware vaults (HSM) and rotate frequently.',
         bestPractice: 'Sign the Assertion (mandatory) and encrypt the attributes if transmitting sensitive PII.'
       }
-    }
+    },
+    relatedResources: [
+      { title: 'SAML Decoder', path: '/tools/saml-decoder', type: 'tool' },
+      { title: 'SAML Metadata Builder', path: '/tools/saml-metadata-builder', type: 'tool' },
+      { title: 'SAML 2.0 XML Workbench', path: '/playground/saml', type: 'playground' }
+    ]
   },
   {
     id: 'ciam_social',
@@ -687,7 +704,12 @@ export const ARCHITECTURES: Architecture[] = [
         threatModel: 'Threat: Lateral movement if PEP is breached. Mitigation: Encrypt all data-at-rest and segment internal networks.',
         bestPractice: 'Enforce micro-segmentation. Treat every sub-service or API database as its own isolated trust boundary.'
       }
-    }
+    },
+    relatedResources: [
+      { title: 'Zero Trust Planner', path: '/playground/zta', type: 'playground' },
+      { title: 'Conditional Access Playground', path: '/playground/conditional-access', type: 'playground' },
+      { title: 'Open Policy Agent (OPA) & Rego Playground', path: '/playground/opa', type: 'playground' }
+    ]
   },
   {
     id: 'pam',
@@ -765,7 +787,12 @@ export const ARCHITECTURES: Architecture[] = [
         threatModel: 'Threat: OCSP server failure causing "fail-open". Mitigation: Implement OCSP Stapling directly on the web server.',
         bestPractice: 'Enforce hard-fail revocation checks for highly sensitive administrative connections.'
       }
-    }
+    },
+    relatedResources: [
+      { title: 'X.509 CSR Generator', path: '/tools/csr-generator', type: 'tool' },
+      { title: 'X.509 Certificate Decoder', path: '/tools/x509-certificate-decoder', type: 'tool' },
+      { title: 'mTLS & Certificate Chain Playground', path: '/playground/cert-chain', type: 'playground' }
+    ]
   },
   {
     id: 'k8s_identity',

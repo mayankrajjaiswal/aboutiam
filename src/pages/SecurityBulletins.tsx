@@ -9,6 +9,25 @@ import BookmarkButton from '../components/BookmarkButton'
 
 const DIFFICULTIES: (BulletinDifficulty | 'All')[] = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
+function buildBulletinsJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/bulletins/',
+    'name': 'AboutIAM Security Bulletins & IR Simulator',
+    'description': 'Beginner-to-advanced identity incident bulletins with hardened remediation playbooks and a Crisis Response Console simulator.',
+    'hasPart': BULLETINS.map((b) => ({
+      '@type': 'NewsArticle',
+      '@id': `https://www.aboutiam.com/bulletins/#${b.id}`,
+      'headline': b.title,
+      'about': b.category,
+      'datePublished': b.date,
+      'description': b.description,
+      'url': `https://www.aboutiam.com/bulletins?bulletin=${b.id}`
+    }))
+  }
+}
+
 export default function SecurityBulletins() {
   const [activeBulletinId, setActiveBulletinId] = useState<string>(BULLETINS[0].id)
   const [difficultyFilter, setDifficultyFilter] = useState<BulletinDifficulty | 'All'>('All')
@@ -87,6 +106,10 @@ export default function SecurityBulletins() {
 
   return (
     <div className="min-h-screen bg-bg-base text-text-primary font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBulletinsJsonLd()).replace(/</g, '\\u003c') }}
+      />
       {/* Header Element */}
       <div className="border-b border-border-subtle bg-bg-card px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">

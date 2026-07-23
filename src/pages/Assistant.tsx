@@ -32,6 +32,36 @@ const LEARN_GOALS = ['Security Engineer', 'IAM Architect']
 
 const INTERVIEW_DOMAINS = Array.from(new Set(INTERVIEW_QUESTIONS.map(q => q.domain)))
 
+function buildAssistantJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': 'https://www.aboutiam.com/assistant/',
+        'name': 'AboutIAM AI Knowledge Assistant',
+        'description': 'Context-aware IAM knowledge chat, protocol/product comparison engine, career learning planner, and interview prep.',
+        'hasPart': COMPARISONS.map((c) => ({
+          '@type': 'TechArticle',
+          '@id': `https://www.aboutiam.com/assistant/#${c.id}`,
+          'headline': c.title,
+          'description': c.summary,
+          'url': `https://www.aboutiam.com/assistant?tab=compare&compare=${c.id}`
+        }))
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': 'https://www.aboutiam.com/assistant/#interview-prep',
+        'mainEntity': INTERVIEW_QUESTIONS.map((q) => ({
+          '@type': 'Question',
+          'name': q.question,
+          'acceptedAnswer': { '@type': 'Answer', 'text': q.answer }
+        }))
+      }
+    ]
+  }
+}
+
 // Helper component for Resource Link Cards
 const ResourceCard = ({ resource }: { resource: ResourceLink }) => {
   const getIcon = (type: string) => {
@@ -275,7 +305,10 @@ allow { input.user.role == "admin" }`,
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 h-[calc(100svh-80px)] flex flex-col">
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildAssistantJsonLd()).replace(/</g, '\\u003c') }}
+      />
       {/* Header & Tabs */}
       <div className="shrink-0 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

@@ -12,6 +12,25 @@ type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced'
 
 const BREACH_IDS = BREACHES.map((b) => b.id)
 
+function buildBreachesJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/wall-of-shame/',
+    'name': 'AboutIAM Vulnerability Lab & Identity Museum',
+    'description': 'Difficulty-filterable archive of real-world identity breaches with vulnerable-vs-secure code deconstructions.',
+    'hasPart': BREACHES.map((b) => ({
+      '@type': 'NewsArticle',
+      '@id': `https://www.aboutiam.com/wall-of-shame/#${b.id}`,
+      'headline': b.title,
+      'about': b.category,
+      'datePublished': b.year,
+      'description': b.summary,
+      'url': `https://www.aboutiam.com/wall-of-shame?tab=breaches&lab=${b.id}`
+    }))
+  }
+}
+
 export default function WallOfShame() {
   const [activeTab, setActiveTab] = useState<MuseumTab>('evolution')
   const [activeEra, setActiveEra] = useState(0)
@@ -142,6 +161,10 @@ export default function WallOfShame() {
 
   return (
     <div className="space-y-8 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreachesJsonLd()).replace(/</g, '\\u003c') }}
+      />
       {/* Title */}
       <div className="space-y-3 max-w-3xl">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-status-danger uppercase tracking-wider bg-status-danger/10 px-2.5 py-1 rounded-full border border-status-danger/20">

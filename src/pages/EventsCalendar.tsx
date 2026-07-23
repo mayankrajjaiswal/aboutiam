@@ -1,5 +1,6 @@
 import { CalendarDays, MapPin, ArrowUpRight, PartyPopper } from 'lucide-react'
 import { getUpcomingEvents } from '../data/eventsRegistry'
+import type { IamEvent } from '../data/eventsRegistry'
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -19,11 +20,41 @@ function formatDateRange(startDate: string, endDate?: string) {
   return `${startMonth} ${startDay} – ${endMonth} ${endDay}, ${year}`
 }
 
+function buildEventsJsonLd(events: IamEvent[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/events/',
+    'name': 'AboutIAM IAM Events & Conferences',
+    'description': "Chronologically sorted directory of major identity industry conferences and summits.",
+    'hasPart': events.map((e) => ({
+      '@type': 'Event',
+      '@id': `https://www.aboutiam.com/events/#${e.slug}`,
+      'name': e.name,
+      'startDate': e.startDate,
+      ...(e.endDate ? { endDate: e.endDate } : {}),
+      'location': {
+        '@type': 'Place',
+        'name': e.venue ?? e.location,
+        'address': e.location
+      },
+      'description': e.description,
+      'url': e.link,
+      'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+      'eventStatus': 'https://schema.org/EventScheduled'
+    }))
+  }
+}
+
 export default function EventsCalendar() {
   const events = getUpcomingEvents()
 
   return (
     <div className="space-y-10 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildEventsJsonLd(events)).replace(/</g, '\\u003c') }}
+      />
       <section className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-glow text-accent-primary text-xs font-semibold tracking-wider uppercase border border-accent-primary/20">
           <PartyPopper className="w-4 h-4" /> Where the IAM Community Meets

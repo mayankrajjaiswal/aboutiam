@@ -21,6 +21,24 @@ const FLASHCARDS: Flashcard[] = [
 
 const DIFFICULTIES: CertDifficulty[] = ['Beginner', 'Intermediate', 'Advanced']
 
+function buildCertificationsJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/certifications/',
+    'name': 'AboutIAM Enterprise Certification Hub',
+    'description': 'Beginner-to-advanced identity, cloud, PAM, IGA, privacy, and GRC certification study guides with mock exams.',
+    'hasPart': CERTIFICATIONS.map((c) => ({
+      '@type': 'TechArticle',
+      '@id': `https://www.aboutiam.com/certifications/#${c.id}`,
+      'headline': c.title,
+      'about': c.category,
+      'description': `${c.vendor} certification — ${c.category}.`,
+      'url': `https://www.aboutiam.com/certifications?cert=${c.id}`
+    }))
+  }
+}
+
 export default function CertificationHub() {
   const [activeCert, setActiveCert] = useState(CERTIFICATIONS[0].id)
   const [difficultyFilter, setDifficultyFilter] = useState<CertDifficulty | 'All'>('All')
@@ -99,6 +117,10 @@ export default function CertificationHub() {
 
   return (
     <div className="min-h-screen bg-bg-base text-text-primary font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildCertificationsJsonLd()).replace(/</g, '\\u003c') }}
+      />
       {/* Header Element */}
       <div className="border-b border-border-subtle bg-bg-card px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">

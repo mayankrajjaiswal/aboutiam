@@ -7,6 +7,24 @@ import { EXPLORE_PRODUCTS, EXPLORE_TYPES, type ExploreProduct } from '../data/ex
 
 const DIFFICULTIES: ExploreProduct['difficulty'][] = ['Beginner', 'Intermediate', 'Advanced']
 
+function buildExploreJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/explore/',
+    'name': 'AboutIAM Landscape Directory',
+    'description': 'Browsable, beginner-to-advanced catalog of identity products spanning open source IdPs, enterprise SaaS, CIAM, PAM, and secrets engines.',
+    'hasPart': EXPLORE_PRODUCTS.map((p) => ({
+      '@type': 'SoftwareApplication',
+      '@id': `https://www.aboutiam.com/explore/#${p.id}`,
+      'name': p.name,
+      'applicationCategory': p.type,
+      'description': p.bestUse,
+      'url': `https://www.aboutiam.com/explore?product=${p.id}`
+    }))
+  }
+}
+
 export default function Explore() {
   const [search, setSearch] = useState('')
   const [filterType, setFilterType] = useState<string>('All')
@@ -53,6 +71,10 @@ export default function Explore() {
 
   return (
     <div className="space-y-8 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildExploreJsonLd()).replace(/</g, '\\u003c') }}
+      />
       {/* Title */}
       <div className="space-y-3 max-w-3xl">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">

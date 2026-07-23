@@ -92,6 +92,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Intelligent platform navigator, protocol comparison engine, and customized learning planner. |
 | **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 65 categorized standard terms with analogies and specs. Each term supports bookmarking (`BookmarkButton`) and carries a `ContentFeedback` accuracy widget. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history plus a difficulty-filterable Breach Archive of 25 beginner-to-advanced incidents (SolarWinds Golden SAML, push-bombing fatigue, Storm-0558 signing-key forgery, Kerberoasting/DCSync, and more) backed by `src/data/breachesData.ts` (§4B). Each breach carries `ContentFeedback` and `BookmarkButton` widgets, and is deep-linkable via `?tab=breaches&lab=<id>`. |
+| **`/cheat-sheets`** | `CheatSheets.tsx` | Developer Playbooks. 24 beginner-to-advanced interactive compliance/hardening checklists — Application Security (SPA, M2M, password/session, JWT, OAuth 2.0/OIDC, SAML, REST API, CIAM social login), Identity Infrastructure & Governance (secrets management, LDAP/AD hardening, IGA access reviews, Zero Trust, Kubernetes RBAC, Kerberos tiering, identity incident response), and Compliance & Regulatory (SOC 2, ISO 27001, HIPAA, PCI-DSS, NIST 800-63-3, GDPR, CCPA/CPRA, FedRAMP High, DORA) — backed by `src/data/cheatSheetsData.ts` (§4Y). Each sheet carries a live progress gauge, `ContentFeedback` and `BookmarkButton` widgets, a difficulty filter, and is deep-linkable via `?sheet=<id>`. |
 | **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards, interactive forms, and a static "Security & Transparency" section summarizing shipped CI/CSP hardening with a link to the GitHub Security tab. |
 | **`/terms`** | `Terms.tsx` | Terms, License & Disclaimer. MIT license summary, an educational/simulated-environment disclaimer for the attack-technique labs, and a no-warranty clause. Linked from Contributors and from the first-visit `DisclaimerModal`; intentionally excluded from the Sidebar nav. |
 | **`/timeline`** | `IdentityTimeline.tsx` | Interactive historical identity timeline from mainframes to post-2030 ambient trust with inline simulators. |
@@ -705,3 +706,25 @@ The `rfcSlug()` helper (also exported from `researchData.ts`) turns a `number` f
 ```
 
 If adding a new category value, also add it to the exported `BULLETIN_CATEGORIES` array in the same file so the category filter chips stay in sync. No route-wiring needed (§4D) — the `?bulletin=<id>` deep link reuses the existing `/bulletins` route via the same mount-effect pattern described in §4I. Because the simulator is fully data-driven off each bulletin's own `simulator` field, a new bulletin gets correct Crisis Response Console narrative text automatically — there is no `if/else` chain left to remember to extend. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `BULLETINS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `BULLETIN_CATEGORIES` value are represented; `bulletinsData.test.ts` additionally guards that every `controlsMapped` id resolves to a real `CONTROL_TITLES` entry and that every bulletin carries a complete, non-empty `simulator` script.
+
+---
+
+### 🏛️ Y. How to Add a New Cheat Sheet (`/cheat-sheets`)
+
+`src/data/cheatSheetsData.ts` is the single source of truth for the `/cheat-sheets` "Developer Playbooks" checklist library — `CheatSheets.tsx` and the search index (`searchService.ts`) both import the same `CHEAT_SHEETS` array, so appending one `CheatSheet` object makes it render in the category/difficulty-filtered selector **and** become searchable/deep-linkable (`?sheet=<id>`) with no second list to sync. This closes the same class of drift bug fixed for standards/case-studies/references/architectures/explore products/certifications/research/bulletins/breaches (§4B, §4Q–§4X): the page used to hard-code exactly 9 sheets inline inside the component body itself (recreated on every render) with no `category` or `difficulty` field at all, and zero search wiring.
+
+```typescript
+{
+  id: 'your-sheet-id',
+  title: 'Full, Descriptive Checklist Title',
+  target: 'Who this checklist is for (role or audience)',
+  category: 'Application Security', // one of SHEET_CATEGORIES — reuse an existing one where the topic fits
+  difficulty: 'Intermediate', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips
+  checks: [
+    { id: 'yoursheet_1', task: 'One-line actionable remediation step', desc: 'A fuller explanation of why this step matters and how to implement it.' },
+    // 4+ checks is typical — keep the array non-empty, since the progress gauge divides by its length
+  ]
+}
+```
+
+If adding a new category value, also add it to the exported `SHEET_CATEGORIES` array in the same file so the category grouping in the sidebar selector stays in sync. No route-wiring needed (§4D) — the `?sheet=<id>` deep link reuses the existing `/cheat-sheets` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `CHEAT_SHEETS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `SHEET_CATEGORIES` value are represented; `cheatSheetsData.test.ts` additionally guards that every sheet has a non-empty `checks` array (the percent-complete gauge divides by this length, so an empty array would render `NaN`) and that every check id is unique within its sheet.

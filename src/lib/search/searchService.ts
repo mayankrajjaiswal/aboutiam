@@ -15,6 +15,7 @@ import { CERTIFICATIONS } from '../../data/certificationsData'
 import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
 import { BULLETINS } from '../../data/bulletinsData'
 import { BREACHES } from '../../data/breachesData'
+import { CHEAT_SHEETS } from '../../data/cheatSheetsData'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -331,7 +332,21 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 17. Add every remaining site page (sidebar/nav pages not covered above)
+  // 17. Add Developer Playbooks / Cheat Sheets (derived from the shared cheatSheetsData.ts —
+  // every cheat sheet added there is automatically searchable, no separate list to sync)
+  CHEAT_SHEETS.forEach(s => {
+    items.push({
+      id: `sheet-${s.id}`,
+      title: s.title,
+      fullName: `${s.category} · ${s.difficulty}`,
+      description: s.checks.map(c => c.task).join('; '),
+      category: '✅ Developer Playbooks & Cheat Sheets',
+      link: `/cheat-sheets?sheet=${s.id}`,
+      keywords: [s.category, s.difficulty, s.target]
+    })
+  })
+
+  // 18. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

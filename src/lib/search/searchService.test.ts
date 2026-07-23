@@ -9,6 +9,7 @@ import { EXPLORE_PRODUCTS, EXPLORE_TYPES } from '../../data/exploreData'
 import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
 import { BULLETINS, BULLETIN_CATEGORIES } from '../../data/bulletinsData'
 import { BREACHES, BREACH_CATEGORIES } from '../../data/breachesData'
+import { CHEAT_SHEETS, SHEET_CATEGORIES } from '../../data/cheatSheetsData'
 
 describe('getSearchIndex deep-link entries', () => {
   it('indexes all living standards with ?standard= deep links', () => {
@@ -295,6 +296,34 @@ describe('getSearchIndex deep-link entries', () => {
 
   it('gives every breach a unique id', () => {
     const ids = BREACHES.map((b) => b.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in cheatSheetsData.ts with a ?sheet= deep link — closes the cheat-sheets/search drift bug', () => {
+    const index = getSearchIndex()
+    CHEAT_SHEETS.forEach((s) => {
+      const results = index.search(s.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `sheet-${s.id}`)
+      expect(match, `expected "${s.title}" (${s.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/cheat-sheets?sheet=${s.id}`)
+      expect((match as unknown as { category: string }).category).toBe('✅ Developer Playbooks & Cheat Sheets')
+    })
+  })
+
+  it('covers cheat sheets across all three difficulty tiers and every category', () => {
+    const difficulties = new Set(CHEAT_SHEETS.map((s) => s.difficulty))
+    expect(difficulties.has('Beginner')).toBe(true)
+    expect(difficulties.has('Intermediate')).toBe(true)
+    expect(difficulties.has('Advanced')).toBe(true)
+
+    const categories = new Set(CHEAT_SHEETS.map((s) => s.category))
+    SHEET_CATEGORIES.forEach((cat) => {
+      expect(categories.has(cat), `expected at least one cheat sheet in category "${cat}"`).toBe(true)
+    })
+  })
+
+  it('gives every cheat sheet a unique id', () => {
+    const ids = CHEAT_SHEETS.map((s) => s.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 })

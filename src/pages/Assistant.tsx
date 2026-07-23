@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  Bot, Send, Terminal, Copy, Check, Sparkles, 
-  MessageSquare, ShieldCheck, 
+import {
+  Bot, Send, Terminal, Copy, Check, Sparkles,
+  MessageSquare, ShieldCheck,
   LayoutDashboard, GitCompare, GraduationCap,
-  Wrench, Gamepad2, FlaskConical, BookOpen, Layers, Award
+  Wrench, Gamepad2, FlaskConical, BookOpen, Layers, Award,
+  HelpCircle, Lightbulb, Eye
 } from 'lucide-react'
 
 // Import Knowledge Graph Data
-import { 
-  KNOWLEDGE_GRAPH, 
-  COMPARISONS, 
-  LEARNING_TRACKS
+import {
+  KNOWLEDGE_GRAPH,
+  COMPARISONS,
+  LEARNING_TRACKS,
+  INTERVIEW_QUESTIONS
 } from '../data/aiKnowledgeGraph'
 import type { ResourceLink } from '../data/aiKnowledgeGraph'
 
@@ -23,7 +25,12 @@ interface Message {
   resources?: ResourceLink[]
 }
 
-type TabType = 'chat' | 'compare' | 'learn'
+type TabType = 'chat' | 'compare' | 'learn' | 'interview'
+
+const LEARN_LEVELS = ['Beginner', 'Intermediate', 'Advanced', 'Expert']
+const LEARN_GOALS = ['Security Engineer', 'IAM Architect']
+
+const INTERVIEW_DOMAINS = Array.from(new Set(INTERVIEW_QUESTIONS.map(q => q.domain)))
 
 // Helper component for Resource Link Cards
 const ResourceCard = ({ resource }: { resource: ResourceLink }) => {
@@ -83,10 +90,14 @@ export default function Assistant() {
 
   // --- COMPARE STATE ---
   const [activeComparisonId, setActiveComparisonId] = useState<string>('oauth_vs_oidc')
-  
+
   // --- LEARN STATE ---
   const [learnLevel, setLearnLevel] = useState<string>('Beginner')
   const [learnGoal, setLearnGoal] = useState<string>('Security Engineer')
+
+  // --- INTERVIEW PREP STATE ---
+  const [interviewDomain, setInterviewDomain] = useState<string>('All')
+  const [revealedAnswers, setRevealedAnswers] = useState<Set<string>>(new Set())
 
   // --- EFFECTS ---
   useEffect(() => {
@@ -95,6 +106,37 @@ export default function Assistant() {
     }
   }, [messages, isTyping, activeTab])
 
+  // Deep-link support: ?tab=compare&compare=<id> | ?tab=learn&level=<lvl>&goal=<goal> | ?tab=interview&q=<id>
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const tab = params.get('tab')
+      setTimeout(() => {
+        if (tab === 'compare') {
+          const compareId = params.get('compare')
+          if (compareId && COMPARISONS.some(c => c.id === compareId)) {
+            setActiveComparisonId(compareId)
+          }
+          setActiveTab('compare')
+        } else if (tab === 'learn') {
+          const level = params.get('level')
+          const goal = params.get('goal')
+          if (level && LEARN_LEVELS.includes(level)) setLearnLevel(level)
+          if (goal && LEARN_GOALS.includes(goal)) setLearnGoal(goal)
+          setActiveTab('learn')
+        } else if (tab === 'interview') {
+          const qId = params.get('q')
+          const match = INTERVIEW_QUESTIONS.find(q => q.id === qId)
+          if (match) {
+            setInterviewDomain(match.domain)
+            setRevealedAnswers(new Set([match.id]))
+          }
+          setActiveTab('interview')
+        }
+      }, 0)
+    }
+  }, [])
+
   // --- HANDLERS ---
   const copyToClipboard = (text: string, idx: number) => {
     navigator.clipboard.writeText(text)
@@ -102,13 +144,28 @@ export default function Assistant() {
     setTimeout(() => setIsCopied(null), 1500)
   }
 
+  const toggleAnswer = (id: string) => {
+    setRevealedAnswers(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) {
+        next.delete(id)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
+  }
+
   // Generate dynamic resources based on text
   const extractResources = (text: string): ResourceLink[] => {
+    // Normalize both the input and multi-word keys (e.g. "zero_trust") to spaces
+    // so a natural-language query like "explain zero trust" still matches.
     const textLower = text.toLowerCase()
     let foundResources: ResourceLink[] = []
-    
+
     Object.keys(KNOWLEDGE_GRAPH).forEach(key => {
-      if (textLower.includes(key)) {
+      const normalizedKey = key.replace(/_/g, ' ')
+      if (textLower.includes(key) || textLower.includes(normalizedKey)) {
         foundResources = [...foundResources, ...KNOWLEDGE_GRAPH[key]]
       }
     })
@@ -210,6 +267,12 @@ allow { input.user.role == "admin" }`,
     return LEARNING_TRACKS.find(t => t.level === learnLevel && t.goal === learnGoal) || LEARNING_TRACKS[0]
   }, [learnLevel, learnGoal])
 
+  const filteredInterviewQuestions = useMemo(() => {
+    return interviewDomain === 'All'
+      ? INTERVIEW_QUESTIONS
+      : INTERVIEW_QUESTIONS.filter(q => q.domain === interviewDomain)
+  }, [interviewDomain])
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 h-[calc(100svh-80px)] flex flex-col">
       
@@ -234,7 +297,8 @@ allow { input.user.role == "admin" }`,
           {[
             { id: 'chat', label: 'Knowledge Chat', icon: MessageSquare },
             { id: 'compare', label: 'Comparison Engine', icon: GitCompare },
-            { id: 'learn', label: 'Learning Planner', icon: GraduationCap }
+            { id: 'learn', label: 'Learning Planner', icon: GraduationCap },
+            { id: 'interview', label: 'Interview Prep', icon: HelpCircle }
           ].map(tab => (
             <button
               key={tab.id}
@@ -470,24 +534,22 @@ allow { input.user.role == "admin" }`,
              <div className="flex flex-col sm:flex-row gap-4 p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm items-center">
               <div className="flex-grow w-full">
                 <label className="block text-xs font-bold text-text-muted uppercase mb-2">Current Skill Level</label>
-                <select 
+                <select
                   className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-sm font-bold text-text-primary outline-none"
                   value={learnLevel}
                   onChange={(e) => setLearnLevel(e.target.value)}
                 >
-                  <option>Beginner</option>
-                  <option>Intermediate</option>
+                  {LEARN_LEVELS.map(level => <option key={level}>{level}</option>)}
                 </select>
               </div>
               <div className="flex-grow w-full">
                 <label className="block text-xs font-bold text-text-muted uppercase mb-2">Target Career Goal</label>
-                <select 
+                <select
                   className="w-full p-2.5 rounded-lg bg-bg-sidebar border border-border-subtle text-sm font-bold text-text-primary outline-none"
                   value={learnGoal}
                   onChange={(e) => setLearnGoal(e.target.value)}
                 >
-                  <option>Security Engineer</option>
-                  <option>IAM Architect</option>
+                  {LEARN_GOALS.map(goal => <option key={goal}>{goal}</option>)}
                 </select>
               </div>
             </div>
@@ -512,6 +574,86 @@ allow { input.user.role == "admin" }`,
                    </div>
                  ))}
                </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: INTERVIEW PREP */}
+        {activeTab === 'interview' && (
+          <div className="h-full overflow-y-auto space-y-6">
+            <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex flex-wrap gap-2 items-center">
+              <span className="text-xs font-bold text-text-muted uppercase mr-2">Filter by Domain</span>
+              <button
+                onClick={() => setInterviewDomain('All')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
+                  interviewDomain === 'All'
+                    ? 'bg-accent-primary border-accent-primary text-white'
+                    : 'border-border-subtle text-text-secondary hover:text-text-primary hover:bg-bg-sidebar'
+                }`}
+              >
+                All
+              </button>
+              {INTERVIEW_DOMAINS.map(domain => (
+                <button
+                  key={domain}
+                  onClick={() => setInterviewDomain(domain)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
+                    interviewDomain === domain
+                      ? 'bg-accent-primary border-accent-primary text-white'
+                      : 'border-border-subtle text-text-secondary hover:text-text-primary hover:bg-bg-sidebar'
+                  }`}
+                >
+                  {domain}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              {filteredInterviewQuestions.map(q => {
+                const isRevealed = revealedAnswers.has(q.id)
+                return (
+                  <div key={q.id} className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-2">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-accent-primary bg-accent-glow px-2 py-0.5 rounded-full">
+                          {q.domain}
+                        </span>
+                        <p className="text-sm font-semibold text-text-primary flex items-start gap-2">
+                          <HelpCircle className="w-4 h-4 text-text-muted shrink-0 mt-0.5" /> {q.question}
+                        </p>
+                      </div>
+                    </div>
+
+                    {!isRevealed && (
+                      <div className="mt-3 flex items-start gap-2 text-xs text-text-secondary bg-bg-sidebar/50 border border-border-subtle rounded-xl p-3">
+                        <Lightbulb className="w-3.5 h-3.5 text-status-warning shrink-0 mt-0.5" />
+                        {q.hint}
+                      </div>
+                    )}
+
+                    <button
+                      onClick={() => toggleAnswer(q.id)}
+                      className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-accent-primary hover:text-accent-hover"
+                    >
+                      <Eye className="w-3.5 h-3.5" /> {isRevealed ? 'Hide Answer' : 'Reveal Answer'}
+                    </button>
+
+                    {isRevealed && (
+                      <div className="mt-3 space-y-2 text-sm text-text-primary bg-bg-sidebar/50 border border-border-subtle rounded-xl p-4 leading-relaxed">
+                        <p>{q.answer}</p>
+                        {q.rfc && (
+                          <p className="text-[11px] uppercase font-bold text-text-muted tracking-wider">Reference: {q.rfc}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+              {filteredInterviewQuestions.length === 0 && (
+                <div className="p-12 text-center text-text-muted bg-bg-card rounded-2xl border border-border-subtle border-dashed">
+                  No interview questions found for this domain.
+                </div>
+              )}
             </div>
           </div>
         )}

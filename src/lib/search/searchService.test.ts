@@ -10,6 +10,7 @@ import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
 import { BULLETINS, BULLETIN_CATEGORIES } from '../../data/bulletinsData'
 import { BREACHES, BREACH_CATEGORIES } from '../../data/breachesData'
 import { CHEAT_SHEETS, SHEET_CATEGORIES } from '../../data/cheatSheetsData'
+import { COMPARISONS, LEARNING_TRACKS, INTERVIEW_QUESTIONS } from '../../data/aiKnowledgeGraph'
 
 describe('getSearchIndex deep-link entries', () => {
   it('indexes all living standards with ?standard= deep links', () => {
@@ -324,6 +325,56 @@ describe('getSearchIndex deep-link entries', () => {
 
   it('gives every cheat sheet a unique id', () => {
     const ids = CHEAT_SHEETS.map((s) => s.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in aiKnowledgeGraph.ts\'s COMPARISONS with a ?tab=compare&compare= deep link', () => {
+    const index = getSearchIndex()
+    COMPARISONS.forEach((c) => {
+      const results = index.search(c.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `assistant-compare-${c.id}`)
+      expect(match, `expected "${c.title}" (${c.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/assistant?tab=compare&compare=${c.id}`)
+      expect((match as unknown as { category: string }).category).toBe('🤖 AI Assistant — Comparisons')
+    })
+  })
+
+  it('gives every comparison a unique id', () => {
+    const ids = COMPARISONS.map((c) => c.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in aiKnowledgeGraph.ts\'s LEARNING_TRACKS with a ?tab=learn deep link', () => {
+    const index = getSearchIndex()
+    LEARNING_TRACKS.forEach((t) => {
+      const results = index.search(t.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `assistant-learn-${t.level.toLowerCase()}-${t.goal.toLowerCase().replace(/\s+/g, '-')}`)
+      expect(match, `expected "${t.title}" (${t.level}/${t.goal}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(
+        `/assistant?tab=learn&level=${encodeURIComponent(t.level)}&goal=${encodeURIComponent(t.goal)}`
+      )
+      expect((match as unknown as { category: string }).category).toBe('🧭 AI Assistant — Learning Tracks')
+    })
+  })
+
+  it('gives every learning track a unique level/goal combination', () => {
+    const ids = LEARNING_TRACKS.map((t) => `${t.level}-${t.goal}`)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in aiKnowledgeGraph.ts\'s INTERVIEW_QUESTIONS with a ?tab=interview&q= deep link', () => {
+    const index = getSearchIndex()
+    INTERVIEW_QUESTIONS.forEach((q) => {
+      const results = index.search(q.question, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `assistant-interview-${q.id}`)
+      expect(match, `expected "${q.question}" (${q.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/assistant?tab=interview&q=${q.id}`)
+      expect((match as unknown as { category: string }).category).toBe('🎯 AI Assistant — Interview Prep')
+    })
+  })
+
+  it('gives every interview question a unique id', () => {
+    const ids = INTERVIEW_QUESTIONS.map((q) => q.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 })

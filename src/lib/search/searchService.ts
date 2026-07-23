@@ -16,6 +16,7 @@ import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
 import { BULLETINS } from '../../data/bulletinsData'
 import { BREACHES } from '../../data/breachesData'
 import { CHEAT_SHEETS } from '../../data/cheatSheetsData'
+import { COMPARISONS, LEARNING_TRACKS, INTERVIEW_QUESTIONS } from '../../data/aiKnowledgeGraph'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -346,7 +347,49 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 18. Add every remaining site page (sidebar/nav pages not covered above)
+  // 18. Add AI Knowledge Assistant Comparisons (derived from the shared aiKnowledgeGraph.ts —
+  // every comparison added there is automatically searchable, no separate list to sync)
+  COMPARISONS.forEach(c => {
+    items.push({
+      id: `assistant-compare-${c.id}`,
+      title: c.title,
+      fullName: `${c.entityA} vs ${c.entityB}`,
+      description: c.summary,
+      category: '🤖 AI Assistant — Comparisons',
+      link: `/assistant?tab=compare&compare=${c.id}`,
+      keywords: [c.entityA, c.entityB]
+    })
+  })
+
+  // 19. Add AI Knowledge Assistant Learning Tracks (derived from the shared aiKnowledgeGraph.ts)
+  LEARNING_TRACKS.forEach(t => {
+    const trackId = `${t.level.toLowerCase()}-${t.goal.toLowerCase().replace(/\s+/g, '-')}`
+    items.push({
+      id: `assistant-learn-${trackId}`,
+      title: t.title,
+      fullName: `${t.level} · ${t.goal}`,
+      description: t.description,
+      category: '🧭 AI Assistant — Learning Tracks',
+      link: `/assistant?tab=learn&level=${encodeURIComponent(t.level)}&goal=${encodeURIComponent(t.goal)}`,
+      keywords: [t.level, t.goal, 'learning track', 'roadmap']
+    })
+  })
+
+  // 20. Add AI Knowledge Assistant Interview Prep questions (derived from the shared aiKnowledgeGraph.ts —
+  // every question added there is automatically searchable, no separate list to sync)
+  INTERVIEW_QUESTIONS.forEach(q => {
+    items.push({
+      id: `assistant-interview-${q.id}`,
+      title: q.question,
+      fullName: `${q.domain} · Interview Question`,
+      description: q.answer,
+      category: '🎯 AI Assistant — Interview Prep',
+      link: `/assistant?tab=interview&q=${q.id}`,
+      keywords: [q.domain, q.rfc ?? '', 'interview', 'prep'].filter(Boolean)
+    })
+  })
+
+  // 21. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

@@ -89,7 +89,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/explore/matchmaker`** | `AuthMatchmaker.tsx` | Startup Auth Matchmaker wizard with copyable boilerplates. |
 | **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts, downloadable SVG roadmaps, and a `?a=<digits>` shareable, URL-hydrated read-only report link (scoring logic lives in `src/lib/assess/scoring.ts`). |
 | **`/explore`** | `Explore.tsx` | IAM Landscape Directory. 21 products spanning Open Source IdPs, Enterprise/Workforce SaaS, CIAM, Directory Services, PAM & Access, and Secrets Engines — each tagged Beginner/Intermediate/Advanced, backed by `src/data/exploreData.ts`. Supports type + difficulty filters, `?product=<id>` deep links, and copyable integration code blocks. |
-| **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Intelligent platform navigator, protocol comparison engine, and customized learning planner. |
+| **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Four tabs backed by `src/data/aiKnowledgeGraph.ts` (§4Z): a context-aware Knowledge Chat spanning 45+ IAM topics, a Comparison Engine (20 protocol/product pairings), a Learning Planner (8 beginner-to-expert career roadmaps), and an Interview Prep tab (16 domain-filterable mock questions). Every comparison/track/question is deep-linkable (`?tab=compare&compare=<id>`, `?tab=learn&level=<lvl>&goal=<goal>`, `?tab=interview&q=<id>`) and individually searchable. |
 | **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 65 categorized standard terms with analogies and specs. Each term supports bookmarking (`BookmarkButton`) and carries a `ContentFeedback` accuracy widget. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history plus a difficulty-filterable Breach Archive of 25 beginner-to-advanced incidents (SolarWinds Golden SAML, push-bombing fatigue, Storm-0558 signing-key forgery, Kerberoasting/DCSync, and more) backed by `src/data/breachesData.ts` (§4B). Each breach carries `ContentFeedback` and `BookmarkButton` widgets, and is deep-linkable via `?tab=breaches&lab=<id>`. |
 | **`/cheat-sheets`** | `CheatSheets.tsx` | Developer Playbooks. 24 beginner-to-advanced interactive compliance/hardening checklists — Application Security (SPA, M2M, password/session, JWT, OAuth 2.0/OIDC, SAML, REST API, CIAM social login), Identity Infrastructure & Governance (secrets management, LDAP/AD hardening, IGA access reviews, Zero Trust, Kubernetes RBAC, Kerberos tiering, identity incident response), and Compliance & Regulatory (SOC 2, ISO 27001, HIPAA, PCI-DSS, NIST 800-63-3, GDPR, CCPA/CPRA, FedRAMP High, DORA) — backed by `src/data/cheatSheetsData.ts` (§4Y). Each sheet carries a live progress gauge, `ContentFeedback` and `BookmarkButton` widgets, a difficulty filter, and is deep-linkable via `?sheet=<id>`. |
@@ -728,3 +728,50 @@ If adding a new category value, also add it to the exported `BULLETIN_CATEGORIES
 ```
 
 If adding a new category value, also add it to the exported `SHEET_CATEGORIES` array in the same file so the category grouping in the sidebar selector stays in sync. No route-wiring needed (§4D) — the `?sheet=<id>` deep link reuses the existing `/cheat-sheets` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `CHEAT_SHEETS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `SHEET_CATEGORIES` value are represented; `cheatSheetsData.test.ts` additionally guards that every sheet has a non-empty `checks` array (the percent-complete gauge divides by this length, so an empty array would render `NaN`) and that every check id is unique within its sheet.
+
+---
+
+### 🏛️ Z. How to Add to the AI Knowledge Assistant (`/assistant`)
+
+`src/data/aiKnowledgeGraph.ts` is the single source of truth for all four `/assistant` tabs — `Assistant.tsx` and the search index (`searchService.ts`) both import the same `KNOWLEDGE_GRAPH`/`COMPARISONS`/`LEARNING_TRACKS`/`INTERVIEW_QUESTIONS` exports, so appending an entry to any of them makes it render in the UI **and** become searchable/deep-linkable with no second list to sync. This closes the same class of drift bug fixed for standards/case-studies/references/etc. (§4Q-Y): `COMPARISONS`/`LEARNING_TRACKS` previously had zero search wiring, `INTERVIEW_QUESTIONS` was defined but never rendered anywhere on the page at all (routeMeta's own description promised an "interview prep simulator" that didn't exist), and the Learning Planner's level `<select>` only offered two of the four levels actually present in the data, silently making the `Expert` tier unreachable.
+
+**Knowledge Chat resource keywords** (`KNOWLEDGE_GRAPH: Record<string, ResourceLink[]>`) — add a lowercase key (use a natural single word where possible; if a multi-word concept truly needs an underscore key like `zero_trust`, `extractResources()` in `Assistant.tsx` matches both the raw key and its space-separated form, so it detects "zero trust" typed naturally) mapped to 1-4 `ResourceLink` entries pointing at real, already-existing tools/playgrounds/encyclopedia terms:
+```typescript
+mfa: [
+  { title: 'TOTP Generator & Verifier', path: '/tools/totp-generator', type: 'tool', desc: 'RFC 6238 TOTP codes' },
+  { title: 'MFA', path: '/encyclopedia?term=mfa', type: 'encyclopedia' }
+]
+```
+
+**Comparison Engine** (`COMPARISONS: ComparisonData[]`):
+```typescript
+{
+  id: 'your-comparison-id',
+  title: 'Entity A vs Entity B',
+  entityA: 'Entity A', entityB: 'Entity B',
+  summary: '...',
+  table: [{ feature: 'Feature Name', a: '...', b: '...' }],
+  useCasesA: ['...'], useCasesB: ['...']
+}
+```
+
+**Learning Planner** (`LEARNING_TRACKS: LearningTrack[]`) — `level` must be one of `'Beginner' | 'Intermediate' | 'Advanced' | 'Expert'` and `goal` one of `'Security Engineer' | 'IAM Architect'` (the exact strings the `Assistant.tsx` `<select>` options render, sourced from the `LEARN_LEVELS`/`LEARN_GOALS` constants at the top of that file) — a new `level`/`goal` value must be added to those constants first or the track is unreachable in the UI (this is exactly the bug fixed above):
+```typescript
+{
+  level: 'Advanced', goal: 'Security Engineer',
+  title: '...', description: '...',
+  steps: [{ title: '...', desc: '...', resources: [{ title: '...', path: '/playground/...', type: 'playground' }] }]
+}
+```
+
+**Interview Prep** (`INTERVIEW_QUESTIONS: InterviewQuestion[]`):
+```typescript
+{
+  id: 'your-question-id',
+  domain: 'OAuth/OIDC', // free-form — automatically becomes a filter chip on the Interview Prep tab
+  question: '...', hint: '...', answer: '...',
+  rfc: 'RFC 1234' // optional
+}
+```
+
+No route-wiring needed (§4D) — all three deep-link patterns (`?tab=compare&compare=<id>`, `?tab=learn&level=<lvl>&goal=<goal>`, `?tab=interview&q=<id>`) reuse the existing `/assistant` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `COMPARISONS`/`LEARNING_TRACKS`/`INTERVIEW_QUESTIONS` and fails if any one of them isn't indexed; `aiKnowledgeGraph.test.ts` additionally guards id uniqueness, non-empty comparison tables/use-case lists, that every learning track's level/goal is actually selectable in the UI, and that every knowledge-graph key has at least one resource.

@@ -24,6 +24,25 @@ function LeaderChip({ leader }: { leader: string }) {
   return <span className={className}>{name}</span>
 }
 
+function buildReportsJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/reports/',
+    'name': 'AboutIAM Analyst Reports & Research',
+    'description': 'Publisher-grouped directory of trusted third-party IAM research from Gartner, Forrester, KuppingerCole, and Thales.',
+    'hasPart': IAM_REPORTS.map((r) => ({
+      '@type': 'Report',
+      '@id': `https://www.aboutiam.com/reports/#${r.slug}`,
+      'headline': r.title,
+      'publisher': { '@type': 'Organization', 'name': r.publisher },
+      'datePublished': r.year,
+      'description': r.summary,
+      'url': r.link
+    }))
+  }
+}
+
 export default function IamReports() {
   const groups = getReportsByPublisher()
   const statsReport = IAM_REPORTS.find((r) => r.keyStats && r.keyStats.length > 0)
@@ -31,6 +50,10 @@ export default function IamReports() {
 
   return (
     <div className="space-y-10 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildReportsJsonLd()).replace(/</g, '\\u003c') }}
+      />
       <section className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-glow text-accent-primary text-xs font-semibold tracking-wider uppercase border border-accent-primary/20">
           <FileBarChart className="w-4 h-4" /> Trusted Industry Research

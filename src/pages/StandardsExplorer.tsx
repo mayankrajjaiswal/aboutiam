@@ -10,6 +10,24 @@ import { STANDARDS } from '../data/standardsData'
 
 const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const
 
+function buildStandardsJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/standards/',
+    'name': 'AboutIAM Living Standards & RFC Explorer',
+    'description': 'Interactive specifications and RFC timelines across OAuth, OpenID Connect, SAML, SCIM, and WebAuthn.',
+    'hasPart': STANDARDS.map((s) => ({
+      '@type': 'TechArticle',
+      '@id': `https://www.aboutiam.com/standards/#${s.id}`,
+      'headline': `${s.title} — ${s.fullname}`,
+      'about': s.category,
+      'description': s.summary,
+      'url': `https://www.aboutiam.com/standards?standard=${s.id}`
+    }))
+  }
+}
+
 export default function StandardsExplorer() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeStandardId, setActiveStandardId] = useState<string | null>(null)
@@ -67,7 +85,11 @@ export default function StandardsExplorer() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 h-[calc(100svh-80px)] flex flex-col">
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildStandardsJsonLd()).replace(/</g, '\\u003c') }}
+      />
+
       {/* HEADER SECTION */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-6 shrink-0 select-none">
         <div className="space-y-1">

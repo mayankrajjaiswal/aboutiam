@@ -149,6 +149,8 @@ export default function Contributors() {
                   <img
                     src={person.photo}
                     alt={person.name}
+                    width={80}
+                    height={80}
                     className="w-full h-full object-cover"
                   />
                 ) : (

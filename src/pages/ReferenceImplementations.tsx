@@ -6,6 +6,24 @@ import {
 } from 'lucide-react'
 import { PROJECTS, LEVEL_LABELS, LEVEL_ORDER } from '../data/referenceProjects'
 
+function buildReferencesJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/references/',
+    'name': 'AboutIAM Enterprise Reference Implementations',
+    'description': 'Categorized, beginner-to-advanced library of production-quality, copyable IAM reference code.',
+    'hasPart': PROJECTS.map((p) => ({
+      '@type': 'TechArticle',
+      '@id': `https://www.aboutiam.com/references/#${p.id}`,
+      'headline': p.title,
+      'about': p.category,
+      'description': p.description,
+      'url': `https://www.aboutiam.com/references?ref=${p.id}`
+    }))
+  }
+}
+
 export default function ReferenceImplementations() {
   const [activeProjectId, setActiveProjectId] = useState<string>('springboot-keycloak')
   const [copiedCode, setCopiedCode] = useState<boolean>(false)
@@ -46,6 +64,10 @@ export default function ReferenceImplementations() {
 
   return (
     <div className="min-h-screen bg-bg-base text-text-primary font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildReferencesJsonLd()).replace(/</g, '\\u003c') }}
+      />
       
       {/* HEADER BAR */}
       <div className="border-b border-border-subtle bg-bg-card px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">

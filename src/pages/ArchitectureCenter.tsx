@@ -5,7 +5,7 @@ import {
   Network, ArrowRight, Shield, Play, Terminal, Cpu, Database,
   Globe, Server, Users, Cloud, RefreshCw, KeySquare, ChevronRight, ChevronDown, Laptop,
   Wallet, Fingerprint, Landmark, TrendingUp, Send, FileCheck, Waypoints, Siren, Building2, IdCard, Scale, Eye,
-  HardHat, Router, Cog, Truck, Factory, CreditCard, ScanLine, Boxes
+  HardHat, Router, Cog, Truck, Factory, CreditCard, ScanLine, Boxes, Layers
 } from 'lucide-react'
 import { ARCHITECTURES } from '../data/architectureData'
 
@@ -1117,6 +1117,31 @@ export default function ArchitectureCenter() {
         </div>
 
       </div>
+
+      {activeArchObj.relatedResources && activeArchObj.relatedResources.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+          <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+            <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-accent-primary" /> Related Tools & Playgrounds
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {activeArchObj.relatedResources.map((res, i) => (
+                <Link
+                  key={i}
+                  to={res.path}
+                  className="p-4 rounded-xl bg-bg-sidebar border border-border-subtle hover:bg-bg-nested hover:border-accent-primary/40 transition-all text-left flex flex-col justify-between group"
+                >
+                  <div>
+                    <span className="text-[8px] font-mono uppercase text-accent-primary font-bold">{res.type}</span>
+                    <h4 className="text-xs font-black text-text-primary group-hover:text-accent-primary mt-0.5 leading-snug">{res.title}</h4>
+                  </div>
+                  <span className="text-[10px] text-text-secondary hover:text-text-primary mt-3 font-semibold">&rarr; Open</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

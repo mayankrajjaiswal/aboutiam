@@ -1,129 +1,139 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { RefreshCw } from 'lucide-react'
 import { useThemeStore } from './store/themeStore'
 
 // Layout Elements
 import Sidebar from './components/Layout/Sidebar'
 import Header from './components/Layout/Header'
 import ScrollToTop from './components/Layout/ScrollToTop'
+import BreadcrumbNav from './components/Layout/BreadcrumbNav'
 
 // Core Pages
-import Home from './pages/Home'
-import Learn from './pages/Learn'
-import PlaygroundCatalog from './pages/PlaygroundCatalog'
-import ToolsCatalog from './pages/ToolsCatalog'
-import ArchitectureCenter from './pages/ArchitectureCenter'
-import VendorCenter from './pages/VendorCenter'
-import ResearchCenter from './pages/ResearchCenter'
-import DesignPatternLibrary from './pages/DesignPatternLibrary'
-import CertificationHub from './pages/CertificationHub'
-import SecurityBulletins from './pages/SecurityBulletins'
-import JwtDecoder from './pages/Tools/JwtDecoder'
-import JwtGenerator from './pages/Tools/JwtGenerator'
-import Base64EncoderDecoder from './pages/Tools/Base64EncoderDecoder'
-import Sha256HashGenerator from './pages/Tools/Sha256HashGenerator'
-import HmacGenerator from './pages/Tools/HmacGenerator'
-import UuidGenerator from './pages/Tools/UuidGenerator'
-import PasswordGenerator from './pages/Tools/PasswordGenerator'
-import OauthPkceGenerator from './pages/Tools/OauthPkceGenerator'
-import TotpGenerator from './pages/Tools/TotpGenerator'
-import LdapFilterBuilder from './pages/Tools/LdapFilterBuilder'
-import ScimPayloadValidator from './pages/Tools/ScimPayloadValidator'
-import BasicAuthDecoder from './pages/Tools/BasicAuthDecoder'
-import JwkPemConverter from './pages/Tools/JwkPemConverter'
-import X509CertificateDecoder from './pages/Tools/X509CertificateDecoder'
-import SamlDecoder from './pages/Tools/SamlDecoder'
-import SamlMetadataBuilder from './pages/Tools/SamlMetadataBuilder'
-import ScimDiffTool from './pages/Tools/ScimDiffTool'
-import CsrGenerator from './pages/Tools/CsrGenerator'
-import SdJwtDecoder from './pages/Tools/SdJwtDecoder'
-import WebauthnDecoder from './pages/Tools/WebauthnDecoder'
-import DidKeyGenerator from './pages/Tools/DidKeyGenerator'
-import BcryptGenerator from './pages/Tools/BcryptGenerator'
-import OauthRequestBuilder from './pages/Tools/OauthRequestBuilder'
-import JwksInspector from './pages/Tools/JwksInspector'
-import PolicyEvaluator from './pages/Tools/PolicyEvaluator'
-import PassphraseEntropy from './pages/Tools/PassphraseEntropy'
-import OidcDiscoveryAuditor from './pages/Tools/OidcDiscoveryAuditor'
-import AnsibleVault from './pages/Tools/AnsibleVault'
-import SopsSimulator from './pages/Tools/SopsSimulator'
-import InterviewCareerCenter from './pages/InterviewCareerCenter'
-import KeyRingManager from './pages/Tools/KeyRingManager'
-import ConformanceChecker from './pages/Tools/ConformanceChecker'
-import Pbkdf2Generator from './pages/Tools/Pbkdf2Generator'
-import CertBundleSplitter from './pages/Tools/CertBundleSplitter'
-import DidDocumentValidator from './pages/Tools/DidDocumentValidator'
-import IdentityBrokerSandbox from './pages/Playgrounds/IdentityBrokerSandbox'
-import JWTStudio from './pages/Playgrounds/JWTStudio'
-import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
-import SAMLWorkbench from './pages/Playgrounds/SAMLWorkbench'
-import FIDO2Lab from './pages/Playgrounds/FIDO2Lab'
-import AccessControlLab from './pages/Playgrounds/AccessControlLab'
-import LDAPTreeSimulator from './pages/Playgrounds/LDAPTreeSimulator'
-import ZTAPlanner from './pages/Playgrounds/ZTAPlanner'
-import SCIMLab from './pages/Playgrounds/SCIMLab'
-import OAuthAttackLab from './pages/Playgrounds/OAuthAttackLab'
-import KerberosLab from './pages/Playgrounds/KerberosLab'
-import IdentityCTFArena from './pages/Playgrounds/IdentityCTFArena'
-import IdentityArchitect from './pages/Playgrounds/IdentityArchitect'
-import JwtCracker from './pages/Playgrounds/JwtCracker'
-import CertChainValidator from './pages/Playgrounds/CertChainValidator'
-import GpoSimulator from './pages/Playgrounds/GpoSimulator'
-import ReferenceBuilder from './pages/Playgrounds/ReferenceBuilder'
-import SessionHijackingLab from './pages/Playgrounds/SessionHijackingLab'
-import ConditionalAccess from './pages/Playgrounds/ConditionalAccess'
-import OpaPlayground from './pages/Playgrounds/OpaPlayground'
-import TokenExchange from './pages/Playgrounds/TokenExchange'
-import ItdrLab from './pages/Playgrounds/ItdrLab'
-import DeviceTrust from './pages/Playgrounds/DeviceTrust'
-import PasskeyInternals from './pages/Playgrounds/PasskeyInternals'
-import CommunityForums from './pages/CommunityForums'
-import Assess from './pages/Assess'
-import Explore from './pages/Explore'
-import Assistant from './pages/Assistant'
-import ScenarioBuilder from './pages/ScenarioBuilder'
-import IdentityLabs from './pages/IdentityLabs'
-import ReferenceImplementations from './pages/ReferenceImplementations'
+const Home = lazy(() => import('./pages/Home'))
+const Learn = lazy(() => import('./pages/Learn'))
+const PlaygroundCatalog = lazy(() => import('./pages/PlaygroundCatalog'))
+const ToolsCatalog = lazy(() => import('./pages/ToolsCatalog'))
+const ArchitectureCenter = lazy(() => import('./pages/ArchitectureCenter'))
+const VendorCenter = lazy(() => import('./pages/VendorCenter'))
+const ResearchCenter = lazy(() => import('./pages/ResearchCenter'))
+const DesignPatternLibrary = lazy(() => import('./pages/DesignPatternLibrary'))
+const CertificationHub = lazy(() => import('./pages/CertificationHub'))
+const SecurityBulletins = lazy(() => import('./pages/SecurityBulletins'))
+const JwtDecoder = lazy(() => import('./pages/Tools/JwtDecoder'))
+const JwtGenerator = lazy(() => import('./pages/Tools/JwtGenerator'))
+const Base64EncoderDecoder = lazy(() => import('./pages/Tools/Base64EncoderDecoder'))
+const Sha256HashGenerator = lazy(() => import('./pages/Tools/Sha256HashGenerator'))
+const HmacGenerator = lazy(() => import('./pages/Tools/HmacGenerator'))
+const UuidGenerator = lazy(() => import('./pages/Tools/UuidGenerator'))
+const PasswordGenerator = lazy(() => import('./pages/Tools/PasswordGenerator'))
+const OauthPkceGenerator = lazy(() => import('./pages/Tools/OauthPkceGenerator'))
+const TotpGenerator = lazy(() => import('./pages/Tools/TotpGenerator'))
+const LdapFilterBuilder = lazy(() => import('./pages/Tools/LdapFilterBuilder'))
+const ScimPayloadValidator = lazy(() => import('./pages/Tools/ScimPayloadValidator'))
+const BasicAuthDecoder = lazy(() => import('./pages/Tools/BasicAuthDecoder'))
+const JwkPemConverter = lazy(() => import('./pages/Tools/JwkPemConverter'))
+const X509CertificateDecoder = lazy(() => import('./pages/Tools/X509CertificateDecoder'))
+const SamlDecoder = lazy(() => import('./pages/Tools/SamlDecoder'))
+const SamlMetadataBuilder = lazy(() => import('./pages/Tools/SamlMetadataBuilder'))
+const ScimDiffTool = lazy(() => import('./pages/Tools/ScimDiffTool'))
+const CsrGenerator = lazy(() => import('./pages/Tools/CsrGenerator'))
+const SdJwtDecoder = lazy(() => import('./pages/Tools/SdJwtDecoder'))
+const WebauthnDecoder = lazy(() => import('./pages/Tools/WebauthnDecoder'))
+const DidKeyGenerator = lazy(() => import('./pages/Tools/DidKeyGenerator'))
+const BcryptGenerator = lazy(() => import('./pages/Tools/BcryptGenerator'))
+const OauthRequestBuilder = lazy(() => import('./pages/Tools/OauthRequestBuilder'))
+const JwksInspector = lazy(() => import('./pages/Tools/JwksInspector'))
+const PolicyEvaluator = lazy(() => import('./pages/Tools/PolicyEvaluator'))
+const PassphraseEntropy = lazy(() => import('./pages/Tools/PassphraseEntropy'))
+const OidcDiscoveryAuditor = lazy(() => import('./pages/Tools/OidcDiscoveryAuditor'))
+const AnsibleVault = lazy(() => import('./pages/Tools/AnsibleVault'))
+const SopsSimulator = lazy(() => import('./pages/Tools/SopsSimulator'))
+const InterviewCareerCenter = lazy(() => import('./pages/InterviewCareerCenter'))
+const KeyRingManager = lazy(() => import('./pages/Tools/KeyRingManager'))
+const ConformanceChecker = lazy(() => import('./pages/Tools/ConformanceChecker'))
+const Pbkdf2Generator = lazy(() => import('./pages/Tools/Pbkdf2Generator'))
+const CertBundleSplitter = lazy(() => import('./pages/Tools/CertBundleSplitter'))
+const DidDocumentValidator = lazy(() => import('./pages/Tools/DidDocumentValidator'))
+const IdentityBrokerSandbox = lazy(() => import('./pages/Playgrounds/IdentityBrokerSandbox'))
+const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
+const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
+const SAMLWorkbench = lazy(() => import('./pages/Playgrounds/SAMLWorkbench'))
+const FIDO2Lab = lazy(() => import('./pages/Playgrounds/FIDO2Lab'))
+const AccessControlLab = lazy(() => import('./pages/Playgrounds/AccessControlLab'))
+const LDAPTreeSimulator = lazy(() => import('./pages/Playgrounds/LDAPTreeSimulator'))
+const ZTAPlanner = lazy(() => import('./pages/Playgrounds/ZTAPlanner'))
+const SCIMLab = lazy(() => import('./pages/Playgrounds/SCIMLab'))
+const OAuthAttackLab = lazy(() => import('./pages/Playgrounds/OAuthAttackLab'))
+const KerberosLab = lazy(() => import('./pages/Playgrounds/KerberosLab'))
+const IdentityCTFArena = lazy(() => import('./pages/Playgrounds/IdentityCTFArena'))
+const IdentityArchitect = lazy(() => import('./pages/Playgrounds/IdentityArchitect'))
+const JwtCracker = lazy(() => import('./pages/Playgrounds/JwtCracker'))
+const CertChainValidator = lazy(() => import('./pages/Playgrounds/CertChainValidator'))
+const GpoSimulator = lazy(() => import('./pages/Playgrounds/GpoSimulator'))
+const ReferenceBuilder = lazy(() => import('./pages/Playgrounds/ReferenceBuilder'))
+const SessionHijackingLab = lazy(() => import('./pages/Playgrounds/SessionHijackingLab'))
+const ConditionalAccess = lazy(() => import('./pages/Playgrounds/ConditionalAccess'))
+const OpaPlayground = lazy(() => import('./pages/Playgrounds/OpaPlayground'))
+const TokenExchange = lazy(() => import('./pages/Playgrounds/TokenExchange'))
+const ItdrLab = lazy(() => import('./pages/Playgrounds/ItdrLab'))
+const DeviceTrust = lazy(() => import('./pages/Playgrounds/DeviceTrust'))
+const PasskeyInternals = lazy(() => import('./pages/Playgrounds/PasskeyInternals'))
+const CommunityForums = lazy(() => import('./pages/CommunityForums'))
+const Assess = lazy(() => import('./pages/Assess'))
+const Explore = lazy(() => import('./pages/Explore'))
+const Assistant = lazy(() => import('./pages/Assistant'))
+const ScenarioBuilder = lazy(() => import('./pages/ScenarioBuilder'))
+const IdentityLabs = lazy(() => import('./pages/IdentityLabs'))
+const ReferenceImplementations = lazy(() => import('./pages/ReferenceImplementations'))
 
 // Advanced Ecosystem Modules
-import Encyclopedia from './pages/Encyclopedia'
-import IdentityTimeline from './pages/IdentityTimeline'
-import CommunityHub from './pages/CommunityHub'
-import WallOfShame from './pages/WallOfShame'
-import CheatSheets from './pages/CheatSheets'
-import BeginnerPrimer from './pages/BeginnerPrimer'
-import Contributors from './pages/Contributors'
-import Terms from './pages/Terms'
-import Roadmap from './pages/Roadmap'
+const Encyclopedia = lazy(() => import('./pages/Encyclopedia'))
+const IdentityTimeline = lazy(() => import('./pages/IdentityTimeline'))
+const CommunityHub = lazy(() => import('./pages/CommunityHub'))
+const WallOfShame = lazy(() => import('./pages/WallOfShame'))
+const CheatSheets = lazy(() => import('./pages/CheatSheets'))
+const BeginnerPrimer = lazy(() => import('./pages/BeginnerPrimer'))
+const Contributors = lazy(() => import('./pages/Contributors'))
+const Terms = lazy(() => import('./pages/Terms'))
+const Roadmap = lazy(() => import('./pages/Roadmap'))
 
 // Phase 7: Next-Gen Modules
-import AIThreatLab from './pages/Playgrounds/AIThreatLab'
-import ZKPWallet from './pages/Playgrounds/ZKPWallet'
-import AmbientTrust from './pages/Playgrounds/AmbientTrust'
-import WorkloadMesh from './pages/Playgrounds/WorkloadMesh'
-import AuthMatchmaker from './pages/Playgrounds/AuthMatchmaker'
+const AIThreatLab = lazy(() => import('./pages/Playgrounds/AIThreatLab'))
+const ZKPWallet = lazy(() => import('./pages/Playgrounds/ZKPWallet'))
+const AmbientTrust = lazy(() => import('./pages/Playgrounds/AmbientTrust'))
+const WorkloadMesh = lazy(() => import('./pages/Playgrounds/WorkloadMesh'))
+const AuthMatchmaker = lazy(() => import('./pages/Playgrounds/AuthMatchmaker'))
 
 // Content Gaps & Enhancements: Standards & Compliance Coverage
-import XacmlPolicyEngine from './pages/Playgrounds/XacmlPolicyEngine'
-import GnapVisualizer from './pages/Playgrounds/GnapVisualizer'
-import CaepLab from './pages/Playgrounds/CaepLab'
-import VcDidLab from './pages/Playgrounds/VcDidLab'
+const XacmlPolicyEngine = lazy(() => import('./pages/Playgrounds/XacmlPolicyEngine'))
+const GnapVisualizer = lazy(() => import('./pages/Playgrounds/GnapVisualizer'))
+const CaepLab = lazy(() => import('./pages/Playgrounds/CaepLab'))
+const VcDidLab = lazy(() => import('./pages/Playgrounds/VcDidLab'))
 
 // IAM Curriculum Expansion: Beginner-to-Advanced Playground Coverage
-import MagicLinkStepUp from './pages/Playgrounds/MagicLinkStepUp'
-import CredentialStuffingLab from './pages/Playgrounds/CredentialStuffingLab'
-import CiamConsentSandbox from './pages/Playgrounds/CiamConsentSandbox'
-import AccessCertificationLab from './pages/Playgrounds/AccessCertificationLab'
-import RiskEngine from './pages/Playgrounds/RiskEngine'
-import PamVaultingLab from './pages/Playgrounds/PamVaultingLab'
-import HybridAdSyncLab from './pages/Playgrounds/HybridAdSyncLab'
-import CaseStudyCenter from './pages/CaseStudyCenter'
-import IdentityDecisionMatrix from './pages/IdentityDecisionMatrix'
-import ThreatModelingStudio from './pages/ThreatModelingStudio'
-import DesignReviewAssistant from './pages/DesignReviewAssistant'
-import StandardsExplorer from './pages/StandardsExplorer'
-import EventsCalendar from './pages/EventsCalendar'
-import IamReports from './pages/IamReports'
+const MagicLinkStepUp = lazy(() => import('./pages/Playgrounds/MagicLinkStepUp'))
+const CredentialStuffingLab = lazy(() => import('./pages/Playgrounds/CredentialStuffingLab'))
+const CiamConsentSandbox = lazy(() => import('./pages/Playgrounds/CiamConsentSandbox'))
+const AccessCertificationLab = lazy(() => import('./pages/Playgrounds/AccessCertificationLab'))
+const RiskEngine = lazy(() => import('./pages/Playgrounds/RiskEngine'))
+const PamVaultingLab = lazy(() => import('./pages/Playgrounds/PamVaultingLab'))
+const HybridAdSyncLab = lazy(() => import('./pages/Playgrounds/HybridAdSyncLab'))
+const CaseStudyCenter = lazy(() => import('./pages/CaseStudyCenter'))
+const IdentityDecisionMatrix = lazy(() => import('./pages/IdentityDecisionMatrix'))
+const ThreatModelingStudio = lazy(() => import('./pages/ThreatModelingStudio'))
+const DesignReviewAssistant = lazy(() => import('./pages/DesignReviewAssistant'))
+const StandardsExplorer = lazy(() => import('./pages/StandardsExplorer'))
+const EventsCalendar = lazy(() => import('./pages/EventsCalendar'))
+const IamReports = lazy(() => import('./pages/IamReports'))
+
+function PageLoadingFallback() {
+  return (
+    <div className="flex items-center justify-center py-24">
+      <RefreshCw className="w-8 h-8 text-accent-primary animate-spin" />
+    </div>
+  )
+}
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
@@ -152,7 +162,9 @@ export default function App() {
 
           {/* Main Main Scroll Container */}
           <main className="flex-grow pt-20 pb-12 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto transition-all">
-            <Routes>
+            <BreadcrumbNav />
+            <Suspense fallback={<PageLoadingFallback />}>
+              <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/primer" element={<BeginnerPrimer />} />
               <Route path="/roadmap" element={<Roadmap />} />
@@ -264,7 +276,8 @@ export default function App() {
               <Route path="/terms" element={<Terms />} />
               {/* Fallback Redirection */}
               <Route path="*" element={<Home />} />
-            </Routes>
+              </Routes>
+            </Suspense>
           </main>
         </div>
       </div>

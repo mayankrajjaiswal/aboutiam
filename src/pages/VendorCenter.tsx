@@ -20,6 +20,24 @@ import type { IngestionStep } from '../data/identityIntelligence'
 type SectionType = 'vendors' | 'intelligence' | 'events' | 'social'
 type ThalesTabType = 'overview' | 'onewelcome' | 'sta' | 'idcloud' | 'interview'
 
+function buildVendorJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/vendor/',
+    'name': 'AboutIAM Enterprise Ecosystem & Vendor Intelligence Portal',
+    'description': 'Comprehensive profiles of major enterprise IAM vendors, deployment checklists, and technical interview questions.',
+    'hasPart': Object.entries(VENDOR_CATALOG).map(([key, v]) => ({
+      '@type': 'TechArticle',
+      '@id': `https://www.aboutiam.com/vendor/#${key}`,
+      'headline': v.fullName,
+      'about': v.category,
+      'description': v.marketPositioning || v.strengths[0] || `${v.fullName} — ${v.category}`,
+      'url': `https://www.aboutiam.com/vendor?v=${key}`
+    }))
+  }
+}
+
 export default function VendorCenter() {
   const [activeSection, setActiveSection] = useState<SectionType>('vendors')
   
@@ -190,6 +208,10 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
 
   return (
     <div className="min-h-screen bg-bg-base text-text-primary font-sans pb-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildVendorJsonLd()).replace(/</g, '\\u003c') }}
+      />
       {/* Dynamic Alert Banner */}
       {notificationMsg && (
         <div className="fixed bottom-6 right-6 z-50 bg-accent-glow border border-accent-primary p-4 rounded-xl shadow-lg max-w-sm animate-bounce flex items-start gap-2.5">

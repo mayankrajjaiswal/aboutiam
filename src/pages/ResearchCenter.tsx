@@ -9,6 +9,34 @@ type TabType = 'cve' | 'rfc' | 'bulletins'
 
 const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const
 
+function buildResearchJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/research/',
+    'name': 'AboutIAM Identity Research & CVE Tracker',
+    'description': 'Identity-relevant CVE directory with vulnerable/secure code patches, plus an IETF RFC and draft protocol registry.',
+    'hasPart': [
+      ...CVE_DATABASE.map((c) => ({
+        '@type': 'TechArticle',
+        '@id': `https://www.aboutiam.com/research/#${c.id}`,
+        'headline': `${c.id}: ${c.title}`,
+        'about': c.vulnerabilityType,
+        'description': c.description,
+        'url': `https://www.aboutiam.com/research?cve=${c.id}`
+      })),
+      ...RFC_DATABASE.map((r) => ({
+        '@type': 'TechArticle',
+        '@id': `https://www.aboutiam.com/research/#${rfcSlug(r.number)}`,
+        'headline': `${r.number}: ${r.title}`,
+        'about': r.category,
+        'description': r.description,
+        'url': `https://www.aboutiam.com/research?rfc=${rfcSlug(r.number)}`
+      }))
+    ]
+  }
+}
+
 export default function ResearchCenter() {
   const [activeTab, setActiveTab] = useState<TabType>('cve')
   const [cveSearch, setCveSearch] = useState('')
@@ -61,6 +89,10 @@ export default function ResearchCenter() {
 
   return (
     <div className="min-h-screen bg-bg-base text-text-primary font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildResearchJsonLd()).replace(/</g, '\\u003c') }}
+      />
       {/* Header element */}
       <div className="border-b border-border-subtle bg-bg-card px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">

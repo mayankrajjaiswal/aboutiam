@@ -6,6 +6,24 @@ import { CHEAT_SHEETS, SHEET_CATEGORIES, type SheetDifficulty } from '../data/ch
 
 const DIFFICULTIES: SheetDifficulty[] = ['Beginner', 'Intermediate', 'Advanced']
 
+function buildCheatSheetsJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.aboutiam.com/cheat-sheets/',
+    'name': 'AboutIAM Developer Playbooks',
+    'description': 'Beginner-to-advanced interactive compliance and hardening checklists for application security, identity infrastructure, and regulatory frameworks.',
+    'hasPart': CHEAT_SHEETS.map((s) => ({
+      '@type': 'TechArticle',
+      '@id': `https://www.aboutiam.com/cheat-sheets/#${s.id}`,
+      'headline': s.title,
+      'about': s.category,
+      'description': `${s.target} — ${s.checks.length} actionable checks.`,
+      'url': `https://www.aboutiam.com/cheat-sheets?sheet=${s.id}`
+    }))
+  }
+}
+
 export default function CheatSheets() {
   const [activeSheet, setActiveSheet] = useState(CHEAT_SHEETS[0].id)
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
@@ -37,6 +55,10 @@ export default function CheatSheets() {
 
   return (
     <div className="space-y-8 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildCheatSheetsJsonLd()).replace(/</g, '\\u003c') }}
+      />
       {/* Title */}
       <div className="space-y-3 max-w-3xl">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-secondary uppercase tracking-wider bg-status-success/10 px-2.5 py-1 rounded-full border border-status-success/20">

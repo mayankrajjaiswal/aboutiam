@@ -88,7 +88,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/playground/workload-mesh`** | `WorkloadMesh.tsx` | Demonstrates SPIFFE/SPIRE attestations and X.509 SVID credentials. |
 | **`/explore/matchmaker`** | `AuthMatchmaker.tsx` | Startup Auth Matchmaker wizard with copyable boilerplates. |
 | **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts, downloadable SVG roadmaps, and a `?a=<digits>` shareable, URL-hydrated read-only report link (scoring logic lives in `src/lib/assess/scoring.ts`). |
-| **`/explore`** | `Explore.tsx` | Landscape Directory. Product blueprints with copyable integration code blocks. |
+| **`/explore`** | `Explore.tsx` | IAM Landscape Directory. 21 products spanning Open Source IdPs, Enterprise/Workforce SaaS, CIAM, Directory Services, PAM & Access, and Secrets Engines — each tagged Beginner/Intermediate/Advanced, backed by `src/data/exploreData.ts`. Supports type + difficulty filters, `?product=<id>` deep links, and copyable integration code blocks. |
 | **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Intelligent platform navigator, protocol comparison engine, and customized learning planner. |
 | **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 65 categorized standard terms with analogies and specs. Each term supports bookmarking (`BookmarkButton`) and carries a `ContentFeedback` accuracy widget. |
 | **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. Each breach lab carries a `ContentFeedback` accuracy widget. |
@@ -578,3 +578,26 @@ Unlike standards/case-studies/references, the architecture's *diagram* (the clic
 - Add an entry to the `SIMULATION_STEPS` map (keyed by id) with one `{ node, msg }` step per node the simulation should visit, in order — `runSimulation` itself is a single generic loop over whichever architecture's steps are active, so no control-flow changes are needed.
 
 No route-wiring needed (§4D) — the `?arch=<id>` deep link reuses the existing `/architecture` route via the same mount-effect pattern described in §4I, and both the dropdown's default-node selection and the deep-link's default-node selection read the same `defaultNode` field (previously these were two independently hand-maintained if/else chains that could silently drift — switching architectures via the dropdown for `oauth_oidc`/`saml`/`pam`/`pki`/`k8s_identity` used to leave the previous architecture's `selectedNode` stale, breaking the detail panel, since only the `?arch=` deep-link effect had a correct per-architecture default). Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `ARCHITECTURES` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers are represented.
+
+---
+
+### 🏛️ U. How to Add a New IAM Landscape Product (`/explore`)
+
+`src/data/exploreData.ts` is the single source of truth for the `/explore` "IAM Landscape Directory" — `Explore.tsx` and the search index (`searchService.ts`) both import the same `EXPLORE_PRODUCTS` array, so appending one `ExploreProduct` object makes it render as a card **and** become searchable/deep-linkable (`?product=<id>`) with no second list to sync. This closes the same class of drift bug fixed for standards/case-studies/references/architectures (§4Q-T): the page used to define its 6 products inline with no `id`, no `difficulty` field, a hand-maintained type-filter tab list that had silently drifted out of sync with the data (missing the `Workforce SaaS` tab entirely), and zero search wiring.
+
+```typescript
+{
+  id: 'your-product-id',
+  name: 'Full Product Name',
+  type: 'Open Source', // 'Open Source' | 'Enterprise SaaS' | 'Workforce SaaS' | 'CIAM' | 'Secrets Engine' | 'PAM & Access' | 'Directory Service'
+  difficulty: 'Beginner', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips and card badge
+  license: 'Apache-2.0', // or 'Commercial SaaS', etc.
+  deployment: 'Self-hosted (Docker, Kubernetes) / Managed Cloud',
+  bestUse: 'One or two sentences on what this product is best suited for and why.',
+  protocols: { oidc: true, saml: true, scim: false, fido2: true, ldap: false },
+  tags: ['keyword', 'not-already-in-name-or-type'], // extra search keywords
+  integrationSnippet: `# A realistic, copyable sample integration snippet`
+}
+```
+
+`EXPLORE_TYPES` is derived automatically from `EXPLORE_PRODUCTS` (`Array.from(new Set(...))`), so a new `type` value automatically gets its own filter tab — no hand-maintained tab list to fall out of sync. No route-wiring needed (§4D) — the `?product=<id>` deep link reuses the existing `/explore` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `EXPLORE_PRODUCTS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `EXPLORE_TYPES` value are represented.

@@ -4,6 +4,7 @@ import { STANDARDS } from '../../data/standardsData'
 import { CASE_STUDIES, CASE_STUDY_CATEGORIES } from '../../data/caseStudiesData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { ARCHITECTURES } from '../../data/architectureData'
+import { EXPLORE_PRODUCTS, EXPLORE_TYPES } from '../../data/exploreData'
 
 describe('getSearchIndex deep-link entries', () => {
   it('indexes all living standards with ?standard= deep links', () => {
@@ -138,5 +139,33 @@ describe('getSearchIndex deep-link entries', () => {
     expect(match).toBeTruthy()
     expect((match as unknown as { link: string; category: string }).link).toBe('/standards?view=deadlines')
     expect((match as unknown as { category: string }).category).toBe('📅 Compliance Deadlines')
+  })
+
+  it('indexes every entry in exploreData.ts with a ?product= deep link', () => {
+    const index = getSearchIndex()
+    EXPLORE_PRODUCTS.forEach((p) => {
+      const results = index.search(p.name, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `explore-${p.id}`)
+      expect(match, `expected "${p.name}" (${p.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/explore?product=${p.id}`)
+      expect((match as unknown as { category: string }).category).toBe('🧭 IAM Landscape Directory')
+    })
+  })
+
+  it('covers IAM landscape products across all three difficulty tiers and every product type', () => {
+    const difficulties = new Set(EXPLORE_PRODUCTS.map((p) => p.difficulty))
+    expect(difficulties.has('Beginner')).toBe(true)
+    expect(difficulties.has('Intermediate')).toBe(true)
+    expect(difficulties.has('Advanced')).toBe(true)
+
+    const types = new Set(EXPLORE_PRODUCTS.map((p) => p.type))
+    EXPLORE_TYPES.forEach((t) => {
+      expect(types.has(t), `expected at least one product of type "${t}"`).toBe(true)
+    })
+  })
+
+  it('gives every IAM landscape product a unique id', () => {
+    const ids = EXPLORE_PRODUCTS.map((p) => p.id)
+    expect(new Set(ids).size).toBe(ids.length)
   })
 })

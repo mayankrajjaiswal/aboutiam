@@ -10,6 +10,7 @@ import { STANDARDS } from '../../data/standardsData'
 import { CASE_STUDIES } from '../../data/caseStudiesData'
 import { ARCHITECTURES } from '../../data/architectureData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
+import { EXPLORE_PRODUCTS } from '../../data/exploreData'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -265,7 +266,21 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 12. Add every remaining site page (sidebar/nav pages not covered above)
+  // 12. Add IAM Landscape Directory products (derived from the shared exploreData.ts —
+  // every product added there is automatically searchable, no separate list to sync)
+  EXPLORE_PRODUCTS.forEach(p => {
+    items.push({
+      id: `explore-${p.id}`,
+      title: p.name,
+      fullName: `${p.type} · ${p.difficulty}`,
+      description: p.bestUse,
+      category: '🧭 IAM Landscape Directory',
+      link: `/explore?product=${p.id}`,
+      keywords: [p.type, p.difficulty, ...p.tags]
+    })
+  })
+
+  // 13. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

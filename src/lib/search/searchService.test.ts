@@ -4,6 +4,7 @@ import { STANDARDS } from '../../data/standardsData'
 import { CASE_STUDIES, CASE_STUDY_CATEGORIES } from '../../data/caseStudiesData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { ARCHITECTURES } from '../../data/architectureData'
+import { CERTIFICATIONS } from '../../data/certificationsData'
 import { EXPLORE_PRODUCTS, EXPLORE_TYPES } from '../../data/exploreData'
 
 describe('getSearchIndex deep-link entries', () => {
@@ -166,6 +167,29 @@ describe('getSearchIndex deep-link entries', () => {
 
   it('gives every IAM landscape product a unique id', () => {
     const ids = EXPLORE_PRODUCTS.map((p) => p.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in certificationsData.ts with a ?cert= deep link — closes the certifications/search drift bug', () => {
+    const index = getSearchIndex()
+    CERTIFICATIONS.forEach((cert) => {
+      const results = index.search(cert.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `cert-${cert.id}`)
+      expect(match, `expected "${cert.title}" (${cert.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/certifications?cert=${cert.id}`)
+      expect((match as unknown as { category: string }).category).toBe('🎓 Certification Hub')
+    })
+  })
+
+  it('covers certifications across all three difficulty tiers', () => {
+    const difficulties = new Set(CERTIFICATIONS.map((c) => c.difficulty))
+    expect(difficulties.has('Beginner')).toBe(true)
+    expect(difficulties.has('Intermediate')).toBe(true)
+    expect(difficulties.has('Advanced')).toBe(true)
+  })
+
+  it('gives every certification a unique id', () => {
+    const ids = CERTIFICATIONS.map((c) => c.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 })

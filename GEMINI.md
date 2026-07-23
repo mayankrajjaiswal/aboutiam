@@ -45,7 +45,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/vendor`** | `VendorCenter.tsx` | Enterprise Ecosystem & Vendor Intelligence Portal. Comprehensive profiles for 18 major platforms, including a flagship featured profile for Thales (OneWelcome, SafeNet Trusted Access, IdCloud) with inner ASCII diagrams, Troubleshooting, and custom Interview Prep. Integrates the Live Identity Intelligence Hub (news, searchable CVE code patch repairs, and visual AI Ingestion Pipeline Simulator), Community Events Calendars with alerts, and Social dashboards with AI Weekly Digest builders. A "Compare" toggle switches the vendor list to multi-select checkboxes (up to 3) and renders a side-by-side attribute table; deep-linkable via `?compare=<key1>,<key2>`. |
 | **`/research`** | `ResearchCenter.tsx` | Searchable identity CVE directory with side-by-side remediation code patches and active standard IETF RFC drafts. |
 | **`/patterns`** | `DesignPatternLibrary.tsx` | Hardened design patterns, sequence flows, and checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless. |
-| **`/certifications`** | `CertificationHub.tsx` | Exam domains, study paths, and interactive practice tests for Microsoft, Okta, Ping, and CyberArk credentials. |
+| **`/certifications`** | `CertificationHub.tsx` | Enterprise Certification Hub. 27 beginner-to-advanced identity certifications backed by `src/data/certificationsData.ts` (§4U) — spanning Fundamentals (SC-900, Security+, IDPro CIDPRO), Cloud & Workforce IAM (SC-300, AZ-500, Okta, Ping, AWS/GCP), Identity Governance (SailPoint, Saviynt, One Identity), PAM (CyberArk, BeyondTrust, Delinea), Security Leadership & GRC (CISSP, CCSP, CISM, CRISC), Privacy (IAPP CIPT/CIPM), and Cloud-Native (CKS). Difficulty/category filterable, deep-linkable via `?cert=<id>`, and individually searchable; flagship certs carry an interactive mock quiz. |
 | **`/career-center`** | `InterviewCareerCenter.tsx` | Comprehensive role-based interview preparation system spanning 6 role tracks featuring MCQs, scenarios, design simulations, coding terminals, timed mocks, and resume guidelines. |
 | **`/bulletins`** | `SecurityBulletins.tsx` | Active threat bulletins tracking real-world incident post-mortems (Okta support, SolarWinds) with an interactive "Crisis Response Console" simulation game. |
 | **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 15+ completed simulators, each bookmarkable via `BookmarkButton`. |
@@ -601,3 +601,28 @@ No route-wiring needed (§4D) — the `?arch=<id>` deep link reuses the existing
 ```
 
 `EXPLORE_TYPES` is derived automatically from `EXPLORE_PRODUCTS` (`Array.from(new Set(...))`), so a new `type` value automatically gets its own filter tab — no hand-maintained tab list to fall out of sync. No route-wiring needed (§4D) — the `?product=<id>` deep link reuses the existing `/explore` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `EXPLORE_PRODUCTS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `EXPLORE_TYPES` value are represented.
+
+---
+
+### 🏛️ V. How to Add a New Certification (`/certifications`)
+
+`src/data/certificationsData.ts` is the single source of truth for the `/certifications` "Enterprise Certification Hub" — `CertificationHub.tsx` and the search index (`searchService.ts`) both import the same `CERTIFICATIONS` array, so appending one `Certification` object makes it render in the category/difficulty-filtered selector **and** become searchable/deep-linkable (`?cert=<id>`) with no second list to sync. This closes the same class of drift bug fixed for standards/case-studies/references/architectures/explore products (§4Q-U): the page used to hard-code exactly 4 certifications inline via a closed `CertType` union with zero search wiring and no difficulty field at all.
+
+```typescript
+{
+  id: 'your-cert-id',
+  title: 'Full, Descriptive Certification Name',
+  vendor: 'Issuing Vendor or Body',
+  category: 'Cloud & Workforce IAM', // one of CERTIFICATION_CATEGORIES — reuse an existing one where the topic fits
+  difficulty: 'Intermediate', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips
+  cost: '$200 USD', // or 'Contact vendor' if pricing isn't public
+  examCode: 'XX-000', // optional — omit if the credential has no formal exam code
+  officialLink: 'https://vendor.com/certification', // the vendor/body's own stable top-level certification page
+  domains: [{ name: 'Domain Name', weight: '25%' }], // weight can be a percentage or a qualitative label like 'Core' if the real split isn't publicly documented
+  studyPath: ['Step one...', 'Step two...'],
+  recommendedLabs: [{ name: 'Existing Tool/Playground', path: '/playground/...' }], // link to genuinely relevant existing tools/playgrounds, don't invent new ones
+  quiz: [ /* optional CertQuizQuestion[] */ ] // only add a full mock quiz for flagship certs you can hand-verify — most new entries should omit this; CertificationHub.tsx renders a lighter "Study Blueprint + Official Exam Guide" panel automatically when quiz is absent
+}
+```
+
+If adding a new category value, also add it to the exported `CERTIFICATION_CATEGORIES` array in the same file so the category grouping in the selector stays in sync. No route-wiring needed (§4D) — the `?cert=<id>` deep link reuses the existing `/certifications` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `CERTIFICATIONS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers are represented.

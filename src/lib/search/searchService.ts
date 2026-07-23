@@ -11,6 +11,7 @@ import { CASE_STUDIES } from '../../data/caseStudiesData'
 import { ARCHITECTURES } from '../../data/architectureData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { EXPLORE_PRODUCTS } from '../../data/exploreData'
+import { CERTIFICATIONS } from '../../data/certificationsData'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -280,7 +281,21 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 13. Add every remaining site page (sidebar/nav pages not covered above)
+  // 13. Add Certifications (derived from the shared certificationsData.ts — every
+  // certification added there is automatically searchable, no separate list to sync)
+  CERTIFICATIONS.forEach(c => {
+    items.push({
+      id: `cert-${c.id}`,
+      title: c.title,
+      fullName: `${c.vendor} · ${c.difficulty}`,
+      description: `${c.category} certification — ${c.domains.map(d => d.name).join(', ')}`,
+      category: '🎓 Certification Hub',
+      link: `/certifications?cert=${c.id}`,
+      keywords: [c.vendor, c.category, c.difficulty, c.examCode ?? ''].filter(Boolean)
+    })
+  })
+
+  // 14. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

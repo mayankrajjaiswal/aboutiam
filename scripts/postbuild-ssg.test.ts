@@ -24,7 +24,6 @@ function extractRoutesFromSsgScript(): Route[] {
   const source = readFileSync(join(__dirname, 'postbuild-ssg.mjs'), 'utf8')
   const match = source.match(/const ROUTES = (\[[\s\S]*?\n\])/)
   if (!match) throw new Error('Could not find ROUTES array in postbuild-ssg.mjs')
-  // eslint-disable-next-line no-new-func -- trusted, repo-local source file, not external input
   return new Function(`return ${match[1]}`)()
 }
 

@@ -156,6 +156,11 @@ export default function JWTStudio() {
   // Trigger recomputation on any inputs changes
   useEffect(() => {
     setTimeout(() => recomputeJWT(), 0)
+    // recomputeJWT is an unmemoized async closure recreated every render;
+    // listing it here would fire this effect on every render instead of only
+    // on real input changes. It always reads the latest headerJson/payloadJson
+    // /etc. via closure, which are already the deps below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerJson, payloadJson, secret, alg, noneExploitActive, jwksExploitActive])
 
   // If user switches grant or exploit states, synchronize headers

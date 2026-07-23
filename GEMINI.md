@@ -159,8 +159,10 @@ We mandate the inclusion of Vitest unit tests for all state mutations, mathemati
 - **One-time read from `localStorage` on mount** → a lazy `useState(() => ...)` initializer (guarded per §3B), not an effect + setter.
 - **Synchronous value derived from other state** (e.g. building an XML/JSON string) → `useMemo`, not state + effect.
 - **Timer/interval loop with a "stop" condition** → fold the stop transition into the *same* interval's functional-updater callback (see `IdentityTimeline.tsx`'s ambient-trust decay), not a second synchronous setter call on the effect's next run.
-- **Async Web Crypto derivation** (can't become a `useMemo`) → wrap the call itself in `setTimeout(() => fn(), 0)` at the effect's call site. Wrapping inside the async function (e.g. a leading `await Promise.resolve()`) does not satisfy the rule — verified empirically.
+- **Async Web Crypto derivation** (can't become a `useMemo`) → wrap the call itself in `setTimeout(() => fn(), 0)` at the effect's call site. Wrapping inside the async function (e.g. a leading `await Promise.resolve()`) does not satisfy the rule — verified empirically. The `setTimeout` wrapper does *not* on its own silence `exhaustive-deps` for the wrapped function name (e.g. `recomputeJWT`, `generateKeysAndCsr`) — since that function is an unmemoized closure recreated every render and already reads the effect's own listed deps via closure, add a scoped `eslint-disable-next-line react-hooks/exhaustive-deps` immediately above the dependency array, with a one-line comment naming the function and confirming everything it reads is already listed. See `JWTStudio.tsx`, `CsrGenerator.tsx`, `SCIMLab.tsx`, `ReferenceBuilder.tsx` for the pattern.
 - **`Math.random()`/`Date.now()` inside a function only ever invoked from a click/submit handler** → a scoped `eslint-disable-next-line react-hooks/purity` with a one-line comment naming the handler is acceptable; the linter can't prove render-time vs. event-time reachability on its own.
+- **Static reference data with no dependency on props/state** (e.g. a curated list of templates/options) defined inside the component body → hoist it to module scope instead of wrapping it in `useMemo`/adding it as a dependency. It gets recreated every render for no reason otherwise, and every `useMemo`/`useEffect` that reads it must awkwardly list it as a dependency.
+- **A plain helper function whose only inputs are values already in a `useMemo`'s dependency array** → inline its body directly into the `useMemo` callback instead of calling it as a separate function. Removes the missing-dependency warning entirely (no function reference to omit) instead of suppressing it.
 
 ---
 
@@ -785,3 +787,28 @@ mfa: [
 ```
 
 No route-wiring needed (§4D) — all three deep-link patterns (`?tab=compare&compare=<id>`, `?tab=learn&level=<lvl>&goal=<goal>`, `?tab=interview&q=<id>`) reuse the existing `/assistant` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `COMPARISONS`/`LEARNING_TRACKS`/`INTERVIEW_QUESTIONS` and fails if any one of them isn't indexed; `aiKnowledgeGraph.test.ts` additionally guards id uniqueness, non-empty comparison tables/use-case lists, that every learning track's level/goal is actually selectable in the UI, and that every knowledge-graph key has at least one resource.
+
+---
+
+### 🏛️ AA. How to Add a Test
+
+Vitest runs three separate **projects** (configured in `vitest.config.ts`, not `vite.config.ts` — the build config has no reason to know about jsdom or coverage), each scoped to what kind of thing it verifies:
+
+| Project | Environment | Where tests live | What it's for |
+| :--- | :--- | :--- | :--- |
+| `unit` | `node` | Colocated `*.test.ts` next to the file it tests, under `src/lib/`, `src/data/`, `src/store/`, `scripts/` | Pure logic — mathematical calculations, state mutations, helper utilities (§3C's existing mandate) |
+| `component` | `jsdom` | Colocated `*.test.tsx` next to the component, under `src/components/`; plus `tests/pages/` | Anything that renders React — shared components and the cross-cutting page-smoke suite |
+| `integration` | `node` | `tests/integration/`, `tests/ssr/` | Cross-file consistency checks that don't belong to any single source file |
+
+`npm run test` runs all three; `npm run test:unit` / `test:components` / `test:integration` target just one; `npm run test:coverage` adds a coverage report (`coverage/`, gitignored, uploaded as a CI artifact).
+
+**Where to put a new test:**
+
+- Testing a function in `src/lib/`, `src/data/`, or `src/store/`? Colocate `yourFile.test.ts` next to it — same convention as all 51 existing unit tests. No config changes needed.
+- Testing a component in `src/components/`? Colocate `YourComponent.test.tsx` next to it, using `renderWithProviders` from `src/test/renderWithProviders.tsx` (wraps `MemoryRouter`) instead of hand-rolling router setup. See `BookmarkButton.test.tsx`, `ContentFeedback.test.tsx`, `DisclaimerModal.test.tsx`, `GuidedTour.test.tsx`, and `PersonalizationSelector.test.tsx` for the pattern — render + content assertions, click/toggle interactions against the real Zustand store (not mocked), and first-visit/sequencing behavior for anything following the §4M/§4N pattern.
+- Testing a brand-new **page**? You almost never need to write one — `tests/pages/allPagesRender.test.tsx` globs every file under `src/pages/**/*.tsx` and asserts each one mounts without throwing, so a new page gets crash-coverage the moment its file exists, the same "append and get it for free" pattern as search (§4I) and SSG. Only add a dedicated page test file if the page has real interactive logic worth asserting on beyond "it renders" (a wizard's step transitions, a filter's result count, a deep-link query param actually selecting the right item).
+- Adding a new registry/data array (breaches, standards, certifications, etc.)? Don't write a new test file — extend the existing per-registry checks in `searchService.test.ts` (search-index coverage) and the array's own `*.test.ts` (id uniqueness, category/difficulty coverage), following the pattern already used for every registry listed in §4B/§4Q–Z.
+- Adding a new SSR-guarded module (§3B)? Add a case to `tests/ssr/ssrSafety.test.ts` — it runs under the `integration` project's real `node` environment (genuinely no `window`/`document`, not stubbed) and asserts the module's exported actions don't throw.
+- Adding a new page/route (§4D)? `routeRegistrySync.test.ts` already fails if `App.tsx`, `routeMeta.ts`, and `scripts/postbuild-ssg.mjs` fall out of sync — no test change needed there either.
+
+**Test environment gotchas** (see `src/test/setup.ts`): jsdom has no `window.matchMedia` and no `crypto.subtle` — both are polyfilled globally for the `component`/`integration` projects, so a tool page that hashes/signs on mount won't crash in tests for a reason unrelated to its own code. `localStorage` is cleared after every test to stop one persisted Zustand store's state (theme, bookmarks, preferences, tour, disclaimer, layout, airplane mode) from leaking into the next test file — if a test explicitly needs a particular store state, set it with `useYourStore.setState({...})` at the top of the test rather than relying on ordering.

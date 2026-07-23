@@ -146,6 +146,11 @@ export default function CsrGenerator() {
 
   useEffect(() => {
     setTimeout(() => generateKeysAndCsr(), 0)
+    // generateKeysAndCsr is an unmemoized async Web Crypto closure recreated
+    // every render; it only reads the form fields already listed below, so
+    // including the function itself would just rerun this effect on every
+    // unrelated render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [commonName, organization, orgUnit, locality, stateName, country, sans, keyType])
 
   const handleDownloadCsr = () => {

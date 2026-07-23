@@ -106,7 +106,7 @@ export default function IdentityArchitect() {
       products,
       policyCode
     }
-  }, [useCase, compliance, cloud, scale])
+  }, [useCase, compliance, cloud, scale, isAiMode, aiResponse])
 
   // Download entire bundle as text file
   const downloadBlueprint = () => {

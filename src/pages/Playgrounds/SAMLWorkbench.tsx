@@ -9,7 +9,7 @@ export default function SAMLWorkbench() {
   const [isCopied, setIsCopied] = useState<string | null>(null)
   const verification: 'valid' | 'spoofed' | 'invalid' = sswActive ? 'spoofed' : 'valid'
 
-  const generateSAMLXml = () => {
+  const xmlContent = useMemo(() => {
     if (sswActive) {
       return `<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_resp123">
   <!-- Signature wrapping exploit wraps a signed, legitimate assertion -->
@@ -46,9 +46,7 @@ export default function SAMLWorkbench() {
     </ds:Signature>
   </saml:Assertion>
 </samlp:Response>`
-  }
-
-  const xmlContent = useMemo(() => generateSAMLXml(), [sswActive])
+  }, [sswActive])
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(xmlContent)

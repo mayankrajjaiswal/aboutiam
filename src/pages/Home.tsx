@@ -239,7 +239,7 @@ export default function Home() {
                 Certification Hub
               </h4>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Study roadmaps, curriculum domains, and interactive practice tests for Microsoft SC-300, Okta Admin, CyberArk, and Ping Identity.
+                27 beginner-to-advanced credentials — Microsoft, Okta, CyberArk, AWS, CISSP, and more — with study blueprints and practice tests.
               </p>
             </div>
             <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">

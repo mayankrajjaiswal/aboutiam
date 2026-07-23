@@ -1,133 +1,39 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CheckSquare, ShieldCheck } from 'lucide-react'
+import BookmarkButton from '../components/BookmarkButton'
+import ContentFeedback from '../components/ContentFeedback'
+import { CHEAT_SHEETS, SHEET_CATEGORIES, type SheetDifficulty } from '../data/cheatSheetsData'
 
-interface CheckItem {
-  id: string
-  task: string
-  desc: string
-}
-
-interface Sheet {
-  id: string
-  title: string
-  target: string
-  checks: CheckItem[]
-}
+const DIFFICULTIES: SheetDifficulty[] = ['Beginner', 'Intermediate', 'Advanced']
 
 export default function CheatSheets() {
-  const [activeSheet, setActiveSheet] = useState('spa')
+  const [activeSheet, setActiveSheet] = useState(CHEAT_SHEETS[0].id)
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
+  const [difficultyFilter, setDifficultyFilter] = useState<SheetDifficulty | 'All'>('All')
 
-  const sheets: Sheet[] = [
-    {
-      id: 'spa',
-      title: 'Single-Page App (SPA) Security Baseline',
-      target: 'React, Angular, Vue Developers',
-      checks: [
-        { id: 'spa_1', task: 'Implement Authorization Code flow with PKCE', desc: 'Ensure you are NOT using the deprecated Implicit Grant. Generate a SHA-256 code challenge for every login request.' },
-        { id: 'spa_2', task: 'Enforce exact Redirect URI matching', desc: 'The authorization server must validate the redirect URI via an exact string match, barring any wildcards.' },
-        { id: 'spa_3', task: 'Avoid localStorage for sensitive tokens', desc: 'If possible, use a Backend-For-Frontend (BFF) pattern to store tokens in HttpOnly, Secure, SameSite=Strict cookies to defeat XSS.' },
-        { id: 'spa_4', task: 'Verify ID Token Signatures & Claims', desc: 'If parsing the id_token locally, verify the JWT signature against the IdP JWKS and check the "aud" (audience) matches your client ID.' }
-      ]
-    },
-    {
-      id: 'm2m',
-      title: 'Machine-to-Machine (M2M) API Hardening',
-      target: 'Backend Microservices, Cron Jobs',
-      checks: [
-        { id: 'm2m_1', task: 'Use Client Credentials Grant', desc: 'Authenticate daemons using client_id and client_secret directly at the /token endpoint.' },
-        { id: 'm2m_2', task: 'Enforce Scope Limitations (Least Privilege)', desc: 'Do not issue global admin tokens. Request exact scopes (e.g., `system.read` vs `system.write`).' },
-        { id: 'm2m_3', task: 'Implement Token Exchange (RFC 8693) for internal hops', desc: 'If Service A calls Service B on behalf of a user, exchange the public token for a restricted internal token before the hop.' },
-        { id: 'm2m_4', task: 'Store secrets in an encrypted vault', desc: 'Never hardcode `client_secret` in environments. Inject it dynamically via HashiCorp Vault or AWS Secrets Manager.' }
-      ]
-    },
-    {
-      id: 'soc2',
-      title: 'SOC 2 Type II - Trust Services Criteria (Identity Controls)',
-      target: 'Security Auditors, CTOs, and Compliance Managers',
-      checks: [
-        { id: 'soc2_1', task: 'CC6.1: Automated Directory Provisioning (SCIM)', desc: 'Configure automated directory lifecycle synchronization (SCIM) to immediately de-provision terminated employees, preventing unauthorized residual access.' },
-        { id: 'soc2_2', task: 'CC6.2: Phishing-Proof Multi-Factor Authentication', desc: 'Mandate phishing-resistant Multi-Factor Authentication (FIDO2 / WebAuthn passkeys) for all administrative logins and core workforce endpoints.' },
-        { id: 'soc2_3', task: 'CC6.3: Just-In-Time role elevation (PIM)', desc: 'Enforce Role-Based Access Control (RBAC) backed by Just-In-Time role elevation (PIM) to prevent permanent, static administrator credential keys.' },
-        { id: 'soc2_4', task: 'CC6.8: API Gateway Authorization & Scope Validation', desc: 'Secure API endpoints by terminating connections at an API Gateway, validating JWT scopes, and blocking unauthenticated backchannel hops.' }
-      ]
-    },
-    {
-      id: 'iso27001',
-      title: 'ISO/IEC 27001:2022 - Access Control (A.5.15 - A.5.18)',
-      target: 'Information Security Officers, Compliance Auditors',
-      checks: [
-        { id: 'iso_1', task: 'Control A.5.15: Access Rights Lifecycle Workflows', desc: 'Implement automated, documented Joiner-Mover-Leaver workflows with mandatory quarterly user access entitlement reviews.' },
-        { id: 'iso_2', task: 'Control A.5.16: Secure Identity & Secrets Management', desc: 'Enforce unique identifier bindings (disallowing shared admin credentials) and store secrets vaulted with automated CPM rotation cycles.' },
-        { id: 'iso_3', task: 'Control A.5.17: Privileged Session Monitoring & Vaulting', desc: 'Maintain complete session recordings, command logs, and credential masking for all privileged sessions accessing production clusters.' },
-        { id: 'iso_4', task: 'Control A.5.18: Dynamic Departmental Group Re-evaluation', desc: 'Establish automated triggers to re-evaluate and reclaim security group memberships when users transfer departments or change roles.' }
-      ]
-    },
-    {
-      id: 'hipaa',
-      title: 'HIPAA Security Rule - Technical Safeguards (§ 164.312)',
-      target: 'Healthcare App Developers, Compliance Officers',
-      checks: [
-        { id: 'hipaa_1', task: '§164.312(a)(1): Unique User Identification', desc: 'Configure distinct, cryptographically-bound identifiers for every workforce member accessing systems that store or process Protected Health Information (PHI).' },
-        { id: 'hipaa_2', task: '§164.312(a)(2)(iv): Encryption-at-Rest & In-Transit', desc: 'Mandate TLS 1.3 for all PHI transit pipelines (mTLS) and encrypt database partitions-at-rest using AES-256 keys.' },
-        { id: 'hipaa_3', task: '§164.312(d): Person or Entity Authentication', desc: 'Disable standard IP-based or static API key authentication, requiring dynamic cryptographic user and system-to-system validations.' },
-        { id: 'hipaa_4', task: '§164.312(e): Transmission Security (Integrity)', desc: 'Block unauthorized message modification in transit by signing all API payload parameters with asymmetric cryptographic hashes.' }
-      ]
-    },
-    {
-      id: 'pci_dss',
-      title: 'PCI-DSS v4.0 - Identity & Access Requirements',
-      target: 'Payment/Banking Engineers',
-      checks: [
-        { id: 'pci_1', task: 'Req 7: Restrict Access by Business Need-to-Know', desc: 'Limit access to system components and cardholder data to only those individuals whose job requires such access, defined by role.' },
-        { id: 'pci_2', task: 'Req 8.3: MFA for All Access Into the CDE', desc: 'Enforce multi-factor authentication for all access into the Cardholder Data Environment, not just remote or administrative access.' },
-        { id: 'pci_3', task: 'Req 8.6: Unique Authentication for Service/System Accounts', desc: 'Prohibit shared credentials for service and system accounts; each account must be uniquely identifiable and managed.' },
-        { id: 'pci_4', task: 'Req 10.2: Audit Trails for All Access to Cardholder Data', desc: 'Log all individual access to cardholder data, including the identity performing the action and the outcome.' }
-      ]
-    },
-    {
-      id: 'nist_80063',
-      title: 'NIST SP 800-63-3 - Digital Identity Guidelines',
-      target: 'Government & Federal Contractors',
-      checks: [
-        { id: 'nist_1', task: 'IAL2: Identity Proofing Evidence Requirements', desc: 'Collect and validate at least one piece of superior or two pieces of strong evidence during remote or in-person identity proofing.' },
-        { id: 'nist_2', task: 'AAL2/AAL3: Phishing-Resistant Authenticator Requirements', desc: 'Require multi-factor cryptographic authenticators at AAL2, and hardware-based, verifier-impersonation-resistant authenticators at AAL3.' },
-        { id: 'nist_3', task: 'FAL3: Holder-of-Key Federation Assertions', desc: 'Bind federated assertions to a cryptographic key held by the subscriber, rather than relying on bearer assertions alone.' },
-        { id: 'nist_4', task: 'Re-authentication & Session Binding Requirements', desc: 'Enforce periodic re-authentication and bind sessions to the authenticated device or channel to prevent session injection.' }
-      ]
-    },
-    {
-      id: 'gdpr',
-      title: 'GDPR Article 32 - Technical & Organizational Measures',
-      target: 'EU-Facing SaaS & Data Controllers',
-      checks: [
-        { id: 'gdpr_1', task: 'Art. 32(1)(a): Pseudonymization & Encryption of Personal Data', desc: 'Apply pseudonymization and encryption as appropriate technical measures to protect personal data at rest and in transit.' },
-        { id: 'gdpr_2', task: 'Art. 32(1)(b): Ongoing Confidentiality, Integrity & Availability', desc: 'Ensure the ongoing confidentiality, integrity, availability, and resilience of processing systems handling personal data.' },
-        { id: 'gdpr_3', task: 'Art. 25: Privacy-by-Design Least-Privilege Access', desc: 'Design access to personal data stores around least-privilege defaults, granting the minimum necessary scope by default.' },
-        { id: 'gdpr_4', task: 'Art. 33: 72-Hour Breach Notification Readiness', desc: 'Maintain sufficient audit logging and detection capability to identify a personal data breach and notify the supervisory authority within 72 hours.' }
-      ]
-    },
-    {
-      id: 'fedramp_high',
-      title: 'FedRAMP High - Baseline Access & Cryptographic Controls',
-      target: 'Federal Agency Providers & SaaS Contractors',
-      checks: [
-        { id: 'fedramp_1', task: 'AC-2: Automated Account Management & PIM', desc: 'Configure strict automated provisioning integrations (SCIM) and Just-in-Time (JIT) administrative elevations, ensuring all accounts are audited and deactivated on inactivity.' },
-        { id: 'fedramp_2', task: 'IA-2(1): Phishing-Resistant MFA (FIDO2 / PIV / CAC)', desc: 'Enforce verifier-impersonation-resistant multi-factor authentication (PIV/CAC cards or hardware FIDO2 keys) for all local and network access.' },
-        { id: 'fedramp_3', task: 'SC-13: FIPS 140-3 Validated Cryptographic Modules', desc: 'Enforce strictly validated FIPS 140-3 cryptographic modules for all digital signatures, secure key exchanges (mTLS), and database encryption-at-rest.' },
-        { id: 'fedramp_4', task: 'AU-2: Comprehensive Audit Event Logs (SIEM)', desc: 'Configure central security logging recording identity handshakes, session revocations, and configuration modifications, streaming to a secure, write-once SIEM vault.' }
-      ]
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const sheetParam = params.get('sheet')
+      const found = sheetParam ? CHEAT_SHEETS.find(s => s.id === sheetParam) : undefined
+      if (found) {
+        setTimeout(() => {
+          setActiveSheet(found.id)
+        }, 0)
+      }
     }
-  ]
+  }, [])
 
   const toggleCheck = (id: string) => {
     setCompleted({ ...completed, [id]: !completed[id] })
   }
 
-  const currentSheet = sheets.find(s => s.id === activeSheet) || sheets[0]
+  const currentSheet = CHEAT_SHEETS.find(s => s.id === activeSheet) || CHEAT_SHEETS[0]
   const sheetCompletedCount = currentSheet.checks.filter(c => completed[c.id]).length
   const totalChecks = currentSheet.checks.length
-  const pct = Math.round((sheetCompletedCount / totalChecks) * 100)
+  const pct = totalChecks > 0 ? Math.round((sheetCompletedCount / totalChecks) * 100) : 0
+
+  const visibleSheets = difficultyFilter === 'All' ? CHEAT_SHEETS : CHEAT_SHEETS.filter(s => s.difficulty === difficultyFilter)
 
   return (
     <div className="space-y-8 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -140,30 +46,55 @@ export default function CheatSheets() {
           Security & Compliance Cheat Sheets
         </h2>
         <p className="text-text-secondary">
-          Interactive compliance checklists for software engineers and auditors. Check off remediation steps to calculate your application's real-time security posture and regulatory compliance rating.
+          {CHEAT_SHEETS.length} interactive compliance and hardening checklists for software engineers, platform teams, and auditors — spanning Application Security, Identity Infrastructure & Governance, and Compliance & Regulatory frameworks. Check off remediation steps to calculate your application's real-time security posture.
         </p>
+      </div>
+
+      {/* Difficulty Filter */}
+      <div className="flex flex-wrap gap-2">
+        {(['All', ...DIFFICULTIES] as const).map(d => (
+          <button
+            key={d}
+            onClick={() => setDifficultyFilter(d)}
+            className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border transition-all cursor-pointer ${
+              difficultyFilter === d
+                ? 'bg-accent-primary text-white border-accent-primary'
+                : 'bg-bg-nested border-border-subtle text-text-secondary hover:border-accent-primary/40'
+            }`}
+          >
+            {d}
+          </button>
+        ))}
       </div>
 
       <div className="grid lg:grid-cols-4 gap-8">
         {/* Sidebar Selectors */}
-        <div className="lg:col-span-1 space-y-4">
-          <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Available Playbooks</span>
-          <div className="space-y-2">
-            {sheets.map(s => (
-              <button
-                key={s.id}
-                onClick={() => setActiveSheet(s.id)}
-                className={`w-full text-left p-4 rounded-xl border transition-all cursor-pointer ${
-                  activeSheet === s.id
-                    ? 'bg-bg-card border-accent-primary shadow-sm'
-                    : 'bg-bg-nested border-border-subtle hover:bg-bg-card hover:border-accent-primary/30'
-                }`}
-              >
-                <span className={`block font-bold text-sm ${activeSheet === s.id ? 'text-accent-primary' : 'text-text-primary'}`}>{s.title.split(' - ')[0]}</span>
-                <span className="block text-[10px] text-text-muted font-bold uppercase mt-1">Target: {s.target.split(', ')[0]}</span>
-              </button>
-            ))}
-          </div>
+        <div className="lg:col-span-1 space-y-5">
+          {SHEET_CATEGORIES.map(category => {
+            const categorySheets = visibleSheets.filter(s => s.category === category)
+            if (categorySheets.length === 0) return null
+            return (
+              <div key={category} className="space-y-2">
+                <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">{category}</span>
+                <div className="space-y-2">
+                  {categorySheets.map(s => (
+                    <button
+                      key={s.id}
+                      onClick={() => setActiveSheet(s.id)}
+                      className={`w-full text-left p-4 rounded-xl border transition-all cursor-pointer ${
+                        activeSheet === s.id
+                          ? 'bg-bg-card border-accent-primary shadow-sm'
+                          : 'bg-bg-nested border-border-subtle hover:bg-bg-card hover:border-accent-primary/30'
+                      }`}
+                    >
+                      <span className={`block font-bold text-sm ${activeSheet === s.id ? 'text-accent-primary' : 'text-text-primary'}`}>{s.title}</span>
+                      <span className="block text-[10px] text-text-muted font-bold uppercase mt-1">{s.difficulty} · {s.target}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
         </div>
 
         {/* Active Checklist */}
@@ -174,7 +105,10 @@ export default function CheatSheets() {
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-6 border-b border-border-subtle relative z-10">
               <div className="space-y-1">
-                <h3 className="text-2xl font-black text-text-primary">{currentSheet.title}</h3>
+                <div className="flex items-center gap-3">
+                  <h3 className="text-2xl font-black text-text-primary">{currentSheet.title}</h3>
+                  <BookmarkButton item={{ id: `sheet-${currentSheet.id}`, title: currentSheet.title, link: `/cheat-sheets?sheet=${currentSheet.id}` }} />
+                </div>
                 <p className="text-sm text-text-secondary font-medium">Compliance target: {currentSheet.target}</p>
               </div>
 
@@ -183,13 +117,13 @@ export default function CheatSheets() {
                 <div className="relative w-12 h-12 flex items-center justify-center">
                   <svg className="absolute inset-0 w-full h-full transform -rotate-90">
                     <circle cx="24" cy="24" r="20" fill="none" className="stroke-border-subtle" strokeWidth="4" />
-                    <circle 
-                      cx="24" 
-                      cy="24" 
-                      r="20" 
-                      fill="none" 
-                      className="stroke-status-success transition-all duration-1000" 
-                      strokeWidth="4" 
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="20"
+                      fill="none"
+                      className="stroke-status-success transition-all duration-1000"
+                      strokeWidth="4"
                       strokeDasharray={2 * Math.PI * 20}
                       strokeDashoffset={2 * Math.PI * 20 * (1 - pct / 100)}
                       strokeLinecap="round"
@@ -236,6 +170,10 @@ export default function CheatSheets() {
                   </button>
                 )
               })}
+            </div>
+
+            <div className="pt-6 flex justify-end relative z-10">
+              <ContentFeedback id={`sheet-${currentSheet.id}`} title={currentSheet.title} />
             </div>
           </div>
         </div>

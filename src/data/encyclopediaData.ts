@@ -532,5 +532,948 @@ export const ENCYCLOPEDIA_TERMS: Term[] = [
       analogy: 'A factory that stamps a unique, forgery-proof serial number and birth-certificate onto every single machine part the moment it comes off the line, so any other machine on the floor can instantly verify exactly which part it\'s talking to.',
       expert: 'An open standard (CNCF) and its reference implementation (SPIRE) for issuing short-lived, cryptographically verifiable identities (SVIDs, typically X.509 or JWT) to non-human workloads in dynamic, multi-cloud, or Kubernetes environments, removing the need for long-lived static API keys or shared secrets.',
       toolUrl: '/playground/workload-mesh'
+    },
+    {
+      id: 'password',
+      term: 'Password',
+      fullName: 'Password / Shared Secret Credential',
+      category: 'Foundations',
+      analogy: 'A spoken word you and the doorman agreed on in advance. If anyone else learns the word, the door opens for them too — the lock has no idea it isn\'t really you.',
+      expert: 'The original "something you know" authentication factor: a secret string compared (usually as a salted hash) against a stored value at login. Weak on its own against phishing, reuse, and brute-force, hence the push toward MFA and passwordless.'
+    },
+    {
+      id: 'passwordless',
+      term: 'Passwordless Authentication',
+      fullName: 'Passwordless Authentication',
+      category: 'Foundations',
+      analogy: 'Getting into your apartment with your fingerprint or a key fob instead of memorizing a combination — nothing secret to type, phish, or forget.',
+      expert: 'An authentication approach that removes shared-secret passwords entirely, relying instead on possession/inherence factors such as FIDO2/WebAuthn passkeys, magic links, or push approvals, eliminating credential-stuffing and phishing-of-passwords risk classes.'
+    },
+    {
+      id: 'service_provider',
+      term: 'Service Provider (SP)',
+      fullName: 'Service Provider / Relying Party',
+      category: 'Foundations',
+      analogy: 'The nightclub that trusts the wristband a separate ticket booth already put on your wrist, instead of checking IDs itself.',
+      expert: 'In a federated identity exchange (SAML, OIDC), the application or API that consumes an identity assertion/token issued by an Identity Provider and grants access based on it, rather than authenticating the user directly.'
+    },
+    {
+      id: 'relying_party',
+      term: 'Relying Party (RP)',
+      fullName: 'Relying Party',
+      category: 'Foundations',
+      analogy: 'A landlord who accepts a background-check report from a trusted agency instead of running their own investigation on every tenant.',
+      expert: 'The OIDC/WebAuthn term for the entity that trusts and consumes assertions or credentials from an external Identity Provider or authenticator, delegating identity verification to that trusted third party.'
+    },
+    {
+      id: 'federation',
+      term: 'Identity Federation',
+      fullName: 'Identity Federation',
+      category: 'Foundations',
+      analogy: 'A student ID that also gets you into the library, the gym, and the cafeteria across several partner campuses, because all the schools agreed to trust one another\'s ID cards.',
+      expert: 'A trust arrangement allowing a user authenticated by one domain (the IdP) to access resources in another domain (the SP/RP) without re-authenticating, implemented via protocols like SAML, OIDC, or WS-Federation.'
+    },
+    {
+      id: 'claims',
+      term: 'Claims',
+      fullName: 'Identity Claims',
+      category: 'Foundations',
+      analogy: 'The stamped facts printed on your passport — name, birthdate, nationality — that the issuing government is vouching for on your behalf.',
+      expert: 'Key-value assertions about a subject (e.g. `sub`, `email`, `role`) embedded in a token or SAML assertion by an Identity Provider, consumed by relying parties to make authentication or authorization decisions without a live lookup.'
+    },
+    {
+      id: 'consent_management',
+      term: 'Consent Management',
+      fullName: 'Consent Management',
+      category: 'Foundations',
+      analogy: 'The screen an app shows before it accesses your contacts or camera — you explicitly tap "Allow" before anything is shared.',
+      expert: 'The mechanism (often an OAuth consent screen) by which a resource owner explicitly grants a client application specific scopes of access to their data, recorded and revocable to satisfy user-control requirements under GDPR/CCPA.'
+    },
+    {
+      id: 'onboarding_offboarding',
+      term: 'Onboarding / Offboarding',
+      fullName: 'User Onboarding & Offboarding',
+      category: 'Provisioning',
+      analogy: 'Issuing a new employee their badge, laptop, and building access on day one, and collecting every single one of those back the moment they resign.',
+      expert: 'The lifecycle processes of granting an identity its initial birthright access upon joining (onboarding) and deterministically revoking every entitlement and credential upon departure (offboarding), typically automated via an IGA platform to close the access-recovery gap.'
+    },
+    {
+      id: 'least_privilege',
+      term: 'Least Privilege',
+      fullName: 'Principle of Least Privilege (PoLP)',
+      category: 'Governance',
+      analogy: 'Giving a hotel cleaner a key that only opens the rooms on her assigned floor, never a master key to the whole building, even though it would be more "convenient."',
+      expert: 'A foundational security design principle stating that every identity — human or machine — should hold the minimum set of permissions necessary to perform its function, and nothing more, shrinking the blast radius of any single compromised credential.'
+    },
+    {
+      id: 'session',
+      term: 'Session',
+      fullName: 'Authentication Session',
+      category: 'Foundations',
+      analogy: 'The wristband a concert gives you after you show your ticket once — you don\'t re-show the ticket at every stage, just flash the wristband until the show ends.',
+      expert: 'A server- or client-tracked period during which a previously authenticated user is recognized without re-presenting credentials, typically bound to a session ID cookie or token with an expiry, idle timeout, and revocation mechanism.'
+    },
+    {
+      id: 'cookie',
+      term: 'HTTP Cookie',
+      fullName: 'HTTP Cookie',
+      category: 'Foundations',
+      analogy: 'A coat-check ticket stub: the venue keeps your coat (the real session state) and just hands you a small numbered stub to prove which coat is yours.',
+      expert: 'A small piece of state stored by the browser and sent back with every request to the issuing domain, commonly used to carry session identifiers. Security depends on flags like `HttpOnly` (blocks JS access), `Secure` (HTTPS-only), and `SameSite` (limits cross-site sending).'
+    },
+    {
+      id: 'api_key',
+      term: 'API Key',
+      fullName: 'API Key',
+      category: 'Foundations',
+      analogy: 'A shared garage-door remote given to a delivery service — it opens the door, but it doesn\'t prove which specific driver is holding it.',
+      expert: 'A long-lived, typically un-scoped static secret string presented by a client to authenticate to an API. Lacks the expiry, audience-binding, and claims richness of OAuth tokens, making it weaker for fine-grained or short-lived machine-to-machine authorization.'
+    },
+    {
+      id: 'basic_auth',
+      term: 'Basic Authentication',
+      fullName: 'HTTP Basic Authentication (RFC 7617)',
+      category: 'Protocols',
+      analogy: 'Yelling your username and password out loud at the door every single time you want to walk through it — simple, but anyone listening in hears everything.',
+      expert: 'An HTTP authentication scheme sending a Base64-encoded `username:password` pair in the `Authorization` header on every request. Provides no encryption of its own (relies entirely on TLS) and no session concept, making it unsuitable without HTTPS.'
+    },
+    {
+      id: 'digest_auth',
+      term: 'Digest Authentication',
+      fullName: 'HTTP Digest Access Authentication',
+      category: 'Protocols',
+      analogy: 'Instead of shouting your password at the door, you shout a secret math answer that only someone who knows the password could compute correctly.',
+      expert: 'An HTTP authentication scheme improving on Basic Auth by hashing credentials with a server-supplied nonce before transmission, avoiding sending the password in cleartext, though largely superseded today by Bearer tokens over TLS.'
+    },
+    {
+      id: 'bearer_token',
+      term: 'Bearer Token',
+      fullName: 'Bearer Token (RFC 6750)',
+      category: 'Protocols',
+      analogy: 'Cash in your pocket — whoever is physically holding the bill can spend it, no ID check required.',
+      expert: 'A security token where possession alone is sufficient for access; the API accepts any request presenting a valid, unexpired token in the `Authorization: Bearer` header without verifying who is presenting it, unlike proof-of-possession schemes like DPoP.'
+    },
+    {
+      id: 'opaque_token',
+      term: 'Opaque Token',
+      fullName: 'Opaque Access Token',
+      category: 'Protocols',
+      analogy: 'A coat-check number that means nothing on its own — the coat-check counter has to look it up in their ledger to know whose coat it refers to.',
+      expert: 'An access token that is an unstructured, unparseable random string rather than a self-contained JWT. Resource servers must call the Authorization Server\'s introspection endpoint to resolve its validity and associated claims, trading client-side verifiability for easier centralized revocation.'
+    },
+    {
+      id: 'token_introspection',
+      term: 'Token Introspection',
+      fullName: 'OAuth 2.0 Token Introspection (RFC 7662)',
+      category: 'Protocols',
+      analogy: 'Calling the bank\'s hotline to ask "is this check still good?" instead of trusting the numbers printed on the check itself.',
+      expert: 'An endpoint (`/introspect`) exposed by an Authorization Server that lets a resource server submit an opaque or JWT access token and receive back its current validity, scopes, and associated claims in real time.'
+    },
+    {
+      id: 'token_revocation',
+      term: 'Token Revocation',
+      fullName: 'OAuth 2.0 Token Revocation (RFC 7009)',
+      category: 'Protocols',
+      analogy: 'Calling the DMV to formally cancel a driver\'s license before its printed expiry date, so it stops working immediately everywhere.',
+      expert: 'An Authorization Server endpoint allowing a client to invalidate an access or refresh token before its natural expiry, ensuring a stolen or no-longer-needed token cannot be used again even if it hasn\'t technically expired.'
+    },
+    {
+      id: 'discovery_document',
+      term: 'Discovery Document',
+      fullName: 'OIDC Discovery / .well-known Configuration',
+      category: 'Protocols',
+      analogy: 'A visitor\'s map posted at a building entrance listing exactly which door is the front desk, which is the elevator, and which is security — so guests don\'t have to guess.',
+      expert: 'A JSON document published at `/.well-known/openid-configuration` enumerating an OIDC provider\'s endpoints (authorization, token, userinfo, jwks_uri) and supported capabilities, allowing clients to auto-configure themselves against any compliant IdP.'
+    },
+    {
+      id: 'dynamic_client_registration',
+      term: 'Dynamic Client Registration',
+      fullName: 'OAuth 2.0 Dynamic Client Registration (RFC 7591)',
+      category: 'Protocols',
+      analogy: 'A hotel kiosk that lets a new guest print their own keycard on the spot, instead of requiring the front desk manager to manually create every guest profile ahead of time.',
+      expert: 'A protocol allowing OAuth/OIDC client applications to programmatically register themselves with an Authorization Server via an API call, receiving a `client_id`/`client_secret` at runtime rather than through manual admin configuration.'
+    },
+    {
+      id: 'confidential_public_client',
+      term: 'Confidential vs Public Client',
+      fullName: 'OAuth 2.0 Client Types',
+      category: 'Protocols',
+      analogy: 'A bank teller (confidential — works behind a locked counter, can keep a safe combination secret) versus a customer filling out a form in the open lobby (public — anything they hold can be seen by anyone nearby).',
+      expert: 'OAuth classifies clients by their ability to protect secrets: confidential clients (backend servers) can securely hold a `client_secret`; public clients (SPAs, mobile apps) cannot, and must instead rely on PKCE to prevent authorization code interception.'
+    },
+    {
+      id: 'nonce',
+      term: 'Nonce',
+      fullName: 'Cryptographic Nonce',
+      category: 'Protocols',
+      analogy: 'A one-time-use raffle ticket number stamped "VOID IF COPIED" — if you see that exact number twice, something is wrong.',
+      expert: 'A unique, single-use value included in an OIDC authentication request and echoed back in the ID Token to bind the token to that specific request, preventing replay attacks where a captured ID Token is resubmitted later.'
+    },
+    {
+      id: 'state_parameter',
+      term: 'State Parameter',
+      fullName: 'OAuth 2.0 State Parameter',
+      category: 'Protocols',
+      analogy: 'A claim-check number you write down before stepping away from your seat, so when you come back you can prove this is really your seat and not someone else\'s.',
+      expert: 'An opaque, client-generated value passed through the OAuth authorization request and returned unmodified on the redirect callback, used to correlate the response to the original request and mitigate CSRF attacks against the redirect URI.'
+    },
+    {
+      id: 'scope',
+      term: 'Scope',
+      fullName: 'OAuth 2.0 Scope',
+      category: 'Protocols',
+      analogy: 'A hotel keycard explicitly programmed for "gym + pool only" — it simply will not open your actual room door, by design.',
+      expert: 'A space-delimited string in an OAuth request declaring the specific subset of a resource owner\'s data or actions the client is requesting access to (e.g. `read:contacts`), which the Authorization Server may reduce or reject at consent time.'
+    },
+    {
+      id: 'resource_server',
+      term: 'Resource Server',
+      fullName: 'OAuth 2.0 Resource Server',
+      category: 'Protocols',
+      analogy: 'The actual vault room inside a bank, which only checks that your key card is valid before letting you take out your safety-deposit box — it never issued the key card itself.',
+      expert: 'The API or service in an OAuth flow that hosts protected resources and validates incoming access tokens (locally via JWT signature checks, or remotely via introspection) before serving a request, distinct from the Authorization Server that issued the token.'
+    },
+    {
+      id: 'authorization_server',
+      term: 'Authorization Server',
+      fullName: 'OAuth 2.0 Authorization Server',
+      category: 'Protocols',
+      analogy: 'The bank branch that verifies your identity and prints your key card, as opposed to the vault room that merely reads the card at the door.',
+      expert: 'The OAuth 2.0 component responsible for authenticating the resource owner, obtaining consent, and issuing access/refresh/ID tokens to clients — commonly bundled with the IdP in modern platforms (Okta, Entra ID, Auth0, Keycloak).'
+    },
+    {
+      id: 'authorization_code_grant',
+      term: 'Authorization Code Grant',
+      fullName: 'OAuth 2.0 Authorization Code Grant',
+      category: 'Protocols',
+      analogy: 'Getting a coat-check stub at the door (the code), then trading that stub privately at the counter for your actual coat (the token) — the crowd never sees the coat itself.',
+      expert: 'The core OAuth 2.0 flow: the client redirects the user to authenticate at the Authorization Server, receives a short-lived one-time code via redirect, then exchanges that code server-side (with PKCE for public clients) for access/refresh tokens over a back-channel call.'
+    },
+    {
+      id: 'client_credentials_grant',
+      term: 'Client Credentials Grant',
+      fullName: 'OAuth 2.0 Client Credentials Grant',
+      category: 'Protocols',
+      analogy: 'One vending machine company badge-swiping into another company\'s warehouse using its own corporate ID — no individual human is involved at all.',
+      expert: 'An OAuth grant type for machine-to-machine authorization with no end user present: the client authenticates directly with its own `client_id`/`client_secret` (or a signed JWT assertion) to the token endpoint and receives an access token scoped to its own service identity.'
+    },
+    {
+      id: 'device_code_grant',
+      term: 'Device Code Grant',
+      fullName: 'OAuth 2.0 Device Authorization Grant (RFC 8628)',
+      category: 'Protocols',
+      analogy: 'A smart TV displaying "go to tv.com/activate and enter code 482-193" on your phone, because the TV remote has no keyboard to type a password on.',
+      expert: 'An OAuth flow for input-constrained devices (smart TVs, CLIs): the device displays a short user code and verification URL, the user approves on a secondary browser-capable device, and the device polls the token endpoint until authorization completes.'
+    },
+    {
+      id: 'refresh_token',
+      term: 'Refresh Token',
+      fullName: 'OAuth 2.0 Refresh Token',
+      category: 'Protocols',
+      analogy: 'A gym membership card you keep in your wallet that lets you print a fresh one-day guest pass (access token) each morning without re-signing the whole membership contract.',
+      expert: 'A long-lived credential issued alongside an access token that allows a client to silently obtain new access tokens after the original expires, without re-involving the resource owner, subject to rotation and revocation policies for security.'
+    },
+    {
+      id: 'saml_assertion',
+      term: 'SAML Assertion',
+      fullName: 'SAML 2.0 Assertion',
+      category: 'Protocols',
+      analogy: 'A notarized letter from your home country\'s embassy stating "we confirm this person\'s identity and these facts about them," which you hand to a foreign official instead of them calling the embassy directly.',
+      expert: 'An XML document issued and digitally signed by a SAML Identity Provider containing statements about a subject\'s authentication event, attributes, and authorization decisions, consumed by a Service Provider to establish a session without direct credential exchange.'
+    },
+    {
+      id: 'saml_metadata',
+      term: 'SAML Metadata',
+      fullName: 'SAML 2.0 Metadata Document',
+      category: 'Protocols',
+      analogy: 'The business card exchange two companies do before their mailrooms will accept sealed letters from each other — endpoints, certificates, and trust details agreed up front.',
+      expert: 'An XML document published by an IdP or SP describing its entity ID, endpoint URLs, and signing/encryption certificates, exchanged out-of-band to bootstrap a trust relationship before any SAML assertions are accepted.'
+    },
+    {
+      id: 'nameid',
+      term: 'NameID',
+      fullName: 'SAML NameID',
+      category: 'Protocols',
+      analogy: 'The specific ID number stamped on your badge that two different buildings agree to both recognize as "you," even if their own internal filing systems label you differently.',
+      expert: 'The primary subject identifier within a SAML assertion, whose format (e.g. `emailAddress`, `persistent`, `transient`) is negotiated between IdP and SP to control whether the identifier is stable, pseudonymous, or session-scoped.'
+    },
+    {
+      id: 'idp_sp_initiated',
+      term: 'IdP-Initiated vs SP-Initiated SSO',
+      fullName: 'IdP-Initiated vs SP-Initiated Single Sign-On',
+      category: 'Protocols',
+      analogy: 'IdP-initiated is like your school directly walking you into a partner museum; SP-initiated is like showing up at the museum first and having it send you back to your school to fetch a hall pass.',
+      expert: 'Two SAML/OIDC login sequences: SP-initiated begins at the Service Provider, which redirects the user to the IdP and expects a return; IdP-initiated begins at the IdP\'s portal, which pushes an unsolicited assertion directly to the SP, requiring extra replay protections.'
+    },
+    {
+      id: 'single_logout',
+      term: 'Single Logout (SLO)',
+      fullName: 'SAML/OIDC Single Logout',
+      category: 'Protocols',
+      analogy: 'Pulling one master fire alarm that simultaneously clears every room in a building, instead of walking floor to floor telling each room individually to evacuate.',
+      expert: 'A protocol extension (SAML SLO, OIDC front/back-channel logout) that propagates a single logout event across every Service Provider session established under one IdP session, preventing sessions from silently surviving after the user logs out.'
+    },
+    {
+      id: 'forceauthn',
+      term: 'ForceAuthn',
+      fullName: 'SAML ForceAuthn Attribute',
+      category: 'Protocols',
+      analogy: 'A bouncer told to re-check ID at the door every single time, even for someone who\'s already inside the club and wearing a wristband.',
+      expert: 'A boolean attribute on a SAML `AuthnRequest` instructing the IdP to force fresh, interactive re-authentication of the subject rather than silently reusing an existing IdP session — used before sensitive step-up operations.'
+    },
+    {
+      id: 'ldap_bind',
+      term: 'LDAP Bind',
+      fullName: 'LDAP Bind Operation',
+      category: 'Directories',
+      analogy: 'Presenting your ID to the directory office clerk before they\'ll let you flip through any records at all.',
+      expert: 'The LDAP operation that authenticates a client to the directory server, either anonymously, via simple bind (DN + password), or via SASL mechanisms, establishing the security context under which subsequent search/modify operations are authorized.'
+    },
+    {
+      id: 'ldap_filter',
+      term: 'LDAP Filter',
+      fullName: 'LDAP Search Filter',
+      category: 'Directories',
+      analogy: 'Telling the directory clerk "show me every employee whose last name starts with S and who works on the 3rd floor," instead of flipping through the entire card catalog yourself.',
+      expert: 'A structured query expression (e.g. `(&(objectClass=user)(cn=jdoe))`) used in LDAP search operations to match directory entries against attribute conditions, combining Boolean operators to narrow large object trees efficiently.'
+    },
+    {
+      id: 'ldap_injection',
+      term: 'LDAP Injection',
+      fullName: 'LDAP Injection Attack',
+      category: 'Zero Trust',
+      analogy: 'Writing extra, unexpected instructions on a request form so the clerk accidentally reads them as commands instead of plain data — like sneaking "and unlock every drawer" onto a simple name-lookup slip.',
+      expert: 'An injection vulnerability where unsanitized user input is concatenated directly into an LDAP filter string, allowing an attacker to alter query logic (e.g. bypass authentication checks or exfiltrate directory attributes) analogous to SQL injection against relational databases.'
+    },
+    {
+      id: 'domain_controller',
+      term: 'Domain Controller (DC)',
+      fullName: 'Active Directory Domain Controller',
+      category: 'Directories',
+      analogy: 'The main records office of a city hall — every birth certificate, ID card, and permit request in that city ultimately has to be validated against its books.',
+      expert: 'A server running Active Directory Domain Services that authenticates users, enforces security policy, and stores the directory database (NTDS.dit) for a domain, replicating changes to peer DCs to maintain a consistent directory across the forest.'
+    },
+    {
+      id: 'ad_forest_domain_trust',
+      term: 'AD Forest / Domain / Trust',
+      fullName: 'Active Directory Forest, Domain, and Trust Relationships',
+      category: 'Directories',
+      analogy: 'A domain is one company\'s office building; a forest is the whole corporate campus of related buildings; a trust is a signed agreement letting employees from one building badge into another.',
+      expert: 'AD\'s hierarchical structure: a domain is a security boundary sharing one directory partition; a forest is the top-level collection of domains sharing a common schema and global catalog; trusts (one-way, two-way, transitive) define which domains accept each other\'s authentication.'
+    },
+    {
+      id: 'ntlm',
+      term: 'NTLM',
+      fullName: 'NT LAN Manager',
+      category: 'Directories',
+      analogy: 'An older handshake-and-password-hint routine between two people who already know a shared secret phrase, still used in some old buildings even though everyone agrees the newer Kerberos badge system is safer.',
+      expert: 'A legacy Microsoft challenge-response authentication protocol vulnerable to relay and pass-the-hash attacks due to its lack of mutual authentication and reliance on weak hash algorithms, largely superseded by Kerberos but still present for backward compatibility.'
+    },
+    {
+      id: 'kdc',
+      term: 'KDC',
+      fullName: 'Key Distribution Center',
+      category: 'Directories',
+      analogy: 'The ticket booth at a theme park that issues both your all-day wristband and the specific ride-line passes you request throughout the day.',
+      expert: 'The Kerberos service (combining an Authentication Service and Ticket-Granting Service) responsible for issuing Ticket-Granting Tickets and Service Tickets to authenticated principals, forming the trusted core of a Kerberos realm.'
+    },
+    {
+      id: 'tgt_tgs',
+      term: 'TGT / TGS',
+      fullName: 'Ticket-Granting Ticket & Ticket-Granting Service',
+      category: 'Directories',
+      analogy: 'The all-day wristband (TGT) you get once at the park entrance, which you then show at each individual ride booth (TGS) to get a ride-specific ticket, without re-showing your original ID every time.',
+      expert: 'In Kerberos, the TGT is an initial credential proving the user authenticated to the KDC; it is then presented to the Ticket-Granting Service to obtain short-lived Service Tickets for specific resources, avoiding repeated password transmission.'
+    },
+    {
+      id: 'pass_the_hash_ticket',
+      term: 'Pass-the-Hash / Pass-the-Ticket',
+      fullName: 'Pass-the-Hash & Pass-the-Ticket Attacks',
+      category: 'Zero Trust',
+      analogy: 'A thief who doesn\'t need your actual key — just a wax impression of it (the hash) or a photocopy of your ticket stub (the ticket) is enough to walk right through the same doors you can.',
+      expert: 'Lateral-movement techniques where an attacker extracts a cached NTLM password hash or Kerberos ticket from memory (e.g. via Mimikatz) and replays it to authenticate as the victim on other machines, without ever needing the plaintext password.'
+    },
+    {
+      id: 'golden_silver_ticket',
+      term: 'Golden / Silver Ticket',
+      fullName: 'Golden Ticket & Silver Ticket Attacks',
+      category: 'Zero Trust',
+      analogy: 'A Golden Ticket is a forged master key stamped by a stolen copy of the city\'s official seal, letting the holder into any building forever; a Silver Ticket forges just one building\'s local seal instead.',
+      expert: 'A Golden Ticket forges a TGT using a stolen KRBTGT account hash, granting domain-wide Kerberos access indefinitely; a Silver Ticket forges a Service Ticket using a stolen service account hash, granting access limited to that one service.',
+      toolUrl: '/playground/kerberos-lab'
+    },
+    {
+      id: 'radius_companions',
+      term: 'TACACS+ / 802.1X / EAP',
+      fullName: 'Network Access Control Protocol Family',
+      category: 'Directories',
+      analogy: 'Different flavors of the same idea as a building security desk checking your badge before letting the elevator move: TACACS+ separates who-you-are from what-you-can-do, 802.1X is the port-level lock on the wall jack itself, and EAP is the vocabulary they all speak to negotiate how you prove who you are.',
+      expert: 'TACACS+ is Cisco\'s AAA protocol separating authentication/authorization/accounting for network device administration; 802.1X is the port-based network access control standard; EAP is the extensible framework (EAP-TLS, PEAP) both TACACS+/RADIUS and 802.1X use to negotiate authentication methods.'
+    },
+    {
+      id: 'hybrid_identity',
+      term: 'Hybrid Identity',
+      fullName: 'Hybrid Identity (PHS / PTA / Federation)',
+      category: 'Directories',
+      analogy: 'Three different ways a branch office can check a visitor\'s ID against head office records: mail head office a synced copy of the ID list ahead of time (Password Hash Sync), call head office live for every single visitor (Pass-Through Authentication), or simply send the visitor to head office\'s own front desk to be checked there (Federation).',
+      expert: 'The set of connectivity models linking on-prem Active Directory to a cloud IdP. Password Hash Sync (PHS) syncs a hash-of-a-hash to the cloud so it can validate independently; Pass-Through Authentication (PTA) forwards each login to a lightweight on-prem agent for real-time AD validation; Federation (AD FS) redirects the user to an on-prem identity provider that authenticates locally and returns a signed assertion. Only PHS survives a full on-prem outage.',
+      toolUrl: '/playground/hybrid-ad-sync'
+    },
+    {
+      id: 'shibboleth',
+      term: 'Shibboleth',
+      fullName: 'Shibboleth Identity Federation Software',
+      category: 'Protocols',
+      analogy: 'A campus-wide student ID system built specifically so many different universities could trust each other\'s login pages long before commercial SSO products existed.',
+      expert: 'An open-source SAML-based single sign-on and federation software suite widely adopted across higher education and research consortia (via InCommon and eduGAIN) for cross-institutional identity federation.'
+    },
+    {
+      id: 'cas',
+      term: 'CAS',
+      fullName: 'Central Authentication Service',
+      category: 'Protocols',
+      analogy: 'A single campus login booth every app on the network is configured to redirect to first, so a student only ever types their password once per day.',
+      expert: 'An open-source single sign-on protocol and server, originally from Yale, that issues short-lived service tickets after one central login, widely used in academic environments prior to broader SAML/OIDC adoption.'
+    },
+    {
+      id: 'sod',
+      term: 'Segregation of Duties (SoD)',
+      fullName: 'Segregation of Duties',
+      category: 'Governance',
+      analogy: 'The rule that the person who requests a check and the person who signs it must never be the same employee — one person alone should never control an entire risky process end-to-end.',
+      expert: 'A governance control that prevents any single identity from holding two conflicting entitlements (e.g. "create vendor" + "approve payment") that together enable fraud, enforced via policy rules in an IGA platform and checked during access requests and certifications.'
+    },
+    {
+      id: 'toxic_combination',
+      term: 'Toxic Combination',
+      fullName: 'Toxic Combination of Entitlements',
+      category: 'Governance',
+      analogy: 'Owning both the master key to the safe and the ability to erase the security camera footage — neither permission is dangerous alone, but together they are.',
+      expert: 'A specific pairing (or set) of entitlements that, when held simultaneously by one identity, violates Segregation of Duties and creates a fraud or security risk, typically defined in an SoD policy matrix and flagged automatically during access certification.'
+    },
+    {
+      id: 'role_mining',
+      term: 'Role Mining',
+      fullName: 'Role Mining & Role Engineering',
+      category: 'Governance',
+      analogy: 'Looking at everyone\'s actual keychains across the company and noticing that 40 people all carry the exact same five keys — so instead of managing 40 separate keychains, you define one "Floor 3 Analyst" master key.',
+      expert: 'An IGA analytics process (top-down or bottom-up) that clusters existing entitlement assignments across users to derive candidate RBAC roles, reducing the number of direct entitlement grants that must be individually managed and certified.'
+    },
+    {
+      id: 'role_explosion',
+      term: 'Role Explosion',
+      fullName: 'Role Explosion',
+      category: 'Governance',
+      analogy: 'A hotel that starts printing a slightly different keycard type for every single guest combination imaginable, until it has more card types in its system than actual rooms.',
+      expert: 'An anti-pattern in RBAC deployments where overly specific, one-off roles proliferate uncontrollably (often one role per user) until the role catalog becomes larger and harder to govern than the raw entitlement list it was meant to simplify.'
+    },
+    {
+      id: 'privileged_account',
+      term: 'Privileged Account',
+      fullName: 'Privileged Account',
+      category: 'Governance',
+      analogy: 'The building superintendent\'s master key that opens every apartment, the boiler room, and the roof — versus a regular tenant\'s key that only opens their own door.',
+      expert: 'An account (human or service) holding elevated permissions such as domain admin, root, or database superuser rights, representing outsized risk if compromised and therefore targeted specifically by PAM vaulting, session recording, and Just-in-Time elevation controls.'
+    },
+    {
+      id: 'break_glass_account',
+      term: 'Break-Glass Account',
+      fullName: 'Break-Glass / Emergency Access Account',
+      category: 'Governance',
+      analogy: 'The fire-alarm-style glass box in a hallway holding a spare key, meant to be smashed open only during a genuine emergency, with an alarm that immediately tells everyone it was used.',
+      expert: 'A tightly controlled, sealed emergency-access credential (e.g. a cloud tenant\'s global admin account) kept offline or in a vault, used only when normal federated/MFA login paths are unavailable, with mandatory post-use audit and password rotation.'
+    },
+    {
+      id: 'service_account',
+      term: 'Service Account',
+      fullName: 'Service / Machine Account',
+      category: 'Governance',
+      analogy: 'A dedicated ID badge issued not to a person but to a vending machine, so the building\'s security logs can still show exactly which machine restocked the shelf.',
+      expert: 'A non-human identity used by an application, script, or automated process to authenticate to other systems, typically holding narrowly scoped, non-interactive credentials that should be inventoried and rotated like any other privileged credential.'
+    },
+    {
+      id: 'non_human_identity',
+      term: 'Non-Human Identity (NHI)',
+      fullName: 'Non-Human Identity',
+      category: 'Zero Trust',
+      analogy: 'Giving every robot on a factory floor its own individually tracked ID badge, instead of letting them all share one generic "robot" badge that no one can trace back to a specific machine.',
+      expert: 'An umbrella term covering service accounts, API keys, workload identities (SPIFFE SVIDs), and bot credentials — an identity category now often outnumbering human accounts in an enterprise, driving dedicated NHI discovery and governance tooling.'
+    },
+    {
+      id: 'pdp_pep',
+      term: 'PDP / PEP',
+      fullName: 'Policy Decision Point & Policy Enforcement Point',
+      category: 'Authorization',
+      analogy: 'A nightclub bouncer (PEP) standing at the door who physically lets people in or turns them away, while radioing an off-site manager (PDP) who actually makes the yes/no judgment call based on the guest list.',
+      expert: 'In an externalized authorization architecture (XACML, Zero Trust), the PEP intercepts a resource access request and enforces the outcome, while the PDP evaluates policy against the request context and returns a permit/deny decision, keeping enforcement and decision logic decoupled.'
+    },
+    {
+      id: 'pap_pip',
+      term: 'PAP / PIP',
+      fullName: 'Policy Administration Point & Policy Information Point',
+      category: 'Authorization',
+      analogy: 'The PAP is the rulebook office where managers write and update club policy; the PIP is the ID-scanning kiosk that looks up a guest\'s membership tier and age before the bouncer\'s manager decides.',
+      expert: 'Within the XACML reference architecture, the PAP is where administrators author and publish authorization policies, and the PIP supplies the PDP with the additional subject, resource, or environment attributes needed to evaluate those policies at decision time.'
+    },
+    {
+      id: 'xacml',
+      term: 'XACML',
+      fullName: 'eXtensible Access Control Markup Language',
+      category: 'Authorization',
+      analogy: 'A very formal legal contract template for writing access rules ("if attribute X and resource Y then permit"), so different vendors\' bouncers and rulebook offices can all speak the same legal language.',
+      expert: 'An OASIS XML-based standard defining a policy language and request/response protocol for attribute-based access control decisions, historically implemented in enterprise PDP/PEP deployments, though largely superseded in modern stacks by lighter JSON-based engines like OPA/Rego.'
+    },
+    {
+      id: 'attribute_authority',
+      term: 'Attribute Authority',
+      fullName: 'SAML Attribute Authority',
+      category: 'Authorization',
+      analogy: 'A separate records office you can call specifically to ask "what department does this badge-holder work in?" — distinct from the main office that only confirms someone\'s identity.',
+      expert: 'A SAML component (or role) that responds to attribute queries about a previously authenticated subject, supplying additional attributes on demand rather than embedding every possible attribute in the original assertion.'
+    },
+    {
+      id: 'ztna',
+      term: 'ZTNA',
+      fullName: 'Zero Trust Network Access',
+      category: 'Zero Trust',
+      analogy: 'Instead of getting a building-wide badge once you\'re inside the lobby, every single door you approach re-checks your badge, your outfit, and your reason for being there before it clicks open.',
+      expert: 'An architecture replacing perimeter-based VPN access with per-session, identity- and context-aware access brokered application-by-application, verifying user identity, device posture, and policy on every connection rather than granting broad network-level trust.'
+    },
+    {
+      id: 'sdp',
+      term: 'Software-Defined Perimeter (SDP)',
+      fullName: 'Software-Defined Perimeter',
+      category: 'Zero Trust',
+      analogy: 'A speakeasy with no visible door at all — the building looks like a blank wall to strangers, and only pre-vetted guests with the secret knock ever see an entrance appear.',
+      expert: 'A Zero Trust network architecture (the "black cloud" model) that cloaks protected infrastructure from the public internet entirely, only establishing a network path to an authenticated, authorized device/user after out-of-band verification, reducing attack surface visibility.'
+    },
+    {
+      id: 'continuous_authentication',
+      term: 'Continuous Authentication',
+      fullName: 'Continuous Authentication',
+      category: 'Zero Trust',
+      analogy: 'A bank guard who doesn\'t just check your ID at the door, but keeps quietly watching your behavior the whole time you\'re inside the vault room, ready to intervene if something suddenly looks off.',
+      expert: 'An authentication model that repeatedly re-evaluates trust signals (biometric telemetry, device posture, behavioral patterns) throughout an active session rather than only at initial login, enabling real-time step-up or termination when risk changes mid-session.',
+      toolUrl: '/playground/ambient-trust'
+    },
+    {
+      id: 'device_posture',
+      term: 'Device Posture',
+      fullName: 'Device Trust & Posture Assessment',
+      category: 'Zero Trust',
+      analogy: 'A bouncer checking not just your ID, but also whether you\'re wearing the venue\'s required safety gear before letting you onto the factory floor.',
+      expert: 'The set of security signals collected about an endpoint — OS patch level, disk encryption, firewall status, EDR presence, jailbreak/root status — evaluated by a policy engine as a condition of granting or restricting access, core to Zero Trust and Conditional Access decisions.',
+      toolUrl: '/playground/device-trust'
+    },
+    {
+      id: 'ueba',
+      term: 'UEBA',
+      fullName: 'User and Entity Behavior Analytics',
+      category: 'Zero Trust',
+      analogy: 'A store detective who has watched a regular shopper for months and instantly notices when that same shopper suddenly starts acting completely out of character.',
+      expert: 'A security analytics discipline applying machine learning to baseline normal behavior for users and non-human entities, then flagging statistically anomalous activity (impossible travel, unusual data access volume) as potential compromise indicators, often feeding into ITDR/SIEM pipelines.'
+    },
+    {
+      id: 'risk_based_authentication',
+      term: 'Risk-Based Authentication',
+      fullName: 'Risk-Based / Adaptive Authentication',
+      category: 'Zero Trust',
+      analogy: 'A doorman who waves regulars straight through, but stops a stranger arriving at 3am wearing a ski mask for extra questions — the same door, a different amount of scrutiny depending on how suspicious the moment looks.',
+      expert: 'An authentication model that computes a continuous risk score per login attempt from weighted signals (impossible travel, device reputation, behavioral anomaly, network reputation) and maps score ranges to a decision — silent allow, step-up MFA, or block — rather than applying one static rule to every request, distinguishing it from static Conditional Access policies.',
+      toolUrl: '/playground/risk-engine'
+    },
+    {
+      id: 'credential_stuffing',
+      term: 'Credential Stuffing',
+      fullName: 'Credential Stuffing Attack',
+      category: 'Zero Trust',
+      analogy: 'A burglar who found a leaked master list of "keychain + address" pairs from a different neighborhood, and is now systematically trying each old key on doors here too, betting people reused the same key.',
+      expert: 'An automated attack that replays username/password pairs leaked from unrelated prior breaches against a target login endpoint, exploiting password reuse across services; mitigated by MFA, breached-password screening, and bot/rate-limit defenses.'
+    },
+    {
+      id: 'password_spraying',
+      term: 'Password Spraying',
+      fullName: 'Password Spraying Attack',
+      category: 'Zero Trust',
+      analogy: 'Instead of hammering one door with a thousand different keys (which triggers alarms), a burglar tries one single common key — like "Summer2024!" — against a thousand different doors, staying under each door\'s alarm threshold.',
+      expert: 'A brute-force variant that tests a small number of commonly used passwords against a large number of usernames, deliberately staying below per-account lockout thresholds to avoid triggering standard account-lockout defenses.'
+    },
+    {
+      id: 'brute_force_attack',
+      term: 'Brute Force Attack',
+      fullName: 'Brute Force Attack',
+      category: 'Zero Trust',
+      analogy: 'Trying every single number on a combination padlock, one after another, until one of them finally clicks open.',
+      expert: 'An attack that systematically attempts every possible credential value (or a dictionary of likely candidates) against an authentication endpoint or a stolen hash, countered by rate limiting, lockouts, MFA, and computationally expensive hashing (bcrypt, Argon2).'
+    },
+    {
+      id: 'phishing',
+      term: 'Phishing',
+      fullName: 'Phishing',
+      category: 'Zero Trust',
+      analogy: 'A fake bank teller window set up right next door to the real bank, dressed identically, hoping you\'ll hand over your PIN to the wrong window without noticing.',
+      expert: 'A social-engineering attack that impersonates a trusted party (via email, SMS, or a fake login page) to trick a user into disclosing credentials or approving a malicious authentication request, remaining the leading initial-access vector despite phishing-resistant FIDO2 defenses.'
+    },
+    {
+      id: 'mfa_fatigue',
+      term: 'MFA Fatigue / Push Bombing',
+      fullName: 'MFA Fatigue Attack',
+      category: 'Zero Trust',
+      analogy: 'A doorbell rung fifty times in a row at 3 a.m. until the exhausted homeowner just opens the door to make the noise stop, without checking who\'s actually there.',
+      expert: 'An attack exploiting push-based MFA by bombarding a victim with repeated approval prompts until they accidentally or exhaustedly approve one, countered by number-matching prompts, rate-limited push attempts, and phishing-resistant FIDO2 factors.',
+      toolUrl: '/wall-of-shame?tab=breaches&lab=pushfatigue'
+    },
+    {
+      id: 'sim_swapping',
+      term: 'SIM Swapping',
+      fullName: 'SIM Swapping Attack',
+      category: 'Zero Trust',
+      analogy: 'A con artist convincing the phone company to reassign your phone number to their own SIM card, so every "we texted you a code" security check now goes straight to the attacker instead.',
+      expert: 'A social-engineering attack against a mobile carrier that ports a victim\'s phone number to an attacker-controlled SIM, intercepting SMS-based OTP/MFA codes — a key reason NIST 800-63 discourages SMS as a primary authentication factor.'
+    },
+    {
+      id: 'mitm',
+      term: 'Man-in-the-Middle (MITM)',
+      fullName: 'Man-in-the-Middle Attack',
+      category: 'Zero Trust',
+      analogy: 'A crooked mail carrier who secretly opens, reads, and possibly rewrites letters passing between two people who both believe they\'re writing directly to each other.',
+      expert: 'An attack where an adversary secretly intercepts and potentially alters communication between two parties who believe they are communicating directly, defeated by mutual TLS, certificate pinning, and token audience/proof-of-possession binding (DPoP, mTLS-bound tokens).'
+    },
+    {
+      id: 'replay_attack',
+      term: 'Replay Attack',
+      fullName: 'Replay Attack',
+      category: 'Zero Trust',
+      analogy: 'A recording of you saying "yes, I authorize this payment" played back later to authorize a completely different payment you never agreed to.',
+      expert: 'An attack that captures a valid authentication message or token and resubmits it later to gain unauthorized access, mitigated by nonces, timestamps, short token lifetimes, and proof-of-possession mechanisms that bind a token to a single legitimate use.'
+    },
+    {
+      id: 'privilege_escalation',
+      term: 'Privilege Escalation',
+      fullName: 'Privilege Escalation',
+      category: 'Zero Trust',
+      analogy: 'A hotel guest who checked in for a standard room quietly finding a way to reprogram their own keycard to also open the manager\'s office.',
+      expert: 'The act of an attacker or malicious insider exploiting a vulnerability or misconfiguration to gain higher permissions than originally granted, distinguished as vertical (gaining admin rights) or horizontal (accessing peer accounts\' data).'
+    },
+    {
+      id: 'lateral_movement',
+      term: 'Lateral Movement',
+      fullName: 'Lateral Movement',
+      category: 'Zero Trust',
+      analogy: 'A burglar who gets into one apartment through an unlocked window, then uses that apartment\'s spare keys to work their way into three more units on the same floor.',
+      expert: 'Post-compromise attacker technique of pivoting from an initially breached host to additional systems within a network using harvested credentials or tickets (often via pass-the-hash/pass-the-ticket), a primary target of Zero Trust micro-segmentation defenses.'
+    },
+    {
+      id: 'account_takeover',
+      term: 'Account Takeover (ATO)',
+      fullName: 'Account Takeover',
+      category: 'Zero Trust',
+      analogy: 'A stranger who fully impersonates you at the bank — changes your mailing address, resets your PIN, and starts making withdrawals as if they were you all along.',
+      expert: 'The end state of a successful credential compromise where an attacker gains full control of a legitimate user\'s account, often escalating to changing recovery contacts and MFA enrollment to lock the real owner out.'
+    },
+    {
+      id: 'csrf',
+      term: 'CSRF',
+      fullName: 'Cross-Site Request Forgery',
+      category: 'Zero Trust',
+      analogy: 'Tricking you into unknowingly signing a blank check simply by having you click a link, because the bank teller only checks that it\'s your signature (your logged-in cookie) — not whether you meant to sign it.',
+      expert: 'An attack that induces an authenticated user\'s browser to submit an unwanted state-changing request to a site where they\'re logged in, exploiting automatic cookie inclusion; mitigated by anti-CSRF tokens, `SameSite` cookies, and OAuth\'s `state` parameter.'
+    },
+    {
+      id: 'xss',
+      term: 'XSS',
+      fullName: 'Cross-Site Scripting',
+      category: 'Zero Trust',
+      analogy: 'A vandal slipping a fake, malicious announcement onto a trusted bulletin board, so everyone reading the board treats it as legitimate news from the board\'s real owner.',
+      expert: 'An injection vulnerability where an attacker gets untrusted script to execute in a victim\'s browser within the security context of a trusted site, commonly used to exfiltrate session cookies or tokens from local/session storage.'
+    },
+    {
+      id: 'open_redirect',
+      term: 'Open Redirect',
+      fullName: 'Open Redirect Vulnerability',
+      category: 'Zero Trust',
+      analogy: 'A hotel lobby directory that will point a guest toward literally any address they type in, including a fake hotel next door dressed up to look identical.',
+      expert: 'A flaw where an application redirects to a URL supplied in a request parameter without validating it against an allow-list, frequently abused in OAuth/SAML phishing to make a malicious redirect appear to originate from a trusted domain.'
+    },
+    {
+      id: 'impossible_travel',
+      term: 'Impossible Travel',
+      fullName: 'Impossible Travel Detection',
+      category: 'Zero Trust',
+      analogy: 'Your badge scanning into the New York office at 9:00 a.m. and then the Tokyo office at 9:15 a.m. the same morning — physically impossible, and an obvious sign the badge was cloned.',
+      expert: 'A risk-based authentication signal that flags a login as anomalous when the geographic distance and elapsed time between two consecutive sign-ins from the same account exceed physically plausible travel speed, commonly triggering step-up MFA or session block.'
+    },
+    {
+      id: 'device_fingerprinting',
+      term: 'Device Fingerprinting',
+      fullName: 'Device Fingerprinting',
+      category: 'Zero Trust',
+      analogy: 'Recognizing a regular customer not by ID card, but by the unique combination of their coat, walking gait, and the specific coffee order they always place.',
+      expert: 'A technique that derives a semi-stable identifier for a device from browser/OS attributes, installed fonts, screen resolution, and network characteristics, used as an additional risk signal in adaptive authentication even without cookies or logins.'
+    },
+    {
+      id: 'symmetric_asymmetric_encryption',
+      term: 'Symmetric vs Asymmetric Encryption',
+      fullName: 'Symmetric & Asymmetric Encryption',
+      category: 'Cryptography',
+      analogy: 'Symmetric is one shared house key that both locks and unlocks the same door; asymmetric is a mailbox with a public slot anyone can drop letters into, but only the owner\'s private key can open it to read them.',
+      expert: 'Symmetric encryption uses one shared secret key for both encryption and decryption (fast, e.g. AES) but requires secure key distribution; asymmetric encryption uses a mathematically linked public/private key pair (e.g. RSA, ECC), solving key distribution at the cost of speed.'
+    },
+    {
+      id: 'public_private_key',
+      term: 'Public / Private Key Pair',
+      fullName: 'Asymmetric Key Pair',
+      category: 'Cryptography',
+      analogy: 'A padlock (public key) you hand out freely to anyone who wants to send you a locked box, paired with the one and only physical key (private key) that you alone keep to open it.',
+      expert: 'A mathematically related pair of keys where data encrypted with the public key can only be decrypted with the corresponding private key (and vice versa for signatures), underpinning TLS, JWT signing, PKI, and DID cryptography.'
+    },
+    {
+      id: 'digital_signature',
+      term: 'Digital Signature',
+      fullName: 'Digital Signature',
+      category: 'Cryptography',
+      analogy: 'A wax seal pressed with a unique family signet ring — anyone can verify the seal matches your ring, but only you possess the ring needed to make that exact impression.',
+      expert: 'A cryptographic mechanism where a signer computes a hash of a message and encrypts it with their private key; verifiers decrypt it with the signer\'s public key and compare it to their own hash of the message, proving both authenticity and integrity.'
+    },
+    {
+      id: 'hmac',
+      term: 'HMAC',
+      fullName: 'Hash-based Message Authentication Code',
+      category: 'Cryptography',
+      analogy: 'Two people who share a secret password stamp every letter they send with a wax seal made using that shared password mixed into the ink, so each can verify the other truly wrote it and it wasn\'t altered.',
+      expert: 'A construction combining a cryptographic hash function with a shared secret key to produce a tag verifying both message integrity and authenticity, used e.g. to sign JWTs under the `HS256` algorithm and to sign OAuth/webhook request bodies.'
+    },
+    {
+      id: 'hashing_vs_encryption',
+      term: 'Hashing vs Encryption',
+      fullName: 'Hashing vs Encryption',
+      category: 'Cryptography',
+      analogy: 'Encryption is locking a letter in a box you can later unlock and read again; hashing is putting the letter through a paper shredder into a unique confetti pattern — you can\'t un-shred it, you can only check if a new letter shreds into the exact same pattern.',
+      expert: 'Encryption is a reversible transformation requiring a key to decrypt back to plaintext; hashing is a one-way, fixed-length digest function used to verify data integrity or store passwords, where the original input is never meant to be recovered.'
+    },
+    {
+      id: 'salting',
+      term: 'Salting',
+      fullName: 'Password Salting',
+      category: 'Cryptography',
+      analogy: 'Mixing a different random spice into each customer\'s recipe before baking, so two people\'s identical secret recipes come out of the oven looking completely different — and a thief can\'t use one stolen recipe card to guess anyone else\'s.',
+      expert: 'The practice of appending a unique, random value to each password before hashing, ensuring identical passwords produce different hashes and defeating precomputed rainbow-table attacks; a built-in feature of algorithms like bcrypt and Argon2.'
+    },
+    {
+      id: 'aes',
+      term: 'AES',
+      fullName: 'Advanced Encryption Standard',
+      category: 'Cryptography',
+      analogy: 'The industry-standard, government-approved safe design that virtually every bank uses, because it has been tested by so many experts for so long that no practical way to crack it has ever been found.',
+      expert: 'A NIST-standardized symmetric block cipher (key sizes 128/192/256-bit) that is the default choice for encrypting data at rest and in transit worldwide, commonly deployed in GCM mode for authenticated encryption.'
+    },
+    {
+      id: 'rsa',
+      term: 'RSA',
+      fullName: 'Rivest–Shamir–Adleman Algorithm',
+      category: 'Cryptography',
+      analogy: 'A padlock whose design is based on how absurdly hard it is to figure out the two secret prime numbers that were multiplied together to make one enormous number.',
+      expert: 'A widely used asymmetric cryptosystem whose security rests on the computational difficulty of factoring the product of two large prime numbers, used for digital signatures (JWT `RS256`) and key exchange, though gradually giving ground to smaller, faster ECC keys.'
+    },
+    {
+      id: 'ecc',
+      term: 'ECC',
+      fullName: 'Elliptic Curve Cryptography',
+      category: 'Cryptography',
+      analogy: 'A lock design that achieves the same strength as RSA\'s giant padlock, but built from a much smaller, lighter mechanism — easier to carry around on constrained devices like phones and security keys.',
+      expert: 'An asymmetric cryptography family based on the algebraic structure of elliptic curves over finite fields, offering equivalent security to RSA at much smaller key sizes, favored in FIDO2/WebAuthn, TLS, and DID key material for its performance and lower resource footprint.'
+    },
+    {
+      id: 'pki_ca_csr',
+      term: 'PKI / CA / CSR',
+      fullName: 'Public Key Infrastructure, Certificate Authority & Certificate Signing Request',
+      category: 'Cryptography',
+      analogy: 'A CA is a government passport office; a CSR is your passport application form with your photo (public key) attached; the finished passport (certificate) is what border guards everywhere trust because it bears the office\'s official seal.',
+      expert: 'PKI is the overall system of certificates, CAs, and revocation infrastructure enabling trusted public-key distribution; a CSR is a request bundling a subject\'s public key and identity for a CA to sign; the resulting X.509 certificate binds that identity to the key.',
+      toolUrl: '/playground/cert-chain'
+    },
+    {
+      id: 'x509',
+      term: 'X.509',
+      fullName: 'X.509 Certificate Standard',
+      category: 'Cryptography',
+      analogy: 'The universal standardized template every passport in the world follows — same fields for photo, name, expiry, and issuing authority — so any border guard anywhere can read it.',
+      expert: 'An ITU-T standard defining the format of public-key certificates, specifying fields such as subject, issuer, validity period, public key, and extensions, used for TLS server/client certs, code signing, and workload identity (SPIFFE SVIDs).'
+    },
+    {
+      id: 'hsm',
+      term: 'HSM',
+      fullName: 'Hardware Security Module',
+      category: 'Cryptography',
+      analogy: 'A bank vault built specifically so that even the vault\'s own employees can never remove the gold bars inside — they can only ask the vault to perform an operation with them and hand back the result.',
+      expert: 'A tamper-resistant physical or cloud appliance that generates, stores, and performs operations with cryptographic keys without ever exposing the raw private key material outside the module, used for CA root keys, TLS termination, and signing infrastructure.'
+    },
+    {
+      id: 'secrets_management',
+      term: 'Secrets Management',
+      fullName: 'Secrets Management',
+      category: 'Cryptography',
+      analogy: 'A hotel safe-deposit system for staff, where instead of every employee memorizing the master key, they request temporary access from a controlled safe that logs exactly who took what and when.',
+      expert: 'The discipline and tooling (e.g. HashiCorp Vault, cloud KMS/Secrets Manager) for centrally storing, dynamically issuing, rotating, and auditing access to API keys, database credentials, and certificates, eliminating hardcoded secrets in source code and config files.'
+    },
+    {
+      id: 'key_rotation',
+      term: 'Key Rotation',
+      fullName: 'Cryptographic Key Rotation',
+      category: 'Cryptography',
+      analogy: 'A landlord who periodically re-cores every lock in the building and issues fresh keys, so even if an old key was copied by someone untrustworthy, it stops working going forward.',
+      expert: 'The practice of periodically replacing cryptographic keys (signing keys, encryption keys, API secrets) on a defined schedule or after suspected compromise, limiting the exposure window of any single key and typically coordinated via JWKS `kid` values to avoid downtime.'
+    },
+    {
+      id: 'ssi',
+      term: 'SSI',
+      fullName: 'Self-Sovereign Identity',
+      category: 'Decentralized',
+      analogy: 'Carrying your own physical wallet of ID cards you control directly, instead of every store needing to phone a central government office each time to confirm who you are.',
+      expert: 'A decentralized identity model in which individuals hold and control their own verifiable credentials in a personal digital wallet, presenting proofs directly to relying parties without a centralized identity provider mediating every verification.'
+    },
+    {
+      id: 'verifiable_presentation',
+      term: 'Verifiable Presentation',
+      fullName: 'W3C Verifiable Presentation',
+      category: 'Decentralized',
+      analogy: 'Choosing to show a bouncer only the "over 21" stamp page of your passport booklet, without handing over the whole passport or revealing your home address.',
+      expert: 'A W3C data structure that packages one or more Verifiable Credentials (or selectively disclosed claims from them) into a single cryptographically signed presentation, allowing a holder to prove specific facts to a verifier without over-sharing credential data.'
+    },
+    {
+      id: 'did_document',
+      term: 'DID Document',
+      fullName: 'DID Document',
+      category: 'Decentralized',
+      analogy: 'The public listing behind a driver\'s license number that anyone can look up to see which specific keys and services are currently authorized to act on behalf of that license.',
+      expert: 'A JSON-LD document resolvable from a DID, containing the public keys, authentication methods, and service endpoints associated with that decentralized identifier, enabling verifiers to cryptographically validate signatures made by the DID\'s controller.'
+    },
+    {
+      id: 'oid4vc',
+      term: 'OID4VC',
+      fullName: 'OpenID for Verifiable Credentials',
+      category: 'Decentralized',
+      analogy: 'Bolting the familiar OAuth/OIDC login plumbing onto a digital wallet, so issuing and presenting a verifiable diploma or ID card feels just like a normal "Sign in with…" flow developers already know.',
+      expert: 'A family of OpenID Foundation specifications (OID4VCI for issuance, OID4VP for presentation) that extend OAuth 2.0/OIDC flows to issue and present W3C Verifiable Credentials, bridging decentralized identity into familiar OAuth infrastructure.'
+    },
+    {
+      id: 'siop',
+      term: 'SIOP',
+      fullName: 'Self-Issued OpenID Provider',
+      category: 'Decentralized',
+      analogy: 'A user acting as their own passport office — issuing themselves a signed ID token straight from their personal wallet instead of asking a company-run identity provider to do it.',
+      expert: 'An OIDC extension allowing an end-user\'s wallet or local agent to act as its own OpenID Provider, self-issuing an ID Token containing DID-based claims, enabling relying parties to authenticate a user directly from their decentralized identity without a hosted IdP.'
+    },
+    {
+      id: 'eidas',
+      term: 'eIDAS',
+      fullName: 'Electronic Identification, Authentication and Trust Services Regulation',
+      category: 'Decentralized',
+      analogy: 'An EU-wide agreement that a digital ID card issued in one member country must be honored just as readily by government services in every other member country.',
+      expert: 'An EU regulation establishing a legal framework for cross-border electronic identification and trust services (e-signatures, e-seals), with eIDAS 2.0 mandating an EU Digital Identity Wallet supporting W3C Verifiable Credentials for citizens across member states.'
+    },
+    {
+      id: 'assurance_levels',
+      term: 'Levels of Assurance (IAL/AAL/FAL)',
+      fullName: 'NIST 800-63 Identity, Authenticator & Federation Assurance Levels',
+      category: 'Governance',
+      analogy: 'Grading how strongly you trust a claimed identity like a hotel grading star ratings: a 1-star check just glances at a name typed on a form, while a 3-star check involves notarized documents, a live photo match, and a background check.',
+      expert: 'NIST SP 800-63-3 defines three independent assurance dimensions: IAL (confidence in identity proofing), AAL (strength of the authentication mechanism), and FAL (strength of a federation assertion), each rated 1-3, used by government and regulated systems to specify required rigor.'
+    },
+    {
+      id: 'jit_access',
+      term: 'Just-In-Time (JIT) Access',
+      fullName: 'Just-In-Time Privileged Access',
+      category: 'Provisioning',
+      analogy: 'A maintenance worker who requests a temporary elevator override key for exactly the 20 minutes he needs it, rather than carrying a permanent override key on his belt all year.',
+      expert: 'A PAM control that grants elevated entitlements for a narrow, time-boxed window tied to an approved request or workflow, automatically expiring the grant afterward, sharply reducing the standing-privilege attack surface compared to permanent admin rights.'
+    },
+    {
+      id: 'deprovisioning',
+      term: 'De-provisioning',
+      fullName: 'Account De-provisioning',
+      category: 'Provisioning',
+      analogy: 'Cutting up an employee\'s building badge and changing the office locks the moment their last day ends.',
+      expert: 'The automated (typically SCIM-driven) process of disabling or deleting a user\'s accounts and entitlements across every connected system the instant their employment or contract ends, closing the window attackers exploit via orphaned accounts.'
+    },
+    {
+      id: 'birthright_access',
+      term: 'Birthright Access',
+      fullName: 'Birthright Access',
+      category: 'Provisioning',
+      analogy: 'Every new employee automatically getting a building badge, an email account, and a parking pass on day one, without anyone having to individually request each one.',
+      expert: 'A baseline set of entitlements (email, VPN, intranet, core SaaS) automatically granted to every identity in a given role or department upon onboarding, driven by HR-triggered provisioning rules rather than individual access requests.'
+    },
+    {
+      id: 'identity_lifecycle_management',
+      term: 'Identity Lifecycle Management',
+      fullName: 'Identity Lifecycle Management (Joiner-Mover-Leaver)',
+      category: 'Provisioning',
+      analogy: 'HR\'s full playbook for an employee\'s entire journey — issuing their first badge on day one, reprogramming it when they change floors, and confiscating it the day they leave.',
+      expert: 'The end-to-end governance of an identity\'s entitlements across the Joiner-Mover-Leaver (JML) lifecycle: provisioning birthright access at hire, adjusting entitlements on role change, and fully de-provisioning at termination, typically orchestrated by an IGA platform integrated with HR systems.'
+    },
+    {
+      id: 'kba',
+      term: 'KBA',
+      fullName: 'Knowledge-Based Authentication',
+      category: 'Foundations',
+      analogy: 'A bank teller verifying your identity by asking "what street did you grow up on?" — questions only the real you (or someone who\'s done their research) would know the answer to.',
+      expert: 'An identity-verification method relying on shared secrets or personal history questions (mother\'s maiden name, previous addresses), increasingly deprecated in favor of stronger methods since answers are often discoverable via social engineering or data breaches.'
+    },
+    {
+      id: 'account_recovery',
+      term: 'Account Recovery',
+      fullName: 'Account Recovery & Backup Authentication',
+      category: 'Foundations',
+      analogy: 'The spare house key hidden with a trusted neighbor, used only when you\'ve locked yourself out and lost your primary key entirely.',
+      expert: 'The set of fallback mechanisms (backup codes, recovery email/phone, trusted contacts, identity re-proofing) that let a legitimate user regain access after losing their primary authenticator, while being hardened enough that attackers cannot abuse the same path to hijack the account.'
+    },
+    {
+      id: 'identity_proofing',
+      term: 'Identity Proofing',
+      fullName: 'Identity Proofing',
+      category: 'Foundations',
+      analogy: 'The passport office actually examining your birth certificate and utility bills before issuing you a passport, rather than just taking your word for who you are.',
+      expert: 'The process of collecting and validating evidence (government ID scans, biometric liveness checks, address verification) to establish that a claimed identity genuinely corresponds to a real person, forming the basis of a system\'s NIST 800-63 Identity Assurance Level.'
+    },
+    {
+      id: 'kyc',
+      term: 'KYC',
+      fullName: 'Know Your Customer',
+      category: 'Foundations',
+      analogy: 'A bank legally required to check your government ID and address before letting you open an account, so criminals can\'t open accounts under fake names.',
+      expert: 'A regulatory requirement (particularly in financial services) mandating identity verification and risk assessment of customers before onboarding, typically implemented via document verification, sanctions-list screening, and biometric liveness detection.'
+    },
+    {
+      id: 'social_login',
+      term: 'Social Login',
+      fullName: 'Social Login / Social Identity Federation',
+      category: 'Foundations',
+      analogy: 'Using your existing driver\'s license to check into a hotel instead of filling out a brand-new hotel-specific ID form every single time you travel.',
+      expert: 'A CIAM pattern where an application delegates authentication to a large consumer identity provider (Google, Apple, Facebook) via OIDC/OAuth, reducing signup friction at the cost of dependency on the third-party provider\'s availability and data-sharing policies.'
+    },
+    {
+      id: 'magic_link',
+      term: 'Magic Link',
+      fullName: 'Magic Link Authentication',
+      category: 'Foundations',
+      analogy: 'A one-time paper ticket mailed straight to your home address — clicking it is proof enough that you control that mailbox, so no password is ever needed.',
+      expert: 'A passwordless login method that emails or texts a single-use, time-limited authentication URL to a pre-verified address; clicking it proves possession of that inbox/phone and establishes a session without a shared-secret password.'
+    },
+    {
+      id: 'account_lockout',
+      term: 'Account Lockout',
+      fullName: 'Account Lockout Policy',
+      category: 'Foundations',
+      analogy: 'A padlock that jams itself shut for 15 minutes after five wrong combination attempts in a row, buying time before anyone can try a sixth guess.',
+      expert: 'A defensive control that temporarily or permanently disables an account after a configured number of consecutive failed authentication attempts, mitigating brute-force and credential-stuffing attacks at the cost of potential denial-of-service against legitimate users if not rate-tuned carefully.'
+    },
+    {
+      id: 'sspr',
+      term: 'SSPR',
+      fullName: 'Self-Service Password Reset',
+      category: 'Foundations',
+      analogy: 'A hotel kiosk that lets a guest who forgot their room number reprint their own keycard after verifying a few personal details, without ever needing to wake up the night manager.',
+      expert: 'A capability allowing users to reset a forgotten password themselves after passing an identity-verification challenge (MFA, security questions, email/SMS verification), reducing helpdesk password-reset ticket volume, one of the highest-cost categories of IT support tickets.'
     }
 ]

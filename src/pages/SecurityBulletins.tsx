@@ -1,109 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  ShieldAlert, ShieldCheck, ArrowRight, Terminal, 
+import {
+  ShieldAlert, ShieldCheck, ArrowRight, Terminal,
   Settings, AlertTriangle, List, Check
 } from 'lucide-react'
+import { BULLETINS, BULLETIN_CATEGORIES, CONTROL_TITLES, type Bulletin, type BulletinDifficulty } from '../data/bulletinsData'
+import BookmarkButton from '../components/BookmarkButton'
 
-type IncidentType = 'okta_support' | 'golden_saml' | 'mfa_fatigue' | 'snowflake_breach'
-
-interface BulletinDetails {
-  title: string
-  date: string
-  severity: 'Critical' | 'High' | 'Medium'
-  vector: string
-  description: string
-  playbookSteps: string[]
-  remediationSnippet: string
-  snippetLanguage: string
-  controlsMapped: string[]
-}
-
-const CONTROL_TITLES: Record<string, string> = {
-  soc2_1: 'SOC 2 CC6.1: Automated Directory Provisioning',
-  soc2_2: 'SOC 2 CC6.2: Phishing-Proof MFA',
-  soc2_3: 'SOC 2 CC6.3: JIT Role Elevation',
-  soc2_4: 'SOC 2 CC6.8: API Gateway Authorization',
-  iso_1: 'ISO 27001 A.5.15: Access Rights Lifecycle',
-  iso_2: 'ISO 27001 A.5.16: Secure Identity & Secrets Mgmt',
-  iso_3: 'ISO 27001 A.5.17: Privileged Session Monitoring',
-  iso_4: 'ISO 27001 A.5.18: Dynamic Group Re-evaluation',
-  pci_1: 'PCI-DSS Req 7: Need-to-Know Access',
-  pci_2: 'PCI-DSS Req 8.3: MFA Into the CDE',
-  pci_3: 'PCI-DSS Req 8.6: Unique Service Account Auth',
-  pci_4: 'PCI-DSS Req 10.2: Cardholder Data Audit Trails',
-}
-
-const BULLETIN_DATA: Record<IncidentType, BulletinDetails> = {
-  okta_support: {
-    title: 'Okta Support Portal HAR File Hijack',
-    date: 'October 2023',
-    severity: 'Critical',
-    vector: 'Session Token Theft via HTTP Archive (HAR) Files',
-    description: 'Attackers compromised Okta\'s third-party customer support portal using stolen credentials. They downloaded custom HAR files uploaded by customer administrators, extracted active session cookies (tokens) from the raw network logs, and hijacked global administrator sessions, bypassing MFA restrictions completely.',
-    playbookSteps: [
-      'Sanitize and scrub all HTTP Archive (HAR) files before uploading them to external support teams.',
-      'Enforce strict administrative session IP binding constraints to block reused tokens from anomalous locations.',
-      'Transition administrative single-sign-on (SSO) portals to mandate phishing-resistant WebAuthn Passkeys.',
-      'Enforce short admin-session timeouts and audit all support bypass configuration changes.'
-    ],
-    remediationSnippet: `// Node.js Express Session IP Binding check\napp.use((req, res, next) => {\n  if (req.session.userId) {\n    if (req.session.ipAddress !== req.ip) {\n      req.session.destroy(); // Terminate session immediately on IP swap\n      return res.status(401).send("Unauthorized: IP Mismatch");\n    }\n  }\n  next();\n});`,
-    snippetLanguage: 'JavaScript',
-    controlsMapped: ['soc2_2', 'iso_3']
-  },
-  golden_saml: {
-    title: 'SolarWinds Golden SAML (APT29 Nobelium)',
-    date: 'December 2020',
-    severity: 'Critical',
-    vector: 'Token-Signing Private Key Certificate Compromise',
-    description: 'State-sponsored attackers compromised on-premise Active Directory Federation Services (ADFS) servers and extracted the private token-signing certificate key. Using this key, the attackers forged standard SAML assertions locally in memory, granting themselves any administrative group claim and completely bypassing on-premise ADFS and MFA gateways to access cloud systems.',
-    playbookSteps: [
-      'Store and back all ADFS token-signing private keys securely inside a physical Hardware Security Module (HSM).',
-      'Manually rotate ADFS token-signing certificates immediately and verify replication forest-wide.',
-      'Enforce strict host-level filesystem security audits on on-premise Domain Controllers.',
-      'Migrate workforce single-sign-on (SSO) channels from on-premise federations to cloud-native Entra ID.'
-    ],
-    remediationSnippet: `# PowerShell: Enable ADFS Token Signing Key HSM protection\nSet-AdfsCertificate -CertificateType Token-Signing -Thumbprint "THUMBPRINT_HEX" -Pin "HSM_PIN_HERE"`,
-    snippetLanguage: 'PowerShell',
-    controlsMapped: ['iso_2', 'soc2_1']
-  },
-  mfa_fatigue: {
-    title: 'MFA Fatigue Push-Bombing Handovers',
-    date: '2022 - 2023',
-    severity: 'High',
-    vector: 'MFA Push Notification Exhaustion Hacking',
-    description: 'Attackers harvested valid username/password credentials. They repeatedly triggered Microsoft Authenticator or Okta Verify push approvals (hundreds of notifications) during late-night hours until the distracted, fatigued employee clicked "Approve" simply to stop the notifications.',
-    playbookSteps: [
-      'Disable standard basic "Approve/Deny" push notification setups globally.',
-      'Enable Context-Aware Number Matching, forcing the user to type digits shown on the login screen.',
-      'Enable location-aware push notification displays, showing the login request IP and location map on the device.',
-      'Enforce alert thresholds to block or lock accounts when more than 5 MFA notifications trigger in 1 minute.'
-    ],
-    remediationSnippet: `{\n  "MfaFatigueLockout": {\n    "MaxPushRequestsPerMinute": 5,\n    "LockoutDurationMinutes": 15,\n    "TriggerAction": "LOCK_ACCOUNT"\n  }\n}`,
-    snippetLanguage: 'JSON Config',
-    controlsMapped: ['soc2_2']
-  },
-  snowflake_breach: {
-    title: 'Snowflake Customer Tenant Credential Stuffing (UNC5537)',
-    date: 'May 2024',
-    severity: 'Critical',
-    vector: 'Credential Stuffing Against MFA-less Customer Accounts',
-    description: 'Threat actor UNC5537 used credentials previously harvested by infostealer malware — unrelated to any Snowflake platform vulnerability — to log into customer Snowflake accounts that had neither MFA nor network allow-listing enabled. This affected multiple named customers, including Ticketmaster and Advance Auto Parts, among others widely reported. The Snowflake platform itself was never compromised; every impacted tenant had left MFA disabled on the customer side.',
-    playbookSteps: [
-      'Mandate MFA enforcement on every customer/tenant account accessing the SaaS platform, not just administrative logins.',
-      'Enable network policy allow-listing to restrict data warehouse access to known corporate IP ranges.',
-      'Screen for credentials appearing in infostealer dumps and force rotation before attackers can reuse them.',
-      'Remember: in a shared-responsibility SaaS/cloud-provider model, tenant-side authentication hardening is the customer\'s responsibility, not the vendor\'s.'
-    ],
-    remediationSnippet: `-- Snowflake: Enforce MFA and restrict access via network policy\nALTER USER target_user SET MINS_TO_BYPASS_MFA = 0;\nCREATE NETWORK POLICY corp_allowlist ALLOWED_IP_LIST = ('203.0.113.0/24');\nALTER ACCOUNT SET NETWORK_POLICY = corp_allowlist;`,
-    snippetLanguage: 'SQL',
-    controlsMapped: ['soc2_2', 'pci_1']
-  }
-}
+const DIFFICULTIES: (BulletinDifficulty | 'All')[] = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
 export default function SecurityBulletins() {
-  const [activeIncident, setActiveIncident] = useState<IncidentType>('okta_support')
-  const bulletin = BULLETIN_DATA[activeIncident]
+  const [activeBulletinId, setActiveBulletinId] = useState<string>(BULLETINS[0].id)
+  const [difficultyFilter, setDifficultyFilter] = useState<BulletinDifficulty | 'All'>('All')
+  const [categoryFilter, setCategoryFilter] = useState<Bulletin['category'] | 'All'>('All')
+  const bulletin = BULLETINS.find(b => b.id === activeBulletinId) ?? BULLETINS[0]
 
   // Crisis Response Simulator States
   const [crisisStep, setCrisisStep] = useState<number>(0)
@@ -111,12 +21,25 @@ export default function SecurityBulletins() {
   const [simulatorLogs, setSimulatorLogs] = useState<string[]>([])
   const [containmentScore, setContainmentScore] = useState<string | null>(null)
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const bulletinParam = params.get('bulletin')
+      const found = bulletinParam ? BULLETINS.find(b => b.id === bulletinParam) : undefined
+      if (found) {
+        setTimeout(() => {
+          setActiveBulletinId(found.id)
+        }, 0)
+      }
+    }
+  }, [])
+
   const addLog = (msg: string) => {
     setSimulatorLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`])
   }
 
-  const handleIncidentChange = (id: IncidentType) => {
-    setActiveIncident(id)
+  const handleBulletinChange = (id: string) => {
+    setActiveBulletinId(id)
     resetSimulator()
   }
 
@@ -132,81 +55,35 @@ export default function SecurityBulletins() {
     setTimeout(() => setCopiedText(null), 1500)
   }
 
-  // --- INCIDENT RESPONSE FLOW STEPS ---
+  // --- INCIDENT RESPONSE FLOW STEPS (data-driven from bulletin.simulator) ---
   const runResponseStep1 = () => {
     addLog(`🚨 WARNING: Suspicious login alert on administrative accounts detected!`)
-    if (activeIncident === 'okta_support') {
-      addLog(`SIEM Log: User "admin@company.com" logged in from anomalous IP: 203.0.113.88. No MFA challenge prompted during session init!`)
-    } else if (activeIncident === 'golden_saml') {
-      addLog(`SIEM Log: Multiple administrative logins authenticated to cloud portal without matching ADFS request logs!`)
-    } else if (activeIncident === 'mfa_fatigue') {
-      addLog(`SIEM Log: Administrative user triggered 15 push notifications in 2 minutes before successful approval.`)
-    } else {
-      addLog(`SIEM Log: Customer tenant account "svc-integration@customer.com" authenticated successfully from an unrecognized IP with zero MFA challenges.`)
-    }
+    addLog(bulletin.simulator.step1Log)
     setCrisisStep(1)
   }
 
   const runResponseStep2 = () => {
     addLog(`🔍 Analyzing logs to determine active security breach vector...`)
-    if (activeIncident === 'okta_support') {
-      addLog(`Incident Detail: Cookie extraction trace confirmed. Attacker repurposed global admin session cookie. Stolen cookie is bound to an active support ticket HAR attachment!`)
-    } else if (activeIncident === 'golden_saml') {
-      addLog(`Incident Detail: SAML assertion signatures verified, but ADFS server logs do not show token generation. Certificate key is likely compromised locally!`)
-    } else if (activeIncident === 'mfa_fatigue') {
-      addLog(`Incident Detail: User confirmed they approved the push request after receiving consecutive notification popups simply to stop the device buzzings.`)
-    } else {
-      addLog(`Incident Detail: Credential matches a batch harvested by infostealer malware months earlier. Account had no MFA enrolled and no network policy allow-list configured.`)
-    }
+    addLog(bulletin.simulator.step2Log)
     setCrisisStep(2)
   }
 
   const triggerContainmentAction = (strategy: 'low' | 'high') => {
     addLog(`🔧 Initiating containment strategy...`)
-    
-    if (activeIncident === 'okta_support') {
-      if (strategy === 'high') {
-        addLog('Action: Instantly terminating all global administrative session cookies, and enabling strict Administrative IP binding checks.')
-        setContainmentScore('A+ (EXCELLENT)')
-        addLog('✓ Containment Successful! Attacker\'s stolen session cookie was immediately revoked and rendered useless on subsequent hops.')
-      } else {
-        addLog('Action: Informing support team to close the ticket and delete the HAR attachment.')
-        setContainmentScore('F- (CRITICAL LEAKAGE)')
-        addLog('❌ Containment Failed! Attacker still holds active cookie session bounds on administrative resources.')
-      }
-    } else if (activeIncident === 'golden_saml') {
-      if (strategy === 'high') {
-        addLog('Action: Manually rotating ADFS token-signing private keys twice, flushing active caches, and moving certificates to physical HSM hardware.')
-        setContainmentScore('A+ (EXCELLENT)')
-        addLog('✓ Containment Successful! Forged SAML certificates are invalidated forest-wide, blocking attacker authentication.')
-      } else {
-        addLog('Action: Resetting the target administrator\'s Active Directory password.')
-        setContainmentScore('F- (CRITICAL LEAKAGE)')
-        addLog('❌ Containment Failed! Attackers still hold the ADFS private signing key, letting them forge valid administrative SAML assertions at will.')
-      }
-    } else if (activeIncident === 'mfa_fatigue') {
-      if (strategy === 'high') {
-        addLog('Action: Enforcing Context-Aware Number Matching, location-aware notifications, and lockouts after 5 consecutive push failures.')
-        setContainmentScore('A+ (EXCELLENT)')
-        addLog('✓ Containment Successful! Attackers can no longer trigger basic push fatigue. Phishing-proof bounds successfully armed.')
-      } else {
-        addLog('Action: Sending corporate security awareness training emails to employees.')
-        setContainmentScore('F- (CRITICAL LEAKAGE)')
-        addLog('❌ Containment Failed! Simple push exhaustion hacks are still structurally possible.')
-      }
+    if (strategy === 'high') {
+      setContainmentScore('A+ (EXCELLENT)')
+      bulletin.simulator.containmentHighLog.split('\n').forEach(line => addLog(line))
     } else {
-      if (strategy === 'high') {
-        addLog('Action: Enforcing tenant-wide MFA and network policy allow-listing; forcing rotation of every credential matched against known infostealer dumps.')
-        setContainmentScore('A+ (EXCELLENT)')
-        addLog('✓ Containment Successful! Stuffed credentials are worthless without the second factor, and the account is unreachable outside the allow-listed range.')
-      } else {
-        addLog('Action: Filing a support ticket asking the platform vendor to investigate their infrastructure for a breach.')
-        setContainmentScore('F- (CRITICAL LEAKAGE)')
-        addLog('❌ Containment Failed! The platform was never compromised — the vulnerable surface is entirely tenant-side and remains wide open.')
-      }
+      setContainmentScore('F- (CRITICAL LEAKAGE)')
+      bulletin.simulator.containmentLowLog.split('\n').forEach(line => addLog(line))
     }
     setCrisisStep(3)
   }
+
+  const visibleBulletins = BULLETINS.filter(b =>
+    (difficultyFilter === 'All' || b.difficulty === difficultyFilter) &&
+    (categoryFilter === 'All' || b.category === categoryFilter)
+  )
 
   return (
     <div className="min-h-screen bg-bg-base text-text-primary font-sans">
@@ -216,7 +93,7 @@ export default function SecurityBulletins() {
           <ShieldAlert className="text-status-danger w-6 h-6 animate-pulse" />
           <div>
             <h1 className="text-lg font-bold tracking-tight">Identity Security Bulletin Board</h1>
-            <p className="text-xs text-text-secondary">Incident Response console tracking major real-world identity breaches, attack vectors, and hardened playbooks</p>
+            <p className="text-xs text-text-secondary">Incident Response console tracking {BULLETINS.length} real-world identity breaches, attack vectors, and hardened playbooks</p>
           </div>
         </div>
         <Link to="/" className="text-sm bg-bg-nested hover:bg-border-subtle px-3 py-1.5 rounded text-text-secondary flex items-center gap-1.5 transition">
@@ -226,30 +103,71 @@ export default function SecurityBulletins() {
 
       {/* Main Grid Workspace */}
       <div className="p-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         {/* Left column: Incident selector tabs & Playbooks */}
         <div className="lg:col-span-4 space-y-4">
-          
+
+          {/* Filters */}
+          <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md space-y-3">
+            <div>
+              <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block mb-2">Difficulty</span>
+              <div className="flex flex-wrap gap-1.5">
+                {DIFFICULTIES.map(d => (
+                  <button
+                    key={d}
+                    onClick={() => setDifficultyFilter(d)}
+                    className={`text-[10px] font-bold px-2 py-1 rounded-full border transition ${difficultyFilter === d ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:bg-bg-nested'}`}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block mb-2">Category</span>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  onClick={() => setCategoryFilter('All')}
+                  className={`text-[10px] font-bold px-2 py-1 rounded-full border transition ${categoryFilter === 'All' ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:bg-bg-nested'}`}
+                >
+                  All
+                </button>
+                {BULLETIN_CATEGORIES.map(c => (
+                  <button
+                    key={c}
+                    onClick={() => setCategoryFilter(c)}
+                    className={`text-[10px] font-bold px-2 py-1 rounded-full border transition ${categoryFilter === c ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:bg-bg-nested'}`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* Selector card */}
           <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md">
             <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block mb-3 border-b border-border-subtle pb-1">
-              Select Threat Advisory
+              Select Threat Advisory ({visibleBulletins.length})
             </span>
 
-            <div className="flex flex-col gap-2">
-              {(Object.keys(BULLETIN_DATA) as IncidentType[]).map((key) => (
+            <div className="flex flex-col gap-2 max-h-[480px] overflow-y-auto pr-1">
+              {visibleBulletins.map((b) => (
                 <button
-                  key={key}
-                  onClick={() => handleIncidentChange(key)}
-                  className={`w-full text-left p-3 rounded-lg border text-xs flex items-center justify-between transition ${activeIncident === key ? 'bg-accent-glow border-accent-primary text-accent-primary font-bold' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:bg-bg-nested hover:border-border-subtle'}`}
+                  key={b.id}
+                  onClick={() => handleBulletinChange(b.id)}
+                  className={`w-full text-left p-3 rounded-lg border text-xs flex items-center justify-between transition ${activeBulletinId === b.id ? 'bg-accent-glow border-accent-primary text-accent-primary font-bold' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:bg-bg-nested hover:border-border-subtle'}`}
                 >
                   <div>
-                    <span className="font-bold block">{key === 'okta_support' ? 'Okta HAR Cookie Theft' : key === 'golden_saml' ? 'SolarWinds Golden SAML' : key === 'mfa_fatigue' ? 'MFA Fatigue Exhaustion' : 'Snowflake Credential Stuffing'}</span>
-                    <span className="text-[9px] text-text-muted">{BULLETIN_DATA[key].date}</span>
+                    <span className="font-bold block">{b.title}</span>
+                    <span className="text-[9px] text-text-muted">{b.date} · {b.difficulty}</span>
                   </div>
-                  <ChevronRight className={`w-3.5 h-3.5 transition-transform ${activeIncident === key ? 'translate-x-0.5 text-accent-primary' : 'text-text-muted'}`} />
+                  <ChevronRight className={`w-3.5 h-3.5 transition-transform shrink-0 ${activeBulletinId === b.id ? 'translate-x-0.5 text-accent-primary' : 'text-text-muted'}`} />
                 </button>
               ))}
+              {visibleBulletins.length === 0 && (
+                <span className="text-xs text-text-muted italic p-3">No bulletins match the selected filters.</span>
+              )}
             </div>
           </div>
 
@@ -275,7 +193,7 @@ export default function SecurityBulletins() {
 
         {/* Right column: Incident Details and Interactive IR Crisis Simulator */}
         <div className="lg:col-span-8 space-y-6">
-          
+
           {/* Incident Info Header */}
           <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-lg relative overflow-hidden">
             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none select-none">
@@ -283,13 +201,17 @@ export default function SecurityBulletins() {
             </div>
 
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <span className="text-[10px] text-accent-primary font-bold font-mono uppercase tracking-wider bg-accent-glow border border-accent-primary/25 px-2.5 py-0.5 rounded-full">
                   Vector: {bulletin.vector}
                 </span>
                 <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-status-danger/10 text-status-danger border border-status-danger/20">
                   Severity: {bulletin.severity}
                 </span>
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-bg-nested text-text-secondary border border-border-subtle">
+                  {bulletin.difficulty} · {bulletin.category}
+                </span>
+                <BookmarkButton item={{ id: `bulletin-${bulletin.id}`, title: bulletin.title, link: `/bulletins?bulletin=${bulletin.id}` }} />
               </div>
 
               <h2 className="text-lg font-black text-text-primary uppercase tracking-wide">{bulletin.title}</h2>

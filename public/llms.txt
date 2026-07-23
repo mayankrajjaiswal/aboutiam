@@ -31,6 +31,13 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [CAEP Continuous Access Evaluation Lab](https://www.aboutiam.com/playground/caep/): Shared Signals Framework transmitter pushing signed SETs to receivers in real time.
 - [Verifiable Credentials & DID Lab](https://www.aboutiam.com/playground/vc-did/): Issuer/Holder/Verifier flow signing and verifying a real Ed25519 VC and Presentation.
 - [Identity Broker & Federation Sandbox](https://www.aboutiam.com/playground/identity-broker/): Explore multi-tenant single sign-on (SSO), federation routing, and real-time SAML-to-OIDC token translation topologies.
+- [Passwordless Magic Link & Step-Up Auth Lab](https://www.aboutiam.com/playground/magic-link-stepup/): Email magic-link login followed by a forced step-up to WebAuthn/OTP before a high-risk action.
+- [Credential Stuffing & Password Spray Defense Lab](https://www.aboutiam.com/playground/credential-stuffing/): Replay leaked credentials against a mock login and toggle rate-limiting, CAPTCHA, breached-password detection, and lockout defenses.
+- [CIAM Consent & Progressive Profiling Sandbox](https://www.aboutiam.com/playground/ciam-consent/): Social login consent screen, OAuth scope grants, and progressive profile-field collection across sessions.
+- [Access Certification Campaign Simulator](https://www.aboutiam.com/playground/access-certification/): Reviewer walks user-to-entitlement rows, approves or revokes access, and flags Separation-of-Duties (SoD) conflicts.
+- [Adaptive Risk-Based Authentication Engine](https://www.aboutiam.com/playground/risk-engine/): Composite risk score from impossible travel, device reputation, and behavior anomaly signals drives allow, step-up, or block decisions.
+- [PAM Vaulting & Just-in-Time Elevation Lab](https://www.aboutiam.com/playground/pam-vaulting/): Check out a vaulted credential, request time-boxed JIT elevation and approval, toggle session recording, and auto rotate on check-in.
+- [Hybrid Identity Sync Lab (PHS / PTA / Federation)](https://www.aboutiam.com/playground/hybrid-ad-sync/): Toggle between Password Hash Sync, Pass-Through Authentication, and Federation (AD FS) to see how each handles an on-prem login.
 
 ## Security Tools (free, client-side utilities)
 
@@ -58,17 +65,23 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Mozilla SOPS GitOps Secrets Simulator](https://www.aboutiam.com/tools/sops-simulator/): Selectively encrypt or decrypt configuration values inside YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys.
 - [Hardware Key Ring & HSM Emulator](https://www.aboutiam.com/tools/key-ring/): Generate and execute RSA, ECDSA, and AES-GCM-256 keys locally in browser-native IndexedDB securely, emulating hardware HSM vaults.
 - [Standards Conformance Checker](https://www.aboutiam.com/tools/conformance-checker/): Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules.
+- [PBKDF2 Key Derivation & Hash Verifier](https://www.aboutiam.com/tools/pbkdf2-generator/): Derive a key from a password with a configurable salt, iteration count, and hash function, and verify a password against a stored derived hash.
+- [PEM Certificate Bundle Splitter & Chain Order Checker](https://www.aboutiam.com/tools/cert-bundle-splitter/): Split a multi-certificate PEM bundle into individual certificates and check leaf-to-root chain ordering.
+- [DID Document Validator & Resolver Preview](https://www.aboutiam.com/tools/did-document-validator/): Validate a DID Document JSON against W3C DID Core structural requirements with a resolved field preview.
 
 ## Advanced Ecosystem & Governance
 
+- [Reference Implementations](https://www.aboutiam.com/references/): Categorized, beginner-to-advanced library of copyable, production-quality IAM reference code — session auth, LDAP, OAuth/OIDC, WebAuthn, SCIM, OPA/Rego, Vault, cloud workload identity, Kubernetes RBAC, and Istio mTLS.
 - [Master Encyclopedia](https://www.aboutiam.com/encyclopedia/): Searchable A-Z glossary of 35+ IAM standards and acronyms.
 - [Interactive Identity Timeline](https://www.aboutiam.com/timeline/): An immersive, clickable, dual-themed timeline tracing the history of digital identity from 1961 mainframes to future ambient trust, with active inline simulators for each era.
-- [Vulnerability Lab / Wall of Shame](https://www.aboutiam.com/wall-of-shame/): Historic identity breaches, including Golden SAML and MFA push-bombing fatigue.
-- [Developer Playbooks](https://www.aboutiam.com/cheat-sheets/): Compliance checklists for SPAs and machine-to-machine credentials.
+- [Vulnerability Lab / Wall of Shame](https://www.aboutiam.com/wall-of-shame/): 25 beginner-to-advanced historic identity breaches (SolarWinds Golden SAML, MFA push-bombing fatigue, Storm-0558 signing-key forgery, Kerberoasting/DCSync, Snowflake credential stuffing, and more) with vulnerable-vs-secure code deconstructions.
+- [Security Bulletin Board & IR Simulator](https://www.aboutiam.com/bulletins/): 18 beginner-to-advanced identity incident bulletins (credential/session theft, MFA fatigue, federation/SSO exploits, OAuth/token abuse, cloud IAM misconfiguration, Kerberos attacks, supply-chain compromise) with hardened playbooks and an interactive Crisis Response Console simulator.
+- [Developer Playbooks](https://www.aboutiam.com/cheat-sheets/): 24 beginner-to-advanced interactive checklists spanning Application Security (SPA/PKCE, JWT, OAuth 2.0/OIDC, SAML, REST APIs, CIAM), Identity Infrastructure & Governance (secrets management, LDAP/AD hardening, IGA, Zero Trust, Kubernetes RBAC, Kerberos tiering), and Compliance & Regulatory (SOC 2, ISO 27001, HIPAA, PCI-DSS, NIST 800-63-3, GDPR, CCPA/CPRA, FedRAMP High, DORA).
 - [GRC Maturity Wizard](https://www.aboutiam.com/assess/): 5-pillar organizational readiness assessment with an exportable roadmap.
 - [Interview & Career Center](https://www.aboutiam.com/career-center/): Role-based interview preparation, multiple-choice mastery, incident scenarios, system design, code terminals, and resume guidance.
 - [Landscape Directory](https://www.aboutiam.com/explore/): Product blueprints with copyable integration code.
 - [AI Architect Chat](https://www.aboutiam.com/assistant/): Simulated RAG assistant producing sample policies and Rego scripts.
+- [Identity Research & CVE Tracker](https://www.aboutiam.com/research/): Beginner-to-advanced library of identity-relevant CVEs (Log4Shell, Spring4Shell, Zerologon, Shellshock, SAML signature wrapping, JWT `alg:none`, and more) with vulnerable-vs-secure code patches, plus a difficulty-tagged IETF RFC/draft protocol registry (OAuth, JWT, PKCE, SCIM, DPoP, GNAP, Kerberos, LDAP, TOTP).
 
 ## Optional
 

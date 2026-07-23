@@ -89,13 +89,13 @@ export default function Encyclopedia() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full p-2.5 pl-10 rounded-lg bg-bg-sidebar border border-border-subtle text-sm text-text-primary focus:outline-none focus:border-accent-primary" 
-              placeholder="Search 65 terms (e.g. PKCE)..."
+              placeholder={`Search ${ENCYCLOPEDIA_TERMS.length} terms (e.g. PKCE)...`}
             />
             <Search className="w-4 h-4 text-text-muted absolute left-3 top-3.5" />
           </div>
 
           <div className="flex flex-wrap gap-1.5">
-            {['All', 'Foundations', 'Directories', 'Protocols', 'Governance', 'Cryptography', 'Zero Trust', 'Decentralized'].map(cat => (
+            {['All', 'Foundations', 'Directories', 'Protocols', 'Authorization', 'Governance', 'Provisioning', 'Cryptography', 'Zero Trust', 'Decentralized'].map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}

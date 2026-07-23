@@ -6,6 +6,17 @@ import type { Term } from '../../pages/Encyclopedia'
 import { VENDOR_CATALOG } from '../../data/vendorCatalog'
 import type { VendorType } from '../../data/vendorCatalog'
 import { COMPLIANCE_DEADLINES } from '../../data/complianceDeadlines'
+import { STANDARDS } from '../../data/standardsData'
+import { CASE_STUDIES } from '../../data/caseStudiesData'
+import { ARCHITECTURES } from '../../data/architectureData'
+import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
+import { EXPLORE_PRODUCTS } from '../../data/exploreData'
+import { CERTIFICATIONS } from '../../data/certificationsData'
+import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
+import { BULLETINS } from '../../data/bulletinsData'
+import { BREACHES } from '../../data/breachesData'
+import { CHEAT_SHEETS } from '../../data/cheatSheetsData'
+import { COMPARISONS, LEARNING_TRACKS, INTERVIEW_QUESTIONS } from '../../data/aiKnowledgeGraph'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -46,43 +57,42 @@ const SIMULATORS_LIST = [
   { id: 'token-exchange', title: 'STS Token Exchange Broker (RFC 8693)', desc: 'Model Security Token Service (STS) integrations. Execute OAuth impersonation and delegation flows.', link: '/playground/token-exchange', kw: ['token', 'exchange', 'sts', 'broker', 'impersonation', 'delegation', 'rfc 8693'] },
   { id: 'itdr-lab', title: 'ITDR SecOps Log Monitor Lab', desc: 'Track brute force and MFA push fatigue attacks in log dashboards. Implement automated user locks and triggers.', link: '/playground/itdr', kw: ['itdr', 'log', 'secops', 'lockout', 'monitoring', 'threat detection'] },
   { id: 'device-trust', title: 'Zero Trust Device Posture Lab', desc: 'Model endpoint posture attestations evaluating firewall statuses, local encryption, and client mTLS.', link: '/playground/device-trust', kw: ['device', 'trust', 'posture', 'attestation', 'endpoint'] },
-  { id: 'passkey-internals', title: 'Passkey AuthenticatorData CBOR Decoder', desc: 'Deconstruct FIDO2 authenticatorData byte-arrays and CBOR public keys generated inside secure TPM chips.', link: '/playground/passkey-internals', kw: ['passkey', 'cbor', 'tpm', 'byte', 'binary', 'fido2', 'webauthn'] }
+  { id: 'passkey-internals', title: 'Passkey AuthenticatorData CBOR Decoder', desc: 'Deconstruct FIDO2 authenticatorData byte-arrays and CBOR public keys generated inside secure TPM chips.', link: '/playground/passkey-internals', kw: ['passkey', 'cbor', 'tpm', 'byte', 'binary', 'fido2', 'webauthn'] },
+  { id: 'xacml-engine', title: 'XACML 3.0 Policy Engine', desc: 'Real combining-algorithm engine evaluating rules and applying deny-overrides, permit-overrides, first-applicable, and only-one-applicable semantics.', link: '/playground/xacml', kw: ['xacml', 'policy', 'pdp', 'combining algorithm', 'deny-overrides', 'permit-overrides'] },
+  { id: 'gnap-visualizer', title: 'GNAP Grant Negotiation Visualizer', desc: 'RFC 9635 Grant Negotiation and Authorization Protocol timeline: grant requests, interaction, continuation, and key-bound token issuance.', link: '/playground/gnap', kw: ['gnap', 'grant negotiation', 'rfc 9635', 'authorization'] },
+  { id: 'caep-lab', title: 'CAEP Continuous Access Evaluation Lab', desc: 'Shared Signals Framework transmitter/receiver simulator pushing signed Security Event Tokens (SETs) for session-revoked and risk-change signals.', link: '/playground/caep', kw: ['caep', 'shared signals', 'ssf', 'set', 'security event token', 'session revocation'] },
+  { id: 'vc-did-lab', title: 'Verifiable Credentials & DID Lab', desc: 'Issuer, Holder, and Verifier flow signing and verifying a real Ed25519 Verifiable Credential and Presentation in-browser.', link: '/playground/vc-did', kw: ['verifiable credentials', 'did', 'decentralized identity', 'ed25519', 'issuer', 'holder', 'verifier'] },
+  { id: 'identity-broker', title: 'Identity Broker & Federation Sandbox', desc: 'Explore multi-tenant single sign-on (SSO), federation routing, and real-time SAML-to-OIDC token translation topologies.', link: '/playground/identity-broker', kw: ['identity broker', 'federation', 'sso', 'saml to oidc', 'multi-tenant'] },
+  { id: 'magic-link-stepup', title: 'Passwordless Magic Link & Step-Up Auth Lab', desc: 'Email magic-link login followed by a forced step-up to WebAuthn/OTP before a high-risk action.', link: '/playground/magic-link-stepup', kw: ['magic link', 'passwordless', 'step-up', 'stepup authentication', 'otp', 'email login'] },
+  { id: 'credential-stuffing', title: 'Credential Stuffing & Password Spray Defense Lab', desc: 'Replay leaked credentials against a mock login and toggle rate-limiting, CAPTCHA, breached-password detection, and lockout defenses.', link: '/playground/credential-stuffing', kw: ['credential stuffing', 'password spray', 'brute force', 'rate limiting', 'captcha', 'lockout'] },
+  { id: 'ciam-consent', title: 'CIAM Consent & Progressive Profiling Sandbox', desc: 'Social login consent screen, OAuth scope grants, and progressive profile-field collection across sessions.', link: '/playground/ciam-consent', kw: ['ciam', 'consent', 'progressive profiling', 'social login', 'scope grant', 'customer identity'] },
+  { id: 'access-certification', title: 'Access Certification Campaign Simulator', desc: 'Reviewer walks user-to-entitlement rows, approves or revokes access, and flags Separation-of-Duties (SoD) conflicts.', link: '/playground/access-certification', kw: ['access certification', 'access review', 'iga', 'governance', 'sod', 'separation of duties', 'recertification'] },
+  { id: 'risk-engine', title: 'Adaptive Risk-Based Authentication Engine', desc: 'Composite risk score from impossible travel, device reputation, and behavior anomaly signals drives allow, step-up, or block decisions.', link: '/playground/risk-engine', kw: ['risk based authentication', 'adaptive auth', 'ueba', 'impossible travel', 'device reputation', 'risk score'] },
+  { id: 'pam-vaulting', title: 'PAM Vaulting & Just-in-Time Elevation Lab', desc: 'Check out a vaulted credential, request time-boxed JIT elevation and approval, toggle session recording, and auto rotate on check-in.', link: '/playground/pam-vaulting', kw: ['pam', 'privileged access', 'vaulting', 'just-in-time', 'jit elevation', 'session recording', 'credential rotation'] },
+  { id: 'hybrid-ad-sync', title: 'Hybrid Identity Sync Lab (PHS / PTA / Federation)', desc: 'Toggle between Password Hash Sync, Pass-Through Authentication, and Federation (AD FS) to see how each handles an on-prem login.', link: '/playground/hybrid-ad-sync', kw: ['hybrid identity', 'password hash sync', 'pass-through authentication', 'federation', 'ad fs', 'azure ad connect'] }
 ]
 
-// Statically define the 6 breaches for the museum
-const BREACHES_LIST = [
-  { id: 'breach-goldensaml', title: 'SolarWinds Golden SAML Hack', desc: 'Historical Supply-Chain Incident (2020) by Nobelium. Attackers stole private AD FS signing keys to forge SAML assertions offline.', link: '/wall-of-shame?tab=breaches&lab=goldensaml', kw: ['solarwinds', 'golden saml', 'nobelium', 'adfs', 'signing key', 'supply chain', '2020'] },
-  { id: 'breach-pushfatigue', title: 'MFA Push Fatigue Prompt Bombing', desc: 'Identity hijacking vector (2022) affecting Uber/Cisco. Attackers spam push notifications until users click approve.', link: '/wall-of-shame?tab=breaches&lab=pushfatigue', kw: ['uber', 'cisco', 'push fatigue', 'spam', 'prompt bombing', 'mfa bypass', '2022'] },
-  { id: 'breach-wildcard', title: 'OAuth Wildcard Redirect Hijacks', desc: 'Front-channel token-leaking flaw. Misconfigured server allowed *.attacker-domain.com to steal login codes.', link: '/wall-of-shame?tab=breaches&lab=wildcard', kw: ['wildcard', 'oauth', 'redirect', 'hijack', 'code theft', 'configuration'] },
-  { id: 'breach-oktahar', title: 'Okta HAR Support Ticket Cookie Theft', desc: 'Session hijacking incident (2023). Support HAR logs contained active admin session cookies loaded directly into attacker browsers.', link: '/wall-of-shame?tab=breaches&lab=oktahar', kw: ['okta', 'har', 'cookie', 'session', 'stolen', 'support', '2023'] },
-  { id: 'breach-silversaml', title: 'Entra ID Silver SAML Attack', desc: 'Targeted SaaS hijacking (2024). Attackers steal self-signed application signing keys to bypass central AD domain rules.', link: '/wall-of-shame?tab=breaches&lab=silversaml', kw: ['silver saml', 'entra id', 'entra', 'microsoft', 'saas', 'signing key', '2024'] },
-  { id: 'breach-lastpass', title: 'LastPass Offline Vault Cracking', desc: 'Offline brute force attack (2022). Weak corporate PBKDF2 iteration counts allowed rapid GPU hash dictionary cracking.', link: '/wall-of-shame?tab=breaches&lab=lastpass', kw: ['lastpass', 'vault', 'pbkdf2', 'iterations', 'crack', 'brute force', '2022'] }
-]
-
-// Statically define the 4 living standards
-const STANDARDS_LIST = [
-  { id: 'oauth21', title: 'OAuth 2.1', desc: 'Consolidated authorization framework deprecating legacy Implicit and Password grants, mandating PKCE.', kw: ['oauth', 'oauth 2.1', 'pkce', 'rfc 6749', 'authorization'] },
-  { id: 'oidc', title: 'OpenID Connect (OIDC)', desc: 'Identity layer on top of OAuth 2.0 introducing ID Tokens, UserInfo endpoints, and Discovery documents.', kw: ['oidc', 'openid connect', 'id token', 'discovery', 'userinfo'] },
-  { id: 'scim20', title: 'SCIM 2.0', desc: 'System for Cross-domain Identity Management standard for automated user/group provisioning across IdPs and SaaS apps.', kw: ['scim', 'provisioning', 'user lifecycle', 'rfc 7644'] },
-  { id: 'webauthn', title: 'WebAuthn / FIDO2', desc: 'W3C standard for passwordless public-key authentication using hardware authenticators and platform passkeys.', kw: ['webauthn', 'fido2', 'passkey', 'authenticator', 'public key'] }
-]
-
-// Statically define the 14 reference architectures
-const ARCHITECTURES_LIST = [
-  { id: 'zero_trust', title: 'Workforce Zero Trust (NIST SP 800-207)', desc: 'Dynamic authentication, device posture, and Policy Decision Point evaluations for workforce access.', kw: ['zero trust', 'nist', 'pdp', 'pep'] },
-  { id: 'b2b_saas', title: 'Multi-Tenant B2B SaaS Identity Architecture', desc: 'Tenant isolation, federated SSO, and SCIM provisioning patterns for B2B SaaS platforms.', kw: ['b2b', 'saas', 'multi-tenant', 'federation'] },
-  { id: 'multi_cloud', title: 'Multi-Cloud Identity & Machine Workloads (SPIFFE/SPIRE)', desc: 'Non-human identity attestation and X.509 SVID issuance across multi-cloud workloads.', kw: ['spiffe', 'spire', 'multi-cloud', 'workload identity'] },
-  { id: 'ciam_social', title: 'Customer Identity & Social Login Federation (CIAM)', desc: 'Consumer registration, social login federation, and progressive profiling architecture.', kw: ['ciam', 'social login', 'consumer identity'] },
-  { id: 'oauth_oidc', title: 'OAuth 2.0 & OIDC Authorization Code Flow', desc: 'Reference sequence flow for the authorization code grant with PKCE across front and back channels.', kw: ['oauth', 'oidc', 'authorization code', 'pkce'] },
-  { id: 'saml', title: 'SAML 2.0 Enterprise Web SSO', desc: 'Enterprise browser SSO reference architecture using SAML assertions and IdP-initiated flows.', kw: ['saml', 'sso', 'assertion', 'enterprise'] },
-  { id: 'pam', title: 'Privileged Access Management (PAM) Vaulting', desc: 'Credential vaulting, session brokering, and Just-in-Time privileged access architecture.', kw: ['pam', 'privileged access', 'vault', 'jit'] },
-  { id: 'pki', title: 'Public Key Infrastructure (PKI) & mTLS', desc: 'Certificate authority hierarchies, mTLS handshakes, and revocation checking architecture.', kw: ['pki', 'mtls', 'certificate authority', 'x509'] },
-  { id: 'k8s_identity', title: 'Kubernetes Identity (OIDC & RBAC)', desc: 'Cluster authentication via OIDC and fine-grained authorization via Kubernetes RBAC.', kw: ['kubernetes', 'k8s', 'rbac', 'oidc'] },
-  { id: 'banking', title: 'Banking & Financial Services Identity Architecture (PCI-DSS & PSD2)', desc: 'Customer channel, strong customer authentication, and PCI-DSS/PSD2-aligned identity controls.', kw: ['banking', 'pci-dss', 'psd2', 'financial services'] },
-  { id: 'healthcare', title: 'Healthcare Identity Architecture (HIPAA & HL7 FHIR)', desc: 'Patient portal identity, HIPAA-aligned access controls, and HL7 FHIR integration patterns.', kw: ['healthcare', 'hipaa', 'hl7', 'fhir', 'patient portal'] },
-  { id: 'government', title: 'Government & Public Sector Identity Architecture (FedRAMP & NIST 800-63)', desc: 'PIV card authentication, FedRAMP-aligned controls, and NIST 800-63 identity assurance levels.', kw: ['government', 'fedramp', 'piv', 'nist 800-63'] },
-  { id: 'manufacturing', title: 'Industrial OT/ICS Identity Architecture (IEC 62443)', desc: 'Plant operator access, OT/ICS segmentation, and IEC 62443-aligned identity controls.', kw: ['manufacturing', 'ot', 'ics', 'iec 62443'] },
-  { id: 'retail', title: 'Retail & Point-of-Sale Identity Architecture (PCI-DSS & Omnichannel)', desc: 'POS terminal identity, omnichannel session continuity, and PCI-DSS aligned controls.', kw: ['retail', 'pos', 'pci-dss', 'omnichannel'] }
+// Statically define the 19 design patterns (Beginner -> Advanced) in the Pattern Library
+const PATTERNS_LIST = [
+  { id: 'basic_session_auth', title: 'Session Cookie Auth', desc: 'Username/password login backed by a server-side session and an HttpOnly cookie.', kw: ['session', 'cookie', 'login', 'password', 'basic auth'] },
+  { id: 'social_login', title: 'Social Login', desc: 'Sign in with Google/Apple/Microsoft via OAuth 2.0/OIDC instead of a new password.', kw: ['social login', 'oauth', 'sign in with google', 'oidc', 'federation'] },
+  { id: 'otp_verification', title: 'OTP Verification', desc: 'Email/SMS one-time password verification for signup or lightweight second factor.', kw: ['otp', 'one time password', 'sms', 'email verification', '2fa'] },
+  { id: 'rbac_basic', title: 'Basic RBAC', desc: 'Assign users to roles and gate features by role instead of per-user checks.', kw: ['rbac', 'role based access control', 'roles', 'permissions'] },
+  { id: 'password_reset', title: 'Password Reset', desc: 'Self-service password reset and account recovery via a time-boxed secure link.', kw: ['password reset', 'account recovery', 'forgot password'] },
+  { id: 'mfa_totp_stepup', title: 'MFA Step-Up (TOTP)', desc: 'Time-based one-time-password second factor and step-up before high-risk actions.', kw: ['mfa', 'totp', 'step up', '2fa', 'authenticator app', 'rfc 6238'] },
+  { id: 'sso_reverse_proxy', title: 'Reverse-Proxy SSO', desc: 'Centralize SSO at a reverse proxy that injects trusted identity headers to backend apps.', kw: ['reverse proxy', 'sso', 'header injection', 'oauth2-proxy'] },
+  { id: 'api_key_m2m', title: 'API Key (M2M)', desc: 'Long-lived API key authentication for machine-to-machine and partner integrations.', kw: ['api key', 'machine to machine', 'm2m', 'service account'] },
+  { id: 'jwt_stateless_api', title: 'Stateless JWT API', desc: 'Self-contained signed JWT bearer tokens for stateless API authorization at scale.', kw: ['jwt', 'stateless', 'bearer token', 'jwks'] },
+  { id: 'b2b_sso', title: 'B2B Multi-Tenant SSO', desc: 'Federated SAML/OIDC SSO and SCIM provisioning across enterprise tenants.', kw: ['b2b', 'multi-tenant', 'federated sso', 'scim'] },
+  { id: 'token_exchange', title: 'API Gateway Token Exchange', desc: 'RFC 8693 token exchange delegating restricted, service-scoped downstream tokens.', kw: ['token exchange', 'rfc 8693', 'delegation', 'sts'] },
+  { id: 'passwordless', title: 'Passwordless FIDO2', desc: 'WebAuthn/FIDO2 phishing-resistant passwordless registration and login.', kw: ['passwordless', 'fido2', 'webauthn', 'passkey'] },
+  { id: 'banking', title: 'Financial-Grade API (FAPI)', desc: 'FAPI 1.0 Advanced mTLS, sender-constrained tokens, and signed request objects.', kw: ['fapi', 'banking', 'open banking', 'mtls', 'jar'] },
+  { id: 'healthcare', title: 'SMART on FHIR', desc: 'HL7 SMART on FHIR scoped patient authorization and clinical consent.', kw: ['smart on fhir', 'healthcare', 'hipaa', 'hl7'] },
+  { id: 'government', title: 'PIV/CAC Gov Federation', desc: 'Hardware-backed PIV/CAC smart card mTLS authentication for FedRAMP systems.', kw: ['piv', 'cac', 'government', 'fedramp', 'smart card'] },
+  { id: 'workforce', title: 'Workforce Zero Trust', desc: 'Continuous device posture attestation and conditional risk-based access rules.', kw: ['workforce', 'zero trust', 'conditional access', 'posture'] },
+  { id: 'jit_pam', title: 'JIT Privileged Access', desc: 'Zero standing privilege PAM vaulting with just-in-time, time-boxed elevation.', kw: ['pam', 'jit', 'just in time', 'privileged access', 'zero standing privilege'] },
+  { id: 'caep_continuous', title: 'CAEP Continuous Eval', desc: 'Shared Signals Framework push events for real-time session revocation.', kw: ['caep', 'shared signals', 'ssf', 'continuous access evaluation', 'set'] },
+  { id: 'spiffe_workload', title: 'SPIFFE Workload Identity', desc: 'Short-lived X.509 SVID mTLS identity for non-human microservice workloads.', kw: ['spiffe', 'spire', 'workload identity', 'svid', 'mtls'] }
 ]
 
 let searchIndex: MiniSearch<SearchItem> | null = null
@@ -157,46 +167,90 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 5. Add Breaches
-  BREACHES_LIST.forEach(b => {
+  // 5. Add Breaches (derived from the shared breachesData.ts — every breach added there
+  // is automatically searchable, no separate list to sync)
+  BREACHES.forEach(b => {
     items.push({
-      id: b.id,
+      id: `breach-${b.id}`,
       title: b.title,
-      fullName: 'Historical Cyber Attack Profile',
-      description: b.desc,
+      fullName: `${b.category} · ${b.difficulty}`,
+      description: b.summary,
       category: '💣 Breach Museum Cases',
-      link: b.link,
-      keywords: b.kw
+      link: `/wall-of-shame?tab=breaches&lab=${b.id}`,
+      keywords: [b.company, b.category, b.difficulty, String(b.year)]
     })
   })
 
-  // 6. Add Living Standards
-  STANDARDS_LIST.forEach(s => {
+  // 6. Add Living Standards (derived from the shared standardsData.ts — every
+  // standard added there is automatically searchable, no separate list to sync)
+  STANDARDS.forEach(s => {
     items.push({
       id: `standard-${s.id}`,
       title: s.title,
-      fullName: 'Living Standard & RFC Reference',
-      description: s.desc,
+      fullName: `${s.fullname} · ${s.difficulty}`,
+      description: s.summary,
       category: '📜 Living Standards & RFCs',
       link: `/standards?standard=${s.id}`,
-      keywords: s.kw
+      keywords: [s.category, s.difficulty, ...s.rfcs]
     })
   })
 
-  // 7. Add Reference Architectures
-  ARCHITECTURES_LIST.forEach(a => {
+  // 7. Add Reference Architectures (derived from the shared architectureData.ts — every
+  // architecture added there is automatically searchable, no separate list to sync)
+  ARCHITECTURES.forEach(a => {
     items.push({
       id: `arch-${a.id}`,
-      title: a.title,
-      fullName: 'Reference Architecture',
-      description: a.desc,
+      title: a.name,
+      fullName: `Reference Architecture · ${a.difficulty}`,
+      description: a.description,
       category: '🏛️ Reference Architectures',
       link: `/architecture?arch=${a.id}`,
-      keywords: a.kw
+      keywords: [a.difficulty, a.group, ...a.tags]
     })
   })
 
-  // 8. Add Compliance Deadlines
+  // 8. Add Design Patterns
+  PATTERNS_LIST.forEach(p => {
+    items.push({
+      id: `pattern-${p.id}`,
+      title: p.title,
+      fullName: 'Design Pattern',
+      description: p.desc,
+      category: '🧩 Design Pattern Library',
+      link: `/patterns?pattern=${p.id}`,
+      keywords: p.kw
+    })
+  })
+
+  // 9. Add Reference Implementations — derived directly from referenceProjects.ts's
+  // PROJECTS array so a new reference entry is automatically searchable with no separate list to sync.
+  REFERENCE_PROJECTS.forEach(p => {
+    items.push({
+      id: `reference-${p.id}`,
+      title: p.title,
+      fullName: `${p.category} · ${p.tech}`,
+      description: p.description,
+      category: '🗂️ Reference Implementations',
+      link: `/references?ref=${p.id}`,
+      keywords: [p.category, p.tech, p.level, p.shortLabel]
+    })
+  })
+
+  // 10. Add Case Studies (derived from the shared caseStudiesData.ts — every case study
+  // added there is automatically searchable, no separate list to sync)
+  CASE_STUDIES.forEach(cs => {
+    items.push({
+      id: `case-${cs.id}`,
+      title: `${cs.company} — ${cs.title}`,
+      fullName: `${cs.category} · ${cs.difficulty}`,
+      description: cs.summary,
+      category: '🏢 Case Study Center',
+      link: `/case-studies?study=${cs.id}`,
+      keywords: [cs.company, cs.category, cs.difficulty, ...cs.rfcs]
+    })
+  })
+
+  // 11. Add Compliance Deadlines
   COMPLIANCE_DEADLINES.forEach(d => {
     items.push({
       id: `deadline-${d.id}`,
@@ -209,7 +263,133 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 9. Add every remaining site page (sidebar/nav pages not covered above)
+  // 12. Add IAM Landscape Directory products (derived from the shared exploreData.ts —
+  // every product added there is automatically searchable, no separate list to sync)
+  EXPLORE_PRODUCTS.forEach(p => {
+    items.push({
+      id: `explore-${p.id}`,
+      title: p.name,
+      fullName: `${p.type} · ${p.difficulty}`,
+      description: p.bestUse,
+      category: '🧭 IAM Landscape Directory',
+      link: `/explore?product=${p.id}`,
+      keywords: [p.type, p.difficulty, ...p.tags]
+    })
+  })
+
+  // 13. Add Certifications (derived from the shared certificationsData.ts — every
+  // certification added there is automatically searchable, no separate list to sync)
+  CERTIFICATIONS.forEach(c => {
+    items.push({
+      id: `cert-${c.id}`,
+      title: c.title,
+      fullName: `${c.vendor} · ${c.difficulty}`,
+      description: `${c.category} certification — ${c.domains.map(d => d.name).join(', ')}`,
+      category: '🎓 Certification Hub',
+      link: `/certifications?cert=${c.id}`,
+      keywords: [c.vendor, c.category, c.difficulty, c.examCode ?? ''].filter(Boolean)
+    })
+  })
+
+  // 14. Add CVE & Vulnerability Research entries (derived from the shared researchData.ts —
+  // every CVE added there is automatically searchable, no separate list to sync)
+  CVE_DATABASE.forEach(c => {
+    items.push({
+      id: `cve-${c.id}`,
+      title: `${c.id}: ${c.title}`,
+      fullName: `${c.component} · ${c.difficulty}`,
+      description: c.description,
+      category: '🦠 CVE & Vulnerability Research',
+      link: `/research?cve=${c.id}`,
+      keywords: [c.component, c.vulnerabilityType, c.difficulty, String(c.cvss)]
+    })
+  })
+
+  // 15. Add RFC & Protocol Registry entries (derived from the shared researchData.ts —
+  // every RFC/draft added there is automatically searchable, no separate list to sync)
+  RFC_DATABASE.forEach(r => {
+    items.push({
+      id: `rfc-${rfcSlug(r.number)}`,
+      title: `${r.number}: ${r.title}`,
+      fullName: `${r.category} · ${r.difficulty}`,
+      description: r.description,
+      category: '📡 RFC & Protocol Registry',
+      link: `/research?rfc=${rfcSlug(r.number)}`,
+      keywords: [r.category, r.status, r.difficulty]
+    })
+  })
+
+  // 16. Add Security Bulletins (derived from the shared bulletinsData.ts — every
+  // bulletin added there is automatically searchable, no separate list to sync)
+  BULLETINS.forEach(b => {
+    items.push({
+      id: `bulletin-${b.id}`,
+      title: b.title,
+      fullName: `${b.category} · ${b.difficulty}`,
+      description: b.description,
+      category: '🚨 Security Bulletins',
+      link: `/bulletins?bulletin=${b.id}`,
+      keywords: [b.vector, b.severity, b.difficulty, b.category]
+    })
+  })
+
+  // 17. Add Developer Playbooks / Cheat Sheets (derived from the shared cheatSheetsData.ts —
+  // every cheat sheet added there is automatically searchable, no separate list to sync)
+  CHEAT_SHEETS.forEach(s => {
+    items.push({
+      id: `sheet-${s.id}`,
+      title: s.title,
+      fullName: `${s.category} · ${s.difficulty}`,
+      description: s.checks.map(c => c.task).join('; '),
+      category: '✅ Developer Playbooks & Cheat Sheets',
+      link: `/cheat-sheets?sheet=${s.id}`,
+      keywords: [s.category, s.difficulty, s.target]
+    })
+  })
+
+  // 18. Add AI Knowledge Assistant Comparisons (derived from the shared aiKnowledgeGraph.ts —
+  // every comparison added there is automatically searchable, no separate list to sync)
+  COMPARISONS.forEach(c => {
+    items.push({
+      id: `assistant-compare-${c.id}`,
+      title: c.title,
+      fullName: `${c.entityA} vs ${c.entityB}`,
+      description: c.summary,
+      category: '🤖 AI Assistant — Comparisons',
+      link: `/assistant?tab=compare&compare=${c.id}`,
+      keywords: [c.entityA, c.entityB]
+    })
+  })
+
+  // 19. Add AI Knowledge Assistant Learning Tracks (derived from the shared aiKnowledgeGraph.ts)
+  LEARNING_TRACKS.forEach(t => {
+    const trackId = `${t.level.toLowerCase()}-${t.goal.toLowerCase().replace(/\s+/g, '-')}`
+    items.push({
+      id: `assistant-learn-${trackId}`,
+      title: t.title,
+      fullName: `${t.level} · ${t.goal}`,
+      description: t.description,
+      category: '🧭 AI Assistant — Learning Tracks',
+      link: `/assistant?tab=learn&level=${encodeURIComponent(t.level)}&goal=${encodeURIComponent(t.goal)}`,
+      keywords: [t.level, t.goal, 'learning track', 'roadmap']
+    })
+  })
+
+  // 20. Add AI Knowledge Assistant Interview Prep questions (derived from the shared aiKnowledgeGraph.ts —
+  // every question added there is automatically searchable, no separate list to sync)
+  INTERVIEW_QUESTIONS.forEach(q => {
+    items.push({
+      id: `assistant-interview-${q.id}`,
+      title: q.question,
+      fullName: `${q.domain} · Interview Question`,
+      description: q.answer,
+      category: '🎯 AI Assistant — Interview Prep',
+      link: `/assistant?tab=interview&q=${q.id}`,
+      keywords: [q.domain, q.rfc ?? '', 'interview', 'prep'].filter(Boolean)
+    })
+  })
+
+  // 21. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

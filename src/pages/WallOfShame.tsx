@@ -1,40 +1,40 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import {
   ShieldAlert, Smartphone, Globe, Sparkles
 } from 'lucide-react'
 import ContentFeedback from '../components/ContentFeedback'
+import BookmarkButton from '../components/BookmarkButton'
+import { BREACHES, type Breach } from '../data/breachesData'
 
 type MuseumTab = 'evolution' | 'breaches' | 'resources'
-type BreachLabId = 'goldensaml' | 'pushfatigue' | 'wildcard' | 'oktahar' | 'silversaml' | 'lastpass'
+type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced'
 
-const BREACH_LAB_TITLES: Record<BreachLabId, string> = {
-  goldensaml: 'SolarWinds Golden SAML Hack',
-  pushfatigue: 'MFA Push Fatigue Prompt Bombing',
-  wildcard: 'OAuth Wildcard Redirect Hijacks',
-  oktahar: 'Okta HAR Support Ticket Cookie Theft',
-  silversaml: 'Entra ID Silver SAML Attack',
-  lastpass: 'LastPass Offline Vault Cracking'
-}
+const BREACH_IDS = BREACHES.map((b) => b.id)
 
 export default function WallOfShame() {
   const [activeTab, setActiveTab] = useState<MuseumTab>('evolution')
   const [activeEra, setActiveEra] = useState(0)
-  const [activeLab, setActiveLab] = useState<BreachLabId>('goldensaml')
+  const [activeLab, setActiveLab] = useState<string>(BREACHES[0].id)
+  const [difficultyFilter, setDifficultyFilter] = useState<Difficulty | 'All'>('All')
+
+  const activeBreach: Breach = BREACHES.find((b) => b.id === activeLab) ?? BREACHES[0]
+  const filteredBreaches = difficultyFilter === 'All' ? BREACHES : BREACHES.filter((b) => b.difficulty === difficultyFilter)
 
   // Set visited flag on mount
   useEffect(() => {
     localStorage.setItem('aboutiam-museum-visited', 'true')
-    
+
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search)
       const tab = params.get('tab') as MuseumTab | null
-      const lab = params.get('lab') as 'goldensaml' | 'pushfatigue' | 'wildcard' | 'oktahar' | 'silversaml' | 'lastpass' | null
+      const lab = params.get('lab')
       if (tab === 'evolution' || tab === 'breaches' || tab === 'resources') {
         setTimeout(() => {
           setActiveTab(tab)
         }, 0)
       }
-      if (lab && ['goldensaml', 'pushfatigue', 'wildcard', 'oktahar', 'silversaml', 'lastpass'].includes(lab)) {
+      if (lab && BREACH_IDS.includes(lab)) {
         setTimeout(() => {
           setActiveLab(lab)
           setActiveTab('breaches')
@@ -242,44 +242,57 @@ export default function WallOfShame() {
       {activeTab === 'breaches' && (
         <div className="grid lg:grid-cols-4 gap-8 pt-2 animate-fadeIn relative z-10">
           {/* Sub-menu of Labs */}
-          <div className="lg:col-span-1 space-y-2">
-            {([
-              { id: 'goldensaml', label: '🇷🇺 SolarWinds: Golden SAML', sub: 'Russian Nobelium attack (2020)' },
-              { id: 'pushfatigue', label: '📱 MFA Push Fatigue Bombing', sub: 'Uber/Cisco password overrides (2022)' },
-              { id: 'wildcard', label: '🔗 OAuth Wildcard Redirects', sub: 'Front-channel URL interceptions' },
-              { id: 'oktahar', label: '🚫 Okta 2023: Support HAR Theft', sub: 'Session cookie hijacking via logs (2023)' },
-              { id: 'silversaml', label: '🥈 Entra ID: Silver SAML', sub: 'Target App Signing Key Theft (2024)' },
-              { id: 'lastpass', label: '🔑 LastPass: Offline Vault Cracking', sub: 'Weak PBKDF2 Iterations (2022)' }
-            ] as { id: BreachLabId; label: string; sub: string }[]).map(l => (
-              <button
-                key={l.id}
-                onClick={() => {
-                  setActiveLab(l.id)
-                  setSamlStep(0)
-                  setSigningKeyStolen(false)
-                  setForgedToken('')
-                  setHarStolenCookie('')
-                  setHarMitigationActive(false)
-                  setSilverSamlStep(0)
-                  setSilverStolenAppKey(false)
-                  setLastPassIterations(5000)
-                }}
-                className={`w-full text-left p-4 rounded-xl border transition-all ${
-                  activeLab === l.id
-                    ? 'border-status-danger bg-status-danger/5 text-status-danger shadow-sm'
-                    : 'border-border-subtle bg-bg-card hover:border-status-danger/20'
-                }`}
-              >
-                <span className={`block font-black text-sm ${activeLab === l.id ? 'text-status-danger' : 'text-text-primary'}`}>{l.label}</span>
-                <span className="block text-[10px] text-text-muted font-bold uppercase mt-1">{l.sub}</span>
-              </button>
-            ))}
+          <div className="lg:col-span-1 space-y-3">
+            {/* Difficulty filter chips */}
+            <div className="flex flex-wrap gap-1.5">
+              {(['All', 'Beginner', 'Intermediate', 'Advanced'] as const).map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setDifficultyFilter(d)}
+                  className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-all ${
+                    difficultyFilter === d
+                      ? 'bg-status-danger text-white border-status-danger'
+                      : 'border-border-subtle text-text-secondary hover:border-status-danger/40'
+                  }`}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-2 max-h-[70vh] overflow-y-auto pr-1">
+              {filteredBreaches.map(b => (
+                <button
+                  key={b.id}
+                  onClick={() => {
+                    setActiveLab(b.id)
+                    setSamlStep(0)
+                    setSigningKeyStolen(false)
+                    setForgedToken('')
+                    setHarStolenCookie('')
+                    setHarMitigationActive(false)
+                    setSilverSamlStep(0)
+                    setSilverStolenAppKey(false)
+                    setLastPassIterations(5000)
+                  }}
+                  className={`w-full text-left p-4 rounded-xl border transition-all ${
+                    activeLab === b.id
+                      ? 'border-status-danger bg-status-danger/5 text-status-danger shadow-sm'
+                      : 'border-border-subtle bg-bg-card hover:border-status-danger/20'
+                  }`}
+                >
+                  <span className={`block font-black text-sm ${activeLab === b.id ? 'text-status-danger' : 'text-text-primary'}`}>{b.logo} {b.title}</span>
+                  <span className="block text-[10px] text-text-muted font-bold uppercase mt-1">{b.company} ({b.year}) · {b.difficulty}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Active Lab Board */}
           <div className="lg:col-span-3 space-y-4">
-            <div className="flex justify-end">
-              <ContentFeedback id={`breach-${activeLab}`} title={BREACH_LAB_TITLES[activeLab]} />
+            <div className="flex justify-end items-center gap-3">
+              <BookmarkButton item={{ id: `breach-${activeBreach.id}`, title: activeBreach.title, link: `/wall-of-shame?tab=breaches&lab=${activeBreach.id}` }} />
+              <ContentFeedback id={`breach-${activeBreach.id}`} title={activeBreach.title} />
             </div>
             {/* LAB 1: GOLDEN SAML */}
             {activeLab === 'goldensaml' && (
@@ -789,6 +802,78 @@ const deriveKey = async (pass, salt) => {
                     </pre>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* GENERIC BREACH PROFILE PANEL (for every entry without a bespoke simulator) */}
+            {!activeBreach.interactiveLabId && (
+              <div className="p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-6">
+                <div className="space-y-1.5 border-b border-border-subtle pb-6">
+                  <span className="text-[10px] font-bold text-status-danger uppercase tracking-wider block">
+                    {activeBreach.category.toUpperCase()} · {activeBreach.difficulty.toUpperCase()} · {activeBreach.year}
+                  </span>
+                  <h3 className="text-2xl font-black text-text-primary">{activeBreach.logo} {activeBreach.title}</h3>
+                  <p className="text-xs text-text-secondary leading-relaxed font-semibold">{activeBreach.summary}</p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="p-5 rounded-xl bg-bg-sidebar border border-border-subtle space-y-3 text-xs">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Root Cause</span>
+                    <p className="text-text-secondary leading-relaxed font-semibold">{activeBreach.rootCause}</p>
+                  </div>
+                  <div className="p-5 rounded-xl bg-bg-sidebar border border-border-subtle space-y-2 text-xs">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Attack Timeline</span>
+                    <ol className="space-y-1.5 text-text-secondary font-semibold list-decimal list-inside">
+                      {activeBreach.timeline.map((step, i) => (
+                        <li key={i}>{step}</li>
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Vulnerable vs. Secure Code Deconstruction</span>
+                  <div className="grid md:grid-cols-2 gap-4 text-[11px] font-mono leading-relaxed">
+                    <div className="p-4 bg-status-danger/5 border border-status-danger/10 text-text-secondary rounded-lg">
+                      <p className="font-bold text-status-danger mb-1.5">// Vulnerable</p>
+                      <pre className="text-[10px] bg-bg-nested p-2 rounded overflow-x-auto select-all whitespace-pre-wrap wrap-break-word">{activeBreach.vulnCode}</pre>
+                    </div>
+                    <div className="p-4 bg-status-success/5 border border-status-success/10 text-text-secondary rounded-lg">
+                      <p className="font-bold text-status-success mb-1.5">// Secure Remediation</p>
+                      <pre className="text-[10px] bg-bg-nested p-2 rounded overflow-x-auto select-all whitespace-pre-wrap wrap-break-word">{activeBreach.secureCode}</pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-xl bg-accent-glow/5 border border-accent-primary/20 space-y-2 text-xs">
+                  <span className="text-[10px] font-bold text-accent-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-accent-primary" /> Remediation
+                  </span>
+                  <p className="text-text-secondary leading-relaxed font-semibold">{activeBreach.remediation}</p>
+                </div>
+
+                <div className="p-5 rounded-xl bg-bg-sidebar border border-border-subtle space-y-2 text-xs">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Key Lessons</span>
+                  <ul className="space-y-1.5 text-text-secondary font-semibold list-disc list-inside">
+                    {activeBreach.lessons.map((lesson, i) => (
+                      <li key={i}>{lesson}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {activeBreach.relatedResources.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {activeBreach.relatedResources.map((r, i) => (
+                      <Link
+                        key={i}
+                        to={r.path}
+                        className="px-3 py-1.5 rounded-lg bg-bg-sidebar hover:bg-bg-nested border border-border-subtle text-[10px] font-bold text-text-primary transition-all"
+                      >
+                        {r.title} →
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>

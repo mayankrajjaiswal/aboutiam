@@ -35,7 +35,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/learn`** | `Learn.tsx` | IAM Academy. 6 tracks, 36 expandable modules with local progress bar persistent tracking. |
 | **`/scenario-builder`** | `ScenarioBuilder.tsx` | Identity Scenario Builder. Questionnaire-driven enterprise architecture and threat model designer. (Phase 1) |
 | **`/labs`** | `IdentityLabs.tsx` | Interactive Identity Labs. Hands-on vulnerability and pen-test academy with progressive score boards. (Phase 2) |
-| **`/references`** | `ReferenceImplementations.tsx` | Enterprise Reference Implementations. Ready-to-run copyable directories for Spring Boot, Node, SCIM, and OPA. (Phase 4) |
+| **`/references`** | `ReferenceImplementations.tsx` | Enterprise Reference Implementations. Categorized, beginner-to-advanced library of ready-to-run copyable directories (`src/data/referenceProjects.ts`) — session/cookie auth, LDAP, OAuth/OIDC, WebAuthn, SCIM, OPA/Rego, Vault, cloud workload identity, Kubernetes RBAC, and Istio mTLS. Deep-linkable via `?ref=<id>` and individually searchable. (Phase 4) |
 | **`/case-studies`** | `CaseStudyCenter.tsx` | Enterprise Identity Case Study Center. Deconstruct real-world production setups (Netflix, Uber, Cloudflare). (Phase 6) |
 | **`/decision-matrix`** | `IdentityDecisionMatrix.tsx` | Identity Decision Matrix. Intelligent interactive architecture recommender engine. (Phase 6) |
 | **`/threat-modeling`** | `ThreatModelingStudio.tsx` | Interactive Threat Modeling Studio. Visual security modeling workspace with STRIDE/OWASP validations. (Phase 6) |
@@ -460,3 +460,57 @@ No UI changes needed — `getUpcomingDeadlines()`/`getPastDeadlines()`/`getJuris
   - `Learn.tsx` maps `roleTrack` to a recommended Academy track via the local `ROLE_TRACK_RECOMMENDATIONS` record and shows a "Recommended for `<role>`: `<track>`" banner with a "Jump to Track →" button that calls `setExpandedTrack`.
 
 To make a new tool page depth-aware, render it through `ToolPageShell`/`BeginnerExpertExplainer` as usual (§4E) — no extra wiring needed, since that shared component already reads the store. To key new content off `roleTrack`, follow the `Learn.tsx` pattern: a small local id-to-recommendation map plus a dismiss-free banner, not a new store field.
+
+---
+
+### 🏛️ Q. How to Add a New Living Standard (`/standards`)
+
+`src/data/standardsData.ts` is the single source of truth for the `/standards` "Living Standards & RFC Explorer" — `StandardsExplorer.tsx` and the search index (`searchService.ts`) both import the same `STANDARDS` array, so appending one `IdentityStandard` object makes it render as a card **and** become searchable/deep-linkable (`?standard=<id>`) with no second list to remember. This fixes a real drift bug that existed before: the two files used to hand-duplicate their own copies of the standards list, so an addition to one silently didn't show up in the other.
+
+```typescript
+{
+  id: 'dpop',
+  title: 'DPoP',
+  fullname: 'Demonstrating Proof-of-Possession at the Application Layer',
+  rfcs: ['RFC 9449'],
+  year: '2023',
+  difficulty: 'Advanced', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the filter chips and card badge
+  category: 'Tokens & Cryptography',
+  summary: '...', problem: '...', whyExists: '...',
+  flowchart: `ASCII sequence diagram`,
+  messageFormat: `example request/response payload`,
+  vulnerabilities: ['...'], bestPractices: ['...'], vendorSupport: ['...'],
+  relatedResources: [{ title: 'Related Tool/Playground', path: '/tools/...', type: 'tool' }]
+}
+```
+
+Prefer linking `relatedResources` to an existing tool/playground (§4E/§4F) if one already covers the protocol — most new standards added here should already have one. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `STANDARDS` and fails if any one of them isn't indexed, so a broken/missing `relatedStandardId` or search-sync regression is caught immediately.
+
+---
+
+### 🏛️ R. How to Add a New Reference Implementation (`/references`)
+
+`src/data/referenceProjects.ts` is the single source of truth for the `/references` "Enterprise Reference Implementations" library — `ReferenceImplementations.tsx` and the search index (`searchService.ts`) both import the same `PROJECTS` array, so appending one `ReferenceProject` object makes it render in the level-grouped selector **and** become searchable/deep-linkable (`?ref=<id>`) with no second list to sync. The registry is deliberately its own module (not defined inside the page component) so it can be imported by `searchService.ts` without tripping the `react-refresh/only-export-components` lint rule.
+
+```typescript
+{
+  id: 'your-reference-id',
+  title: 'Full, Descriptive Title',
+  shortLabel: 'Short Selector Label',
+  category: 'Token-Based Auth', // groups within its level in the left selector — reuse an existing category where the topic fits
+  level: 'beginner', // 'beginner' | 'intermediate' | 'advanced' — drives the level grouping in the selector and the overview panel's tag
+  tech: 'Language / Framework',
+  rfc: 'Relevant RFC(s) or spec, or "N/A" if none applies',
+  description: '...',
+  diagram: `ASCII sequence diagram`,
+  folderStructure: `recommended directory tree`,
+  codeFile: 'the-main-file.ext',
+  codeLang: 'javascript', // used only as a label; syntax highlighting is not applied
+  code: `the actual reference code snippet`,
+  deployment: ['1. ...', '2. ...', '3. ...'],
+  securityChecklist: ['...'],
+  pitfalls: [{ mistake: '...', fix: '...' }]
+}
+```
+
+No route-wiring needed (§4D) — the `?ref=<id>` deep link reuses the existing `/references` route, following the same query-param convention as `/patterns?pattern=<id>` and `/standards?standard=<id>` (§4I). Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `PROJECTS` and fails if any one of them isn't indexed, catching a search-sync regression immediately.

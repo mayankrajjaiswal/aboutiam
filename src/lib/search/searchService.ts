@@ -6,6 +6,8 @@ import type { Term } from '../../pages/Encyclopedia'
 import { VENDOR_CATALOG } from '../../data/vendorCatalog'
 import type { VendorType } from '../../data/vendorCatalog'
 import { COMPLIANCE_DEADLINES } from '../../data/complianceDeadlines'
+import { STANDARDS } from '../../data/standardsData'
+import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -71,14 +73,6 @@ const BREACHES_LIST = [
   { id: 'breach-lastpass', title: 'LastPass Offline Vault Cracking', desc: 'Offline brute force attack (2022). Weak corporate PBKDF2 iteration counts allowed rapid GPU hash dictionary cracking.', link: '/wall-of-shame?tab=breaches&lab=lastpass', kw: ['lastpass', 'vault', 'pbkdf2', 'iterations', 'crack', 'brute force', '2022'] }
 ]
 
-// Statically define the 4 living standards
-const STANDARDS_LIST = [
-  { id: 'oauth21', title: 'OAuth 2.1', desc: 'Consolidated authorization framework deprecating legacy Implicit and Password grants, mandating PKCE.', kw: ['oauth', 'oauth 2.1', 'pkce', 'rfc 6749', 'authorization'] },
-  { id: 'oidc', title: 'OpenID Connect (OIDC)', desc: 'Identity layer on top of OAuth 2.0 introducing ID Tokens, UserInfo endpoints, and Discovery documents.', kw: ['oidc', 'openid connect', 'id token', 'discovery', 'userinfo'] },
-  { id: 'scim20', title: 'SCIM 2.0', desc: 'System for Cross-domain Identity Management standard for automated user/group provisioning across IdPs and SaaS apps.', kw: ['scim', 'provisioning', 'user lifecycle', 'rfc 7644'] },
-  { id: 'webauthn', title: 'WebAuthn / FIDO2', desc: 'W3C standard for passwordless public-key authentication using hardware authenticators and platform passkeys.', kw: ['webauthn', 'fido2', 'passkey', 'authenticator', 'public key'] }
-]
-
 // Statically define the 14 reference architectures
 const ARCHITECTURES_LIST = [
   { id: 'zero_trust', title: 'Workforce Zero Trust (NIST SP 800-207)', desc: 'Dynamic authentication, device posture, and Policy Decision Point evaluations for workforce access.', kw: ['zero trust', 'nist', 'pdp', 'pep'] },
@@ -95,6 +89,29 @@ const ARCHITECTURES_LIST = [
   { id: 'government', title: 'Government & Public Sector Identity Architecture (FedRAMP & NIST 800-63)', desc: 'PIV card authentication, FedRAMP-aligned controls, and NIST 800-63 identity assurance levels.', kw: ['government', 'fedramp', 'piv', 'nist 800-63'] },
   { id: 'manufacturing', title: 'Industrial OT/ICS Identity Architecture (IEC 62443)', desc: 'Plant operator access, OT/ICS segmentation, and IEC 62443-aligned identity controls.', kw: ['manufacturing', 'ot', 'ics', 'iec 62443'] },
   { id: 'retail', title: 'Retail & Point-of-Sale Identity Architecture (PCI-DSS & Omnichannel)', desc: 'POS terminal identity, omnichannel session continuity, and PCI-DSS aligned controls.', kw: ['retail', 'pos', 'pci-dss', 'omnichannel'] }
+]
+
+// Statically define the 19 design patterns (Beginner -> Advanced) in the Pattern Library
+const PATTERNS_LIST = [
+  { id: 'basic_session_auth', title: 'Session Cookie Auth', desc: 'Username/password login backed by a server-side session and an HttpOnly cookie.', kw: ['session', 'cookie', 'login', 'password', 'basic auth'] },
+  { id: 'social_login', title: 'Social Login', desc: 'Sign in with Google/Apple/Microsoft via OAuth 2.0/OIDC instead of a new password.', kw: ['social login', 'oauth', 'sign in with google', 'oidc', 'federation'] },
+  { id: 'otp_verification', title: 'OTP Verification', desc: 'Email/SMS one-time password verification for signup or lightweight second factor.', kw: ['otp', 'one time password', 'sms', 'email verification', '2fa'] },
+  { id: 'rbac_basic', title: 'Basic RBAC', desc: 'Assign users to roles and gate features by role instead of per-user checks.', kw: ['rbac', 'role based access control', 'roles', 'permissions'] },
+  { id: 'password_reset', title: 'Password Reset', desc: 'Self-service password reset and account recovery via a time-boxed secure link.', kw: ['password reset', 'account recovery', 'forgot password'] },
+  { id: 'mfa_totp_stepup', title: 'MFA Step-Up (TOTP)', desc: 'Time-based one-time-password second factor and step-up before high-risk actions.', kw: ['mfa', 'totp', 'step up', '2fa', 'authenticator app', 'rfc 6238'] },
+  { id: 'sso_reverse_proxy', title: 'Reverse-Proxy SSO', desc: 'Centralize SSO at a reverse proxy that injects trusted identity headers to backend apps.', kw: ['reverse proxy', 'sso', 'header injection', 'oauth2-proxy'] },
+  { id: 'api_key_m2m', title: 'API Key (M2M)', desc: 'Long-lived API key authentication for machine-to-machine and partner integrations.', kw: ['api key', 'machine to machine', 'm2m', 'service account'] },
+  { id: 'jwt_stateless_api', title: 'Stateless JWT API', desc: 'Self-contained signed JWT bearer tokens for stateless API authorization at scale.', kw: ['jwt', 'stateless', 'bearer token', 'jwks'] },
+  { id: 'b2b_sso', title: 'B2B Multi-Tenant SSO', desc: 'Federated SAML/OIDC SSO and SCIM provisioning across enterprise tenants.', kw: ['b2b', 'multi-tenant', 'federated sso', 'scim'] },
+  { id: 'token_exchange', title: 'API Gateway Token Exchange', desc: 'RFC 8693 token exchange delegating restricted, service-scoped downstream tokens.', kw: ['token exchange', 'rfc 8693', 'delegation', 'sts'] },
+  { id: 'passwordless', title: 'Passwordless FIDO2', desc: 'WebAuthn/FIDO2 phishing-resistant passwordless registration and login.', kw: ['passwordless', 'fido2', 'webauthn', 'passkey'] },
+  { id: 'banking', title: 'Financial-Grade API (FAPI)', desc: 'FAPI 1.0 Advanced mTLS, sender-constrained tokens, and signed request objects.', kw: ['fapi', 'banking', 'open banking', 'mtls', 'jar'] },
+  { id: 'healthcare', title: 'SMART on FHIR', desc: 'HL7 SMART on FHIR scoped patient authorization and clinical consent.', kw: ['smart on fhir', 'healthcare', 'hipaa', 'hl7'] },
+  { id: 'government', title: 'PIV/CAC Gov Federation', desc: 'Hardware-backed PIV/CAC smart card mTLS authentication for FedRAMP systems.', kw: ['piv', 'cac', 'government', 'fedramp', 'smart card'] },
+  { id: 'workforce', title: 'Workforce Zero Trust', desc: 'Continuous device posture attestation and conditional risk-based access rules.', kw: ['workforce', 'zero trust', 'conditional access', 'posture'] },
+  { id: 'jit_pam', title: 'JIT Privileged Access', desc: 'Zero standing privilege PAM vaulting with just-in-time, time-boxed elevation.', kw: ['pam', 'jit', 'just in time', 'privileged access', 'zero standing privilege'] },
+  { id: 'caep_continuous', title: 'CAEP Continuous Eval', desc: 'Shared Signals Framework push events for real-time session revocation.', kw: ['caep', 'shared signals', 'ssf', 'continuous access evaluation', 'set'] },
+  { id: 'spiffe_workload', title: 'SPIFFE Workload Identity', desc: 'Short-lived X.509 SVID mTLS identity for non-human microservice workloads.', kw: ['spiffe', 'spire', 'workload identity', 'svid', 'mtls'] }
 ]
 
 let searchIndex: MiniSearch<SearchItem> | null = null
@@ -182,16 +199,17 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 6. Add Living Standards
-  STANDARDS_LIST.forEach(s => {
+  // 6. Add Living Standards (derived from the shared standardsData.ts — every
+  // standard added there is automatically searchable, no separate list to sync)
+  STANDARDS.forEach(s => {
     items.push({
       id: `standard-${s.id}`,
       title: s.title,
-      fullName: 'Living Standard & RFC Reference',
-      description: s.desc,
+      fullName: `${s.fullname} · ${s.difficulty}`,
+      description: s.summary,
       category: '📜 Living Standards & RFCs',
       link: `/standards?standard=${s.id}`,
-      keywords: s.kw
+      keywords: [s.category, s.difficulty, ...s.rfcs]
     })
   })
 
@@ -208,7 +226,34 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 8. Add Compliance Deadlines
+  // 8. Add Design Patterns
+  PATTERNS_LIST.forEach(p => {
+    items.push({
+      id: `pattern-${p.id}`,
+      title: p.title,
+      fullName: 'Design Pattern',
+      description: p.desc,
+      category: '🧩 Design Pattern Library',
+      link: `/patterns?pattern=${p.id}`,
+      keywords: p.kw
+    })
+  })
+
+  // 9. Add Reference Implementations — derived directly from referenceProjects.ts's
+  // PROJECTS array so a new reference entry is automatically searchable with no separate list to sync.
+  REFERENCE_PROJECTS.forEach(p => {
+    items.push({
+      id: `reference-${p.id}`,
+      title: p.title,
+      fullName: `${p.category} · ${p.tech}`,
+      description: p.description,
+      category: '🗂️ Reference Implementations',
+      link: `/references?ref=${p.id}`,
+      keywords: [p.category, p.tech, p.level, p.shortLabel]
+    })
+  })
+
+  // 10. Add Compliance Deadlines
   COMPLIANCE_DEADLINES.forEach(d => {
     items.push({
       id: `deadline-${d.id}`,
@@ -221,7 +266,7 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 9. Add every remaining site page (sidebar/nav pages not covered above)
+  // 11. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

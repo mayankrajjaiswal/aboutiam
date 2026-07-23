@@ -1,462 +1,28 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  ShieldCheck, Clipboard, Check, Terminal, Code, 
+import {
+  ShieldCheck, Clipboard, Check, Terminal, Code,
   ArrowLeft, ShieldAlert
 } from 'lucide-react'
-
-// Reference Implementation Structure
-interface ReferenceProject {
-  id: string
-  title: string
-  tech: string
-  description: string
-  rfc: string
-  diagram: string
-  folderStructure: string
-  codeFile: string
-  codeLang: string
-  code: string
-  deployment: string[]
-  securityChecklist: string[]
-  pitfalls: { mistake: string; fix: string }[]
-}
+import { PROJECTS, LEVEL_LABELS, LEVEL_ORDER } from '../data/referenceProjects'
 
 export default function ReferenceImplementations() {
   const [activeProjectId, setActiveProjectId] = useState<string>('springboot-keycloak')
   const [copiedCode, setCopiedCode] = useState<boolean>(false)
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({})
 
-  // Projects list
-  const PROJECTS: ReferenceProject[] = [
-    {
-      id: 'springboot-keycloak',
-      title: 'Spring Boot 3 + Keycloak Resource Server',
-      tech: 'Java / Spring Security',
-      rfc: 'RFC 6749, RFC 7519 (OAuth Bearer Tokens)',
-      description: 'Configure Spring Boot 3 Resource Server with Spring Security 6, enabling seamless, stateless OAuth 2.0 Bearer JWT token decryption, signature checks, and group/role claiming mapping.',
-      diagram: `
-+------------+       Bearer Access Token       +------------------------+
-| Client App | ------------------------------> | Spring Boot Resource   |
-+------------+                                 | Server API (PEP)       |
-      |                                        +------------------------+
-      |                                                    |
-      | Request JWKS keys for validation                   | Parse & Verify Token
-      +--------------------------------------------------> | using JWKS keys
-                                                           |
-                                                           v
-                                               +------------------------+
-                                               | Keycloak IdP Authority |
-                                               +------------------------+
-`,
-      folderStructure: `
-springboot-resource-server/
-├── pom.xml
-└── src/
-    └── main/
-        ├── java/
-        │   └── com/
-        │       └── corp/
-        │           └── api/
-        │               ├── ResourceServerApplication.java
-        │               ├── config/
-        │               │   ├── SecurityConfig.java
-        │               │   └── JwtGrantedAuthoritiesConverter.java
-        │               └── controller/
-        │                   └── InventoryController.java
-        └── resources/
-            └── application.yml
-`,
-      codeFile: 'SecurityConfig.java',
-      codeLang: 'java',
-      code: `package com.corp.api.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.web.SecurityFilterChain;
-
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity // Enforce pre-post method checks (@PreAuthorize)
-public class SecurityConfig {
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> http.disable()) // Stateless JWT has zero session state, safe to disable CSRF
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/public/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
-            );
-        return http.build();
-    }
-
-    private JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        // Custom claim extractor (extracts Keycloak realm_access.roles into Spring authorities)
-        converter.setJwtGrantedAuthoritiesConverter(new CustomJwtAuthoritiesConverter());
-        return converter;
-    }
-}`,
-      deployment: [
-        '1. Ensure you have Docker Compose active on your target machine.',
-        '2. Configure application.yml: set spring.security.oauth2.resourceserver.jwt.issuer-uri to your Keycloak realm URL (e.g., http://localhost:8080/realms/corp-realm).',
-        '3. Start the application using: mvn spring-boot:run.'
-      ],
-      securityChecklist: [
-        'Enforce strict JWT Issuer validation (must match target authority URL exactly).',
-        'Configure connection and read timeouts on the JWKS key fetching client to prevent DoS lockouts.',
-        'Enforce HTTPS on all Keycloak authority connections in production environments.'
-      ],
-      pitfalls: [
-        { mistake: 'Configuring JWT decoding using static public keys instead of JWKS cache.', fix: 'Static keys prevent rotation. Always use JWKS issuer-uri configurations to automatically sync rotated certificates.' },
-        { mistake: 'Storing session state in memory while accepting stateless bearer tokens.', fix: 'Enforce SessionCreationPolicy.STATELESS in Spring Security to optimize scale and avoid memory starvation.' }
-      ]
-    },
-    {
-      id: 'node-express-oauth',
-      title: 'Node.js Express + JWT Verification Middleware',
-      tech: 'JavaScript / Express',
-      rfc: 'RFC 7519 (JSON Web Tokens), RFC 7636 (PKCE)',
-      description: 'A production-hardened Node.js/Express JWT verification middleware utilizing jwks-rsa to retrieve public keys from standard OIDC endpoints (such as Thales OneWelcome, Okta, or Auth0), cache keys, and enforce audience and issuer matching.',
-      diagram: `
-+------------+         GET /api/secure with JWT        +----------------------+
-| Client App | --------------------------------------> | Express Middleware   |
-+------------+                                         | (jwks-rsa signature) |
-                                                       +----------------------+
-                                                                  |
-                                                                  v
-                                                       +----------------------+
-                                                       | Retrieve public key  |
-                                                       | from OIDC caching    |
-                                                       | JWKS endpoints       |
-                                                       +----------------------+
-`,
-      folderStructure: `
-express-jwt-middleware/
-├── package.json
-├── server.js
-└── middleware/
-    └── auth.js
-`,
-      codeFile: 'auth.js',
-      codeLang: 'javascript',
-      code: `const { expressjwt: jwt } = require('express-jwt');
-const jwksRsa = require('jwks-rsa');
-
-// Hardened authorization middleware verifying Bearer tokens against JWKS cache
-const verifyJWT = jwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 10, // Prevent JWKS DDoS flooding
-    jwksUri: 'https://auth.corp-portal.com/oauth/.well-known/jwks.json'
-  }),
-  audience: 'https://api.corp-portal.com/v1',
-  issuer: 'https://auth.corp-portal.com/oauth',
-  algorithms: ['RS256'], // Strictly enforce secure asymmetric signing algorithm
-
-  // Handle unauthorized requests
-  credentialsRequired: true
-});
-
-module.exports = { verifyJWT };`,
-      deployment: [
-        '1. Run: npm install express-jwt jwks-rsa express.',
-        '2. Import middleware/auth.js inside server.js.',
-        '3. Protect routes: app.use("/api/secure", verifyJWT, router).'
-      ],
-      securityChecklist: [
-        'Strictly lock down accepted algorithms (e.g. RS256) inside verifyJWT options.',
-        'Enable rate-limiting and local caching in jwks-rsa options to mitigate signature flooding attacks.',
-        'Enforce audience (aud) checks so token scopes cannot be spoofed across separate resources.'
-      ],
-      pitfalls: [
-        { mistake: 'Omitting algorithms configurations in jwt options.', fix: 'Failing to bind algorithms leaves you vulnerable to algorithm-confusion attacks (accepting HS256 forged with public keys).' },
-        { mistake: 'Hardcoding JWT secret strings directly inside Express repos.', fix: 'Always retrieve client config parameters and secrets from secure, rotatable environment variables.' }
-      ]
-    },
-    {
-      id: 'opa-rego-authorization',
-      title: 'Open Policy Agent (OPA) + Rego Policies',
-      tech: 'OPA / Rego / Cloud Native',
-      rfc: 'ABAC, NIST SP 800-207 Policy-Based Access',
-      description: 'Standard-compliant attribute-based access control (ABAC) policies compiled in Open Policy Agents Rego language, validating user group permissions, device trust posture, and regional boundaries.',
-      diagram: `
-+-------------+     JSON Policy Query     +---------------------+
-| API Gateway | ------------------------> | Open Policy Agent   |
-+-------------+                           | (Rego Engine)       |
-                                          +---------------------+
-                                                     |
-                                                     v
-                                          +---------------------+
-                                          | Compile decisions   |
-                                          | { "allow": true }   |
-                                          +---------------------+
-`,
-      folderStructure: `
-opa-policy-engine/
-├── policy/
-│   ├── authz.rego
-│   └── authz_test.rego
-└── docker-compose.yml
-`,
-      codeFile: 'authz.rego',
-      codeLang: 'rego',
-      code: `package authz
-
-default allow = false
-
-# Allow access if user is in admin group, device is managed, and connection has MFA verified
-allow {
-    user_is_admin
-    device_is_managed
-    mfa_verified
-}
-
-# Allow read access to generic engineers
-allow {
-    input.user.groups[_] == "engineers"
-    input.action == "read"
-    device_is_managed
-}
-
-user_is_admin {
-    input.user.groups[_] == "security-admins"
-}
-
-device_is_managed {
-    input.device.is_managed == true
-    input.device.firewall_active == true
-}
-
-mfa_verified {
-    input.auth.mfa_completed == true
-    input.auth.strength in ["phishing-resistant", "hardware-token"]
-}
-
-# Helper inclusion checking
-import future.keywords.in`,
-      deployment: [
-        '1. Launch OPA server container using OPA official images.',
-        '2. Upload policy using: curl -X PUT --data-binary @policy/authz.rego http://localhost:8181/v1/policies/authz.',
-        '3. Query decisions: POST JSON payload to http://localhost:8181/v1/data/authz/allow.'
-      ],
-      securityChecklist: [
-        'Configure default allow = false at the top of every package.',
-        'Strictly enforce device posture attestation bounds before granting server-level CLI/Admin permissions.',
-        'Enforce FIPS-compliant cipher ranges on the API gateway queries routed to OPA sidecars.'
-      ],
-      pitfalls: [
-        { mistake: 'Omitting a default allow = false fallback statement.', fix: 'Without OPA defaults, undefined policy rule scenarios return empty responses which Gateway handlers can misinterpret as true.' },
-        { mistake: 'Bundling heavy active state databases directly inside OPA memory blocks.', fix: 'OPA memory is for active policies. Route heavy transactional directory queries out via dynamic JWT attributes.' }
-      ]
-    },
-    {
-      id: 'scim-server-payload',
-      title: 'SCIM 2.0 User Provisioning API Payload',
-      tech: 'SCIM 2.0 Schema & Protocol',
-      rfc: 'RFC 7643, RFC 7644 (SCIM 2.0)',
-      description: 'Hardened REST API schema specifications and payloads for a standard SCIM 2.0 (System for Cross-domain Identity Management) User synchronization server, designed to process automated syncing events from clients like Thales OneWelcome, Okta, or SailPoint.',
-      diagram: `
-+--------------+     POST /Users (SCIM JSON)     +--------------------+
-| Identity IdP | ------------------------------> | SCIM Server Target |
-+--------------+                                 | (Reconcile sync)   |
-                                                 +--------------------+
-                                                            |
-                                                            v
-                                                 +--------------------+
-                                                 | Sync user record   |
-                                                 | in database        |
-                                                 +--------------------+
-`,
-      folderStructure: `
-scim-provisioning-server/
-└── schema/
-    ├── user_schema.json
-    └── user_post_payload.json
-`,
-      codeFile: 'user_post_payload.json',
-      codeLang: 'json',
-      code: `{
-  "schemas": [
-    "urn:ietf:params:scim:schemas:core:2.0:User",
-    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-  ],
-  "externalId": "ext_usr_0091",
-  "userName": "bob.security",
-  "name": {
-    "familyName": "Identity",
-    "givenName": "Bob",
-    "formatted": "Bob Identity"
-  },
-  "emails": [
-    {
-      "value": "bob@enterprise-corp.com",
-      "type": "work",
-      "primary": true
-    }
-  ],
-  "active": true,
-  "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
-    "employeeNumber": "10092",
-    "costCenter": "Security-440",
-    "organization": "Corporate Security",
-    "division": "IAM Engineering"
-  }
-}`,
-      deployment: [
-        '1. Implement a REST endpoint at /scim/v2/Users.',
-        '2. Expose GET, POST, PUT, PATCH, and DELETE endpoints matching RFC 7644 specifications.',
-        '3. Enforce authenticated Bearer token queries across all provision routes.'
-      ],
-      securityChecklist: [
-        'Block raw password hashing responses on SCIM GET requests (password must remain write-only).',
-        'Enforce strict UUID format validations on all SCIM resource ID paths.',
-        'Deploy rate-limits and maximum size thresholds on SCIM bulk synchronization routes.'
-      ],
-      pitfalls: [
-        { mistake: 'Returning raw user password strings inside GET payloads.', fix: 'User passwords must be designated with returned: "none" in schemas, never returning credential hashes to query clients.' },
-        { mistake: 'Treating costCenter, employeeNumber, or groups as unrestricted attributes.', fix: 'Strictly validate costume attributes. Unsanitized strings in SCIM payloads can trigger database SQL injection.' }
-      ]
-    },
-    {
-      id: 'github-aws-oidc',
-      title: 'GitHub Actions to AWS OIDC Federation Trust',
-      tech: 'AWS IAM / GitHub Actions',
-      rfc: 'RFC 7519, OpenID Connect Core 1.0',
-      description: 'Configure a secure, keyless Trust Relationship between GitHub Actions runners and AWS IAM. Swaps short-lived GitHub JWT id_tokens dynamically for temporary AWS session credentials, completely eliminating the need to store static, long-lived AWS Access Keys in repository secrets.',
-      diagram: `
-+----------------+        1. OIDC Token (IdToken)        +----------------+
-| GitHub Runner  | ------------------------------------> | AWS IAM Role   |
-+----------------+                                       | (AssumeRole)   |
-        ^                                                +----------------+
-        |                                                        |
-        |      2. Temporary Session Credentials (AccessKey, Sec) | Validates JWT issuer
-        +<-------------------------------------------------------+ and claims (aud/sub)
-`,
-      folderStructure: `
-github-aws-oidc-trust/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml
-└── aws-iam/
-    └── trust-relationship.json
-`,
-      codeFile: 'trust-relationship.json',
-      codeLang: 'json',
-      code: `{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
-        },
-        "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:my-org/my-repo:ref:refs/heads/main"
-        }
+  // Deep-link support: /references?ref=<id> lands directly on that project (GEMINI §4I convention)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const id = params.get('ref')
+      if (id && PROJECTS.some((p) => p.id === id)) {
+        setTimeout(() => {
+          setActiveProjectId(id)
+        }, 0)
       }
     }
-  ]
-}`,
-      deployment: [
-        '1. Create an OIDC Identity Provider in AWS IAM with URL: https://token.actions.githubusercontent.com and audience: sts.amazonaws.com.',
-        '2. Create an IAM Role and assign this trust relationship JSON to its Trust Policy.',
-        '3. Authorize permissions on the IAM Role (e.g. S3 upload or ECR push) for deployments.'
-      ],
-      securityChecklist: [
-        'Strictly bound the sub condition to your specific organization, repository, and branch (never use generic wildcards like *).',
-        'Verify the aud condition equals "sts.amazonaws.com" strictly.',
-        'Apply an AWS session policy boundary to the assumed role to restrict deployment permissions.'
-      ],
-      pitfalls: [
-        { mistake: 'Configuring StringLike subject conditions to "repo:my-org/*".', fix: 'This permits ANY repository inside your organization (including public forks) to assume the AWS deployer role. Enforce strict repository and branch rules.' },
-        { mistake: 'Omitting the audience aud check from the condition block.', fix: 'The aud check is mandatory. Without it, any client receiving a GitHub actions token can attempt to spoof AWS IAM.' }
-      ]
-    },
-    {
-      id: 'aws-iam-boundary',
-      title: 'AWS Least-Privilege Administrative Boundary Policy',
-      tech: 'AWS IAM (JSON Policy)',
-      rfc: 'NIST SP 800-207 (Zero Trust Policy)',
-      description: 'Establish a robust AWS IAM Policy boundary that restricts administrative access based on mandatory MFA checks, corporate IP-whitelists, and regional boundaries, preventing account takeover from leaked master credentials.',
-      diagram: `
-+-------------------+        Request with API Key / Role        +-------------------+
-| Admin Workstation | ----------------------------------------> | AWS IAM Gateway   |
-+-------------------+                                           +-------------------+
-                                                                          |
-                                                                          v (Asserts conditions)
-                                                                - Active MFA?
-                                                                - Corporate IP?
-                                                                - Allowed Region?
-`,
-      folderStructure: `
-aws-iam-boundary/
-└── policies/
-    ├── admin-boundary-policy.json
-    └── developer-policy.json
-`,
-      codeFile: 'admin-boundary-policy.json',
-      codeLang: 'json',
-      code: `{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "EnforceMFAAndCorporateIPForAdministrativeActions",
-      "Effect": "Deny",
-      "Action": "*",
-      "Resource": "*",
-      "Condition": {
-        "BoolIfExists": {
-          "aws:MultiFactorAuthPresent": "false"
-        },
-        "NotIpAddressIfExists": {
-          "aws:SourceIp": [
-            "192.0.2.0/24",
-            "198.51.100.0/22"
-          ]
-        },
-        "StringNotEqualsIfExists": {
-          "aws:RequestedRegion": [
-            "us-east-1",
-            "eu-central-1"
-          ]
-        }
-      }
-    }
-  ]
-}`,
-      deployment: [
-        '1. Create an AWS IAM Policy and paste the JSON boundary.',
-        '2. Attach the policy as a Permissions Boundary to all administrative users and roles.',
-        '3. Ensure root accounts are excluded from boundaries to prevent lockouts.'
-      ],
-      securityChecklist: [
-        'Enforce explicit Deny on lack of MultiFactorAuthPresent or SourceIp blocks.',
-        'Use "IfExists" operators (e.g. BoolIfExists) to prevent blocking non-human/workload service accounts that authenticate without IP/MFA.',
-        'Restrict deployment actions to strictly permitted, authorized regions (e.g. us-east-1, eu-central-1).'
-      ],
-      pitfalls: [
-        { mistake: 'Enforcing a strict SourceIp block on API-only workload roles.', fix: 'Service roles (e.g. ECS agents or Lambdas) invoke AWS APIs from internal AWS addresses, not corporate IPs. Use "NotIpAddressIfExists" or exclude workloads.' },
-        { mistake: 'Blocking administrative regions without verifying global service dependencies.', fix: 'Global services (like Route53 or CloudFront) execute endpoints in us-east-1 strictly. Always allow us-east-1.' }
-      ]
-    }
-  ]
+  }, [])
 
   // Active Project Selector
   const activeProject = useMemo(() => {
@@ -513,20 +79,31 @@ aws-iam-boundary/
                 <p className="text-[11px] text-text-muted mt-0.5">Select a pre-verified core technology framework to review source files and deployment guides.</p>
               </div>
 
-              <div className="space-y-2">
-                {PROJECTS.map((proj) => (
-                  <button
-                    key={proj.id}
-                    onClick={() => {
-                      setActiveProjectId(proj.id)
-                      setCheckedItems({})
-                    }}
-                    className={`w-full py-3 px-4 rounded-xl border text-left flex flex-col gap-1 transition ${activeProjectId === proj.id ? 'bg-accent-glow border-accent-primary text-accent-primary font-bold shadow-sm' : 'border-border-subtle bg-bg-nested/40 hover:bg-bg-nested text-text-secondary cursor-pointer'}`}
-                  >
-                    <span className="text-xs font-black block">{proj.title.split(' + ')[0]}</span>
-                    <span className="text-[10px] text-text-muted font-normal block font-mono">{proj.tech}</span>
-                  </button>
-                ))}
+              <div className="flex flex-col gap-4">
+                {LEVEL_ORDER.map((level) => {
+                  const projectsForLevel = PROJECTS.filter((p) => p.level === level)
+                  if (projectsForLevel.length === 0) return null
+                  return (
+                    <div key={level} className="flex flex-col gap-2">
+                      <span className="text-[9px] text-text-muted font-bold uppercase tracking-wider px-1">
+                        {LEVEL_LABELS[level]}
+                      </span>
+                      {projectsForLevel.map((proj) => (
+                        <button
+                          key={proj.id}
+                          onClick={() => {
+                            setActiveProjectId(proj.id)
+                            setCheckedItems({})
+                          }}
+                          className={`w-full py-3 px-4 rounded-xl border text-left flex flex-col gap-1 transition ${activeProjectId === proj.id ? 'bg-accent-glow border-accent-primary text-accent-primary font-bold shadow-sm' : 'border-border-subtle bg-bg-nested/40 hover:bg-bg-nested text-text-secondary cursor-pointer'}`}
+                        >
+                          <span className="text-xs font-black block">{proj.shortLabel}</span>
+                          <span className="text-[10px] text-text-muted font-normal block font-mono">{proj.category} · {proj.tech}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
@@ -546,7 +123,10 @@ aws-iam-boundary/
             {/* OVERVIEW PANEL */}
             <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 shadow-sm space-y-4">
               <div>
-                <span className="text-[9px] bg-bg-nested border border-border-subtle px-2 py-0.5 rounded font-mono font-bold text-text-secondary uppercase">{activeProject.rfc}</span>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[9px] bg-bg-nested border border-border-subtle px-2 py-0.5 rounded font-mono font-bold text-text-secondary uppercase">{activeProject.rfc}</span>
+                  <span className="text-[9px] bg-accent-glow border border-accent-primary/20 text-accent-primary px-2 py-0.5 rounded font-mono font-bold uppercase">{activeProject.category} · {LEVEL_LABELS[activeProject.level]}</span>
+                </div>
                 <h2 className="text-base font-black text-text-primary mt-2">{activeProject.title}</h2>
                 <p className="text-xs text-text-secondary mt-1.5 leading-relaxed">{activeProject.description}</p>
               </div>

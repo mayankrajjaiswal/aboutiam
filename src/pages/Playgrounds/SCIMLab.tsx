@@ -88,6 +88,11 @@ export default function SCIMLab() {
     if (syncQueue.length > 0 && !isSyncing) {
       setTimeout(() => processNextQueueItem(), 0)
     }
+    // processNextQueueItem is an unmemoized async closure recreated every
+    // render; it only reads syncQueue/isSyncing, both already listed below,
+    // so including the function itself would just rerun this effect on every
+    // unrelated render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [syncQueue, isSyncing])
 
   // Log Helper

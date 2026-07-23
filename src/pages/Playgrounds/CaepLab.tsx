@@ -42,7 +42,6 @@ export default function CaepLab() {
     if (streamingActive) return
     setStreamingActive(true)
     
-    // eslint-disable-next-line react-hooks/purity
     const sessionId = `urn:aboutiam:session:${Math.random().toString(36).substring(2, 9)}`
     const iat = Math.floor(Date.now() / 1000)
 

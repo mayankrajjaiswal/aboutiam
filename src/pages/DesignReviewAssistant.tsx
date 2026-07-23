@@ -19,15 +19,10 @@ interface ReviewTemplate {
   priorityFixes: { title: string; desc: string; fix: string }[]
 }
 
-export default function DesignReviewAssistant() {
-  const [selectedTemplateId, setSelectedTemplateId] = useState<string>('template-1')
-  const [customDesignCode, setCustomDesignCode] = useState<string>('')
-  const [isCustomMode, setIsCustomMode] = useState<boolean>(false)
-  const [showReport, setShowReport] = useState<boolean>(false)
-  const [activeReportTab, setActiveReportTab] = useState<'dashboard' | 'controls' | 'compliance' | 'remediations'>('dashboard')
-
-  // Curated Architectural Blueprints & Code Reviews Templates
-  const TEMPLATES: ReviewTemplate[] = [
+// Curated Architectural Blueprints & Code Reviews Templates — static reference
+// data with no dependency on component state, so it's hoisted to module scope
+// instead of being recreated (and needing a useMemo dependency) every render.
+const TEMPLATES: ReviewTemplate[] = [
     {
       id: 'template-1',
       title: 'Public SPA Client + Bearer Access Tokens',
@@ -112,6 +107,13 @@ samlParser.enforceSignatureElementMatching(true);`
       ]
     }
   ]
+
+export default function DesignReviewAssistant() {
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>('template-1')
+  const [customDesignCode, setCustomDesignCode] = useState<string>('')
+  const [isCustomMode, setIsCustomMode] = useState<boolean>(false)
+  const [showReport, setShowReport] = useState<boolean>(false)
+  const [activeReportTab, setActiveReportTab] = useState<'dashboard' | 'controls' | 'compliance' | 'remediations'>('dashboard')
 
   // Dynamic analysis engine
   const activeReport = useMemo(() => {

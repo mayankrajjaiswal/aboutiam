@@ -319,6 +319,12 @@ export default function ReferenceBuilder() {
       }
     }
     return () => clearTimeout(timer)
+    // advanceSimulationStep is an unmemoized closure recreated every render;
+    // the deps below already cover everything it reads (activeSimulationType)
+    // and cancel the pending timer via cleanup whenever any of them change, so
+    // listing the function itself would only add spurious timer resets on
+    // unrelated re-renders.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [simulationActive, simulationStep, activeSimulationType])
 
   // HTML5 Drag-and-drop handlers

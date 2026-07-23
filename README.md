@@ -134,7 +134,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **State & Storage:** Zustand + Persist Middleware (local storage)
 * **Design & Theme:** Tailwind CSS 4.x (fully fluid responsive grids, supporting system-matching Light & Dark themes)
 * **Animation Canvas:** Framer Motion (animated vector flow paths)
-* **Testing Core:** Vitest (Vite-native unit testing with Server-Side-Rendering defensive safeguards)
+* **Testing Core:** Vitest across three projects — `unit` (pure logic, colocated `*.test.ts`), `component` (React Testing Library + jsdom, colocated `*.test.tsx` plus a data-driven smoke test rendering every page), and `integration` (cross-file consistency and SSR-safety checks in `tests/`) — with coverage reporting via `@vitest/coverage-v8`
 
 ---
 
@@ -161,8 +161,14 @@ npm run dev
 # 3. Compile TypeScript & Build Production Assets
 npm run build
 
-# 4. Run the Unit Test Suite
+# 4. Run the Full Test Suite (unit + component + integration)
 npm run test
+
+# 5. Run just one test project, or generate a coverage report
+npm run test:unit
+npm run test:components
+npm run test:integration
+npm run test:coverage
 ```
 
 ---

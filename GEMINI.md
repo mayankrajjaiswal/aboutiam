@@ -47,7 +47,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/patterns`** | `DesignPatternLibrary.tsx` | Hardened design patterns, sequence flows, and checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless. |
 | **`/certifications`** | `CertificationHub.tsx` | Enterprise Certification Hub. 27 beginner-to-advanced identity certifications backed by `src/data/certificationsData.ts` (§4U) — spanning Fundamentals (SC-900, Security+, IDPro CIDPRO), Cloud & Workforce IAM (SC-300, AZ-500, Okta, Ping, AWS/GCP), Identity Governance (SailPoint, Saviynt, One Identity), PAM (CyberArk, BeyondTrust, Delinea), Security Leadership & GRC (CISSP, CCSP, CISM, CRISC), Privacy (IAPP CIPT/CIPM), and Cloud-Native (CKS). Difficulty/category filterable, deep-linkable via `?cert=<id>`, and individually searchable; flagship certs carry an interactive mock quiz. |
 | **`/career-center`** | `InterviewCareerCenter.tsx` | Comprehensive role-based interview preparation system spanning 6 role tracks featuring MCQs, scenarios, design simulations, coding terminals, timed mocks, and resume guidelines. |
-| **`/bulletins`** | `SecurityBulletins.tsx` | Active threat bulletins tracking real-world incident post-mortems (Okta support, SolarWinds) with an interactive "Crisis Response Console" simulation game. |
+| **`/bulletins`** | `SecurityBulletins.tsx` | Active threat bulletin board backed by `src/data/bulletinsData.ts` (§4W) — 18 beginner-to-advanced identity incident post-mortems spanning Credential & Session Theft, MFA & Push Fatigue, Federation & SSO Exploits, OAuth & Token Abuse, Cloud IAM Misconfiguration, Directory & Kerberos Attacks, and Supply Chain & Provisioning. Difficulty/category filterable, deep-linkable via `?bulletin=<id>`, individually searchable, bookmarkable, and paired with a data-driven "Crisis Response Console" simulation game. |
 | **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 15+ completed simulators, each bookmarkable via `BookmarkButton`. |
 | **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (32 tools live). Every tool page (`ToolPageShell`) is bookmarkable via `BookmarkButton`. |
 | **`/tools/jwt-decoder`** | `Tools/JwtDecoder.tsx` | Decodes a JWT's header/payload/signature; flags `alg: none`; optional HMAC verify. |
@@ -662,3 +662,34 @@ If adding a new category value, also add it to the exported `CERTIFICATION_CATEG
 ```
 
 The `rfcSlug()` helper (also exported from `researchData.ts`) turns a `number` field into its stable `?rfc=<slug>` id (e.g. `"RFC 6749"` → `"rfc-6749"`, `"OAuth 2.1"` → `"oauth-2-1"`) — always use it rather than hand-writing the slug, so the data file and the deep link never drift apart. No route-wiring needed (§4D) — both `?cve=<id>` and `?rfc=<slug>` deep links reuse the existing `/research` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in both `CVE_DATABASE` and `RFC_DATABASE` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers are represented in each dataset.
+
+---
+
+### 🏛️ X. How to Add a New Security Bulletin (`/bulletins`)
+
+`src/data/bulletinsData.ts` is the single source of truth for the `/bulletins` "Security Bulletin Board & IR Simulator" — `SecurityBulletins.tsx` and the search index (`searchService.ts`) both import the same `BULLETINS` array, so appending one `Bulletin` object makes it render in the difficulty/category-filtered selector, become searchable/deep-linkable (`?bulletin=<id>`), and automatically drive the "Crisis Response Console" simulator with no second list to sync. This closes the same class of drift bug fixed for standards/case-studies/references/architectures/explore products/certifications/research (§4Q-W): the page used to hard-code exactly 4 bulletins inline via a closed `IncidentType` union, with the simulator's narrative text hand-written as three separate `if/else if` chains keyed on that same union — a 5th bulletin would have silently fallen into the last `else` branch and displayed the wrong incident's narrative, and there was no search wiring beyond the generic "📄 Site Pages" fallback (and `/bulletins` itself was missing from `sitemap.xml`/`llms.txt` entirely).
+
+```typescript
+{
+  id: 'your-bulletin-id',
+  title: 'Full, Descriptive Incident Title',
+  date: 'Month Year or a range',
+  severity: 'Critical', // 'Critical' | 'High' | 'Medium' | 'Low'
+  difficulty: 'Intermediate', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips
+  category: 'OAuth & Token Abuse', // one of BULLETIN_CATEGORIES — reuse an existing one where the topic fits
+  vector: 'Short Attack Vector Label',
+  description: '...',
+  playbookSteps: ['Step one...', 'Step two...'],
+  remediationSnippet: `// hardened code snippet`,
+  snippetLanguage: 'JavaScript',
+  controlsMapped: ['soc2_2', 'iso_3'], // ids into the shared CONTROL_TITLES map in the same file
+  simulator: {
+    step1Log: 'SIEM Log: ...',           // shown when the user clicks "Step 1: Detect Threat"
+    step2Log: 'Incident Detail: ...',    // shown when the user clicks "Step 2: Analyze Vector"
+    containmentHighLog: 'Action: ...\n✓ Containment Successful! ...', // the correct, standards-compliant remediation
+    containmentLowLog: 'Action: ...\n❌ Containment Failed! ...'      // the tempting-but-wrong shortcut remediation
+  }
+}
+```
+
+If adding a new category value, also add it to the exported `BULLETIN_CATEGORIES` array in the same file so the category filter chips stay in sync. No route-wiring needed (§4D) — the `?bulletin=<id>` deep link reuses the existing `/bulletins` route via the same mount-effect pattern described in §4I. Because the simulator is fully data-driven off each bulletin's own `simulator` field, a new bulletin gets correct Crisis Response Console narrative text automatically — there is no `if/else` chain left to remember to extend. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `BULLETINS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `BULLETIN_CATEGORIES` value are represented; `bulletinsData.test.ts` additionally guards that every `controlsMapped` id resolves to a real `CONTROL_TITLES` entry and that every bulletin carries a complete, non-empty `simulator` script.

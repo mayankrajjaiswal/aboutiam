@@ -13,6 +13,7 @@ import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { EXPLORE_PRODUCTS } from '../../data/exploreData'
 import { CERTIFICATIONS } from '../../data/certificationsData'
 import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
+import { BULLETINS } from '../../data/bulletinsData'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -324,7 +325,21 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 16. Add every remaining site page (sidebar/nav pages not covered above)
+  // 16. Add Security Bulletins (derived from the shared bulletinsData.ts — every
+  // bulletin added there is automatically searchable, no separate list to sync)
+  BULLETINS.forEach(b => {
+    items.push({
+      id: `bulletin-${b.id}`,
+      title: b.title,
+      fullName: `${b.category} · ${b.difficulty}`,
+      description: b.description,
+      category: '🚨 Security Bulletins',
+      link: `/bulletins?bulletin=${b.id}`,
+      keywords: [b.vector, b.severity, b.difficulty, b.category]
+    })
+  })
+
+  // 17. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

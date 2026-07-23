@@ -527,4 +527,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- Security Bulletin Board expansion (Released 2026-07-23) -->
+  <url>
+    <loc>https://www.aboutiam.com/bulletins/</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

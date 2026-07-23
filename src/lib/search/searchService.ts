@@ -12,6 +12,7 @@ import { ARCHITECTURES } from '../../data/architectureData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { EXPLORE_PRODUCTS } from '../../data/exploreData'
 import { CERTIFICATIONS } from '../../data/certificationsData'
+import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -295,7 +296,35 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 14. Add every remaining site page (sidebar/nav pages not covered above)
+  // 14. Add CVE & Vulnerability Research entries (derived from the shared researchData.ts —
+  // every CVE added there is automatically searchable, no separate list to sync)
+  CVE_DATABASE.forEach(c => {
+    items.push({
+      id: `cve-${c.id}`,
+      title: `${c.id}: ${c.title}`,
+      fullName: `${c.component} · ${c.difficulty}`,
+      description: c.description,
+      category: '🦠 CVE & Vulnerability Research',
+      link: `/research?cve=${c.id}`,
+      keywords: [c.component, c.vulnerabilityType, c.difficulty, String(c.cvss)]
+    })
+  })
+
+  // 15. Add RFC & Protocol Registry entries (derived from the shared researchData.ts —
+  // every RFC/draft added there is automatically searchable, no separate list to sync)
+  RFC_DATABASE.forEach(r => {
+    items.push({
+      id: `rfc-${rfcSlug(r.number)}`,
+      title: `${r.number}: ${r.title}`,
+      fullName: `${r.category} · ${r.difficulty}`,
+      description: r.description,
+      category: '📡 RFC & Protocol Registry',
+      link: `/research?rfc=${rfcSlug(r.number)}`,
+      keywords: [r.category, r.status, r.difficulty]
+    })
+  })
+
+  // 16. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

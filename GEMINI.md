@@ -43,7 +43,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/standards`** | `StandardsExplorer.tsx` | Living Standards & RFC Explorer. Visually explore standard specs and RFC timelines across OIDC, SAML, SCIM. Supports `?standard=<id>&tab=<tab>` deep links. A "Compliance Deadlines" tab (`?view=deadlines`) tracks regulatory deadlines (NIS2, DORA, PCI DSS 4.0, eIDAS 2.0, etc.) from `src/data/complianceDeadlines.ts`, filterable by jurisdiction with a past/upcoming toggle. (Phase 6) |
 | **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs — 24 architectures spanning Beginner (session/cookie auth, LDAP bind, social login, API keys, basic RBAC), Intermediate (JWT stateless APIs, SSO reverse proxy, step-up MFA, IGA access reviews, JIT PAM), and Advanced (Zero Trust, B2B SaaS, Multi-Cloud SPIFFE/SPIRE, PKI, banking/healthcare/government/manufacturing/retail) tiers, backed by `src/data/architectureData.ts` (§4S). Supports `?arch=<id>` deep links and a difficulty filter. |
 | **`/vendor`** | `VendorCenter.tsx` | Enterprise Ecosystem & Vendor Intelligence Portal. Comprehensive profiles for 18 major platforms, including a flagship featured profile for Thales (OneWelcome, SafeNet Trusted Access, IdCloud) with inner ASCII diagrams, Troubleshooting, and custom Interview Prep. Integrates the Live Identity Intelligence Hub (news, searchable CVE code patch repairs, and visual AI Ingestion Pipeline Simulator), Community Events Calendars with alerts, and Social dashboards with AI Weekly Digest builders. A "Compare" toggle switches the vendor list to multi-select checkboxes (up to 3) and renders a side-by-side attribute table; deep-linkable via `?compare=<key1>,<key2>`. |
-| **`/research`** | `ResearchCenter.tsx` | Searchable identity CVE directory with side-by-side remediation code patches and active standard IETF RFC drafts. |
+| **`/research`** | `ResearchCenter.tsx` | Identity Research & CVE Tracker — 13 beginner-to-advanced CVEs with side-by-side vulnerable/secure code patches, and 17 IETF RFCs/drafts spanning the core IAM protocol registry, backed by `src/data/researchData.ts`. Difficulty-filterable on both panels, deep-linkable via `?cve=<id>`/`?rfc=<slug>`, and individually searchable. |
 | **`/patterns`** | `DesignPatternLibrary.tsx` | Hardened design patterns, sequence flows, and checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless. |
 | **`/certifications`** | `CertificationHub.tsx` | Enterprise Certification Hub. 27 beginner-to-advanced identity certifications backed by `src/data/certificationsData.ts` (§4U) — spanning Fundamentals (SC-900, Security+, IDPro CIDPRO), Cloud & Workforce IAM (SC-300, AZ-500, Okta, Ping, AWS/GCP), Identity Governance (SailPoint, Saviynt, One Identity), PAM (CyberArk, BeyondTrust, Delinea), Security Leadership & GRC (CISSP, CCSP, CISM, CRISC), Privacy (IAPP CIPT/CIPM), and Cloud-Native (CKS). Difficulty/category filterable, deep-linkable via `?cert=<id>`, and individually searchable; flagship certs carry an interactive mock quiz. |
 | **`/career-center`** | `InterviewCareerCenter.tsx` | Comprehensive role-based interview preparation system spanning 6 role tracks featuring MCQs, scenarios, design simulations, coding terminals, timed mocks, and resume guidelines. |
@@ -626,3 +626,39 @@ No route-wiring needed (§4D) — the `?arch=<id>` deep link reuses the existing
 ```
 
 If adding a new category value, also add it to the exported `CERTIFICATION_CATEGORIES` array in the same file so the category grouping in the selector stays in sync. No route-wiring needed (§4D) — the `?cert=<id>` deep link reuses the existing `/certifications` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `CERTIFICATIONS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers are represented.
+
+---
+
+### 🏛️ W. How to Add a New CVE or RFC/Draft (`/research`)
+
+`src/data/researchData.ts` is the single source of truth for the `/research` "Identity Research & CVE Tracker" — `ResearchCenter.tsx` and the search index (`searchService.ts`) both import the same `CVE_DATABASE`/`RFC_DATABASE` arrays, so appending an object to either makes it render in the difficulty-filtered list **and** become searchable/deep-linkable (`?cve=<id>` / `?rfc=<slug>`) with no second list to sync. This closes the same class of drift bug fixed for standards/case-studies/references/architectures/explore products/certifications (§4Q-V): both databases used to be defined inline in the page component with no `difficulty` field and zero search wiring — `/research` was only reachable via the generic "📄 Site Pages" fallback with no way to deep-link into a specific entry.
+
+```typescript
+// CVE_DATABASE entry
+{
+  id: 'CVE-YYYY-NNNNN',
+  title: 'Descriptive Vulnerability Name',
+  cvss: 8.8,
+  component: 'Affected Library / Product',
+  vulnerabilityType: 'e.g. Signature Wrapping, Command Injection, SSRF',
+  difficulty: 'Intermediate', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips and badge
+  description: '...',
+  exploitScenario: '...',
+  patchRemediation: '...',
+  vulnerableCode: `// insecure snippet`,
+  secureCode: `// hardened snippet`
+}
+
+// RFC_DATABASE entry
+{
+  number: 'RFC 1234', // or a draft name like "OAuth 2.1" — run through rfcSlug() for its ?rfc= id
+  title: 'Full Standard/Draft Title',
+  status: 'Live', // 'Live' | 'Draft' | 'Deprecated'
+  category: 'Tokens', // free-form grouping label shown on the card
+  difficulty: 'Beginner', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips and badge
+  description: '...',
+  keyTakeaway: 'One actionable, security-relevant takeaway.'
+}
+```
+
+The `rfcSlug()` helper (also exported from `researchData.ts`) turns a `number` field into its stable `?rfc=<slug>` id (e.g. `"RFC 6749"` → `"rfc-6749"`, `"OAuth 2.1"` → `"oauth-2-1"`) — always use it rather than hand-writing the slug, so the data file and the deep link never drift apart. No route-wiring needed (§4D) — both `?cve=<id>` and `?rfc=<slug>` deep links reuse the existing `/research` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in both `CVE_DATABASE` and `RFC_DATABASE` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers are represented in each dataset.

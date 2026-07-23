@@ -80,6 +80,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Interview & Career Center](https://www.aboutiam.com/career-center/): Role-based interview preparation, multiple-choice mastery, incident scenarios, system design, code terminals, and resume guidance.
 - [Landscape Directory](https://www.aboutiam.com/explore/): Product blueprints with copyable integration code.
 - [AI Architect Chat](https://www.aboutiam.com/assistant/): Simulated RAG assistant producing sample policies and Rego scripts.
+- [Identity Research & CVE Tracker](https://www.aboutiam.com/research/): Beginner-to-advanced library of identity-relevant CVEs (Log4Shell, Spring4Shell, Zerologon, Shellshock, SAML signature wrapping, JWT `alg:none`, and more) with vulnerable-vs-secure code patches, plus a difficulty-tagged IETF RFC/draft protocol registry (OAuth, JWT, PKCE, SCIM, DPoP, GNAP, Kerberos, LDAP, TOTP).
 
 ## Optional
 

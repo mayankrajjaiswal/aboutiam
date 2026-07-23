@@ -6,6 +6,7 @@ import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { ARCHITECTURES } from '../../data/architectureData'
 import { CERTIFICATIONS } from '../../data/certificationsData'
 import { EXPLORE_PRODUCTS, EXPLORE_TYPES } from '../../data/exploreData'
+import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
 
 describe('getSearchIndex deep-link entries', () => {
   it('indexes all living standards with ?standard= deep links', () => {
@@ -190,6 +191,52 @@ describe('getSearchIndex deep-link entries', () => {
 
   it('gives every certification a unique id', () => {
     const ids = CERTIFICATIONS.map((c) => c.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in researchData.ts\'s CVE_DATABASE with a ?cve= deep link', () => {
+    const index = getSearchIndex()
+    CVE_DATABASE.forEach((cve) => {
+      const results = index.search(cve.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `cve-${cve.id}`)
+      expect(match, `expected "${cve.title}" (${cve.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/research?cve=${cve.id}`)
+      expect((match as unknown as { category: string }).category).toBe('🦠 CVE & Vulnerability Research')
+    })
+  })
+
+  it('covers CVE research entries across all three difficulty tiers', () => {
+    const difficulties = new Set(CVE_DATABASE.map((c) => c.difficulty))
+    expect(difficulties.has('Beginner')).toBe(true)
+    expect(difficulties.has('Intermediate')).toBe(true)
+    expect(difficulties.has('Advanced')).toBe(true)
+  })
+
+  it('gives every CVE entry a unique id', () => {
+    const ids = CVE_DATABASE.map((c) => c.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in researchData.ts\'s RFC_DATABASE with a ?rfc= deep link', () => {
+    const index = getSearchIndex()
+    RFC_DATABASE.forEach((rfc) => {
+      const results = index.search(rfc.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `rfc-${rfcSlug(rfc.number)}`)
+      expect(match, `expected "${rfc.title}" (${rfc.number}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/research?rfc=${rfcSlug(rfc.number)}`)
+      expect((match as unknown as { category: string }).category).toBe('📡 RFC & Protocol Registry')
+    })
+  })
+
+  it('covers RFC/draft registry entries across all three difficulty tiers', () => {
+    const difficulties = new Set(RFC_DATABASE.map((r) => r.difficulty))
+    expect(difficulties.has('Beginner')).toBe(true)
+    expect(difficulties.has('Intermediate')).toBe(true)
+    expect(difficulties.has('Advanced')).toBe(true)
+  })
+
+  it('gives every RFC/draft entry a unique slug id', () => {
+    const ids = RFC_DATABASE.map((r) => rfcSlug(r.number))
     expect(new Set(ids).size).toBe(ids.length)
   })
 })

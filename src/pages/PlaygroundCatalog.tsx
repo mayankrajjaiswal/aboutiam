@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -242,6 +242,58 @@ export default function PlaygroundCatalog() {
       link: "/playground/identity-broker",
       badge: "Active (Advanced)",
       enterpriseProducts: "Okta, Azure AD, PingIdentity, Thales OneWelcome"
+    },
+    {
+      title: "Passwordless Magic Link & Step-Up Auth Lab",
+      desc: "Log in with nothing but an email inbox, then watch policy force a stronger WebAuthn/OTP factor before a high-risk action is authorized.",
+      icon: Mail,
+      link: "/playground/magic-link-stepup",
+      badge: "Active (Beginner)",
+    },
+    {
+      title: "Credential Stuffing & Password Spray Defense Lab",
+      desc: "Replay leaked credential pairs against a mock login endpoint, then toggle rate-limiting, CAPTCHA, breached-password detection, and lockout to drop the takeover rate to zero.",
+      icon: ShieldAlert,
+      link: "/playground/credential-stuffing",
+      badge: "Active (Beginner)",
+    },
+    {
+      title: "CIAM Consent & Progressive Profiling Sandbox",
+      desc: "Grant or deny individual OAuth scopes on a social-login consent screen, then watch a customer-identity app collect profile fields progressively across sessions.",
+      icon: UserPlus,
+      link: "/playground/ciam-consent",
+      badge: "Active (Core)",
+    },
+    {
+      title: "Access Certification Campaign Simulator",
+      desc: "Play the reviewer role in a quarterly access recertification campaign — approve or revoke entitlements and watch Separation-of-Duties (SoD) conflicts get flagged automatically.",
+      icon: ClipboardCheck,
+      link: "/playground/access-certification",
+      badge: "Active (Standard)",
+      enterpriseProducts: "SailPoint, Saviynt, Omada"
+    },
+    {
+      title: "Adaptive Risk-Based Authentication Engine",
+      desc: "Toggle risk signals (impossible travel, device reputation, behavior anomaly) and watch a composite UEBA-style score drive an allow / step-up / block decision in real time.",
+      icon: Gauge,
+      link: "/playground/risk-engine",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "PAM Vaulting & Just-in-Time Elevation Lab",
+      desc: "Request, approve, and time-box a privileged credential checkout, then watch the vault auto-rotate the secret the instant the session ends.",
+      icon: Vault,
+      link: "/playground/pam-vaulting",
+      badge: "Active (Advanced)",
+      enterpriseProducts: "CyberArk, Thales SafeNet, HashiCorp Vault"
+    },
+    {
+      title: "Hybrid Identity Sync Lab (PHS / PTA / Federation)",
+      desc: "Compare Password Hash Sync, Pass-Through Authentication, and Federation (AD FS) and see how each handles an on-prem network outage.",
+      icon: Cloud,
+      link: "/playground/hybrid-ad-sync",
+      badge: "Active (Advanced)",
+      enterpriseProducts: "Microsoft Entra Connect, AD FS"
     }
   ]
 

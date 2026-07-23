@@ -31,6 +31,13 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [CAEP Continuous Access Evaluation Lab](https://www.aboutiam.com/playground/caep/): Shared Signals Framework transmitter pushing signed SETs to receivers in real time.
 - [Verifiable Credentials & DID Lab](https://www.aboutiam.com/playground/vc-did/): Issuer/Holder/Verifier flow signing and verifying a real Ed25519 VC and Presentation.
 - [Identity Broker & Federation Sandbox](https://www.aboutiam.com/playground/identity-broker/): Explore multi-tenant single sign-on (SSO), federation routing, and real-time SAML-to-OIDC token translation topologies.
+- [Passwordless Magic Link & Step-Up Auth Lab](https://www.aboutiam.com/playground/magic-link-stepup/): Email magic-link login followed by a forced step-up to WebAuthn/OTP before a high-risk action.
+- [Credential Stuffing & Password Spray Defense Lab](https://www.aboutiam.com/playground/credential-stuffing/): Replay leaked credentials against a mock login and toggle rate-limiting, CAPTCHA, breached-password detection, and lockout defenses.
+- [CIAM Consent & Progressive Profiling Sandbox](https://www.aboutiam.com/playground/ciam-consent/): Social login consent screen, OAuth scope grants, and progressive profile-field collection across sessions.
+- [Access Certification Campaign Simulator](https://www.aboutiam.com/playground/access-certification/): Reviewer walks user-to-entitlement rows, approves or revokes access, and flags Separation-of-Duties (SoD) conflicts.
+- [Adaptive Risk-Based Authentication Engine](https://www.aboutiam.com/playground/risk-engine/): Composite risk score from impossible travel, device reputation, and behavior anomaly signals drives allow, step-up, or block decisions.
+- [PAM Vaulting & Just-in-Time Elevation Lab](https://www.aboutiam.com/playground/pam-vaulting/): Check out a vaulted credential, request time-boxed JIT elevation and approval, toggle session recording, and auto rotate on check-in.
+- [Hybrid Identity Sync Lab (PHS / PTA / Federation)](https://www.aboutiam.com/playground/hybrid-ad-sync/): Toggle between Password Hash Sync, Pass-Through Authentication, and Federation (AD FS) to see how each handles an on-prem login.
 
 ## Security Tools (free, client-side utilities)
 
@@ -58,6 +65,9 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Mozilla SOPS GitOps Secrets Simulator](https://www.aboutiam.com/tools/sops-simulator/): Selectively encrypt or decrypt configuration values inside YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys.
 - [Hardware Key Ring & HSM Emulator](https://www.aboutiam.com/tools/key-ring/): Generate and execute RSA, ECDSA, and AES-GCM-256 keys locally in browser-native IndexedDB securely, emulating hardware HSM vaults.
 - [Standards Conformance Checker](https://www.aboutiam.com/tools/conformance-checker/): Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules.
+- [PBKDF2 Key Derivation & Hash Verifier](https://www.aboutiam.com/tools/pbkdf2-generator/): Derive a key from a password with a configurable salt, iteration count, and hash function, and verify a password against a stored derived hash.
+- [PEM Certificate Bundle Splitter & Chain Order Checker](https://www.aboutiam.com/tools/cert-bundle-splitter/): Split a multi-certificate PEM bundle into individual certificates and check leaf-to-root chain ordering.
+- [DID Document Validator & Resolver Preview](https://www.aboutiam.com/tools/did-document-validator/): Validate a DID Document JSON against W3C DID Core structural requirements with a resolved field preview.
 
 ## Advanced Ecosystem & Governance
 

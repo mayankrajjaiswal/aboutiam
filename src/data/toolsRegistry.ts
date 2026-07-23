@@ -7,7 +7,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
-  Layers, Fingerprint, Wallet, ClipboardCheck,
+  Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
 } from 'lucide-react'
 
 export type ToolCategory =
@@ -516,7 +516,7 @@ export const TOOLS: ToolMeta[] = [
     ],
   },
   {
-    slug: 'keyring-manager',
+    slug: 'key-ring',
     title: 'Hardware Key Ring & HSM Emulator',
     description: 'Generate, store, and execute asymmetric and symmetric cryptographic keys locally inside your browser\'s secure sandbox — emulating a corporate Hardware Security Module (HSM).',
     category: 'Hashing, Encoding & Secrets',
@@ -550,6 +550,58 @@ export const TOOLS: ToolMeta[] = [
       { label: 'Decode & pretty-print OIDC discovery docs →', href: '/tools/oidc-discovery' },
       { label: 'Build SAML SP/IdP metadata XML →', href: '/tools/saml-metadata-builder' },
     ],
+  },
+  {
+    slug: 'pbkdf2-generator',
+    title: 'PBKDF2 Key Derivation & Hash Verifier',
+    description: 'Derive a key from a password using PBKDF2 with a configurable salt, iteration count, and hash function, and verify a password against a stored derived hash — all via the Web Crypto API.',
+    category: 'Hashing, Encoding & Secrets',
+    icon: KeyRound,
+    phase: 3,
+    status: 'live',
+    keywords: ['pbkdf2 generator', 'pbkdf2 online', 'key derivation function', 'pbkdf2 verifier', 'password hashing'],
+    analogy: 'PBKDF2 is like a padlock you deliberately make slow to turn: you mix in a random pinch of salt so two people\'s locks never look alike, then force the key through hundreds of thousands of turns on purpose, so an attacker trying every possible key has to wait through all those turns for each guess too.',
+    expert: 'RFC 8018 (PKCS #5 v2.1). PBKDF2 repeatedly applies an HMAC (SHA-256/384/512 here) to a password and a random salt for a configurable iteration count, producing a derived key deliberately expensive to recompute — the same primitive underlying most password-based key derivation for disk/file encryption. OWASP currently recommends at least 600,000 iterations for PBKDF2-HMAC-SHA256.',
+    faqs: [
+      { q: 'Is PBKDF2 better than bcrypt?', a: 'Both are approved, widely deployed choices. bcrypt has a built-in work factor and no separate salt to manage; PBKDF2 is NIST-approved and often required in FIPS-regulated environments. Argon2 is preferred for new systems where available, since both bcrypt and PBKDF2 are less GPU-resistant.' },
+      { q: 'Why does the output include the salt and iteration count?', a: 'The encoded string (pbkdf2$hash$iterations$salt$hash) is self-describing, so a verifier never needs those parameters supplied out-of-band — this is the same convention bcrypt-style hashes use.' },
+      { q: 'Is my password sent anywhere?', a: 'No — crypto.subtle.deriveBits runs entirely inside your browser tab; nothing is uploaded.' },
+    ],
+    relatedLinks: [{ label: 'Compare against bcrypt →', href: '/tools/bcrypt-generator' }],
+  },
+  {
+    slug: 'cert-bundle-splitter',
+    title: 'PEM Certificate Bundle Splitter & Chain Order Checker',
+    description: 'Paste a multi-certificate PEM bundle (e.g. a fullchain.pem) to split it into individual certificates, inspect each one\'s subject/issuer/expiry, and check whether the leaf-to-root chain order is correct.',
+    category: 'PKI & Certificates',
+    icon: Combine,
+    phase: 3,
+    status: 'live',
+    keywords: ['pem bundle splitter', 'fullchain.pem splitter', 'certificate chain order checker', 'split pem certificates'],
+    analogy: 'A fullchain.pem is a stack of ID cards stapled together — yours on top, then whoever vouched for you, then whoever vouched for them. This tool un-staples the stack and checks that each card\'s "vouched for by" line actually matches the card sitting right behind it.',
+    expert: 'Splits a PEM bundle on -----BEGIN CERTIFICATE----- boundaries, parses each certificate\'s subject/issuer Distinguished Name (reusing the same RFC 5280 ASN.1 walker as the X.509 Certificate Decoder), and verifies chain order by confirming certificate N\'s issuer DN matches certificate N+1\'s subject DN, flagging the first break as a misordered or incomplete chain.',
+    faqs: [
+      { q: 'Does this validate the cryptographic signatures?', a: 'No — it checks structural DN chaining (issuer[N] == subject[N+1]) and expiry, not signature validity. Use a full TLS client or openssl verify for cryptographic chain validation.' },
+      { q: 'What counts as correct order?', a: 'Leaf (your server certificate) first, followed by any intermediate CAs, with the root CA last or omitted entirely — most servers should omit the root, since clients already trust it locally.' },
+    ],
+    relatedLinks: [{ label: 'Inspect one certificate in detail →', href: '/tools/x509-certificate-decoder' }, { label: 'See a full chain validated live →', href: '/playground/cert-chain' }],
+  },
+  {
+    slug: 'did-document-validator',
+    title: 'DID Document Validator & Resolver Preview',
+    description: 'Paste a Decentralized Identifier (DID) Document JSON and validate it against the W3C DID Core structural requirements, with a pretty-printed, field-by-field resolved preview.',
+    category: 'Emerging & Decentralized Identity',
+    icon: FileJson2,
+    phase: 3,
+    status: 'live',
+    keywords: ['did document validator', 'did core validator', 'did:key validator', 'did:web validator', 'decentralized identifier checker'],
+    analogy: 'A DID Document is like a self-published business card that also lists exactly which of your signatures and stamps are valid — this tool checks that the card actually names itself correctly and lists at least one usable signature method, the way a notary would check a document is properly formatted before accepting it.',
+    expert: 'W3C DID Core 1.0. Validates that the document\'s "id" is a well-formed DID URI, that "verificationMethod" entries each declare a supported type (e.g. Ed25519VerificationKey2020, JsonWebKey2020) with an embedded public key, and that relationship arrays (authentication, assertionMethod, keyAgreement) reference an id actually present in verificationMethod — the structural contract a real resolver relies on.',
+    faqs: [
+      { q: 'Does this resolve a live did:web or did:key over the network?', a: 'No — paste the document JSON directly (e.g. copied from a real resolver\'s output). Nothing is fetched or uploaded; validation runs entirely on the JSON you provide.' },
+      { q: 'What is the most common mistake this catches?', a: 'A "authentication" entry referencing a verificationMethod id that was never declared, or a verificationMethod missing its public key material (publicKeyJwk/publicKeyMultibase).' },
+    ],
+    relatedLinks: [{ label: 'Generate a did:key keypair →', href: '/tools/did-key-generator' }, { label: 'Issue and verify a Verifiable Credential →', href: '/playground/vc-did' }],
   },
 ]
 

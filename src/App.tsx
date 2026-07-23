@@ -50,6 +50,9 @@ import SopsSimulator from './pages/Tools/SopsSimulator'
 import InterviewCareerCenter from './pages/InterviewCareerCenter'
 import KeyRingManager from './pages/Tools/KeyRingManager'
 import ConformanceChecker from './pages/Tools/ConformanceChecker'
+import Pbkdf2Generator from './pages/Tools/Pbkdf2Generator'
+import CertBundleSplitter from './pages/Tools/CertBundleSplitter'
+import DidDocumentValidator from './pages/Tools/DidDocumentValidator'
 import IdentityBrokerSandbox from './pages/Playgrounds/IdentityBrokerSandbox'
 import JWTStudio from './pages/Playgrounds/JWTStudio'
 import OAuthVisualizer from './pages/Playgrounds/OAuthVisualizer'
@@ -105,6 +108,15 @@ import XacmlPolicyEngine from './pages/Playgrounds/XacmlPolicyEngine'
 import GnapVisualizer from './pages/Playgrounds/GnapVisualizer'
 import CaepLab from './pages/Playgrounds/CaepLab'
 import VcDidLab from './pages/Playgrounds/VcDidLab'
+
+// IAM Curriculum Expansion: Beginner-to-Advanced Playground Coverage
+import MagicLinkStepUp from './pages/Playgrounds/MagicLinkStepUp'
+import CredentialStuffingLab from './pages/Playgrounds/CredentialStuffingLab'
+import CiamConsentSandbox from './pages/Playgrounds/CiamConsentSandbox'
+import AccessCertificationLab from './pages/Playgrounds/AccessCertificationLab'
+import RiskEngine from './pages/Playgrounds/RiskEngine'
+import PamVaultingLab from './pages/Playgrounds/PamVaultingLab'
+import HybridAdSyncLab from './pages/Playgrounds/HybridAdSyncLab'
 import CaseStudyCenter from './pages/CaseStudyCenter'
 import IdentityDecisionMatrix from './pages/IdentityDecisionMatrix'
 import ThreatModelingStudio from './pages/ThreatModelingStudio'
@@ -185,6 +197,9 @@ export default function App() {
               <Route path="/tools/sops-simulator" element={<SopsSimulator />} />
               <Route path="/tools/key-ring" element={<KeyRingManager />} />
               <Route path="/tools/conformance-checker" element={<ConformanceChecker />} />
+              <Route path="/tools/pbkdf2-generator" element={<Pbkdf2Generator />} />
+              <Route path="/tools/cert-bundle-splitter" element={<CertBundleSplitter />} />
+              <Route path="/tools/did-document-validator" element={<DidDocumentValidator />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />
@@ -218,6 +233,13 @@ export default function App() {
               <Route path="/playground/caep" element={<CaepLab />} />
               <Route path="/playground/vc-did" element={<VcDidLab />} />
               <Route path="/playground/identity-broker" element={<IdentityBrokerSandbox />} />
+              <Route path="/playground/magic-link-stepup" element={<MagicLinkStepUp />} />
+              <Route path="/playground/credential-stuffing" element={<CredentialStuffingLab />} />
+              <Route path="/playground/ciam-consent" element={<CiamConsentSandbox />} />
+              <Route path="/playground/access-certification" element={<AccessCertificationLab />} />
+              <Route path="/playground/risk-engine" element={<RiskEngine />} />
+              <Route path="/playground/pam-vaulting" element={<PamVaultingLab />} />
+              <Route path="/playground/hybrid-ad-sync" element={<HybridAdSyncLab />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />

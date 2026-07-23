@@ -14,6 +14,7 @@ import { EXPLORE_PRODUCTS } from '../../data/exploreData'
 import { CERTIFICATIONS } from '../../data/certificationsData'
 import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
 import { BULLETINS } from '../../data/bulletinsData'
+import { BREACHES } from '../../data/breachesData'
 import { ROUTE_META } from '../../routeMeta'
 
 export interface SearchItem {
@@ -67,16 +68,6 @@ const SIMULATORS_LIST = [
   { id: 'risk-engine', title: 'Adaptive Risk-Based Authentication Engine', desc: 'Composite risk score from impossible travel, device reputation, and behavior anomaly signals drives allow, step-up, or block decisions.', link: '/playground/risk-engine', kw: ['risk based authentication', 'adaptive auth', 'ueba', 'impossible travel', 'device reputation', 'risk score'] },
   { id: 'pam-vaulting', title: 'PAM Vaulting & Just-in-Time Elevation Lab', desc: 'Check out a vaulted credential, request time-boxed JIT elevation and approval, toggle session recording, and auto rotate on check-in.', link: '/playground/pam-vaulting', kw: ['pam', 'privileged access', 'vaulting', 'just-in-time', 'jit elevation', 'session recording', 'credential rotation'] },
   { id: 'hybrid-ad-sync', title: 'Hybrid Identity Sync Lab (PHS / PTA / Federation)', desc: 'Toggle between Password Hash Sync, Pass-Through Authentication, and Federation (AD FS) to see how each handles an on-prem login.', link: '/playground/hybrid-ad-sync', kw: ['hybrid identity', 'password hash sync', 'pass-through authentication', 'federation', 'ad fs', 'azure ad connect'] }
-]
-
-// Statically define the 6 breaches for the museum
-const BREACHES_LIST = [
-  { id: 'breach-goldensaml', title: 'SolarWinds Golden SAML Hack', desc: 'Historical Supply-Chain Incident (2020) by Nobelium. Attackers stole private AD FS signing keys to forge SAML assertions offline.', link: '/wall-of-shame?tab=breaches&lab=goldensaml', kw: ['solarwinds', 'golden saml', 'nobelium', 'adfs', 'signing key', 'supply chain', '2020'] },
-  { id: 'breach-pushfatigue', title: 'MFA Push Fatigue Prompt Bombing', desc: 'Identity hijacking vector (2022) affecting Uber/Cisco. Attackers spam push notifications until users click approve.', link: '/wall-of-shame?tab=breaches&lab=pushfatigue', kw: ['uber', 'cisco', 'push fatigue', 'spam', 'prompt bombing', 'mfa bypass', '2022'] },
-  { id: 'breach-wildcard', title: 'OAuth Wildcard Redirect Hijacks', desc: 'Front-channel token-leaking flaw. Misconfigured server allowed *.attacker-domain.com to steal login codes.', link: '/wall-of-shame?tab=breaches&lab=wildcard', kw: ['wildcard', 'oauth', 'redirect', 'hijack', 'code theft', 'configuration'] },
-  { id: 'breach-oktahar', title: 'Okta HAR Support Ticket Cookie Theft', desc: 'Session hijacking incident (2023). Support HAR logs contained active admin session cookies loaded directly into attacker browsers.', link: '/wall-of-shame?tab=breaches&lab=oktahar', kw: ['okta', 'har', 'cookie', 'session', 'stolen', 'support', '2023'] },
-  { id: 'breach-silversaml', title: 'Entra ID Silver SAML Attack', desc: 'Targeted SaaS hijacking (2024). Attackers steal self-signed application signing keys to bypass central AD domain rules.', link: '/wall-of-shame?tab=breaches&lab=silversaml', kw: ['silver saml', 'entra id', 'entra', 'microsoft', 'saas', 'signing key', '2024'] },
-  { id: 'breach-lastpass', title: 'LastPass Offline Vault Cracking', desc: 'Offline brute force attack (2022). Weak corporate PBKDF2 iteration counts allowed rapid GPU hash dictionary cracking.', link: '/wall-of-shame?tab=breaches&lab=lastpass', kw: ['lastpass', 'vault', 'pbkdf2', 'iterations', 'crack', 'brute force', '2022'] }
 ]
 
 // Statically define the 19 design patterns (Beginner -> Advanced) in the Pattern Library
@@ -174,16 +165,17 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 5. Add Breaches
-  BREACHES_LIST.forEach(b => {
+  // 5. Add Breaches (derived from the shared breachesData.ts — every breach added there
+  // is automatically searchable, no separate list to sync)
+  BREACHES.forEach(b => {
     items.push({
-      id: b.id,
+      id: `breach-${b.id}`,
       title: b.title,
-      fullName: 'Historical Cyber Attack Profile',
-      description: b.desc,
+      fullName: `${b.category} · ${b.difficulty}`,
+      description: b.summary,
       category: '💣 Breach Museum Cases',
-      link: b.link,
-      keywords: b.kw
+      link: `/wall-of-shame?tab=breaches&lab=${b.id}`,
+      keywords: [b.company, b.category, b.difficulty, String(b.year)]
     })
   })
 

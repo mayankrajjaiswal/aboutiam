@@ -8,6 +8,7 @@ import { CERTIFICATIONS } from '../../data/certificationsData'
 import { EXPLORE_PRODUCTS, EXPLORE_TYPES } from '../../data/exploreData'
 import { CVE_DATABASE, RFC_DATABASE, rfcSlug } from '../../data/researchData'
 import { BULLETINS, BULLETIN_CATEGORIES } from '../../data/bulletinsData'
+import { BREACHES, BREACH_CATEGORIES } from '../../data/breachesData'
 
 describe('getSearchIndex deep-link entries', () => {
   it('indexes all living standards with ?standard= deep links', () => {
@@ -266,6 +267,34 @@ describe('getSearchIndex deep-link entries', () => {
 
   it('gives every security bulletin a unique id', () => {
     const ids = BULLETINS.map((b) => b.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in breachesData.ts with a ?lab= deep link — closes the breaches/search drift bug', () => {
+    const index = getSearchIndex()
+    BREACHES.forEach((b) => {
+      const results = index.search(b.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `breach-${b.id}`)
+      expect(match, `expected "${b.title}" (${b.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/wall-of-shame?tab=breaches&lab=${b.id}`)
+      expect((match as unknown as { category: string }).category).toBe('💣 Breach Museum Cases')
+    })
+  })
+
+  it('covers breaches across all three difficulty tiers and every category', () => {
+    const difficulties = new Set(BREACHES.map((b) => b.difficulty))
+    expect(difficulties.has('Beginner')).toBe(true)
+    expect(difficulties.has('Intermediate')).toBe(true)
+    expect(difficulties.has('Advanced')).toBe(true)
+
+    const categories = new Set(BREACHES.map((b) => b.category))
+    BREACH_CATEGORIES.forEach((cat) => {
+      expect(categories.has(cat), `expected at least one breach in category "${cat}"`).toBe(true)
+    })
+  })
+
+  it('gives every breach a unique id', () => {
+    const ids = BREACHES.map((b) => b.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 })

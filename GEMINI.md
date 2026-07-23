@@ -91,7 +91,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/explore`** | `Explore.tsx` | IAM Landscape Directory. 21 products spanning Open Source IdPs, Enterprise/Workforce SaaS, CIAM, Directory Services, PAM & Access, and Secrets Engines — each tagged Beginner/Intermediate/Advanced, backed by `src/data/exploreData.ts`. Supports type + difficulty filters, `?product=<id>` deep links, and copyable integration code blocks. |
 | **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Intelligent platform navigator, protocol comparison engine, and customized learning planner. |
 | **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 65 categorized standard terms with analogies and specs. Each term supports bookmarking (`BookmarkButton`) and carries a `ContentFeedback` accuracy widget. |
-| **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history, SolarWinds Golden SAML, and push-bombing fatigue. Each breach lab carries a `ContentFeedback` accuracy widget. |
+| **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history plus a difficulty-filterable Breach Archive of 25 beginner-to-advanced incidents (SolarWinds Golden SAML, push-bombing fatigue, Storm-0558 signing-key forgery, Kerberoasting/DCSync, and more) backed by `src/data/breachesData.ts` (§4B). Each breach carries `ContentFeedback` and `BookmarkButton` widgets, and is deep-linkable via `?tab=breaches&lab=<id>`. |
 | **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards, interactive forms, and a static "Security & Transparency" section summarizing shipped CI/CSP hardening with a link to the GitHub Security tab. |
 | **`/terms`** | `Terms.tsx` | Terms, License & Disclaimer. MIT license summary, an educational/simulated-environment disclaimer for the attack-technique labs, and a no-warranty clause. Linked from Contributors and from the first-visit `DisclaimerModal`; intentionally excluded from the Sidebar nav. |
 | **`/timeline`** | `IdentityTimeline.tsx` | Interactive historical identity timeline from mainframes to post-2030 ambient trust with inline simulators. |
@@ -171,22 +171,34 @@ To add a new standard, acronym, or protocol definition to the **Master A-Z Gloss
 ```
 *The UI will automatically alphabetical-sort, categorize, and render the search results upon reloading!*
 
-### 💣 B. How to Add a New Breach to the Museum
-To add a new cyber-attack profile or historic case study to the **Vulnerability Lab**, open `src/pages/WallOfShame.tsx` and append a new breach object into the `breaches` array:
+### 💣 B. How to Add a New Breach to the Museum (`/wall-of-shame`)
+
+`src/data/breachesData.ts` is the single source of truth for the `/wall-of-shame` "Breach Archive" — `WallOfShame.tsx` and the search index (`searchService.ts`) both import the same `BREACHES` array, so appending one `Breach` object makes it render in the difficulty-filtered breach list **and** become searchable/deep-linkable (`?tab=breaches&lab=<id>`) with no second list to sync. This closes the same class of drift bug fixed for standards/case-studies/references/architectures/explore products/certifications/research/bulletins (§4Q-X): `searchService.ts` used to hand-maintain its own duplicate, hardcoded `BREACHES_LIST` with no `difficulty` field at all, while the 6 breaches themselves were hardcoded a second time inline inside `WallOfShame.tsx` with bespoke simulator UI and no shared data model — a 7th breach could only ever be added by hand-writing an entire new React simulator, which is why the museum stalled at 6 entries for so long.
+
 ```typescript
 {
-  id: 4,
-  title: 'My Custom Hack Title',
+  id: 'your-breach-id',
+  title: 'Full, Descriptive Incident Title',
   year: '2026',
-  company: 'Target Corp Name',
-  attack: 'Attack Vector Title',
-  desc: 'Detailed description of how the security failure occurred...',
-  vulnCode: `// Insecure code snippet`,
-  secureCode: `// Secure remediation code snippet`,
-  remediation: 'Detailed, code-level explanation of the modern defensive fix.'
+  company: 'Target Company / Program Name',
+  logo: '💥', // any emoji works as the list icon
+  category: 'Credential & Password Attacks', // one of BREACH_CATEGORIES — reuse an existing one where the topic fits
+  difficulty: 'Intermediate', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips
+  attackVector: 'Short attack vector label',
+  summary: '...', rootCause: '...',
+  timeline: ['Step one...', 'Step two...'],
+  vulnCode: `// insecure snippet`,
+  secureCode: `// hardened snippet`,
+  remediation: 'Detailed, code-level explanation of the modern defensive fix.',
+  lessons: ['...'],
+  rfcs: ['RFC 1234 (Spec Name)'], // optional, [] if none applies
+  relatedResources: [{ title: 'Related Tool/Playground', path: '/playground/...', type: 'playground' }]
 }
 ```
-*The timeline slider will dynamically add the new node instantly!*
+
+Most new entries should omit `interactiveLabId` — `WallOfShame.tsx` automatically renders a generic "Breach Profile" panel (summary, root cause, timeline, vulnerable/secure code, remediation, lessons) for any breach without one, which is what makes it practical to keep adding "almost every" IAM-relevant breach without hand-building a bespoke React simulator each time. Only the original 6 flagship breaches (`goldensaml`, `pushfatigue`, `wildcard`, `oktahar`, `silversaml`, `lastpass`) carry an `interactiveLabId` wiring them to their existing hand-built step-by-step simulators in `WallOfShame.tsx` — reserve that field for a breach that earns a fully custom interactive lab, not the default case.
+
+If adding a new category value, also add it to the exported `BREACH_CATEGORIES` array in the same file so the difficulty/category coverage stays in sync. No route-wiring needed (§4D) — the `?tab=breaches&lab=<id>` deep link reuses the existing `/wall-of-shame` route via the same mount-effect pattern described in §4I. Every breach automatically carries a `ContentFeedback` and `BookmarkButton` widget (id `breach-<id>`, §4K/§4L). Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `BREACHES` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `BREACH_CATEGORIES` value are represented.
 
 ### 🎓 C. How to Add a New Course Track to the Academy
 To add a new learning track or module to the **IAM Academy**, open `src/pages/Learn.tsx` and append a new `Track` object to the `tracks` array. Enforce six sub-modules per track to maintain the global graduation progress bar ratios.

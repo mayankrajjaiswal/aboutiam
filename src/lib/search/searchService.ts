@@ -7,6 +7,7 @@ import { VENDOR_CATALOG } from '../../data/vendorCatalog'
 import type { VendorType } from '../../data/vendorCatalog'
 import { COMPLIANCE_DEADLINES } from '../../data/complianceDeadlines'
 import { STANDARDS } from '../../data/standardsData'
+import { CASE_STUDIES } from '../../data/caseStudiesData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 import { ROUTE_META } from '../../routeMeta'
 
@@ -253,7 +254,21 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 10. Add Compliance Deadlines
+  // 10. Add Case Studies (derived from the shared caseStudiesData.ts — every case study
+  // added there is automatically searchable, no separate list to sync)
+  CASE_STUDIES.forEach(cs => {
+    items.push({
+      id: `case-${cs.id}`,
+      title: `${cs.company} — ${cs.title}`,
+      fullName: `${cs.category} · ${cs.difficulty}`,
+      description: cs.summary,
+      category: '🏢 Case Study Center',
+      link: `/case-studies?study=${cs.id}`,
+      keywords: [cs.company, cs.category, cs.difficulty, ...cs.rfcs]
+    })
+  })
+
+  // 11. Add Compliance Deadlines
   COMPLIANCE_DEADLINES.forEach(d => {
     items.push({
       id: `deadline-${d.id}`,
@@ -266,7 +281,7 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 11. Add every remaining site page (sidebar/nav pages not covered above)
+  // 12. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

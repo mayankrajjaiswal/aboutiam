@@ -6,24 +6,9 @@ import {
   Info, Calendar, Building, CalendarClock, ExternalLink
 } from 'lucide-react'
 import { getUpcomingDeadlines, getPastDeadlines, getJurisdictions } from '../data/complianceDeadlines'
+import { STANDARDS } from '../data/standardsData'
 
-// Define Standard Types
-interface IdentityStandard {
-  id: string
-  title: string
-  fullname: string
-  rfcs: string[]
-  year: string
-  summary: string
-  problem: string
-  whyExists: string
-  flowchart: string
-  messageFormat: string
-  vulnerabilities: string[]
-  bestPractices: string[]
-  vendorSupport: string[]
-  relatedResources: { title: string; path: string; type: 'tool' | 'playground' | 'references' }[]
-}
+const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const
 
 export default function StandardsExplorer() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -32,237 +17,7 @@ export default function StandardsExplorer() {
   const [pageView, setPageView] = useState<'standards' | 'deadlines'>('standards')
   const [deadlineJurisdiction, setDeadlineJurisdiction] = useState('All')
   const [showPastDeadlines, setShowPastDeadlines] = useState(false)
-
-  // Curated Living Identity Standards Directory
-  const STANDARDS: IdentityStandard[] = [
-    {
-      id: 'oauth21',
-      title: 'OAuth 2.1',
-      fullname: 'Consolidated Authorization Framework',
-      rfcs: ['RFC 6749', 'RFC 7636 (PKCE)', 'RFC 8252', 'RFC 6819'],
-      year: '2024 / 2025',
-      summary: 'OAuth 2.1 consolidates secure best-practices from OAuth 2.0, deprecating vulnerable Implicit and Resource Owner Password Credentials grants and mandating PKCE.',
-      problem: 'OAuth 2.0 had multiple legacy grant types (Implicit, Password) that exposed security credentials in browser histories and redirect flows, leading to token thefts.',
-      whyExists: 'To establish a secure-by-default baseline for modern API and application authorization without legacy security loopholes.',
-      flowchart: `
-+-------------------------------------------------------------+
-|                OAUTH 2.1 PKCE HANDSHAKE FLOW                |
-+-------------------------------------------------------------+
-
-  [ Browser Client / SPA ]              [ Authorization Server ]
-             |                                     |
-             |--- 1. /authorize + challenge ------>|
-             |<-- 2. Redirect + Auth Code ---------|
-             |                                     |
-             |--- 3. /token + verifier ----------->|
-             |<-- 4. Access Token (JWT) -----------|
-`,
-      messageFormat: `// Token Exchange Token Request (POST /token)
-POST /token HTTP/1.1
-Host: auth.company.com
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=authorization_code
-&code=SplxlOBeZQQYbYS6WxSbIA
-&redirect_uri=https://app.company.com/callback
-&client_id=spa-client-1
-&code_verifier=dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk`,
-      vulnerabilities: [
-        'Authorization Code Interception (Mitigated by PKCE).',
-        'Open Redirection URI Hijacking.',
-        'Token replay via un-constrained Bearer credentials (Mitigated by DPoP).'
-      ],
-      bestPractices: [
-        'Mandate PKCE S256 verifications on all public clients.',
-        'Validate redirects against exact string comparisons, disabling wildcard matching.',
-        'Enforce Sender-Constrained tokens (DPoP) on high-risk APIs.'
-      ],
-      vendorSupport: [
-        'Thales STA and OneWelcome: Complete compliance with visual orchestration.',
-        'Okta / Auth0: Complete native compliance.',
-        'Keycloak: Enforces OAuth 2.1 constraints out-of-the-box in modern versions.',
-        'Microsoft Entra ID: Supports PKCE S256 and auth code flows.'
-      ],
-      relatedResources: [
-        { title: 'OAuth Request Builder Tool', path: '/tools/oauth-builder', type: 'tool' },
-        { title: 'OAuth PKCE Generator Tool', path: '/tools/oauth-pkce-generator', type: 'tool' },
-        { title: 'OAuth 2.0 Attack Lab', path: '/playground/oauth-attack', type: 'playground' }
-      ]
-    },
-    {
-      id: 'oidc',
-      title: 'OIDC 1.0',
-      fullname: 'OpenID Connect Core 1.0',
-      rfcs: ['OIDC Core 1.0 Specs'],
-      year: '2014',
-      summary: 'OpenID Connect is a simple identity layer built on top of the OAuth 2.0 protocol, enabling Clients to verify the identity of the End-User based on the authentication performed by an Authorization Server.',
-      problem: 'OAuth 2.0 was designed for authorization (delegated access), leaving developers to hand-roll custom user authentication structures, leading to non-standard, vulnerable "Login with OAuth" implementations.',
-      whyExists: 'To standardize user authentication, introducing a cryptographically signed ID Token (JWT) and a standard /userinfo endpoint.',
-      flowchart: `
-+-------------------------------------------------------------+
-|                     OIDC CORE HANDSHAKE                     |
-+-------------------------------------------------------------+
-
-  [ Browser Client / SPA ]              [ OIDC Identity Server ]
-             |                                     |
-             |--- 1. Login Request (scope=openid)->|
-             |<-- 2. ID Token + Access Token ------|
-             |                                     |
-             |--- 3. GET /userinfo + token ------->|
-             |<-- 4. User Profile Claims (JSON) ---|
-`,
-      messageFormat: `// Decoded ID Token (Header & Payload Claims)
-{
-  "alg": "RS256",
-  "kid": "key-123"
-}
-{
-  "iss": "https://auth.company.com",
-  "sub": "user_id_9981",
-  "aud": "spa-client-1",
-  "exp": 1783430000,
-  "name": "Alex Identity",
-  "email": "alex@company.com"
-}`,
-      vulnerabilities: [
-        'Algorithm Confusion (tampering with JWT headers to alg: none).',
-        'JWKS Spoofing (re-routing key checks to attacker keys).',
-        'ID Token leakage in public browser history.'
-      ],
-      bestPractices: [
-        'Always validate JWT signatures on downstream resource gates.',
-        'Cache and rate-limit JWKS endpoint fetches strictly.',
-        'Reject "none" algorithms explicitly in signature verification libraries.'
-      ],
-      vendorSupport: [
-        'Thales OneWelcome and STA: Extensively supports OIDC federated login, identity assertions, and secure /userinfo claims.',
-        'Auth0 / Clerk: Complete native compliance.',
-        'Ping Identity: Highly customizable enterprise OIDC configurations.',
-        'Microsoft Entra ID: Direct workforce and guest user OIDC flows.'
-      ],
-      relatedResources: [
-        { title: 'OIDC Discovery Auditor Tool', path: '/tools/oidc-discovery', type: 'tool' },
-        { title: 'JWKS Inspector Tool', path: '/tools/jwks-inspector', type: 'tool' },
-        { title: 'JWT Studio & Exploit Arena', path: '/playground/jwt', type: 'playground' }
-      ]
-    },
-    {
-      id: 'scim20',
-      title: 'SCIM 2.0',
-      fullname: 'System for Cross-domain Identity Management',
-      rfcs: ['RFC 7643', 'RFC 7644'],
-      year: '2015',
-      summary: 'SCIM 2.0 is an HTTP-based protocol designed to simplify user provisioning and identity management in multi-tenant cloud applications and services.',
-      problem: 'Manual user onboarding, offboarding, and directory synchronization across hundreds of separate corporate SaaS apps led to high operational overhead and orphaned accounts.',
-      whyExists: 'To define a standardized, REST/JSON-based resource schema for Users and Groups, enabling automated Identity Lifecycle synchronization.',
-      flowchart: `
-+-------------------------------------------------------------+
-|                 SCIM 2.0 USER PROVISIONING                  |
-+-------------------------------------------------------------+
-
-       [ Corporate Directory / IdP ]           [ B2B SaaS Application ]
-                     |                                    |
-                     |--- 1. POST /Users (JSON User) ---->|
-                     |<-- 2. HTTP 201 Created ------------|
-                     |                                    |
-                     |--- 3. PATCH /Users (Update) ------>|
-                     |<-- 4. HTTP 204 No Content ---------|
-`,
-      messageFormat: `// SCIM Create User Payload (POST /Users)
-{
-  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:User"],
-  "userName": "brian@company.com",
-  "name": {
-    "familyName": "Secure",
-    "givenName": "Brian"
-  },
-  "emails": [{
-    "value": "brian@company.com",
-    "primary": true
-  }],
-  "active": true
-}`,
-      vulnerabilities: [
-        'Unauthenticated provisioning endpoints exposing employee attributes.',
-        'SQL and LDAP injection vectors via SCIM filter queries (e.g. filter=userName eq "admin").',
-        'Data leaks via nested custom attribute extensions.'
-      ],
-      bestPractices: [
-        'Secure SCIM API endpoints strictly using OAuth 2.0 Bearer tokens or mTLS certificates.',
-        'Sanitize and validate filter parameter parameters strictly before querying databases.',
-        'Validate incoming SCIM payloads against strict, defined schema blueprints.'
-      ],
-      vendorSupport: [
-        'Thales OneWelcome: Fully compliant SCIM 2.0 endpoints for user registration, syncing, and external provisioning.',
-        'Okta / Entra ID: Native push-provisioning directories.',
-        'Keycloak: Extensible user-sync provisioning modules.',
-        'SailPoint: Complete IGA catalog sync hooks.'
-      ],
-      relatedResources: [
-        { title: 'SCIM Payload Validator Tool', path: '/tools/scim-payload-validator', type: 'tool' },
-        { title: 'SCIM Diff Tool', path: '/tools/scim-diff', type: 'tool' },
-        { title: 'SCIM Sync Provisioning Lab', path: '/playground/scim', type: 'playground' }
-      ]
-    },
-    {
-      id: 'webauthn',
-      title: 'WebAuthn',
-      fullname: 'W3C Web Authentication (FIDO2)',
-      rfcs: ['W3C WebAuthn Level 3 Specs'],
-      year: '2019 / 2024',
-      summary: 'W3C WebAuthn standardizes secure, phishing-resistant public-key cryptography (Passkeys) executed natively inside browser clients and hardware TPM enclaves.',
-      problem: 'Passwords are vulnerable to phishing, databases leaks, or local keylogging, while legacy SMS-based MFA remains vulnerable to high-tech SIM swapping.',
-      whyExists: 'To establish a global, passwordless authentication profile using hardware-secured asymmetric keypairs where servers only store the client public key.',
-      flowchart: `
-+-------------------------------------------------------------+
-|                WEBAUTHN PASSKEY HANDSHAKE                   |
-+-------------------------------------------------------------+
-
-  [ Browser / Client TPM ]              [ Relying Party Server ]
-             |                                     |
-             |--- 1. Get Challenge Options ------->|
-             |<-- 2. Challenge + Allowed Creds ----|
-             |                                     |
-             |--- 3. navigator.credentials.get --->|
-             |                                     |
-             |--- 4. Assertion (Signature) ------->|
-             |<-- 5. Session Verified -------------|
-`,
-      messageFormat: `// WebAuthn Assertion Response Payload (JSON representation)
-{
-  "id": "ARuX_99a...",
-  "rawId": "ARuX_99a...",
-  "type": "public-key",
-  "response": {
-    "authenticatorData": "SZYN5Y...", // Binary authenticator state flags
-    "clientDataJSON": "eyJ0eXBlIj...",  // Challenge, origin, tokenBinding
-    "signature": "MEUCIQ...",           // ECDSA cryptographic signature
-    "userHandle": "dXNlcl8xM..."       // Subject identifier
-  }
-}`,
-      vulnerabilities: [
-        'User session hijacking on local unlocked workstations.',
-        'Platform credential theft inside unhardened guest operating systems.',
-        'Metadata spoofing during key registration (mitigated by Attestation).'
-      ],
-      bestPractices: [
-        'Validate incoming origin domains strictly inside clientDataJSON to prevent phishing.',
-        'Enforce User Verification (UV = biometrics/PIN) on sensitive transaction routes.',
-        'Assert credentials are bound strictly to hardware enclaves (RP ID matching).'
-      ],
-      vendorSupport: [
-        'Thales STA: Support for hardware tokens and smart passkey authenticators.',
-        'Yubico: Complete native FIDO2/WebAuthn L3 hardware compliance.',
-        'Microsoft Entra ID: Cloud Hello and FIDO2 workforce passwordless.',
-        'Okta: Seamless passkey enrollment and verification flows.'
-      ],
-      relatedResources: [
-        { title: 'WebAuthn Assertion Decoder Tool', path: '/tools/webauthn-assertion-decoder', type: 'tool' },
-        { title: 'FIDO2 / WebAuthn Lab', path: '/playground/fido2', type: 'playground' },
-        { title: 'Passkey Internals Playground', path: '/playground/passkey-internals', type: 'playground' }
-      ]
-    }
-  ]
+  const [difficultyFilter, setDifficultyFilter] = useState<(typeof DIFFICULTIES)[number]>('All')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -289,13 +44,14 @@ grant_type=authorization_code
   // Filter and search logic
   const filteredStandards = useMemo(() => {
     return STANDARDS.filter(std => {
-      const matchQuery = 
+      const matchQuery =
         std.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         std.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
         std.summary.toLowerCase().includes(searchQuery.toLowerCase())
-      return matchQuery
+      const matchDifficulty = difficultyFilter === 'All' || std.difficulty === difficultyFilter
+      return matchQuery && matchDifficulty
     })
-  }, [searchQuery])
+  }, [searchQuery, difficultyFilter])
 
   const jurisdictions = useMemo(() => ['All', ...getJurisdictions()], [])
 
@@ -441,7 +197,20 @@ grant_type=authorization_code
                 placeholder="Search OIDC, SCIM, FIDO2, RFCs..."
               />
             </div>
-            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider hidden md:inline-block">
+            <div className="flex flex-wrap gap-1.5">
+              {DIFFICULTIES.map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setDifficultyFilter(d)}
+                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border transition ${
+                    difficultyFilter === d ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-nested/30 text-text-secondary border-border-subtle hover:text-text-primary'
+                  }`}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider hidden md:inline-block ml-auto">
               Listing {filteredStandards.length} Standards
             </span>
           </div>
@@ -464,6 +233,18 @@ grant_type=authorization_code
                   </div>
 
                   <div>
+                    <div className="flex items-center gap-1.5 flex-wrap mb-1">
+                      <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border ${
+                        std.difficulty === 'Beginner' ? 'bg-status-success/10 text-status-success border-status-success/30' :
+                        std.difficulty === 'Intermediate' ? 'bg-status-warning/10 text-status-warning border-status-warning/30' :
+                        'bg-status-danger/10 text-status-danger border-status-danger/30'
+                      }`}>
+                        {std.difficulty}
+                      </span>
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-bg-nested/30 text-text-muted border border-border-subtle">
+                        {std.category}
+                      </span>
+                    </div>
                     <h3 className="text-base font-black text-text-primary tracking-tight">
                       {std.fullname}
                     </h3>

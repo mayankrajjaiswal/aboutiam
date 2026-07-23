@@ -36,7 +36,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/scenario-builder`** | `ScenarioBuilder.tsx` | Identity Scenario Builder. Questionnaire-driven enterprise architecture and threat model designer. (Phase 1) |
 | **`/labs`** | `IdentityLabs.tsx` | Interactive Identity Labs. Hands-on vulnerability and pen-test academy with progressive score boards. (Phase 2) |
 | **`/references`** | `ReferenceImplementations.tsx` | Enterprise Reference Implementations. Categorized, beginner-to-advanced library of ready-to-run copyable directories (`src/data/referenceProjects.ts`) — session/cookie auth, LDAP, OAuth/OIDC, WebAuthn, SCIM, OPA/Rego, Vault, cloud workload identity, Kubernetes RBAC, and Istio mTLS. Deep-linkable via `?ref=<id>` and individually searchable. (Phase 4) |
-| **`/case-studies`** | `CaseStudyCenter.tsx` | Enterprise Identity Case Study Center. Deconstruct real-world production setups (Netflix, Uber, Cloudflare). (Phase 6) |
+| **`/case-studies`** | `CaseStudyCenter.tsx` | Enterprise Identity Case Study Center. Deconstruct real-world production setups spanning Big Technology, Financial Services, Government, Healthcare, Retail, and Education, each difficulty-tagged Beginner → Advanced. Data-driven from `src/data/caseStudiesData.ts`; supports `?study=<id>` deep links surfaced through global search. (Phase 6) |
 | **`/decision-matrix`** | `IdentityDecisionMatrix.tsx` | Identity Decision Matrix. Intelligent interactive architecture recommender engine. (Phase 6) |
 | **`/threat-modeling`** | `ThreatModelingStudio.tsx` | Interactive Threat Modeling Studio. Visual security modeling workspace with STRIDE/OWASP validations. (Phase 6) |
 | **`/design-review`** | `DesignReviewAssistant.tsx` | IAM Design Review Assistant. Automated structural audits on OAuth, SAML, and JWT blueprints. (Phase 6) |
@@ -514,3 +514,32 @@ Prefer linking `relatedResources` to an existing tool/playground (§4E/§4F) if 
 ```
 
 No route-wiring needed (§4D) — the `?ref=<id>` deep link reuses the existing `/references` route, following the same query-param convention as `/patterns?pattern=<id>` and `/standards?standard=<id>` (§4I). Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `PROJECTS` and fails if any one of them isn't indexed, catching a search-sync regression immediately.
+
+---
+
+### 🏛️ S. How to Add a New Case Study (`/case-studies`)
+
+`src/data/caseStudiesData.ts` is the single source of truth for the `/case-studies` "Enterprise Identity Case Study Center" — `CaseStudyCenter.tsx` and the search index (`searchService.ts`) both import the same `CASE_STUDIES` array, so appending one `CaseStudy` object makes it render as a card **and** become searchable/deep-linkable (`?study=<id>`) with no second list to sync. This follows the same fix already applied to `standardsData.ts` (§4Q): the array used to live inline inside the page component with no external file, no `difficulty` field, and no search wiring at all.
+
+```typescript
+{
+  id: 'your-case-study-id',
+  title: 'Descriptive Case Study Title',
+  company: 'Company or Program Name',
+  logo: '🏢', // any emoji works as the card icon
+  category: 'Big Technology', // 'Big Technology' | 'Financial Services' | 'Government' | 'Healthcare' | 'Retail' | 'Education'
+  difficulty: 'Intermediate', // 'Beginner' | 'Intermediate' | 'Advanced' — drives the difficulty filter chips and card badge
+  summary: '...', problem: '...',
+  requirements: ['...'], challenges: ['...'],
+  architecture: `ASCII topology diagram`,
+  authModel: '...', authzModel: '...', lifecycle: '...', federation: '...',
+  sequence: `ASCII sequence diagram`,
+  threatModel: [{ risk: '...', mitigation: '...' }],
+  lessons: ['...'], mistakes: ['...'], bestPractices: ['...'],
+  interviewQuestions: [{ q: '...', a: '...' }],
+  rfcs: ['RFC 1234 (Spec Name)'],
+  relatedResources: [{ title: 'Related Tool/Playground', path: '/tools/...', type: 'tool' }]
+}
+```
+
+When adding a new category value, also add it to the exported `CASE_STUDY_CATEGORIES` array in the same file so the filter-button UI stays in sync automatically (this is exactly the drift bug that previously left `Government`/`Healthcare`/`Retail`/`Education` as always-empty filter buttons). No route-wiring needed (§4D) — the `?study=<id>` deep link reuses the existing `/case-studies` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `CASE_STUDIES` and fails if any one of them isn't indexed, and separately asserts every difficulty tier and every category has at least one case study, catching both a search-sync regression and a reintroduced empty-category bug immediately.

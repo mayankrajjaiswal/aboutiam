@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { getSearchIndex } from './searchService'
 import { STANDARDS } from '../../data/standardsData'
+import { CASE_STUDIES, CASE_STUDY_CATEGORIES } from '../../data/caseStudiesData'
 import { PROJECTS as REFERENCE_PROJECTS } from '../../data/referenceProjects'
 
 describe('getSearchIndex deep-link entries', () => {
@@ -75,6 +76,34 @@ describe('getSearchIndex deep-link entries', () => {
 
   it('gives every reference implementation a unique id', () => {
     const ids = REFERENCE_PROJECTS.map((p) => p.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('indexes every entry in caseStudiesData.ts with a ?study= deep link — closes the case-studies/search drift bug', () => {
+    const index = getSearchIndex()
+    CASE_STUDIES.forEach((cs) => {
+      const results = index.search(cs.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `case-${cs.id}`)
+      expect(match, `expected "${cs.title}" (${cs.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string; category: string }).link).toBe(`/case-studies?study=${cs.id}`)
+      expect((match as unknown as { category: string }).category).toBe('🏢 Case Study Center')
+    })
+  })
+
+  it('covers case studies across all three difficulty tiers and every category', () => {
+    const difficulties = new Set(CASE_STUDIES.map((cs) => cs.difficulty))
+    expect(difficulties.has('Beginner')).toBe(true)
+    expect(difficulties.has('Intermediate')).toBe(true)
+    expect(difficulties.has('Advanced')).toBe(true)
+
+    const categories = new Set(CASE_STUDIES.map((cs) => cs.category))
+    CASE_STUDY_CATEGORIES.forEach((cat) => {
+      expect(categories.has(cat), `expected at least one case study in category "${cat}"`).toBe(true)
+    })
+  })
+
+  it('gives every case study a unique id', () => {
+    const ids = CASE_STUDIES.map((cs) => cs.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 

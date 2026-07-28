@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -122,6 +122,7 @@ const architectureItems = [
   { name: 'Enterprise References', path: '/references', icon: Wrench },
   { name: 'Identity Case Studies', path: '/case-studies', icon: BookOpen },
   { name: 'Architecture Center', path: '/architecture', icon: Network },
+  { name: 'Knowledge Graph', path: '/knowledge-graph', icon: Waypoints },
 ]
 
 const ecosystemItems = [

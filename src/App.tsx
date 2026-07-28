@@ -15,6 +15,7 @@ const Learn = lazy(() => import('./pages/Learn'))
 const PlaygroundCatalog = lazy(() => import('./pages/PlaygroundCatalog'))
 const ToolsCatalog = lazy(() => import('./pages/ToolsCatalog'))
 const ArchitectureCenter = lazy(() => import('./pages/ArchitectureCenter'))
+const KnowledgeGraph = lazy(() => import('./pages/KnowledgeGraph'))
 const VendorCenter = lazy(() => import('./pages/VendorCenter'))
 const ResearchCenter = lazy(() => import('./pages/ResearchCenter'))
 const DesignPatternLibrary = lazy(() => import('./pages/DesignPatternLibrary'))
@@ -170,6 +171,7 @@ export default function App() {
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/learn" element={<Learn />} />
               <Route path="/architecture" element={<ArchitectureCenter />} />
+              <Route path="/knowledge-graph" element={<KnowledgeGraph />} />
               <Route path="/vendor" element={<VendorCenter />} />
               <Route path="/research" element={<ResearchCenter />} />
               <Route path="/patterns" element={<DesignPatternLibrary />} />

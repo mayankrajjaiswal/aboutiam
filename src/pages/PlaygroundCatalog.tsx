@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -174,6 +174,13 @@ export default function PlaygroundCatalog() {
       desc: "Design secure delegation pipelines for non-human AI agents, configure OAuth 2.1 on-behalf-of trust chains, and enforce scope narrowing to contain blast radius under sub-agent compromise.",
       icon: Bot,
       link: "/playground/agent-identity",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "NHI Sprawl Cleanup Game",
+      desc: "Triage a seeded fleet of service accounts, API keys, and CI/CD tokens against a real non-human-identity governance rubric — rotate what's stale, revoke what's orphaned or over-privileged, and keep what's legitimately still in use.",
+      icon: ScanSearch,
+      link: "/playground/nhi-sprawl",
       badge: "Active (Advanced)",
     },
     {

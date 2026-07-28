@@ -37,34 +37,6 @@ Every feature must update:
 
 ---
 
-## Feature 2 — Non-Human Identity (NHI) Sprawl Cleanup Game
-
-**One-liner:** A triage game — seeded with 500 fake service accounts/API keys/CI-CD tokens (some orphaned, some stale, some over-privileged) — score points for correctly rotating/revoking/keeping each one against a real NHI-governance rubric.
-
-**Why unique:** No existing playground treats machine-identity sprawl as its own discipline distinct from PAM vaulting (`PamVaultingLab.tsx`) or SPIFFE (`WorkloadMesh.tsx`) — this is about *inventory hygiene at scale*, not vaulting or workload attestation.
-
-**Where it fits:** New playground at `/playground/nhi-sprawl`, component `NhiSprawlLab.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group. `PlaygroundCatalog.tsx` entry.
-
-**Design:**
-- A filterable/sortable table (last-used date, owner, privilege level, credential age, secret-in-code flag) of ~40-60 generated NHI records (not literally 500 — keep the DOM light; simulate "500 total, showing top 60 by risk").
-- Each row has three actions: Rotate, Revoke, Keep (with justification note).
-- A scoring rubric penalizes: keeping a >1-year-old unrotated key, revoking something still actively used (breaks a dependent service — shown as a cascading failure trace log), missing an orphaned account with no owner.
-- End-of-round report: risk score reduced, mean credential age, count of "found" orphans vs. total planted.
-
-**Data model:** `src/data/nhiSprawlRecords.ts` — generator function producing deterministic (seeded, not `Math.random()` per §3B/workflow constraints) records from a fixed dataset array; export `NHI_RECORDS: NhiRecord[]` with fields `id, type ('service-account'|'api-key'|'ci-token'), owner, lastUsedDaysAgo, ageDays, privilege ('low'|'medium'|'high'|'admin'), hasDependents, isOrphaned, correctAction`.
-
-**Tests:**
-- `src/data/nhiSprawlRecords.test.ts` — record id uniqueness, every `correctAction` is one of the three valid actions, at least N orphaned + N stale + N over-privileged records exist so the game is always solvable.
-- `src/pages/Playgrounds/NhiSprawlLab.test.tsx` — correct action scores positively, wrong action (revoke-with-dependents) triggers the cascading-failure log and score penalty.
-
-**Docs to update:**
-- `README.md` §B: new bullet.
-- `GEMINI.md` §2 table: new row.
-
-**Feasibility:** Easy.
-
----
-
 ## Feature 3 — OpenID4VC Wallet Studio
 
 **One-liner:** A full OID4VCI issuance + OID4VP presentation flow simulator — issue an SD-JWT mobile-driver's-license-style verifiable credential, selectively disclose only requested claims to a mock verifier, and visualize the QR-code/wallet handshake used by EUDI Wallets.
@@ -318,18 +290,17 @@ Every feature must update:
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator) and #12 (Spaced-Repetition Quiz) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), and #2 (NHI Sprawl Game) have shipped. Remaining order:
 
-1. **#2 NHI Sprawl Game** — easy, high relevance, no new engineering risk.
-2. **#7 Passkey Rollout Strategist** — easy, pure-function-driven, easy to test exhaustively.
-3. **#11 Modernization Backlog Game** — easy, cross-links to existing `Assess.tsx`.
-4. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
-5. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
-6. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
-7. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
-8. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-9. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-10. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#7 Passkey Rollout Strategist** — easy, pure-function-driven, easy to test exhaustively.
+2. **#11 Modernization Backlog Game** — easy, cross-links to existing `Assess.tsx`.
+3. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
+4. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
+5. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
+6. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
+7. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
+8. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+9. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

@@ -127,6 +127,7 @@ const architectureItems = [
 
 const ecosystemItems = [
   { name: 'Agentic Identity Lab', path: '/playground/agent-identity', icon: Bot },
+  { name: 'NHI Sprawl Cleanup Game', path: '/playground/nhi-sprawl', icon: ScanSearch },
   { name: 'Vendor Knowledge Center', path: '/vendor', icon: Building },
   { name: 'IAM Landscape Directory', path: '/explore', icon: Compass },
   { name: 'Certification Hub', path: '/certifications', icon: Award },

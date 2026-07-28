@@ -96,6 +96,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Zero-Knowledge Proof (ZKP) Wallet:** Explore decentralized Self-Sovereign Identity. Generate mathematical proofs confirming your age without exposing your raw birthdate.
 * **Continuous Ambient Trust Decayer:** Visualize post-2030 systems where real-time biometric telemetry (keystrokes, location) constantly decays or fortifies session trust.
 * **Agentic Identity & MCP Trust Simulator:** Design secure delegation pipelines for non-human AI agents, configure OAuth 2.1 on-behalf-of trust chains, and enforce scope narrowing to contain blast radius under sub-agent compromise.
+* **NHI Sprawl Cleanup Game:** Triage a seeded fleet of 60 (of a simulated 500) service accounts, API keys, and CI/CD tokens against a real non-human-identity governance rubric — rotate what's stale, revoke what's orphaned or over-privileged, and keep what's legitimately still in use, with a cascading-failure trace log when a revoke breaks a dependent service.
 * **NHI Workload Mesh (SPIFFE):** Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.
 * **Enterprise IAM Reference Builder:** Visual drag-and-drop identity topology architect with dynamic SVG trust lines and OIDC/SAML/SCIM handshake traces.
 * **Session Hijacking & Token Theft Lab:** Simulates session cookie theft via infostealers, pasting stolen tokens, and applying DPoP, IP-binding, and CAEP.

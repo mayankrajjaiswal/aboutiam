@@ -34,6 +34,20 @@ export function usePlayground({
     setLogs(prev => [...prev, newLog])
   }, [])
 
+  /**
+   * General-purpose score delta for playgrounds with variable-outcome scoring
+   * (e.g. a triage game rewarding correct decisions and penalizing mistakes
+   * by different amounts) — unlike `revealHint`'s fixed deduction, the caller
+   * supplies both the delta and the reason logged alongside it. Score never
+   * drops below 0.
+   */
+  const adjustScore = useCallback((delta: number, reason?: string) => {
+    setScore(prev => Math.min(100, Math.max(0, prev + delta)))
+    if (reason) {
+      log(delta >= 0 ? 'success' : 'warning', reason)
+    }
+  }, [log])
+
   const revealHint = useCallback((hintMessage?: string) => {
     if (hintsRevealed < maxHints) {
       setHintsRevealed(prev => prev + 1)
@@ -94,6 +108,7 @@ export function usePlayground({
     isCompleted,
     log,
     revealHint,
+    adjustScore,
     completeStep,
     finishPlayground,
     resetPlayground

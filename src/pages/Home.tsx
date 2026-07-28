@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Sparkles, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart } from 'lucide-react'
 import GoogleDriveSync from '../components/GoogleDriveSync'
+import StudyPackDownload from '../components/StudyPackDownload'
 
 export default function Home() {
   return (
@@ -521,8 +522,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Optional Google Drive backup/restore for locally-persisted progress */}
-      <GoogleDriveSync />
+      {/* Optional Google Drive backup/restore for locally-persisted progress, and an offline Markdown study pack */}
+      <div className="grid sm:grid-cols-2 gap-6">
+        <GoogleDriveSync />
+        <StudyPackDownload />
+      </div>
     </div>
   )
 }

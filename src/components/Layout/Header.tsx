@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss, HelpCircle, Layers } from 'lucide-react'
+import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss, HelpCircle, Layers, Bell } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
 import { useTourStore } from '../../store/tourStore'
+import { useWhatsNewStore } from '../../store/whatsNewStore'
 import { getRouteMeta } from '../../routeMeta'
 import CommandPalette from '../Search/CommandPalette'
 import GuidedTour from '../GuidedTour'
 import DisclaimerModal from '../DisclaimerModal'
+import WhatsNewModal from '../WhatsNewModal'
 import PersonalizationSelector from '../PersonalizationSelector'
 import { useAirplaneModeStore } from '../../store/airplaneModeStore'
 import AirplaneSelector from '../Search/AirplaneSelector'
@@ -48,6 +50,7 @@ export default function Header() {
   const [isPersonalizeOpen, setIsPersonalizeOpen] = useState(false)
   const { isEnabled: isAirplaneEnabled } = useAirplaneModeStore()
   const openTour = useTourStore((s) => s.openTour)
+  const openWhatsNew = useWhatsNewStore((s) => s.openWhatsNew)
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -193,6 +196,16 @@ export default function Header() {
           <HelpCircle className="w-4 h-4" />
         </button>
 
+        {/* What's New: recent site updates */}
+        <button
+          onClick={openWhatsNew}
+          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
+          title="What's new on AboutIAM"
+          aria-label="What's new on AboutIAM"
+        >
+          <Bell className="w-4 h-4" />
+        </button>
+
         {/* RSS Feed Reference Link */}
         <a
           href="/rss.xml"
@@ -226,6 +239,9 @@ export default function Header() {
 
       {/* First-visit Educational/Privacy Disclaimer overlay modal */}
       <DisclaimerModal />
+
+      {/* Returning-visitor "What's New" changelog overlay modal */}
+      <WhatsNewModal />
     </header>
   )
 }

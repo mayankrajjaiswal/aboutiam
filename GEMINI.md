@@ -75,6 +75,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/tools/did-document-validator`** | `Tools/DidDocumentValidator.tsx` | Validates a Decentralized Identifier (DID) Document JSON against W3C DID Core structural requirements, with a field-by-field resolved preview. |
 | **`/playground/agent-identity`** | `Playgrounds/AgentIdentityLab.tsx` | OAuth 2.1 delegation chains and scope-narrowing limits for AI agents. |
 | **`/playground/nhi-sprawl`** | `Playgrounds/NhiSprawlLab.tsx` | Triage game over a seeded fleet of 60 (of a simulated 500) service accounts, API keys, and CI/CD tokens — rotate, revoke, or keep each one against an NHI-governance rubric, backed by `src/data/nhiSprawlRecords.ts`. |
+| **`/playground/passkey-rollout-strategist`** | `Playgrounds/PasskeyRolloutStrategist.tsx` | Allocate a fixed rollout budget across platform SDKs, help-desk training, legacy-fallback sunset, and account recovery, then see 4 quarters of deterministic adoption/phishing/ticket outcomes scored against FIDO Alliance 2026 benchmarks, backed by `src/data/passkeyRolloutModel.ts`. |
 | **`/playground/jwt`** | `JWTStudio.tsx` | JWT encoder/decoder. Runs real browser-native HS256 signatures and "none" alg exploits. |
 | **`/playground/oauth`** | `OAuthVisualizer.tsx` | Step-by-step OIDC flow chart. Animates front/back-channels and parses raw HTTP. |
 | **`/playground/saml`** | `SAMLWorkbench.tsx` | XML assertion workbench. Simulates SAML Signature Wrapping (SSW) attacks. |

@@ -151,32 +151,6 @@ Every feature must update:
 
 ---
 
-## Feature 7 — Passkey Fleet Rollout Strategist
-
-**One-liner:** A "play CISO" scenario-planner — allocate a fixed rollout budget/timeline across platforms (iOS/Android/Windows Hello/security keys), design an account-recovery fallback, and hit phishing-resistant-auth coverage targets — scored against real 2026 industry benchmarks.
-
-**Why unique:** Distinct from the existing byte-level `PasskeyInternals.tsx` protocol-decoding lab — this is a strategy/business-decision exercise, an angle nothing else on the site takes (everything else is either protocol-level or attack/defense; this is organizational planning).
-
-**Where it fits:** New playground at `/playground/passkey-rollout-strategist`, component `PasskeyRolloutStrategist.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group (near `PasskeyInternals`, `MagicLinkStepUp`). `PlaygroundCatalog.tsx` entry.
-
-**Design:**
-- A budget-allocation UI: sliders/inputs for spend across platform SDKs, help-desk training, legacy-fallback sunset timeline, and recovery-flow investment.
-- Each round simulates a quarter: shows adoption %, phishing-incident rate, and help-desk ticket volume shifting based on allocation choices — driven by a simple deterministic formula (not `Math.random()`, so results are reproducible and testable) calibrated loosely to the real cited benchmarks (93% passkey success rate ceiling, 57%-still-phishable-fallback baseline).
-- End-of-year report card compares the user's outcome against the industry benchmark dataset, with a written rationale of what to prioritize next time.
-
-**Data model:** `src/data/passkeyRolloutModel.ts` — the deterministic scoring formula + a benchmark comparison dataset with citations (link back to the real FIDO Alliance 2026 report figures cited in research), pure functions unit-testable in isolation.
-
-**Tests:**
-- `src/data/passkeyRolloutModel.test.ts` — the scoring formula: more balanced investment outperforms all-in-one-category allocation; a zero-recovery-investment allocation always trips a "support escalation" penalty (this is the core lesson the game teaches, so it must be provably enforced by the model, not just flavor text).
-
-**Docs to update:**
-- `README.md` §B: new bullet.
-- `GEMINI.md` §2 table: new row.
-
-**Feasibility:** Easy.
-
----
-
 ## Feature 8 — Live Packet/Handshake Capture Overlay
 
 **One-liner:** A reusable "DevTools inside DevTools" overlay component that intercepts a playground's own mock request/response traffic during any existing flow-based simulator run (OAuth, SAML, SCIM) and renders it as an animated, click-to-inspect Wireshark-style packet timeline.
@@ -290,17 +264,16 @@ Every feature must update:
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), and #2 (NHI Sprawl Game) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), and #7 (Passkey Rollout Strategist) have shipped. Remaining order:
 
-1. **#7 Passkey Rollout Strategist** — easy, pure-function-driven, easy to test exhaustively.
-2. **#11 Modernization Backlog Game** — easy, cross-links to existing `Assess.tsx`.
-3. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
-4. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
-5. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
-6. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
-7. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-8. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-9. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#11 Modernization Backlog Game** — easy, cross-links to existing `Assess.tsx`.
+2. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
+3. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
+4. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
+5. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
+6. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
+7. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+8. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

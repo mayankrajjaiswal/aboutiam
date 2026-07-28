@@ -184,6 +184,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "Passkey Fleet Rollout Strategist",
+      desc: "Play CISO: allocate a fixed rollout budget across platform SDKs, help-desk training, legacy-fallback sunset, and account recovery, then see a year of quarterly outcomes scored against real 2026 industry benchmarks.",
+      icon: Fingerprint,
+      link: "/playground/passkey-rollout-strategist",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "NHI Workload Mesh (SPIFFE)",
       desc: "Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.",
       icon: Network,

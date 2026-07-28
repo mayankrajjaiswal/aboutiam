@@ -102,6 +102,7 @@ const Roadmap = lazy(() => import('./pages/Roadmap'))
 // Phase 7: Next-Gen Modules
 const AgentIdentityLab = lazy(() => import('./pages/Playgrounds/AgentIdentityLab'))
 const NhiSprawlLab = lazy(() => import('./pages/Playgrounds/NhiSprawlLab'))
+const PasskeyRolloutStrategist = lazy(() => import('./pages/Playgrounds/PasskeyRolloutStrategist'))
 const AIThreatLab = lazy(() => import('./pages/Playgrounds/AIThreatLab'))
 const ZKPWallet = lazy(() => import('./pages/Playgrounds/ZKPWallet'))
 const AmbientTrust = lazy(() => import('./pages/Playgrounds/AmbientTrust'))
@@ -218,6 +219,7 @@ export default function App() {
               <Route path="/tools/did-document-validator" element={<DidDocumentValidator />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />
               <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
+              <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />

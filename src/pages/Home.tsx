@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Sparkles, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart } from 'lucide-react'
+import GoogleDriveSync from '../components/GoogleDriveSync'
 
 export default function Home() {
   return (
@@ -519,6 +520,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Optional Google Drive backup/restore for locally-persisted progress */}
+      <GoogleDriveSync />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Scale, ShieldAlert, FileWarning, BookOpen } from 'lucide-react'
+import { Scale, ShieldAlert, FileWarning, BookOpen, Cloud } from 'lucide-react'
 
 export default function Terms() {
   return (
@@ -53,6 +53,34 @@ export default function Terms() {
           </h3>
           <p className="text-sm text-text-secondary leading-relaxed">
             This software and its content are provided "AS IS", without warranty of any kind, express or implied, including but not limited to warranties of accuracy, completeness, fitness for a particular purpose, or security effectiveness. Nothing on AboutIAM constitutes professional security, legal, or compliance advice — always consult a qualified professional before making decisions for a production environment.
+          </p>
+        </section>
+
+        {/* Google Drive Sync Privacy Terms */}
+        <section id="cloud-sync-privacy" className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-3 scroll-mt-20">
+          <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
+            <Cloud className="w-4.5 h-4.5 text-accent-primary" /> Google Drive Sync Privacy
+          </h3>
+          <p className="text-sm text-text-secondary leading-relaxed">
+            The optional "Backup & Restore" feature on the home page lets you copy your locally-stored progress
+            (Academy completion, bookmarks, badges, and personalization settings) to your own Google Drive so you
+            can restore it on another device or after clearing your browser. It requests only the{' '}
+            <code className="px-1 py-0.5 rounded bg-bg-nested text-[11px] font-mono">drive.appdata</code> scope — a
+            hidden, per-application folder that does not appear in your normal Drive file list and that AboutIAM
+            cannot read from any other app. Your browser talks directly to Google's APIs; no AboutIAM server is
+            involved, and your Drive access token is kept only in memory for the duration of a backup or restore
+            action — it is never written to disk or sent anywhere else. Only AboutIAM's own namespaced progress and
+            preference data is included in the backup; nothing else in your browser is read or touched. You can
+            revoke access at any time from your{' '}
+            <a
+              href="https://myaccount.google.com/permissions"
+              target="_blank"
+              rel="noreferrer"
+              className="text-accent-primary hover:text-accent-hover underline font-semibold"
+            >
+              Google Account permissions page
+            </a>
+            .
           </p>
         </section>
       </div>

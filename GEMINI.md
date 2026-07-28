@@ -17,6 +17,8 @@ AboutIAM is engineered as a **100% Client-Side, Zero-Backend Application**, ensu
 - **Search Engine Core:** MiniSearch (~9kb high-performance client-side indexing with TF-IDF relevance weighting, prefix searches, and fuzzy matching).
 - **State Management:** Zustand + Persist middleware (persisting user course completions and layout states in `localStorage`).
 - **Motion Canvas:** Framer Motion (handling animated vector SVG flow paths and popup transitions).
+- **File Export:** JSZip, dynamically `import()`-ed at the moment a user clicks "Download Study Pack" (`src/lib/studyPackExport.ts`) rather than statically imported — keeps the ~100KB library out of the `Home.tsx` chunk entirely (§4EE).
+- **Optional Cloud Sync:** Google Identity Services token client + the Drive v3 REST API, called directly with `fetch` (no `gapi`/SDK dependency) — powers the opt-in Google Drive Backup & Restore feature (§4DD), gated behind `VITE_GOOGLE_CLIENT_ID`.
 - **Testing Core:** Vitest (Vite-native unit testing with mock SSR safeguards).
 - **Discoverability:** `robots.txt`, `sitemap.xml`, `llms.txt`, `manifest.webmanifest`, and `security.txt` live in `public/` and all reference the production domain directly — update them alongside any future domain change.
 - **Security Hardening:** A strict `Content-Security-Policy` (`connect-src 'none'`) and `Referrer-Policy` are enforced via `<meta>` tags in `index.html` (GitHub Pages serves no custom HTTP headers, so this is the only enforcement mechanism). `.github/workflows/deploy.yml` and `ci.yml` pin all third-party GitHub Actions to commit SHA (not mutable tags) and gate on `npm audit`; `.github/dependabot.yml` keeps both npm and Actions pins current.
@@ -41,6 +43,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/threat-modeling`** | `ThreatModelingStudio.tsx` | Interactive Threat Modeling Studio. Visual security modeling workspace with STRIDE/OWASP validations. (Phase 6) |
 | **`/design-review`** | `DesignReviewAssistant.tsx` | IAM Design Review Assistant. Automated structural audits on OAuth, SAML, and JWT blueprints. (Phase 6) |
 | **`/standards`** | `StandardsExplorer.tsx` | Living Standards & RFC Explorer. Visually explore standard specs and RFC timelines across OIDC, SAML, SCIM. Supports `?standard=<id>&tab=<tab>` deep links. A "Compliance Deadlines" tab (`?view=deadlines`) tracks regulatory deadlines (NIS2, DORA, PCI DSS 4.0, eIDAS 2.0, etc.) from `src/data/complianceDeadlines.ts`, filterable by jurisdiction with a past/upcoming toggle. (Phase 6) |
+| **`/knowledge-graph`** | `KnowledgeGraph.tsx` | Knowledge Graph. A concentric-ring SVG map connecting Standards, Encyclopedia terms, and Architecture Center entries via hand-curated edges in `src/data/knowledgeGraphData.ts` (§4BB), paired with a searchable/type-filterable list and a detail panel for full-content-independent usability on small screens. |
 | **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs — 24 architectures spanning Beginner (session/cookie auth, LDAP bind, social login, API keys, basic RBAC), Intermediate (JWT stateless APIs, SSO reverse proxy, step-up MFA, IGA access reviews, JIT PAM), and Advanced (Zero Trust, B2B SaaS, Multi-Cloud SPIFFE/SPIRE, PKI, banking/healthcare/government/manufacturing/retail) tiers, backed by `src/data/architectureData.ts` (§4S). Supports `?arch=<id>` deep links and a difficulty filter. |
 | **`/vendor`** | `VendorCenter.tsx` | Enterprise Ecosystem & Vendor Intelligence Portal. Comprehensive profiles for 18 major platforms, including a flagship featured profile for Thales (OneWelcome, SafeNet Trusted Access, IdCloud) with inner ASCII diagrams, Troubleshooting, and custom Interview Prep. Integrates the Live Identity Intelligence Hub (news, searchable CVE code patch repairs, and visual AI Ingestion Pipeline Simulator), Community Events Calendars with alerts, and Social dashboards with AI Weekly Digest builders. A "Compare" toggle switches the vendor list to multi-select checkboxes (up to 3) and renders a side-by-side attribute table; deep-linkable via `?compare=<key1>,<key2>`. |
 | **`/research`** | `ResearchCenter.tsx` | Identity Research & CVE Tracker — 13 beginner-to-advanced CVEs with side-by-side vulnerable/secure code patches, and 17 IETF RFCs/drafts spanning the core IAM protocol registry, backed by `src/data/researchData.ts`. Difficulty-filterable on both panels, deep-linkable via `?cve=<id>`/`?rfc=<slug>`, and individually searchable. |
@@ -810,5 +813,67 @@ Vitest runs three separate **projects** (configured in `vitest.config.ts`, not `
 - Adding a new registry/data array (breaches, standards, certifications, etc.)? Don't write a new test file — extend the existing per-registry checks in `searchService.test.ts` (search-index coverage) and the array's own `*.test.ts` (id uniqueness, category/difficulty coverage), following the pattern already used for every registry listed in §4B/§4Q–Z.
 - Adding a new SSR-guarded module (§3B)? Add a case to `tests/ssr/ssrSafety.test.ts` — it runs under the `integration` project's real `node` environment (genuinely no `window`/`document`, not stubbed) and asserts the module's exported actions don't throw.
 - Adding a new page/route (§4D)? `routeRegistrySync.test.ts` already fails if `App.tsx`, `routeMeta.ts`, and `scripts/postbuild-ssg.mjs` fall out of sync — no test change needed there either.
+- Testing real interactive logic on a **page** (not just "it renders")? Do **not** colocate the test file inside `src/pages/` — `tests/pages/allPagesRender.test.tsx` globs `../../src/pages/**/*.tsx` and would try to mount your `*.test.tsx` file itself as if it were a page component, crashing the suite with "Calling the suite function inside test function is not allowed." Put it in `tests/pages/yourPage.test.tsx` instead (see `tests/pages/knowledgeGraph.test.tsx`), importing the page via a relative `../../src/pages/...` path — it still runs under the `component` project (jsdom) because `tests/pages/**/*.test.tsx` is in that project's `include` glob.
+- Writing a `src/lib/` module that genuinely needs browser APIs (`window`, `document`, `fetch`, `localStorage`) rather than pure/SSR-safe logic — e.g. `googleDrive.ts`, `studyPackExport.ts`? The `unit` project runs `src/**/*.test.ts` under `node`, which doesn't have those globals. Add a `// @vitest-environment jsdom` docblock comment as the *first* line of that specific test file to override just that file's environment, instead of moving the whole `unit` project to jsdom or relocating the file out of its natural colocation next to the module it tests. Keep the pure, truly-SSR-safe logic (e.g. Markdown string building in `studyPack.ts`) in a separate file from the browser-dependent glue (`studyPackExport.ts`) where practical, so most of a feature's logic stays testable under real `node` semantics.
 
-**Test environment gotchas** (see `src/test/setup.ts`): jsdom has no `window.matchMedia` and no `crypto.subtle` — both are polyfilled globally for the `component`/`integration` projects, so a tool page that hashes/signs on mount won't crash in tests for a reason unrelated to its own code. `localStorage` is cleared after every test to stop one persisted Zustand store's state (theme, bookmarks, preferences, tour, disclaimer, layout, airplane mode) from leaking into the next test file — if a test explicitly needs a particular store state, set it with `useYourStore.setState({...})` at the top of the test rather than relying on ordering.
+**Test environment gotchas** (see `src/test/setup.ts`): jsdom has no `window.matchMedia` and no `crypto.subtle` — both are polyfilled globally for the `component`/`integration` projects, so a tool page that hashes/signs on mount won't crash in tests for a reason unrelated to its own code. `localStorage` is cleared after every test to stop one persisted Zustand store's state (theme, bookmarks, preferences, tour, disclaimer, layout, airplane mode, what's-new, Drive sync) from leaking into the next test file — if a test explicitly needs a particular store state, set it with `useYourStore.setState({...})` at the top of the test rather than relying on ordering.
+
+---
+
+### 🏛️ BB. How to Add a New Concept to the Knowledge Graph (`/knowledge-graph`)
+
+`src/data/knowledgeGraphData.ts` powers `/knowledge-graph` differently from every other registry in this doc (§4B/§4Q-Z): instead of one array of content objects, it's a single hand-curated edge list, `KNOWLEDGE_GRAPH_EDGES: [string, string][]`, where each id is `${'standard' | 'term' | 'architecture'}:${id from that dataset}` (e.g. `'standard:oauth21'`, `'term:jwt'`, `'architecture:zero_trust'`). Nodes are **derived automatically** from whichever ids appear in at least one edge — `resolveNode()` looks each one up directly in `STANDARDS`/`ENCYCLOPEDIA_TERMS`/`ARCHITECTURES` (§4Q/§4A/§4T) for its label, description, and deep-link path, so there is no second node list to hand-maintain and no way for a node's display data to drift from its source of truth.
+
+To add a new relationship, append one tuple:
+
+```typescript
+['standard:dpop', 'term:token_binding']
+```
+
+There's no route-wiring step (§4D already done for this page) and no `searchService.ts` step — the graph composes three already-independently-searchable datasets rather than introducing new searchable content of its own. Run `npm run test` afterward: `knowledgeGraphData.test.ts` fails if either id in a new edge doesn't resolve to a real record in its source dataset (catches a typo'd id immediately, the equivalent of the search-sync check other registries get), and separately guards against duplicate/self-loop edges.
+
+---
+
+### 🏛️ CC. The "What's New" Changelog Modal
+
+`src/components/WhatsNewModal.tsx` + `src/store/whatsNewStore.ts` follow the same Zustand-persist "auto-open once, replay from a Header icon" shape as the Guided Tour/Disclaimer pair (§4M/§4N) — `lastSeenVersion`/`isOpen`/`openWhatsNew`/`closeWhatsNew`, mounted in `Header.tsx` next to `GuidedTour`/`DisclaimerModal`. The trigger condition is deliberately different, though: it only auto-opens for a *returning* visitor (`hasSeenDisclaimer === true`) whose `lastSeenVersion` doesn't match the latest release — a first-time visitor already getting the Disclaimer→Tour sequence never also gets this stacked on top; they'll simply see the current release the next time they return.
+
+To ship a new release entry, prepend one object to `WHATS_NEW_RELEASES` in `src/data/whatsNewData.ts`:
+
+```typescript
+{
+  version: '2026.08.15', // bump this — it becomes WHATS_NEW_VERSION (derived from the array's first entry)
+  date: '2026-08-15',
+  items: [
+    { title: 'Feature Title', description: 'One or two sentences.', path: '/optional-deep-link' }, // path is optional
+  ],
+}
+```
+
+Bumping `version` alone is what causes every returning visitor who's seen an older version to see the modal once more — no other state to reset.
+
+---
+
+### 🏛️ DD. How to Add an Optional, Env-Gated Feature (Google Drive Backup & Restore)
+
+`src/lib/googleDrive.ts` + `src/components/GoogleDriveSync.tsx` establish the first (so far only) pattern in this codebase for a feature gated behind a `VITE_...` environment variable — every other feature works with zero configuration, and this one must too when unconfigured:
+
+1. A `getXClientId()`-style function reads `import.meta.env.VITE_...` and returns `null` when unset or empty — never throw, never assume a value is present.
+2. The component checks that `null` first and renders a clearly-labeled, non-broken disabled state (see `GoogleDriveSync.tsx`'s "Cloud backup isn't configured for this deployment yet" panel) instead of dead buttons or a runtime error — every fork/clone of this repo must boot cleanly with the feature simply hidden/inert.
+3. Document the variable in `.env.example` (committed, with the value left blank and setup instructions in a comment) — never commit a real value. `.env`, `.env.local`, and `.env.*.local` are gitignored.
+4. Keep all calls to the third-party API direct from the browser (no server proxy) and never persist secrets/tokens beyond the current action's lifetime (`requestAccessToken()`'s token lives only in React state, never `localStorage`) — this is what keeps an env-gated integration compatible with the Zero-Backend/Complete-Privacy principle (§1) instead of quietly reintroducing a backend dependency.
+
+---
+
+### 🏛️ EE. Lazy-Loading a Heavy Dependency to Avoid Bloating a Page Chunk
+
+If a feature needs a library only inside one click handler — not for the page's initial render — dynamically `import()` it inside that handler instead of a static top-level import. `src/lib/studyPackExport.ts`'s `buildStudyPackZipBlob()` does this for `jszip`:
+
+```typescript
+export async function buildStudyPackZipBlob(): Promise<Blob> {
+  const { default: JSZip } = await import('jszip')
+  // ...
+}
+```
+
+A static `import JSZip from 'jszip'` at the top of that file added ~100KB to `Home.tsx`'s chunk (visible directly in `npm run build`'s per-chunk size output) for a feature most visitors never click; the dynamic import instead makes Vite split it into its own chunk, fetched only on demand. When adding any new heavy client-side library, compare `npm run build`'s chunk-size output before and after wiring it up — that diff is the actual signal for whether this pattern is worth applying, not a guess.

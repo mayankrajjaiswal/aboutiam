@@ -44,4 +44,9 @@ describe('persisted stores survive import and use with no window/document (§3B 
     expect(() => usePreferenceStore.getState()).not.toThrow()
     expect(() => useAirplaneModeStore.getState()).not.toThrow()
   })
+
+  it('spacedRepetitionStore: recordReview does not throw', async () => {
+    const { useSpacedRepetitionStore } = await import('../../src/store/spacedRepetitionStore')
+    expect(() => useSpacedRepetitionStore.getState().recordReview('ssr-test-breach', 'good', '2026-01-01T00:00:00.000Z')).not.toThrow()
+  })
 })

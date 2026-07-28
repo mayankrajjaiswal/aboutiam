@@ -314,50 +314,22 @@ Every feature must update:
 
 ---
 
-## Feature 12 — Spaced-Repetition Breach Quiz Mode
-
-**One-liner:** An active-recall flashcard mode over the existing 27 Wall of Shame breach write-ups, using the SM-2 spaced-repetition algorithm scheduled entirely client-side via `localStorage` — turns passive reading into scheduled review.
-
-**Why unique:** A genuinely new *learning mechanic* (spaced repetition) that nothing else on the site uses, reusing 100% existing content (`src/data/breachesData.ts`) with zero new subject-matter authoring.
-
-**Where it fits:** Not a new top-level route — a new tab/mode inside the existing `WallOfShame.tsx` page (`?tab=quiz`), consistent with that page's existing tab convention (`?tab=breaches&lab=<id>`). Add a "🧠 Quiz Mode" tab alongside the existing Eras/Breach-Archive tabs. No sidebar change needed (reuses the existing `/wall-of-shame` nav entry).
-
-**Design:**
-- Each breach becomes a flashcard: front = `title` + `attackVector`, back = `rootCause` + `remediation` (reuse existing fields — no new data authoring).
-- User self-grades recall (Again / Hard / Good / Easy) after flipping the card; SM-2 computes the next review interval and updates an ease factor, persisted in a new Zustand store `src/store/spacedRepetitionStore.ts` (same persist-middleware pattern as `bookmarksStore.ts`), keyed by breach `id` so it survives across sessions.
-- A "Due Today" counter and a "Start Review" button that queues only cards due (or all cards if the user has never studied, capped at a sane daily batch size to avoid overwhelming a first-time user).
-- The SM-2 scheduling math lives in `src/lib/learning/spacedRepetition.ts` as a pure, independently-testable function — this is the one piece of genuinely new logic; everything else is UI composition over existing data.
-
-**Tests:**
-- `src/lib/learning/spacedRepetition.ts` **is the load-bearing unit under test** — `spacedRepetition.test.ts` must verify the canonical SM-2 behavior: a first "Good" review schedules ~1 day out, repeated "Good" grades grow the interval geometrically via the ease factor, an "Again" grade resets the interval and drops the ease factor (never below the SM-2 floor of 1.3), and "Easy" grows the interval faster than "Good".
-- `src/store/spacedRepetitionStore.test.ts` (or fold into `tests/ssr/ssrSafety.test.ts`) — SSR-safe (§3B guard), persists/restores correctly.
-- `WallOfShame.test.tsx` — new Quiz tab renders due-card count correctly and grading a card removes it from today's queue.
-
-**Docs to update:**
-- `README.md` §D: extend the existing Wall of Shame bullet with a clause about the new Quiz Mode (don't create a separate bullet — it's the same page).
-- `GEMINI.md` §2 table: extend the existing `/wall-of-shame` row's description in place.
-- `GEMINI.md` §4B (the breach-authoring guide): add a one-line note that every breach automatically becomes a quiz card too, no extra authoring needed — this is the same "free extension" framing used elsewhere in §4.
-
-**Feasibility:** Easy.
-
----
-
 ## Suggested Execution Order
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-1. **#12 Spaced-Repetition Quiz** — zero new data authoring, proves out a new Zustand store pattern cheaply.
-2. **#2 NHI Sprawl Game** — easy, high relevance, no new engineering risk.
-3. **#7 Passkey Rollout Strategist** — easy, pure-function-driven, easy to test exhaustively.
-4. **#11 Modernization Backlog Game** — easy, cross-links to existing `Assess.tsx`.
-5. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
-6. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
-7. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
-8. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
-9. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-10. **#1 Agentic Identity & MCP Trust Simulator** — medium, highest strategic value, do once the delegation/scoping visual language is battle-tested from earlier features.
-11. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-12. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other 11 features from shipping.
+Features #1 (Agentic Identity & MCP Trust Simulator) and #12 (Spaced-Repetition Quiz) have shipped. Remaining order:
+
+1. **#2 NHI Sprawl Game** — easy, high relevance, no new engineering risk.
+2. **#7 Passkey Rollout Strategist** — easy, pure-function-driven, easy to test exhaustively.
+3. **#11 Modernization Backlog Game** — easy, cross-links to existing `Assess.tsx`.
+4. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
+5. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
+6. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
+7. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
+8. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
+9. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+10. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

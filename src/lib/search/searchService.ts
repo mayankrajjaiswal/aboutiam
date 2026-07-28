@@ -31,6 +31,7 @@ export interface SearchItem {
 
 // Statically define the 27 simulators to avoid file parsing overhead
 const SIMULATORS_LIST = [
+  { id: 'agent-identity', title: 'Agentic Identity & MCP Trust Simulator', desc: 'OAuth 2.1 delegation chains and scope-narrowing limits for AI agents. Run cryptographic OBO JWT token exchanges and simulate agent compromises.', link: '/playground/agent-identity', kw: ['agentic', 'mcp', 'oauth 2.1', 'delegation', 'on-behalf-of', 'scope narrowing', 'compromise', 'obo', 'jwt'] },
   { id: 'jwt-studio', title: 'JWT Studio', desc: 'JSON Web Token simulator running HS256/RS256 signatures & "none" algorithm confused bypass exploits.', link: '/playground/jwt', kw: ['jwt', 'json web token', 'exploit', 'sign', 'verify'] },
   { id: 'oauth-flow', title: 'OIDC / OAuth 2.0 Flow Visualizer', desc: 'Interactive step-by-step OIDC authentication flowchart, animating authorization codes, ID tokens, and backchannel CURL handshakes.', link: '/playground/oauth', kw: ['oidc', 'oauth', 'flow', 'handshake', 'id token', 'code flow'] },
   { id: 'saml-workbench', title: 'SAML Assertion Workbench', desc: 'XML Assertion workbench. Decode SAML payloads and simulate Signature Wrapping (SSW) hacker attacks.', link: '/playground/saml', kw: ['saml', 'xml', 'ssw', 'signature wrapping', 'assertion'] },

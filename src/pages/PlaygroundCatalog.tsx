@@ -170,6 +170,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "Agentic Identity & MCP Trust",
+      desc: "Design secure delegation pipelines for non-human AI agents, configure OAuth 2.1 on-behalf-of trust chains, and enforce scope narrowing to contain blast radius under sub-agent compromise.",
+      icon: Bot,
+      link: "/playground/agent-identity",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "NHI Workload Mesh (SPIFFE)",
       desc: "Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.",
       icon: Network,

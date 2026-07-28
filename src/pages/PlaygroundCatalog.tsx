@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -188,6 +188,13 @@ export default function PlaygroundCatalog() {
       desc: "Play CISO: allocate a fixed rollout budget across platform SDKs, help-desk training, legacy-fallback sunset, and account recovery, then see a year of quarterly outcomes scored against real 2026 industry benchmarks.",
       icon: Fingerprint,
       link: "/playground/passkey-rollout-strategist",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "IAM Modernization Backlog Game",
+      desc: "Sequence 20 realistic legacy-IAM tech-debt items into a 12-month roadmap under a fixed quarterly budget — respect dependency ordering, stay within budget, and maximize risk reduction per dollar.",
+      icon: ClipboardList,
+      link: "/playground/modernization-backlog",
       badge: "Active (Advanced)",
     },
     {

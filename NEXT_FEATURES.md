@@ -233,47 +233,19 @@ Every feature must update:
 
 ---
 
-## Feature 11 — IAM Modernization Backlog Game
-
-**One-liner:** A card-sorting prioritization exercise — 20 realistic legacy-IAM tech-debt items (hardcoded LDAP binds, un-rotated service passwords, SAML-only SSO, no step-up MFA) must be sequenced into a 12-month roadmap under a fixed budget, scored on risk-reduction-per-dollar.
-
-**Why unique:** Complements the existing `Assess.tsx` GRC Maturity Wizard (which scores *current state*) by gamifying the *planning* decision itself — a genuinely different exercise (prioritization under constraint, not self-assessment).
-
-**Where it fits:** New playground at `/playground/modernization-backlog`, component `ModernizationBacklogGame.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group (near `IdentityDecisionMatrix`, `Assess`). `PlaygroundCatalog.tsx` entry. Cross-link from `Assess.tsx`'s results view ("Turn your gaps into a roadmap →") once both exist.
-
-**Design:**
-- Drag-and-drop (or up/down reordering, simpler and more accessible than true drag-and-drop — prefer numbered priority inputs + a live-sorted list, consistent with the codebase's general preference for accessible controls over complex DnD) of 20 backlog cards into quarters (Q1-Q4) within a fixed budget cap.
-- Each card has: risk score, cost, dependency flags (e.g. "requires directory migration first" — sequencing it before its dependency triggers a warning).
-- End-of-plan scoring: risk-reduction-per-dollar-per-quarter, dependency-order violations, and a comparison against a reference-optimal sequencing (not necessarily unique — score based on being *within a reasonable band* of optimal, not exact match).
-
-**Data model:** `src/data/modernizationBacklogItems.ts` — the 20 fixed items with `id, title, riskScore, cost, dependsOn?: string[]`. A pure scoring function in `src/lib/games/modernizationScoring.ts`.
-
-**Tests:**
-- `src/data/modernizationBacklogItems.test.ts` — no circular `dependsOn` chains; a valid dependency-respecting full sequencing exists (solvability check).
-- `src/lib/games/modernizationScoring.test.ts` — a dependency violation is penalized; the theoretical optimal sequencing scores at or near the maximum.
-
-**Docs to update:**
-- `README.md` §D (Advanced Ecosystem & Governance, pairs conceptually with the GRC Assessor) or §B — choose §B since it's playground-catalog-listed; note the `Assess.tsx` cross-link in the bullet.
-- `GEMINI.md` §2 table: new row.
-
-**Feasibility:** Easy.
-
----
-
 ## Suggested Execution Order
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), and #7 (Passkey Rollout Strategist) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), and #11 (Modernization Backlog Game) have shipped. Remaining order:
 
-1. **#11 Modernization Backlog Game** — easy, cross-links to existing `Assess.tsx`.
-2. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
-3. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
-4. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
-5. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
-6. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-7. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-8. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
+2. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
+3. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
+4. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
+5. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
+6. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+7. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

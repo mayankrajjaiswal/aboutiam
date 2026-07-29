@@ -10,29 +10,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group A — Emerging Standards & Cryptography
 
-### A6. Legacy & Academic Federation Playground
-
-**One-liner:** One playground covering RADIUS AAA packet exchange, TACACS+ command authorization, and a Shibboleth/CAS/eduGAIN discovery-service simulation (WAYF picker → home IdP redirect) — the "protocols before OAuth/SAML dominance" story.
-
-**Why unique:** Confirmed genuine gap — no unified RADIUS/TACACS+/CAS/Shibboleth/eduGAIN simulator exists anywhere on the site or in the Phase 1 plan, despite these still running enormous amounts of real enterprise network-auth and academic-federation infrastructure today.
-
-**Where it fits:** New playground at `/playground/legacy-federation`, component `LegacyFederationLab.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group, positioned as a companion to `IdentityTimeline.tsx` (cross-link both ways).
-
-**Design — 3 tabs within one playground:**
-1. **RADIUS AAA:** Visualize an Access-Request/Access-Accept/Access-Reject packet exchange for network device login (802.1X-style), showing shared-secret hashing of the password attribute.
-2. **TACACS+:** Contrast RADIUS's combined AAA with TACACS+'s separated Authentication/Authorization/Accounting packets, with a command-authorization example (e.g., a network admin's `show run` vs. `configure terminal` being separately authorized).
-3. **Shibboleth/CAS/eduGAIN:** A WAYF ("Where Are You From") discovery-service picker — user selects their home institution from a federation metadata list, gets redirected to their home IdP, authenticates, and returns with a SAML assertion the Shibboleth SP consumes (reuses `SAMLWorkbench.tsx` assertion logic under the hood).
-
-**Data model:** `src/data/legacyFederationData.ts` — RADIUS/TACACS+ packet field definitions, and a mock eduGAIN federation metadata list (institution names + home IdP endpoints) for the WAYF picker.
-
-**Tests:** `src/pages/Playgrounds/LegacyFederationLab.test.tsx` — RADIUS Access-Reject renders for a wrong shared secret; TACACS+ separately logs authentication vs. authorization vs. accounting events; WAYF picker redirect produces a SAML assertion consumable by the mock SP.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium-Hard.
-
----
-
 ### A10 (stretch, deprioritized). Avatar & Spatial Identity Verification Lab
 
 **One-liner:** Simulates age/identity assurance inside a headset-only VR/AR context — no front-facing camera, often a shared device — contrasting behavioral/gesture telemetry-based continuous authentication against wallet-based cryptographic age attestation.
@@ -144,9 +121,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, and A3 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, A3, and A6 have shipped. All of Group A and Group B are now done. Remaining order:
 
-- **A6** — Legacy & Academic Federation Playground (medium-hard, lower urgency).
 - **C3** — In-Browser Mock IAM Terminal (medium, new SDK primitive — good to do once other features have stabilized conventions).
 - **B11** — Accessibility Audit & Hardening Sweep (ongoing, start threading through once enough interactive components exist to make a sweep worthwhile — don't block on this, but don't skip it either).
 - **A10** — Avatar & Spatial Identity Lab (stretch, only if there's appetite after everything else — out of scope for this pass).

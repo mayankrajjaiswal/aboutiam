@@ -133,6 +133,7 @@ const architectureItems = [
   { name: 'Identity Fabric Builder', path: '/playground/identity-fabric', icon: Waypoints },
   { name: 'OT/ICS Identity Simulator', path: '/playground/ot-ics-identity', icon: Cpu },
   { name: 'CIEM Explorer', path: '/playground/ciem-explorer', icon: GitBranch },
+  { name: 'Legacy & Academic Federation Lab', path: '/playground/legacy-federation', icon: History },
 ]
 
 const ecosystemItems = [

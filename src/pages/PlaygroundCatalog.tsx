@@ -248,6 +248,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "Legacy & Academic Federation Playground",
+      desc: "RADIUS AAA Access-Request/Access-Accept exchanges, TACACS+'s separated authentication/authorization/accounting phases, and a Shibboleth/eduGAIN WAYF discovery-service redirect — the protocols still running enormous amounts of real enterprise network-auth and academic federation infrastructure today.",
+      icon: Radio,
+      link: "/playground/legacy-federation",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "OT/ICS Device Identity & Segmentation Simulator",
       desc: "Toggle a factory-floor topology (PLCs, HMIs, sensors) between a flat network and identity-based microsegmentation, trigger a ransomware injection at an HMI, and compare the lateral-movement blast radius between the two modes.",
       icon: Cpu,

@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   History, ShieldAlert, ShieldCheck, Lock, Fingerprint, 
@@ -388,6 +389,9 @@ export default function IdentityTimeline() {
         </h2>
         <p className="text-text-secondary">
           Trace the continuous evolutionary journey of digital identity, secure borders, and cryptography. Click each era along the timeline path to explore technical details and fire live inline simulators.
+        </p>
+        <p className="text-xs text-text-muted">
+          Want to get hands-on with the protocols this timeline only narrates? Try the <Link to="/playground/legacy-federation" className="text-accent-primary font-semibold hover:text-accent-hover">Legacy & Academic Federation Playground</Link> for RADIUS, TACACS+, and Shibboleth/eduGAIN.
         </p>
       </div>
 

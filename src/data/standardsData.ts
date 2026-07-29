@@ -930,6 +930,7 @@ Content-Type: application/json
     ],
     relatedResources: [
       { title: 'CAEP Continuous Access Evaluation Lab', path: '/playground/caep', type: 'playground' },
+      { title: 'CAEP Event Storm Visualizer (multi-subscriber fan-out)', path: '/playground/caep-event-storm', type: 'playground' },
       { title: 'Session Hijacking & Token Theft Lab', path: '/playground/session-hijacking', type: 'playground' }
     ]
   },
@@ -990,7 +991,69 @@ Content-Type: application/json
     ],
     relatedResources: [
       { title: 'Verifiable Credentials & DID Lab', path: '/playground/vc-did', type: 'playground' },
-      { title: 'Zero-Knowledge Proof (ZKP) Wallet', path: '/playground/zkp-wallet', type: 'playground' }
+      { title: 'Zero-Knowledge Proof (ZKP) Wallet', path: '/playground/zkp-wallet', type: 'playground' },
+      { title: 'OpenID4VC Wallet Studio (SD-JWT profile)', path: '/playground/openid4vc-wallet', type: 'playground' }
+    ]
+  },
+  {
+    id: 'openid4vc',
+    title: 'OpenID4VC (OID4VCI / OID4VP)',
+    fullname: 'OpenID for Verifiable Credential Issuance & Presentation',
+    rfcs: ['OpenID4VCI (OIDF)', 'OpenID4VP (OIDF)', 'IETF SD-JWT VC'],
+    year: '2023',
+    difficulty: 'Advanced',
+    category: 'Decentralized Identity',
+    summary: 'A pair of OpenID Foundation profiles that reuse familiar OAuth 2.0/OIDC machinery — instead of a fresh JSON-LD credential model — to issue (OID4VCI) and present (OID4VP) SD-JWT-based Verifiable Credentials, letting a Wallet selectively disclose only the claims a Verifier actually requested.',
+    problem: 'The W3C Verifiable Credentials Data Model defines what a credential looks like, but not how a Wallet actually requests one from an Issuer, or presents one to a Verifier, over HTTP — every vendor filled that gap differently until OpenID4VC standardized it on top of OAuth 2.0.',
+    whyExists: 'eIDAS 2.0 mandates that every EU member state ship an EUDI (European Digital Identity) Wallet by 2026, and the EU\'s own Architecture Reference Framework (ARF) selected OpenID4VCI/VP + SD-JWT VC as the interoperable issuance/presentation profile every member state\'s wallet must speak.',
+    flowchart: `
++-------------------------------------------------------------+
+|            OID4VCI ISSUANCE + OID4VP PRESENTATION            |
++-------------------------------------------------------------+
+
+  [ Issuer ]                [ Wallet ]                  [ Verifier ]
+      |--1. Credential Offer ----->|                          |
+      |    (OID4VCI)               |                          |
+      |<--2. Token + Credential----|                          |
+      |    Request                |                          |
+      |--3. SD-JWT VC (all claims,|                          |
+      |    each independently     |                          |
+      |    salted/hashed) ------->|                          |
+      |                            |--4. Presentation Request-|
+      |                            |    (OID4VP, specific     |
+      |                            |    claims only) <--------|
+      |                            |--5. Presentation (JWT +  |
+      |                            |    only requested        |
+      |                            |    disclosures) -------->|
+`,
+    messageFormat: `// SD-JWT VC compact serialization: <issuer-jwt>~<disclosure>~<disclosure>~
+// Issuer JWT payload (excerpt):
+{
+  "iss": "https://dmv.example",
+  "vct": "urn:mdl",
+  "_sd": ["9gjVv...digest1", "abKvR...digest2"],
+  "_sd_alg": "sha-256"
+}
+// One disclosure = base64url(["2GLC42...salt", "age_over_21", true])`,
+    vulnerabilities: [
+      'A Wallet presenting more disclosures than a Verifier actually requested — real over-disclosure risk since nothing in the protocol itself stops a Wallet from revealing extra claims it holds.',
+      'Reusing the exact same presentation (JWT + disclosures) across multiple Verifiers without a Key Binding JWT, allowing colluding Verifiers to correlate the holder across contexts.',
+      'An Issuer choosing overly coarse claims (bundling several facts into one non-splittable disclosure) that defeats selective disclosure\'s entire purpose.'
+    ],
+    bestPractices: [
+      'Only disclose exactly what a Verifier\'s presentation definition requests — never the full credential — even when the Wallet technically holds more.',
+      'Bind presentations to the holder\'s key (Key Binding JWT / cnf claim) so a stolen presentation can\'t be replayed by someone else.',
+      'Issue fine-grained, independently disclosable claims (e.g. a standalone `age_over_21` boolean) rather than forcing Wallets to reveal a raw birthdate just to prove an age threshold.'
+    ],
+    vendorSupport: [
+      'EU Digital Identity Wallet (EUDI, eIDAS 2.0): The reference deployment mandating OID4VCI/VP + SD-JWT VC across all EU member states.',
+      'Microsoft Entra Verified ID: Supports OID4VCI issuance alongside its W3C VC/DID stack.',
+      'Ping Identity, Authlete, walt.id: OpenID4VC-conformant issuer/wallet/verifier SDKs and reference implementations.'
+    ],
+    relatedResources: [
+      { title: 'OpenID4VC Wallet Studio', path: '/playground/openid4vc-wallet', type: 'playground' },
+      { title: 'SD-JWT Decoder', path: '/tools/sd-jwt-decoder', type: 'tool' },
+      { title: 'Verifiable Credentials & DID Lab (W3C VC model)', path: '/playground/vc-did', type: 'playground' }
     ]
   },
   {
@@ -1098,7 +1161,61 @@ X509v3 Subject Alternative Name:
     ],
     relatedResources: [
       { title: 'Session Hijacking & Token Theft Lab', path: '/playground/session-hijacking', type: 'playground' },
-      { title: 'OAuth PKCE Generator Tool', path: '/tools/oauth-pkce-generator', type: 'tool' }
+      { title: 'OAuth PKCE Generator Tool', path: '/tools/oauth-pkce-generator', type: 'tool' },
+      { title: 'FAPI 2.0 / Open Banking Security Profile Lab', path: '/playground/fapi2', type: 'playground' }
+    ]
+  },
+  {
+    id: 'fapi2',
+    title: 'FAPI 2.0',
+    fullname: 'Financial-grade API Security Profile 2.0',
+    rfcs: ['FAPI 2.0 Security Profile (OIDF)', 'FAPI 2.0 Message Signing (OIDF)', 'RFC 9126 (PAR)'],
+    year: '2024',
+    difficulty: 'Advanced',
+    category: 'Federation & SSO',
+    summary: 'A stricter OpenID Foundation profile of OAuth 2.0/OIDC purpose-built for high-value financial and government APIs — it removes footguns plain OAuth allows (parameters in the browser URL, plain bearer tokens, unsigned responses) and replaces them with mandatory Pushed Authorization Requests, sender-constrained tokens, and signed messages.',
+    problem: 'Plain OAuth 2.0 is intentionally flexible so it fits everything from a consumer social-login button to a bank transfer API — but that flexibility means nothing stops an implementer from making choices (bearer tokens, unsigned redirects, parameters in the URL) that are fine for a "log in with Google" button but genuinely dangerous for moving real money.',
+    whyExists: 'Open Banking and Open Finance regulations (UK Open Banking, Australia\'s CDR, Brazil\'s Open Finance) needed one interoperable, opinionated security profile that every bank and TPP (Third-Party Provider) could implement identically, rather than each regulator inventing its own OAuth hardening rules.',
+    flowchart: `
++-------------------------------------------------------------+
+|         FAPI 2.0 HARDENED AUTHORIZATION FLOW                 |
++-------------------------------------------------------------+
+
+  [ TPP / Client ]                              [ Bank / Authorization Server ]
+      |--1. PAR: push auth params server-to-server -------->|
+      |<-2. Short-lived request_uri (opaque) ----------------|
+      |--3. Redirect browser with ONLY request_uri --------->|
+      |<-4. Signed (JARM) authorization response ------------|
+      |--5. Token request, bound to mTLS cert / DPoP key --->|
+      |<-6. Sender-constrained access token ------------------|
+`,
+    messageFormat: `// PAR request (step 1) — parameters never touch the browser URL
+POST /as/par HTTP/1.1
+Authorization: Bearer <client_assertion or mTLS>
+
+response_type=code&client_id=tpp-123&redirect_uri=https://tpp.example/cb
+&scope=accounts&code_challenge=E9Melhoa...&code_challenge_method=S256
+
+// Response
+{ "request_uri": "urn:ietf:params:oauth:request_uri:6esc_11ACC5bwc014ltc14eY22c", "expires_in": 90 }`,
+    vulnerabilities: [
+      'Falling back to plain bearer tokens "temporarily" during a migration, silently reintroducing the exact token-theft risk sender-constraining was meant to close.',
+      'Implementing PAR but still accepting the legacy non-PAR authorization endpoint as a fallback, leaving the original tampering vector reachable.',
+      'Skipping response signing (JARM) because "TLS already protects it," missing that TLS protects the channel, not detection of an in-path tamper by anyone who can intercept it.'
+    ],
+    bestPractices: [
+      'Require PAR unconditionally — never leave the legacy direct-parameter authorization endpoint enabled alongside it.',
+      'Bind every issued access and refresh token to the client\'s mTLS certificate or a DPoP key; reject any token presented without a matching proof.',
+      'Sign authorization responses (JARM) so the client can cryptographically verify nothing was altered in transit, independent of TLS.'
+    ],
+    vendorSupport: [
+      'UK Open Banking, Australia CDR, Brazil Open Finance: Regulatory ecosystems mandating FAPI (1.0 or 2.0) conformance for all participants.',
+      'Ping Identity, Curity, Authlete: FAPI 2.0-certified authorization server implementations.',
+      'Open Banking-focused API gateways (Kong, Apigee financial-grade add-ons) offer FAPI conformance modules.'
+    ],
+    relatedResources: [
+      { title: 'FAPI 2.0 / Open Banking Security Profile Lab', path: '/playground/fapi2', type: 'playground' },
+      { title: 'OAuth Request Builder', path: '/tools/oauth-builder', type: 'tool' }
     ]
   }
 ]

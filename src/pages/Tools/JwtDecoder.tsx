@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AlertOctagon, CheckCircle2, Copy, Check, Terminal } from 'lucide-react'
 import ToolPageShell from '../../components/Tools/ToolPageShell'
 import BeginnerExpertExplainer from '../../components/Tools/BeginnerExpertExplainer'
@@ -19,6 +19,20 @@ export default function JwtDecoder() {
   const [secret, setSecret] = useState('')
   const [verifyResult, setVerifyResult] = useState<'idle' | 'valid' | 'invalid' | 'checking'>('idle')
   const { copy, copiedId } = useClipboardCopy()
+
+  // Deep-link support so other pages can send a freshly-minted token here for
+  // inspection, e.g. "/tools/jwt-decoder?token=<jwt>" (§4I mount-effect pattern).
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const tokenParam = params.get('token')
+      if (tokenParam) {
+        setTimeout(() => {
+          setToken(tokenParam)
+        }, 0)
+      }
+    }
+  }, [])
 
   const decoded = useMemo(() => decodeJwt(token), [token])
   const alg = decoded.header?.alg

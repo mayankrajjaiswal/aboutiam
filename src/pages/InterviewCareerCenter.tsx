@@ -17,7 +17,10 @@ import {
   Terminal,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { useClipboardCopy } from '../components/Tools/useClipboardCopy'
+import PortfolioExport from '../components/PortfolioExport'
+import { IamTerminal } from '../lib/sdk/components/IamTerminal'
 import { CAREER_TRACKS } from '../data/interviewData'
 import { usePreferenceStore } from '../store/preferenceStore'
 
@@ -204,6 +207,9 @@ export default function InterviewCareerCenter() {
           <p className="text-xs text-text-secondary max-w-xl">
             Acquire role-based enterprise IAM mastery, practice mock interviews, audit architectural diagrams, and prepare for high-impact security hires.
           </p>
+          <Link to="/tools/iam-salary-compass" className="inline-block text-[11px] font-bold text-accent-primary hover:text-accent-hover transition-colors">
+            Curious what these roles pay? Check the IAM Salary Compass →
+          </Link>
         </div>
         <div className="flex gap-4">
           <div className="p-3 bg-bg-card rounded-lg border border-border-subtle flex items-center gap-2.5">
@@ -282,7 +288,7 @@ export default function InterviewCareerCenter() {
         </div>
 
         {/* RIGHT INTERACTIVE INTERVIEW PLATFORM */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="lg:col-span-3 space-y-6 min-w-0">
           {/* TRACK SUB-HEADER */}
           <div className="p-5 bg-bg-card border border-border-subtle rounded-xl space-y-1">
             <div className="flex items-center gap-2">
@@ -685,6 +691,18 @@ export default function InterviewCareerCenter() {
                         </div>
                       </div>
                     ))}
+
+                    <div className="p-5 rounded-xl bg-bg-card border border-border-subtle space-y-3 shadow-sm">
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-black text-text-primary flex items-center gap-1.5">
+                          <Terminal className="w-4 h-4 text-accent-primary" /> CLI Muscle-Memory Practice
+                        </h4>
+                        <p className="text-xs text-text-secondary leading-relaxed bg-bg-sidebar p-3.5 rounded-lg border border-border-subtle/50">
+                          A scripted terminal for the commands identity engineers actually type — try <code className="font-mono">openssl x509 -in cert.pem -text -noout</code>, <code className="font-mono">curl -X POST https://mock-idp/token</code>, <code className="font-mono">kinit user@REALM.EXAMPLE</code>, or <code className="font-mono">jwt-cli decode &lt;token&gt;</code>. Type <code className="font-mono">help</code> for the full list.
+                        </p>
+                      </div>
+                      <IamTerminal welcomeLines={['AboutIAM Mock Terminal — type "help" to see available commands.']} />
+                    </div>
                   </div>
                 )}
 
@@ -816,6 +834,7 @@ export default function InterviewCareerCenter() {
                 {/* --- 6. RESUME AND PORTFOLIO REVIEW --- */}
                 {activeSection === 'resume' && (
                   <div className="space-y-6">
+                    <PortfolioExport />
                     <div className="grid md:grid-cols-2 gap-6">
                       {/* Left: Bullet Points */}
                       <div className="p-5 rounded-xl bg-bg-card border border-border-subtle space-y-4 shadow-sm">

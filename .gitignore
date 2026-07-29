@@ -14,6 +14,11 @@ dist-ssr
 coverage
 .claude
 
+# Environment variables (see .env.example)
+.env
+.env.local
+.env.*.local
+
 # Playwright MCP scratch output
 .playwright-mcp
 
@@ -31,4 +36,6 @@ coverage
 FIXES_TODO.md
 AboutIAM_Product_Roadmap_and_Vision.md
 FuturePlans.txt
-NEXT_FEATURES.md
+#NEXT_FEATURES.md
+NEXT_FEATURES_PHASE2.md
+NEXT_FEATURES_PHASE3.md

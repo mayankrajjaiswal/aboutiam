@@ -15,6 +15,8 @@ const Learn = lazy(() => import('./pages/Learn'))
 const PlaygroundCatalog = lazy(() => import('./pages/PlaygroundCatalog'))
 const ToolsCatalog = lazy(() => import('./pages/ToolsCatalog'))
 const ArchitectureCenter = lazy(() => import('./pages/ArchitectureCenter'))
+const KnowledgeGraph = lazy(() => import('./pages/KnowledgeGraph'))
+const DailyPuzzle = lazy(() => import('./pages/DailyPuzzle'))
 const VendorCenter = lazy(() => import('./pages/VendorCenter'))
 const ResearchCenter = lazy(() => import('./pages/ResearchCenter'))
 const DesignPatternLibrary = lazy(() => import('./pages/DesignPatternLibrary'))
@@ -55,6 +57,20 @@ const ConformanceChecker = lazy(() => import('./pages/Tools/ConformanceChecker')
 const Pbkdf2Generator = lazy(() => import('./pages/Tools/Pbkdf2Generator'))
 const CertBundleSplitter = lazy(() => import('./pages/Tools/CertBundleSplitter'))
 const DidDocumentValidator = lazy(() => import('./pages/Tools/DidDocumentValidator'))
+const IdentitySbomAnalyzer = lazy(() => import('./pages/Tools/IdentitySbomAnalyzer'))
+const IamTcoCalculator = lazy(() => import('./pages/Tools/IamTcoCalculator'))
+const IamRfpGenerator = lazy(() => import('./pages/Tools/IamRfpGenerator'))
+const IamSalaryCompass = lazy(() => import('./pages/Tools/IamSalaryCompass'))
+const TabletopExerciseGenerator = lazy(() => import('./pages/Tools/TabletopExerciseGenerator'))
+const PqcReadinessAuditor = lazy(() => import('./pages/Tools/PqcReadinessAuditor'))
+const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
+const HrAttributeMapper = lazy(() => import('./pages/Playgrounds/HrAttributeMapper'))
+const IdentityFabricBuilder = lazy(() => import('./pages/Playgrounds/IdentityFabricBuilder'))
+const LivenessInjectionLab = lazy(() => import('./pages/Playgrounds/LivenessInjectionLab'))
+const OtIcsIdentityLab = lazy(() => import('./pages/Playgrounds/OtIcsIdentityLab'))
+const TrustRegistryExplorer = lazy(() => import('./pages/Playgrounds/TrustRegistryExplorer'))
+const CiemExplorer = lazy(() => import('./pages/Playgrounds/CiemExplorer'))
+const LegacyFederationLab = lazy(() => import('./pages/Playgrounds/LegacyFederationLab'))
 const IdentityBrokerSandbox = lazy(() => import('./pages/Playgrounds/IdentityBrokerSandbox'))
 const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
 const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
@@ -99,6 +115,15 @@ const Terms = lazy(() => import('./pages/Terms'))
 const Roadmap = lazy(() => import('./pages/Roadmap'))
 
 // Phase 7: Next-Gen Modules
+const AgentIdentityLab = lazy(() => import('./pages/Playgrounds/AgentIdentityLab'))
+const NhiSprawlLab = lazy(() => import('./pages/Playgrounds/NhiSprawlLab'))
+const PasskeyRolloutStrategist = lazy(() => import('./pages/Playgrounds/PasskeyRolloutStrategist'))
+const ModernizationBacklogGame = lazy(() => import('./pages/Playgrounds/ModernizationBacklogGame'))
+const BuildYourIdp = lazy(() => import('./pages/Playgrounds/BuildYourIdp'))
+const OpenId4VcWallet = lazy(() => import('./pages/Playgrounds/OpenId4VcWallet'))
+const Fapi2Lab = lazy(() => import('./pages/Playgrounds/Fapi2Lab'))
+const CaepEventStorm = lazy(() => import('./pages/Playgrounds/CaepEventStorm'))
+const AttackPathGraph = lazy(() => import('./pages/Playgrounds/AttackPathGraph'))
 const AIThreatLab = lazy(() => import('./pages/Playgrounds/AIThreatLab'))
 const ZKPWallet = lazy(() => import('./pages/Playgrounds/ZKPWallet'))
 const AmbientTrust = lazy(() => import('./pages/Playgrounds/AmbientTrust'))
@@ -116,6 +141,8 @@ const MagicLinkStepUp = lazy(() => import('./pages/Playgrounds/MagicLinkStepUp')
 const CredentialStuffingLab = lazy(() => import('./pages/Playgrounds/CredentialStuffingLab'))
 const CiamConsentSandbox = lazy(() => import('./pages/Playgrounds/CiamConsentSandbox'))
 const AccessCertificationLab = lazy(() => import('./pages/Playgrounds/AccessCertificationLab'))
+const RoleMiningWorkbench = lazy(() => import('./pages/Playgrounds/RoleMiningWorkbench'))
+const AccessRequestCart = lazy(() => import('./pages/Playgrounds/AccessRequestCart'))
 const RiskEngine = lazy(() => import('./pages/Playgrounds/RiskEngine'))
 const PamVaultingLab = lazy(() => import('./pages/Playgrounds/PamVaultingLab'))
 const HybridAdSyncLab = lazy(() => import('./pages/Playgrounds/HybridAdSyncLab'))
@@ -170,6 +197,8 @@ export default function App() {
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/learn" element={<Learn />} />
               <Route path="/architecture" element={<ArchitectureCenter />} />
+              <Route path="/knowledge-graph" element={<KnowledgeGraph />} />
+              <Route path="/daily-puzzle" element={<DailyPuzzle />} />
               <Route path="/vendor" element={<VendorCenter />} />
               <Route path="/research" element={<ResearchCenter />} />
               <Route path="/patterns" element={<DesignPatternLibrary />} />
@@ -212,6 +241,21 @@ export default function App() {
               <Route path="/tools/pbkdf2-generator" element={<Pbkdf2Generator />} />
               <Route path="/tools/cert-bundle-splitter" element={<CertBundleSplitter />} />
               <Route path="/tools/did-document-validator" element={<DidDocumentValidator />} />
+              <Route path="/tools/identity-sbom-analyzer" element={<IdentitySbomAnalyzer />} />
+              <Route path="/tools/iam-tco-calculator" element={<IamTcoCalculator />} />
+              <Route path="/tools/iam-rfp-generator" element={<IamRfpGenerator />} />
+              <Route path="/tools/iam-salary-compass" element={<IamSalaryCompass />} />
+              <Route path="/tools/tabletop-exercise-generator" element={<TabletopExerciseGenerator />} />
+              <Route path="/tools/pqc-readiness-auditor" element={<PqcReadinessAuditor />} />
+              <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />
+              <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
+              <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />
+              <Route path="/playground/modernization-backlog" element={<ModernizationBacklogGame />} />
+              <Route path="/playground/build-your-idp" element={<BuildYourIdp />} />
+              <Route path="/playground/openid4vc-wallet" element={<OpenId4VcWallet />} />
+              <Route path="/playground/fapi2" element={<Fapi2Lab />} />
+              <Route path="/playground/caep-event-storm" element={<CaepEventStorm />} />
+              <Route path="/playground/attack-path-graph" element={<AttackPathGraph />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />
@@ -249,9 +293,19 @@ export default function App() {
               <Route path="/playground/credential-stuffing" element={<CredentialStuffingLab />} />
               <Route path="/playground/ciam-consent" element={<CiamConsentSandbox />} />
               <Route path="/playground/access-certification" element={<AccessCertificationLab />} />
+              <Route path="/playground/role-mining" element={<RoleMiningWorkbench />} />
+              <Route path="/playground/access-request-cart" element={<AccessRequestCart />} />
               <Route path="/playground/risk-engine" element={<RiskEngine />} />
               <Route path="/playground/pam-vaulting" element={<PamVaultingLab />} />
               <Route path="/playground/hybrid-ad-sync" element={<HybridAdSyncLab />} />
+              <Route path="/playground/ldap-schema-designer" element={<LdapSchemaDesigner />} />
+              <Route path="/playground/hr-attribute-mapper" element={<HrAttributeMapper />} />
+              <Route path="/playground/identity-fabric" element={<IdentityFabricBuilder />} />
+              <Route path="/playground/liveness-injection" element={<LivenessInjectionLab />} />
+              <Route path="/playground/ot-ics-identity" element={<OtIcsIdentityLab />} />
+              <Route path="/playground/trust-registry" element={<TrustRegistryExplorer />} />
+              <Route path="/playground/ciem-explorer" element={<CiemExplorer />} />
+              <Route path="/playground/legacy-federation" element={<LegacyFederationLab />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />

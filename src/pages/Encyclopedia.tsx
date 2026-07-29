@@ -4,6 +4,7 @@ import { Book, Search, Lightbulb, ShieldCheck, FileText, ChevronRight, Wrench, A
 import { ENCYCLOPEDIA_TERMS } from '../data/encyclopediaData'
 import BookmarkButton from '../components/BookmarkButton'
 import ContentFeedback from '../components/ContentFeedback'
+import ReadAloudButton from '../components/ReadAloudButton'
 
 export interface Term {
   id: string
@@ -152,10 +153,13 @@ export default function Encyclopedia() {
                   <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-accent-glow text-accent-primary border border-accent-primary/10">
                     {selectedTerm.category}
                   </span>
-                  <BookmarkButton
-                    item={{ id: `term-${selectedTerm.id}`, title: selectedTerm.term, link: `/encyclopedia?term=${selectedTerm.id}` }}
-                    className="p-1.5 rounded-lg border border-border-subtle bg-bg-sidebar/50 hover:border-accent-primary/30"
-                  />
+                  <div className="flex items-center gap-2">
+                    <ReadAloudButton text={`${selectedTerm.term}. ${selectedTerm.fullName}. The beginner analogy: ${selectedTerm.analogy}. Expert technical specification: ${selectedTerm.expert}`} />
+                    <BookmarkButton
+                      item={{ id: `term-${selectedTerm.id}`, title: selectedTerm.term, link: `/encyclopedia?term=${selectedTerm.id}` }}
+                      className="p-1.5 rounded-lg border border-border-subtle bg-bg-sidebar/50 hover:border-accent-primary/30"
+                    />
+                  </div>
                 </div>
                 <h3 className="text-3xl font-black text-text-primary">{selectedTerm.term}</h3>
                 <p className="text-base text-text-secondary font-medium">{selectedTerm.fullName}</p>

@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  Network, ArrowRight, ShieldCheck, ShieldAlert, 
-  Server, FileCheck, RefreshCw, KeySquare
+import {
+  Network, ArrowRight, ShieldCheck, ShieldAlert,
+  Server, FileCheck, RefreshCw, KeySquare, AtomIcon, Radar, Clock,
 } from 'lucide-react'
+import { getPqcSignatureDisplay, computeChainSizeBytes } from '../../lib/tools/certChainPqc'
+import type { PqcChainMode } from '../../lib/tools/certChainPqc'
 
 export default function CertChainValidator() {
   const [leafRevoked, setLeafRevoked] = useState(false)
   const [intermediateRevoked, setIntermediateRevoked] = useState(false)
+  const [pqcMode, setPqcMode] = useState<PqcChainMode>('classical')
 
   // Simulation step states
   const [handshakeStep, setHandshakeStep] = useState<number>(0)
@@ -79,26 +82,26 @@ export default function CertChainValidator() {
         
         {/* Left column: Diagram & Controls */}
         <div className="lg:col-span-8 space-y-6">
-          
+
           {/* Controls toolbar */}
-          <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md flex justify-between items-center">
-            <div className="flex gap-4">
+          <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md flex flex-wrap justify-between items-center gap-3">
+            <div className="flex flex-wrap gap-4">
               <label className="text-xs font-bold text-text-secondary flex items-center gap-2 cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  checked={leafRevoked} 
+                <input
+                  type="checkbox"
+                  checked={leafRevoked}
                   onChange={e => { setLeafRevoked(e.target.checked); resetSimulator() }}
-                  className="rounded text-accent-primary focus:ring-accent-primary" 
+                  className="rounded text-accent-primary focus:ring-accent-primary"
                 />
                 Revoke Client Cert
               </label>
 
               <label className="text-xs font-bold text-text-secondary flex items-center gap-2 cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  checked={intermediateRevoked} 
+                <input
+                  type="checkbox"
+                  checked={intermediateRevoked}
                   onChange={e => { setIntermediateRevoked(e.target.checked); resetSimulator() }}
-                  className="rounded text-accent-primary focus:ring-accent-primary" 
+                  className="rounded text-accent-primary focus:ring-accent-primary"
                 />
                 Revoke Intermediate CA
               </label>
@@ -111,6 +114,60 @@ export default function CertChainValidator() {
               <RefreshCw className="w-3.5 h-3.5" /> Validate mTLS Chain
             </button>
           </div>
+
+          {/* Classical / Hybrid PQC toggle */}
+          <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-md flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <AtomIcon className="w-4 h-4 text-accent-primary" />
+              <span className="text-xs font-bold text-text-secondary uppercase tracking-wider">Signature Mode</span>
+            </div>
+            <div role="group" aria-label="Signature mode" className="inline-flex rounded-lg border border-border-subtle overflow-hidden text-xs font-bold">
+              <button
+                type="button"
+                onClick={() => setPqcMode('classical')}
+                aria-pressed={pqcMode === 'classical'}
+                className={`px-3 py-1.5 transition ${pqcMode === 'classical' ? 'bg-accent-primary text-white' : 'bg-bg-nested text-text-secondary hover:bg-border-subtle'}`}
+              >
+                Classical
+              </button>
+              <button
+                type="button"
+                onClick={() => setPqcMode('hybrid')}
+                aria-pressed={pqcMode === 'hybrid'}
+                className={`px-3 py-1.5 transition ${pqcMode === 'hybrid' ? 'bg-accent-primary text-white' : 'bg-bg-nested text-text-secondary hover:bg-border-subtle'}`}
+              >
+                Hybrid PQC
+              </button>
+            </div>
+            <div className="text-[10px] font-mono text-text-muted">
+              {getPqcSignatureDisplay(pqcMode).algorithm} — {computeChainSizeBytes(pqcMode)} B total chain signature overhead
+            </div>
+          </div>
+
+          {/* Harvest Now, Decrypt Later timeline — only meaningful in classical mode */}
+          {pqcMode === 'classical' && (
+            <div className="bg-status-warning/5 border border-status-warning/25 rounded-xl p-4 shadow-md space-y-2">
+              <span className="text-xs font-bold text-status-warning uppercase tracking-wider flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5" /> Harvest Now, Decrypt Later
+              </span>
+              <div className="flex items-center gap-3 text-[10px] font-mono text-text-secondary overflow-x-auto">
+                <div className="flex flex-col items-center gap-1 shrink-0">
+                  <Radar className="w-4 h-4 text-status-warning" />
+                  <span className="font-bold text-text-primary">Today</span>
+                  <span className="text-text-muted">Attacker captures this classical TLS session</span>
+                </div>
+                <div className="flex-1 h-0.5 bg-status-warning/30 min-w-15" />
+                <div className="flex flex-col items-center gap-1 shrink-0">
+                  <ShieldAlert className="w-4 h-4 text-status-danger" />
+                  <span className="font-bold text-text-primary">Future Date (CRQC)</span>
+                  <span className="text-text-muted">A cryptographically relevant quantum computer retroactively decrypts the captured traffic</span>
+                </div>
+              </div>
+              <p className="text-[10px] text-text-muted italic">
+                Switch to Hybrid PQC mode — a captured hybrid handshake stays confidential even after a future quantum computer exists, since breaking it also requires breaking the ML-KEM/ML-DSA component.
+              </p>
+            </div>
+          )}
 
           {/* Visual Trust Tree Chain */}
           <div className="border border-border-subtle bg-bg-base rounded-xl p-6 relative min-h-[300px] flex items-center justify-center select-none overflow-x-auto shadow-inner">
@@ -126,6 +183,7 @@ export default function CertChainValidator() {
                 </div>
                 <span className="block text-xs font-black mt-2">Client Leaf Cert</span>
                 <span className="text-[9px] text-text-muted font-mono">{leafRevoked ? 'REVOKED' : 'Active'}</span>
+                <span className="text-[8px] text-accent-primary font-mono mt-0.5">{getPqcSignatureDisplay(pqcMode).bytesPerHop} B sig</span>
               </div>
 
               <div className="w-full h-0.5 bg-border-subtle"></div>
@@ -140,6 +198,7 @@ export default function CertChainValidator() {
                 </div>
                 <span className="block text-xs font-black mt-2">Intermediate CA</span>
                 <span className="text-[9px] text-text-muted font-mono">{intermediateRevoked ? 'REVOKED' : 'Trusted'}</span>
+                <span className="text-[8px] text-accent-primary font-mono mt-0.5">{getPqcSignatureDisplay(pqcMode).bytesPerHop} B sig</span>
               </div>
 
               <div className="w-full h-0.5 bg-border-subtle"></div>
@@ -153,6 +212,7 @@ export default function CertChainValidator() {
                 </div>
                 <span className="block text-xs font-black mt-2">Root CA (Trust Anchor)</span>
                 <span className="text-[9px] text-text-muted font-mono">Self-Signed Root</span>
+                <span className="text-[8px] text-accent-primary font-mono mt-0.5">{getPqcSignatureDisplay(pqcMode).bytesPerHop} B sig</span>
               </div>
 
             </div>

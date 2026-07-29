@@ -21,7 +21,9 @@ describe('Security Tools Registry (toolsRegistry.ts)', () => {
       'PKI & Certificates',
       'Hashing, Encoding & Secrets',
       'Auth & Directory Builders',
-      'Emerging & Decentralized Identity'
+      'Emerging & Decentralized Identity',
+      'Supply Chain & Governance',
+      'Program & Vendor Management'
     ])
 
     TOOLS.forEach(t => {

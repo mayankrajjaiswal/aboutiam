@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2026 14:51:26 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 29 Jul 2026 18:17:18 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: JWT Decoder — Inspect & Verify Tokens Online]]></title>
@@ -277,6 +277,54 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/did-document-validator</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Paste a Decentralized Identifier (DID) Document JSON and validate it against the W3C DID Core structural requirements, with a pretty-printed, field-by-field resolved preview.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Identity SBOM Analyzer — Auth-Adjacent Dependency Risk Report]]></title>
+      <link>https://www.aboutiam.com/tools/identity-sbom-analyzer</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/identity-sbom-analyzer</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Paste a package.json (or a plain comma/newline-separated dependency list) to get an auth-relevant dependency risk report, cross-referenced against known JWT/SAML library CVEs, plus a downloadable "Identity SBOM" JSON export.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: IAM Build vs. Buy TCO Calculator — 3-Year Cost Comparison]]></title>
+      <link>https://www.aboutiam.com/tools/iam-tco-calculator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/iam-tco-calculator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[An editable-slider calculator comparing the 3-year total cost of ownership of building an in-house identity stack versus buying a commercial IDaaS subscription — engineer hours, licensing, and an optional breach-risk adjustment.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: IAM RFP Generator — Tailored Vendor Evaluation Questionnaire]]></title>
+      <link>https://www.aboutiam.com/tools/iam-rfp-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/iam-rfp-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Answer a short questionnaire on org size, industry, and priority capabilities to generate a categorized, downloadable RFP — Security & Compliance, Integration, TCO, and Implementation Risk — with deep links to named vendors known to support each capability.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: IAM Salary Compass — Identity & Access Management Compensation Guide]]></title>
+      <link>https://www.aboutiam.com/tools/iam-salary-compass</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/iam-salary-compass</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A filterable, IAM-specific compensation comparator by role, seniority, specialization (Workforce IAM, CIAM, PAM, IGA), and region — directional estimates aggregated from public sources, not a substitute for local market research.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Tabletop Exercise Generator — Identity Incident Facilitator Script]]></title>
+      <link>https://www.aboutiam.com/tools/tabletop-exercise-generator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/tabletop-exercise-generator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Answer a short questionnaire to generate a printable, facilitator-ready tabletop exercise script — objectives, timed injects, discussion prompts, and a scoring rubric — drawn directly from the Security Bulletins archive.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: PQC Readiness Auditor — Post-Quantum Crypto-Agility Checklist]]></title>
+      <link>https://www.aboutiam.com/tools/pqc-readiness-auditor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/pqc-readiness-auditor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Paste a PEM certificate chain, a JWKS JSON blob, or a TLS cipher-suite list to flag quantum-vulnerable algorithms (RSA, ECDSA, EdDSA, AES-128), estimate hybrid post-quantum handshake size growth, and get a prioritized migration checklist.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

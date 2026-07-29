@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -135,6 +135,14 @@ export default function PlaygroundCatalog() {
       badge: "Active (Standard)",
     },
     {
+      title: "AD/LDAP OU & Schema Designer",
+      desc: "Build an Organizational Unit tree from scratch — add nested OUs, groups, and users, apply GPOs that cascade through inheritance (or block it), and export the result as valid LDIF.",
+      icon: Server,
+      link: "/playground/ldap-schema-designer",
+      badge: "Active (Standard)",
+      enterpriseProducts: "Microsoft Active Directory, PingDirectory"
+    },
+    {
       title: "JWT Signature Secret Cracker",
       desc: "Run client-side dictionary attacks against weak HS256 tokens to crack and discover the signature secret within seconds.",
       icon: Key,
@@ -156,6 +164,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "Liveness Detection & Injection Attack Lab",
+      desc: "Pit presentation-replay, camera-feed-injection, and real-time face-swap attacks against static-photo, flash-challenge, depth-motion, and full ISO 30107-3 PAD-scoring defenses to see which defense catches which attack class and why.",
+      icon: ScanFace,
+      link: "/playground/liveness-injection",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "Zero-Knowledge Proof (ZKP) Wallet",
       desc: "Explore decentralized Self-Sovereign Identity. Generate mathematical proofs confirming your age without exposing your raw birthdate.",
       icon: Wallet,
@@ -167,6 +182,104 @@ export default function PlaygroundCatalog() {
       desc: "Visualize post-2030 systems where real-time biometric telemetry (keystrokes, location) constantly decays or fortifies session trust.",
       icon: Activity,
       link: "/playground/ambient-trust",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Agentic Identity & MCP Trust",
+      desc: "Design secure delegation pipelines for non-human AI agents, configure OAuth 2.1 on-behalf-of trust chains, and enforce scope narrowing to contain blast radius under sub-agent compromise.",
+      icon: Bot,
+      link: "/playground/agent-identity",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "NHI Sprawl Cleanup Game",
+      desc: "Triage a seeded fleet of service accounts, API keys, and CI/CD tokens against a real non-human-identity governance rubric — rotate what's stale, revoke what's orphaned or over-privileged, and keep what's legitimately still in use.",
+      icon: ScanSearch,
+      link: "/playground/nhi-sprawl",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Passkey Fleet Rollout Strategist",
+      desc: "Play CISO: allocate a fixed rollout budget across platform SDKs, help-desk training, legacy-fallback sunset, and account recovery, then see a year of quarterly outcomes scored against real 2026 industry benchmarks.",
+      icon: Fingerprint,
+      link: "/playground/passkey-rollout-strategist",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "IAM Modernization Backlog Game",
+      desc: "Sequence 20 realistic legacy-IAM tech-debt items into a 12-month roadmap under a fixed quarterly budget — respect dependency ordering, stay within budget, and maximize risk reduction per dollar.",
+      icon: ClipboardList,
+      link: "/playground/modernization-backlog",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Build-Your-Own-IdP Sandbox",
+      desc: "Assemble a minimal OIDC Provider step by step — generate signing keys, configure the discovery document, register a client, build a consent screen — then watch a mock Relying Party consume it and complete a real signed login, entirely offline.",
+      icon: KeySquare,
+      link: "/playground/build-your-idp",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "OpenID4VC Wallet Studio",
+      desc: "Issue a real SD-JWT verifiable credential, store it in a mock wallet, and selectively disclose only the claims a verifier actually requested — the OID4VCI/OID4VP flow behind eIDAS 2.0 EUDI Wallets.",
+      icon: Wallet,
+      link: "/playground/openid4vc-wallet",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Trust Registry & Issuer Governance Explorer",
+      desc: "Verify a presented credential against a chosen national trust registry — see cross-border recognition gaps between registries and watch a revoked issuer fail authorization even though its signature is still cryptographically valid.",
+      icon: Landmark,
+      link: "/playground/trust-registry",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "FAPI 2.0 / Open Banking Security Profile Lab",
+      desc: "Simulate the three controls FAPI 2.0 adds on top of plain OAuth 2.0 for financial-grade APIs — Pushed Authorization Requests, sender-constrained tokens, and signed authorization responses — and watch each one independently block a real attack.",
+      icon: ShieldAlert,
+      link: "/playground/fapi2",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "CAEP Event Storm Visualizer",
+      desc: "Fire a Continuous Access Evaluation Protocol (CAEP) event from a mock IdP and watch it fan out to multiple subscribed relying parties in real time — each with its own subscription list, latency, and enforcement decision.",
+      icon: Radio,
+      link: "/playground/caep-event-storm",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Legacy & Academic Federation Playground",
+      desc: "RADIUS AAA Access-Request/Access-Accept exchanges, TACACS+'s separated authentication/authorization/accounting phases, and a Shibboleth/eduGAIN WAYF discovery-service redirect — the protocols still running enormous amounts of real enterprise network-auth and academic federation infrastructure today.",
+      icon: Radio,
+      link: "/playground/legacy-federation",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "OT/ICS Device Identity & Segmentation Simulator",
+      desc: "Toggle a factory-floor topology (PLCs, HMIs, sensors) between a flat network and identity-based microsegmentation, trigger a ransomware injection at an HMI, and compare the lateral-movement blast radius between the two modes.",
+      icon: Cpu,
+      link: "/playground/ot-ics-identity",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Identity Fabric / Orchestration Flow Builder",
+      desc: "Wire a legacy protocol-only app to a modern protocol-only IdP through an orchestration node and watch the trace log narrate each protocol-translation step — models IdP migration without app rewrites and consistent policy enforcement across heterogeneous IdPs.",
+      icon: Waypoints,
+      link: "/playground/identity-fabric",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Identity Attack-Path Graph Visualizer",
+      desc: "A BloodHound-style force-directed graph — click hop-by-hop through a seeded identity graph to trace a privilege-escalation path from a low-privilege user to Domain Admin or Cloud Admin, then reveal the true shortest path and its real-world techniques.",
+      icon: GitBranch,
+      link: "/playground/attack-path-graph",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Cloud Entitlement Graph Explorer (CIEM Lite)",
+      desc: "Click a role in a seeded AWS-style IAM policy graph to see toxic privilege-escalation combinations (like iam:PassRole + lambda:CreateFunction), compare granted vs. effective permissions across cross-account trust chains, and shrink a role to least privilege from a mock access log.",
+      icon: GitBranch,
+      link: "/playground/ciem-explorer",
       badge: "Active (Advanced)",
     },
     {
@@ -273,6 +386,22 @@ export default function PlaygroundCatalog() {
       enterpriseProducts: "SailPoint, Saviynt, Omada"
     },
     {
+      title: "Role Mining Workbench",
+      desc: "Run Jaccard-similarity clustering over a seeded 30-user entitlement matrix to discover candidate roles — accept, reject, and merge proposals while watching the orphan-entitlement count drop.",
+      icon: Network,
+      link: "/playground/role-mining",
+      badge: "Active (Standard)",
+      enterpriseProducts: "SailPoint, Saviynt, Omada"
+    },
+    {
+      title: "Access Request Cart Simulator",
+      desc: "Shop a mock entitlement catalog and submit a request through a deterministic approval chain — manager approval, app-owner sign-off for privileged items, and a compliance-officer override for Separation-of-Duties conflicts.",
+      icon: ClipboardCheck,
+      link: "/playground/access-request-cart",
+      badge: "Active (Standard)",
+      enterpriseProducts: "SailPoint, Saviynt, Omada"
+    },
+    {
       title: "Adaptive Risk-Based Authentication Engine",
       desc: "Toggle risk signals (impossible travel, device reputation, behavior anomaly) and watch a composite UEBA-style score drive an allow / step-up / block decision in real time.",
       icon: Gauge,
@@ -294,6 +423,14 @@ export default function PlaygroundCatalog() {
       link: "/playground/hybrid-ad-sync",
       badge: "Active (Advanced)",
       enterpriseProducts: "Microsoft Entra Connect, AD FS"
+    },
+    {
+      title: "HR-to-IdP Attribute Mapper",
+      desc: "Click-to-connect mock HR fields (Workday/SAP-style) to AD/Entra/SCIM attributes, apply concat/regex/lookup-table transformations, and watch a live preview and conflict warnings update in real time.",
+      icon: ArrowLeftRight,
+      link: "/playground/hr-attribute-mapper",
+      badge: "Active (Standard)",
+      enterpriseProducts: "Workday, SAP SuccessFactors, Microsoft Entra Connect"
     }
   ]
 

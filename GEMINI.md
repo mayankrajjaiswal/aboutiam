@@ -17,6 +17,8 @@ AboutIAM is engineered as a **100% Client-Side, Zero-Backend Application**, ensu
 - **Search Engine Core:** MiniSearch (~9kb high-performance client-side indexing with TF-IDF relevance weighting, prefix searches, and fuzzy matching).
 - **State Management:** Zustand + Persist middleware (persisting user course completions and layout states in `localStorage`).
 - **Motion Canvas:** Framer Motion (handling animated vector SVG flow paths and popup transitions).
+- **File Export:** JSZip, dynamically `import()`-ed at the moment a user clicks "Download Study Pack" (`src/lib/studyPackExport.ts`) rather than statically imported — keeps the ~100KB library out of the `Home.tsx` chunk entirely (§4EE).
+- **Optional Cloud Sync:** Google Identity Services token client + the Drive v3 REST API, called directly with `fetch` (no `gapi`/SDK dependency) — powers the opt-in Google Drive Backup & Restore feature (§4DD), gated behind `VITE_GOOGLE_CLIENT_ID`.
 - **Testing Core:** Vitest (Vite-native unit testing with mock SSR safeguards).
 - **Discoverability:** `robots.txt`, `sitemap.xml`, `llms.txt`, `manifest.webmanifest`, and `security.txt` live in `public/` and all reference the production domain directly — update them alongside any future domain change.
 - **Security Hardening:** A strict `Content-Security-Policy` (`connect-src 'none'`) and `Referrer-Policy` are enforced via `<meta>` tags in `index.html` (GitHub Pages serves no custom HTTP headers, so this is the only enforcement mechanism). `.github/workflows/deploy.yml` and `ci.yml` pin all third-party GitHub Actions to commit SHA (not mutable tags) and gate on `npm audit`; `.github/dependabot.yml` keeps both npm and Actions pins current.
@@ -41,15 +43,17 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/threat-modeling`** | `ThreatModelingStudio.tsx` | Interactive Threat Modeling Studio. Visual security modeling workspace with STRIDE/OWASP validations. (Phase 6) |
 | **`/design-review`** | `DesignReviewAssistant.tsx` | IAM Design Review Assistant. Automated structural audits on OAuth, SAML, and JWT blueprints. (Phase 6) |
 | **`/standards`** | `StandardsExplorer.tsx` | Living Standards & RFC Explorer. Visually explore standard specs and RFC timelines across OIDC, SAML, SCIM. Supports `?standard=<id>&tab=<tab>` deep links. A "Compliance Deadlines" tab (`?view=deadlines`) tracks regulatory deadlines (NIS2, DORA, PCI DSS 4.0, eIDAS 2.0, etc.) from `src/data/complianceDeadlines.ts`, filterable by jurisdiction with a past/upcoming toggle. (Phase 6) |
+| **`/knowledge-graph`** | `KnowledgeGraph.tsx` | Knowledge Graph. A concentric-ring SVG map connecting Standards, Encyclopedia terms, and Architecture Center entries via hand-curated edges in `src/data/knowledgeGraphData.ts` (§4BB), paired with a searchable/type-filterable list and a detail panel for full-content-independent usability on small screens. |
+| **`/daily-puzzle`** | `DailyPuzzle.tsx` | Daily Identity Puzzle. A date-seeded (`src/lib/games/dailyPuzzle.ts` — deterministic, no `Math.random()`) rotation across a 36-entry bank (`src/data/dailyPuzzleBank.ts`) of JWT-vulnerability, SAML-tampering, and protocol-guess puzzles — every visitor gets the same puzzle on the same UTC date. Up to 3 attempts, a Wordle-style emoji result grid, and a `?r=<code>` shareable replay link. The interactive widget (`src/components/DailyPuzzleWidget.tsx`) is also embedded directly on `Home.tsx`. |
 | **`/architecture`** | `ArchitectureCenter.tsx` | Interactive, clickable Reference Architecture diagrams with threat models and trace logs — 24 architectures spanning Beginner (session/cookie auth, LDAP bind, social login, API keys, basic RBAC), Intermediate (JWT stateless APIs, SSO reverse proxy, step-up MFA, IGA access reviews, JIT PAM), and Advanced (Zero Trust, B2B SaaS, Multi-Cloud SPIFFE/SPIRE, PKI, banking/healthcare/government/manufacturing/retail) tiers, backed by `src/data/architectureData.ts` (§4S). Supports `?arch=<id>` deep links and a difficulty filter. |
 | **`/vendor`** | `VendorCenter.tsx` | Enterprise Ecosystem & Vendor Intelligence Portal. Comprehensive profiles for 18 major platforms, including a flagship featured profile for Thales (OneWelcome, SafeNet Trusted Access, IdCloud) with inner ASCII diagrams, Troubleshooting, and custom Interview Prep. Integrates the Live Identity Intelligence Hub (news, searchable CVE code patch repairs, and visual AI Ingestion Pipeline Simulator), Community Events Calendars with alerts, and Social dashboards with AI Weekly Digest builders. A "Compare" toggle switches the vendor list to multi-select checkboxes (up to 3) and renders a side-by-side attribute table; deep-linkable via `?compare=<key1>,<key2>`. |
 | **`/research`** | `ResearchCenter.tsx` | Identity Research & CVE Tracker — 13 beginner-to-advanced CVEs with side-by-side vulnerable/secure code patches, and 17 IETF RFCs/drafts spanning the core IAM protocol registry, backed by `src/data/researchData.ts`. Difficulty-filterable on both panels, deep-linkable via `?cve=<id>`/`?rfc=<slug>`, and individually searchable. |
 | **`/patterns`** | `DesignPatternLibrary.tsx` | Hardened design patterns, sequence flows, and checklists for B2B Federated SSO, API Gateway Token Exchange (RFC 8693), and Passwordless. |
 | **`/certifications`** | `CertificationHub.tsx` | Enterprise Certification Hub. 27 beginner-to-advanced identity certifications backed by `src/data/certificationsData.ts` (§4U) — spanning Fundamentals (SC-900, Security+, IDPro CIDPRO), Cloud & Workforce IAM (SC-300, AZ-500, Okta, Ping, AWS/GCP), Identity Governance (SailPoint, Saviynt, One Identity), PAM (CyberArk, BeyondTrust, Delinea), Security Leadership & GRC (CISSP, CCSP, CISM, CRISC), Privacy (IAPP CIPT/CIPM), and Cloud-Native (CKS). Difficulty/category filterable, deep-linkable via `?cert=<id>`, and individually searchable; flagship certs carry an interactive mock quiz. |
-| **`/career-center`** | `InterviewCareerCenter.tsx` | Comprehensive role-based interview preparation system spanning 6 role tracks featuring MCQs, scenarios, design simulations, coding terminals, timed mocks, and resume guidelines. |
+| **`/career-center`** | `InterviewCareerCenter.tsx` | Comprehensive role-based interview preparation system spanning 6 role tracks featuring MCQs, scenarios, design simulations, coding terminals, timed mocks, and resume guidelines. Its Resume & Portfolio tab embeds `PortfolioExport.tsx`, which reads real `localStorage` progress to auto-draft resume bullets, award a self-baked Open Badges 2.0 SVG badge, and export a Markdown/print-to-PDF portfolio. |
 | **`/bulletins`** | `SecurityBulletins.tsx` | Active threat bulletin board backed by `src/data/bulletinsData.ts` (§4W) — 18 beginner-to-advanced identity incident post-mortems spanning Credential & Session Theft, MFA & Push Fatigue, Federation & SSO Exploits, OAuth & Token Abuse, Cloud IAM Misconfiguration, Directory & Kerberos Attacks, and Supply Chain & Provisioning. Difficulty/category filterable, deep-linkable via `?bulletin=<id>`, individually searchable, bookmarkable, and paired with a data-driven "Crisis Response Console" simulation game. |
 | **`/playground`** | `PlaygroundCatalog.tsx` | Interactive Sandboxes index. Links to all 22+ completed simulators, each bookmarkable via `BookmarkButton`. |
-| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (34 tools live). Every tool page (`ToolPageShell`) is bookmarkable via `BookmarkButton`. |
+| **`/tools`** | `ToolsCatalog.tsx` | Security Tools index. 100% client-side utilities, categorized, rendered from `src/data/toolsRegistry.ts` (39 tools live). Every tool page (`ToolPageShell`) is bookmarkable via `BookmarkButton`. |
 | **`/tools/jwt-decoder`** | `Tools/JwtDecoder.tsx` | Decodes a JWT's header/payload/signature; flags `alg: none`; optional HMAC verify. |
 | **`/tools/jwt-generator`** | `Tools/JwtGenerator.tsx` | Signs a JWT client-side with HS256/384/512 or an ephemeral RS256 keypair. |
 | **`/tools/base64-encoder-decoder`** | `Tools/Base64EncoderDecoder.tsx` | Base64/Base64URL encode-decode for text and files. |
@@ -70,12 +74,27 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/tools/pbkdf2-generator`** | `Tools/Pbkdf2Generator.tsx` | Derives a key from a password via PBKDF2 (configurable salt/iterations/hash) and verifies a password against a stored derived hash, using Web Crypto. |
 | **`/tools/cert-bundle-splitter`** | `Tools/CertBundleSplitter.tsx` | Splits a multi-certificate PEM bundle into individual certs, inspects each subject/issuer/expiry, and checks leaf-to-root chain order. |
 | **`/tools/did-document-validator`** | `Tools/DidDocumentValidator.tsx` | Validates a Decentralized Identifier (DID) Document JSON against W3C DID Core structural requirements, with a field-by-field resolved preview. |
+| **`/tools/identity-sbom-analyzer`** | `Tools/IdentitySbomAnalyzer.tsx` | Parses a pasted `package.json` and matches dependencies against a curated table of historically CVE-disclosed auth-adjacent libraries (`src/data/authRiskyLibraries.ts`), cross-linking matches to the CVE Tracker and offering a downloadable "Identity SBOM" JSON export. |
+| **`/tools/tabletop-exercise-generator`** | `Tools/TabletopExerciseGenerator.tsx` | Turns a selected Security Bulletins entry into a printable, facilitator-ready live-team tabletop exercise script (`src/lib/tools/tabletopGenerator.ts`) — objectives, a T+0/T+15/T+30 timed inject sequence, one discussion prompt per real playbook step, and a 3-area scoring rubric cross-referencing the bulletin's mapped compliance controls. No new incident authoring — reuses `BULLETINS` directly (§4X). |
+| **`/tools/pqc-readiness-auditor`** | `Tools/PqcReadinessAuditor.tsx` | Paste a PEM cert chain, JWKS JSON, or TLS cipher-suite list; `src/lib/tools/pqcReadiness.ts` reuses `parseCertificateOrCsr` (`x509.ts`) and matches detected algorithms against a static risk table (`src/data/pqcAlgorithmRisk.ts`) covering RSA/ECDSA/EdDSA/AES/ML-KEM/ML-DSA/SLH-DSA, producing a Critical/High/Medium/Info checklist plus a hybrid-handshake size-delta estimate. Analysis-only — no real PQC signing/key-exchange runs in-browser. |
+| **`/playground/agent-identity`** | `Playgrounds/AgentIdentityLab.tsx` | OAuth 2.1 delegation chains and scope-narrowing limits for AI agents. |
+| **`/playground/nhi-sprawl`** | `Playgrounds/NhiSprawlLab.tsx` | Triage game over a seeded fleet of 60 (of a simulated 500) service accounts, API keys, and CI/CD tokens — rotate, revoke, or keep each one against an NHI-governance rubric, backed by `src/data/nhiSprawlRecords.ts`. |
+| **`/playground/passkey-rollout-strategist`** | `Playgrounds/PasskeyRolloutStrategist.tsx` | Allocate a fixed rollout budget across platform SDKs, help-desk training, legacy-fallback sunset, and account recovery, then see 4 quarters of deterministic adoption/phishing/ticket outcomes scored against FIDO Alliance 2026 benchmarks, backed by `src/data/passkeyRolloutModel.ts`. |
+| **`/playground/modernization-backlog`** | `Playgrounds/ModernizationBacklogGame.tsx` | Sequence 20 legacy-IAM tech-debt items into a 12-month roadmap under a fixed quarterly budget, respecting dependency order and maximizing risk-reduction-per-dollar, backed by `src/data/modernizationBacklogItems.ts` and `src/lib/games/modernizationScoring.ts`. |
+| **`/playground/build-your-idp`** | `Playgrounds/BuildYourIdp.tsx` | 5-step wizard assembling a minimal OIDC Provider — real RS256 keypair, live discovery document + JWKS preview, client/consent config — then a mock RP runs authorization-code + PKCE and mints a self-verifying signed ID token, deep-linkable to `/tools/jwt-decoder?token=<jwt>`. |
+| **`/playground/openid4vc-wallet`** | `Playgrounds/OpenId4VcWallet.tsx` | Issues a real SD-JWT verifiable credential (`src/lib/tools/sdJwtIssue.ts`, paired with the existing `sdJwt.ts` decoder), stores it in a mock wallet with per-claim toggles, and selectively discloses only what a verifier requested — flags both missing and over-disclosed claims, backed by `src/data/openId4VcScenarios.ts`. |
+| **`/playground/trust-registry`** | `Playgrounds/TrustRegistryExplorer.tsx` | Reuses `openId4VcScenarios.ts`'s `issuerName`s rather than duplicating credential data. `src/data/trustRegistryScenarios.ts`'s `verifyIssuerAuthorization` checks issuer authorization independently of signature validity -- one level of cross-registry recognition models the real EUDI cross-border gap, and revoking an issuer live flips previously-authorized verifications to fail. |
+| **`/playground/ciem-explorer`** | `Playgrounds/CiemExplorer.tsx` | Reuses `src/lib/graph/forcePath.ts`'s `computeForceLayout` (built for `/playground/attack-path-graph`) rather than a second graph renderer. `src/lib/graph/ciemAnalysis.ts` distinguishes `computeGrantedPermissions` (direct policy only) from `computeEffectivePermissions` (BFS through `CanAssume`/`TrustsAccount` edges) against `src/data/ciemScenarios.ts`'s curated `TOXIC_COMBINATION_RULES`, plus `computeLeastPrivilegePolicy` intersecting granted permissions against a mock access log. |
+| **`/playground/fapi2`** | `Playgrounds/Fapi2Lab.tsx` | Toggle PAR, sender-constrained tokens (mTLS/DPoP), and signed responses (JARM/JAR) on/off and simulate the matching attack against each — both the attack-succeeds and attack-blocked branches render, backed by `src/data/fapi2Scenarios.ts`. Cross-linked from the banking Architecture Center entry and a new `fapi2` Standards Explorer entry. |
+| **`/playground/caep-event-storm`** | `Playgrounds/CaepEventStorm.tsx` | Fires a CAEP event from a mock IdP Event Bus to 4 mock relying parties with independent subscriptions, latency, and enforcement, backed by `src/data/caepEventScenarios.ts`. Reuses the header's Airplane Mode store (`useAirplaneModeStore`) as the "chaos" toggle for an offline subscriber. Distinct from the existing single-transmitter/receiver `/playground/caep` lab — this is the multi-subscriber pub-sub fan-out; `caep-ssf`'s Standards Explorer entry links to both. |
+| **`/playground/attack-path-graph`** | `Playgrounds/AttackPathGraph.tsx` | BloodHound-style force-directed graph — click hop-by-hop along directed `MemberOf`/`AdminTo`/`HasSession`/`CanRDP`/`Owns` edges to trace a privilege-escalation path to Domain Admin/Cloud Admin across a 10-node beginner and 24-node advanced scenario, then reveal the true shortest path with a per-hop real-world technique breakdown. Backed by `src/data/attackPathScenarios.ts` (graph data) and `src/lib/graph/forcePath.ts` (BFS shortest-path + a custom deterministic spring/repulsion force layout — see §4GG). |
 | **`/playground/jwt`** | `JWTStudio.tsx` | JWT encoder/decoder. Runs real browser-native HS256 signatures and "none" alg exploits. |
 | **`/playground/oauth`** | `OAuthVisualizer.tsx` | Step-by-step OIDC flow chart. Animates front/back-channels and parses raw HTTP. |
 | **`/playground/saml`** | `SAMLWorkbench.tsx` | XML assertion workbench. Simulates SAML Signature Wrapping (SSW) attacks. |
 | **`/playground/fido2`** | `FIDO2Lab.tsx` | WebAuthn key emulator. Parses clientDataJSON and authenticatorData payloads. |
 | **`/playground/access`** | `AccessControlLab.tsx` | Dynamic ABAC/RBAC engine evaluating department, device, and network. |
 | **`/playground/ldap`** | `LDAPTreeSimulator.tsx` | AD directory tree simulator. Searches objects dynamically using LDAP filters. |
+| **`/playground/ldap-schema-designer`** | `Playgrounds/LdapSchemaDesigner.tsx` | Builds (not just queries) an OU tree from scratch — add nested OUs/groups/users, link GPOs, and toggle inheritance blocking. Pure tree logic lives in `src/lib/tools/ldapSchemaTree.ts` (`computeEffectiveGpos` mirrors real AD Group Policy inheritance/blocking semantics) with LDIF serialization split into `src/lib/tools/ldifExport.ts`. |
 | **`/playground/zta`** | `ZTAPlanner.tsx` | Zero Trust risk controller based on NIST SP 800-207. |
 | **`/playground/scim`** | `Playgrounds/SCIMLab.tsx` | Visual Identity Provider (IdP) to Service Provider (SP) SCIM sync pipeline. |
 | **`/playground/oauth-attack`** | `Playgrounds/OAuthAttackLab.tsx` | Hack-and-defend sandbox mapping PKCE bypasses, wildcard redirects, and CSRF state omissions. |
@@ -83,18 +102,22 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/playground/ctf`** | `Playgrounds/IdentityCTFArena.tsx` | Gamified client-side identity hacking challenges (JWT none bypass, SAML wrapped assertions, LDAP injections). |
 | **`/playground/identity-architect`** | `Playgrounds/IdentityArchitect.tsx` | AI-assisted design wizard generating bespoke visual topologies, threat models, and policy codes. |
 | **`/playground/jwt-cracker`** | `Playgrounds/JwtCracker.tsx` | Client-side dictionary attack simulator hashing local payloads against common secrets to discover HS256 keys. |
-| **`/playground/cert-chain`** | `Playgrounds/CertChainValidator.tsx` | Visual hierarchical map of Certificate Authorities with CRL/OCSP revocation checks and mTLS handshakes. |
+| **`/playground/cert-chain`** | `Playgrounds/CertChainValidator.tsx` | Visual hierarchical map of Certificate Authorities with CRL/OCSP revocation checks and mTLS handshakes. A Classical/Hybrid PQC toggle (`src/lib/tools/certChainPqc.ts`'s `getPqcSignatureDisplay`/`computeChainSizeBytes`, reusing the reference byte sizes from `lib/tools/pqcReadiness.ts`) annotates each hop's signature size and shows a "Harvest Now, Decrypt Later" timeline strip that only renders in classical mode. |
 | **`/playground/gpo-simulator`** | `Playgrounds/GpoSimulator.tsx` | Interactive AD GPO editor modeling password lengths, lockout thresholds, and ticket lifetimes. |
 | **`/playground/ai-threat-lab`** | `AIThreatLab.tsx` | Simulates voice deepfake attacks against legacy MFA and verifies FIDO2 hardware bounds. |
+| **`/playground/liveness-injection`** | `Playgrounds/LivenessInjectionLab.tsx` | Complements `AIThreatLab.tsx` (voice deepfakes) with camera-based liveness -- a fully data-driven attack×defense matrix (`src/data/livenessAttackMatrix.ts`) so the UI has zero hardcoded if/else outcome logic; the same flash-challenge defense that blocks presentation replay is explicitly bypassed by camera-feed injection. |
+| **`/playground/ot-ics-identity`** | `Playgrounds/OtIcsIdentityLab.tsx` | The first IT-independent identity lab -- most field devices (`src/data/otIcsScenarios.ts`) structurally cannot authenticate. `src/lib/tools/otIcsSegmentation.ts`'s `computeReachableNodes` runs a real BFS lateral-movement simulation: in segmented mode a zone-crossing edge only survives if BOTH endpoints can authenticate, trapping a compromised HMI inside its own zone. |
+| **`/playground/legacy-federation`** | `Playgrounds/LegacyFederationLab.tsx` | Three tabs, one playground: RADIUS (`evaluateRadiusAccess` in `src/lib/tools/legacyFederation.ts`, combined AAA), TACACS+ (`checkTacacsCommand`, separately-logged authentication/authorization/accounting phases), and a Shibboleth/eduGAIN WAYF picker (`buildWayfAssertion`, backed by `src/data/legacyFederationData.ts`'s mock federation metadata). |
 | **`/playground/zkp-wallet`** | `ZKPWallet.tsx` | Generates mathematical zero-knowledge age proofs without exposing raw birthdates. |
 | **`/playground/ambient-trust`** | `AmbientTrust.tsx` | Tracks continuous, ambient biometric telemetry and decays session trust scores. |
 | **`/playground/workload-mesh`** | `WorkloadMesh.tsx` | Demonstrates SPIFFE/SPIRE attestations and X.509 SVID credentials. |
+| **`/playground/identity-fabric`** | `Playgrounds/IdentityFabricBuilder.tsx` | Click-to-connect wiring of a fixed App/Orchestration/IdP 3-node canvas across 3 scenarios (`src/data/identityFabricScenarios.ts`); pure wiring/translation logic lives in `src/lib/identityFabric/wiring.ts` (`attemptWiring`) — a direct App↔IdP wire always fails since nothing translates between the mismatched protocols. |
 | **`/explore/matchmaker`** | `AuthMatchmaker.tsx` | Startup Auth Matchmaker wizard with copyable boilerplates. |
-| **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts, downloadable SVG roadmaps, and a `?a=<digits>` shareable, URL-hydrated read-only report link (scoring logic lives in `src/lib/assess/scoring.ts`). |
+| **`/assess`** | `Assess.tsx` | GRC Maturity Wizard. Self-assessments with dynamic charts, downloadable SVG roadmaps, and a `?a=<digits>` shareable, URL-hydrated read-only report link (scoring logic lives in `src/lib/assess/scoring.ts`). The results view also maps the score to a 5-level industry maturity model and an estimated peer percentile (`src/lib/assess/maturityBenchmark.ts`). |
 | **`/explore`** | `Explore.tsx` | IAM Landscape Directory. 21 products spanning Open Source IdPs, Enterprise/Workforce SaaS, CIAM, Directory Services, PAM & Access, and Secrets Engines — each tagged Beginner/Intermediate/Advanced, backed by `src/data/exploreData.ts`. Supports type + difficulty filters, `?product=<id>` deep links, and copyable integration code blocks. |
 | **`/assistant`** | `Assistant.tsx` | AI Knowledge Assistant 2.0. Four tabs backed by `src/data/aiKnowledgeGraph.ts` (§4Z): a context-aware Knowledge Chat spanning 45+ IAM topics, a Comparison Engine (20 protocol/product pairings), a Learning Planner (8 beginner-to-expert career roadmaps), and an Interview Prep tab (16 domain-filterable mock questions). Every comparison/track/question is deep-linkable (`?tab=compare&compare=<id>`, `?tab=learn&level=<lvl>&goal=<goal>`, `?tab=interview&q=<id>`) and individually searchable. |
-| **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 182 categorized standard terms with analogies and specs. Each term supports bookmarking (`BookmarkButton`) and carries a `ContentFeedback` accuracy widget. |
-| **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history plus a difficulty-filterable Breach Archive of 27 beginner-to-advanced incidents (SolarWinds Golden SAML, push-bombing fatigue, Storm-0558 signing-key forgery, Kerberoasting/DCSync, and more) backed by `src/data/breachesData.ts` (§4B). Each breach carries `ContentFeedback` and `BookmarkButton` widgets, and is deep-linkable via `?tab=breaches&lab=<id>`. |
+| **`/encyclopedia`**| `Encyclopedia.tsx` | Master A-Z Glossary. 182 categorized standard terms with analogies and specs. Each term supports bookmarking (`BookmarkButton`), carries a `ContentFeedback` accuracy widget, and a `ReadAloudButton` (Web Speech API `SpeechSynthesis`) to have the term/analogy/expert text read aloud. |
+| **`/wall-of-shame`**| `WallOfShame.tsx` | Identity Museum. 5 Eras of history plus a difficulty-filterable Breach Archive of 27 beginner-to-advanced incidents (SolarWinds Golden SAML, push-bombing fatigue, Storm-0558 signing-key forgery, Kerberoasting/DCSync, and more) backed by `src/data/breachesData.ts` (§4B). Each breach carries `ContentFeedback` and `BookmarkButton` widgets, and is deep-linkable via `?tab=breaches&lab=<id>`. A "🧠 Quiz Mode" tab (`?tab=quiz`) turns every breach into an SM-2 spaced-repetition flashcard (`src/lib/learning/spacedRepetition.ts`, `src/store/spacedRepetitionStore.ts`). |
 | **`/cheat-sheets`** | `CheatSheets.tsx` | Developer Playbooks. 24 beginner-to-advanced interactive compliance/hardening checklists — Application Security (SPA, M2M, password/session, JWT, OAuth 2.0/OIDC, SAML, REST API, CIAM social login), Identity Infrastructure & Governance (secrets management, LDAP/AD hardening, IGA access reviews, Zero Trust, Kubernetes RBAC, Kerberos tiering, identity incident response), and Compliance & Regulatory (SOC 2, ISO 27001, HIPAA, PCI-DSS, NIST 800-63-3, GDPR, CCPA/CPRA, FedRAMP High, DORA) — backed by `src/data/cheatSheetsData.ts` (§4Y). Each sheet carries a live progress gauge, `ContentFeedback` and `BookmarkButton` widgets, a difficulty filter, and is deep-linkable via `?sheet=<id>`. |
 | **`/contributors`**| `Contributors.tsx` | Team & Contact page. Integrates developer bio cards, interactive forms, and a static "Security & Transparency" section summarizing shipped CI/CSP hardening with a link to the GitHub Security tab. |
 | **`/terms`** | `Terms.tsx` | Terms, License & Disclaimer. MIT license summary, an educational/simulated-environment disclaimer for the attack-technique labs, and a no-warranty clause. Linked from Contributors and from the first-visit `DisclaimerModal`; intentionally excluded from the Sidebar nav. |
@@ -118,6 +141,9 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/playground/risk-engine`** | `Playgrounds/RiskEngine.tsx` | Composite risk score from impossible travel, device reputation, and behavior anomaly signals drives allow/step-up/block decisions. |
 | **`/playground/pam-vaulting`** | `Playgrounds/PamVaultingLab.tsx` | Check out a vaulted credential, request time-boxed JIT elevation and approval, toggle session recording, and auto-rotate on check-in. |
 | **`/playground/hybrid-ad-sync`** | `Playgrounds/HybridAdSyncLab.tsx` | Toggle between Password Hash Sync, Pass-Through Authentication, and Federation (AD FS) to see how each handles an on-prem login. |
+| **`/playground/hr-attribute-mapper`** | `Playgrounds/HrAttributeMapper.tsx` | Click-to-select-then-click-to-connect mapping of mock HR fields (`src/data/hrAttributeMappingFixtures.ts`, Workday/SAP scenarios) to identity-store attributes, with concat/regex/lookup transforms (`src/lib/tools/attributeTransform.ts`) and live conflict detection for duplicate-target and missing-required mappings. |
+| **`/playground/role-mining`** | `Playgrounds/RoleMiningWorkbench.tsx` | Runs a pure Jaccard-similarity union-find clustering (`src/lib/analytics/jaccardClustering.ts`) over a seeded, deterministic 30-user x 15-entitlement matrix (`src/data/roleMiningDataset.ts`) to propose candidate roles. Accept/reject decisions drive a live "orphan entitlements" counter (permissions not covered by any accepted role) and a "role explosion risk" counter (single-entitlement roles). |
+| **`/playground/access-request-cart`** | `Playgrounds/AccessRequestCart.tsx` | Shop a mock entitlement catalog (`src/data/accessRequestCatalog.ts`) and submit a request through a deterministic approval chain (`src/lib/games/accessRequestApproval.ts`) — manager approval always runs first, a privileged item adds app-owner sign-off, and an SoD conflict against the cart or existing access adds a pending compliance-officer override, blocking auto-approval. |
 | **`/tools/saml-metadata-builder`** | `Tools/SamlMetadataBuilder.tsx` | Visually compile and export standard-compliant SAML 2.0 SP and IdP XML metadata configurations. |
 | **`/tools/scim-diff`** | `Tools/ScimDiffTool.tsx` | Side-by-side SCIM JSON comparison diff engine generating standard RFC 7644 PATCH reconciliation payloads. |
 | **`/tools/csr-generator`** | `Tools/CsrGenerator.tsx` | Visually compile standard PKCS#10 Certificate Signing Requests, generate local browser keypairs, and walk ASN.1 DER structures. |
@@ -163,6 +189,13 @@ We mandate the inclusion of Vitest unit tests for all state mutations, mathemati
 - **`Math.random()`/`Date.now()` inside a function only ever invoked from a click/submit handler** → a scoped `eslint-disable-next-line react-hooks/purity` with a one-line comment naming the handler is acceptable; the linter can't prove render-time vs. event-time reachability on its own.
 - **Static reference data with no dependency on props/state** (e.g. a curated list of templates/options) defined inside the component body → hoist it to module scope instead of wrapping it in `useMemo`/adding it as a dependency. It gets recreated every render for no reason otherwise, and every `useMemo`/`useEffect` that reads it must awkwardly list it as a dependency.
 - **A plain helper function whose only inputs are values already in a `useMemo`'s dependency array** → inline its body directly into the `useMemo` callback instead of calling it as a separate function. Removes the missing-dependency warning entirely (no function reference to omit) instead of suppressing it.
+
+### 🧬 E. TypeScript DOM-Lib Typing Gotchas (`npx tsc -b`)
+
+`npm run test` type-checks nothing (Vitest transpiles with esbuild, no type errors surface there) — a bad type only fails `npx tsc -b` / `npm run build`. Run a full `npm run build` before committing, not just `npm run test`, or a type error like the ones below ships straight to `main`.
+
+- **`crypto.subtle.exportKey('jwk', ...)` → `JsonWebKey`** — this TypeScript version's bundled `lib.dom.d.ts` omits `kid` from the `JsonWebKey` interface even though it's a standard JWK member (RFC 7517 §4.5). Don't spread a `kid` field onto a bare `JsonWebKey`-typed object; define a local `type JsonWebKeyWithKid = JsonWebKey & { kid?: string }` and use that as the return/variable type instead (see `exportPublicKeyJwk` in `src/lib/tools/jwt.ts`).
+- **`Array.prototype.map` return type narrowing** — building a fixed-choice array (e.g. `['🟩', '🟥']` from a ternary) infers a union-literal element type, so a later `.push()` of any value outside that union fails. Give the array an explicit widened type (e.g. `const blocks: string[] = arr.map(...)`) when more values get pushed afterward — see `buildResultEmojiGrid` in `src/lib/games/dailyPuzzle.ts`.
 
 ---
 
@@ -211,7 +244,7 @@ To add a new standard, acronym, or protocol definition to the **Master A-Z Gloss
 
 Most new entries should omit `interactiveLabId` — `WallOfShame.tsx` automatically renders a generic "Breach Profile" panel (summary, root cause, timeline, vulnerable/secure code, remediation, lessons) for any breach without one, which is what makes it practical to keep adding "almost every" IAM-relevant breach without hand-building a bespoke React simulator each time. Only the original 6 flagship breaches (`goldensaml`, `pushfatigue`, `wildcard`, `oktahar`, `silversaml`, `lastpass`) carry an `interactiveLabId` wiring them to their existing hand-built step-by-step simulators in `WallOfShame.tsx` — reserve that field for a breach that earns a fully custom interactive lab, not the default case.
 
-If adding a new category value, also add it to the exported `BREACH_CATEGORIES` array in the same file so the difficulty/category coverage stays in sync. No route-wiring needed (§4D) — the `?tab=breaches&lab=<id>` deep link reuses the existing `/wall-of-shame` route via the same mount-effect pattern described in §4I. Every breach automatically carries a `ContentFeedback` and `BookmarkButton` widget (id `breach-<id>`, §4K/§4L). Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `BREACHES` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `BREACH_CATEGORIES` value are represented.
+If adding a new category value, also add it to the exported `BREACH_CATEGORIES` array in the same file so the difficulty/category coverage stays in sync. No route-wiring needed (§4D) — the `?tab=breaches&lab=<id>` deep link reuses the existing `/wall-of-shame` route via the same mount-effect pattern described in §4I. Every breach automatically carries a `ContentFeedback` and `BookmarkButton` widget (id `breach-<id>`, §4K/§4L). Every breach also automatically becomes a Quiz Mode flashcard (`?tab=quiz`) — the front/back come straight from the same `title`/`attackVector`/`rootCause`/`remediation` fields, so no extra authoring is needed there either. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `BREACHES` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `BREACH_CATEGORIES` value are represented.
 
 ### 🎓 C. How to Add a New Course Track to the Academy
 To add a new learning track or module to the **IAM Academy**, open `src/pages/Learn.tsx` and append a new `Track` object to the `tracks` array. Enforce six sub-modules per track to maintain the global graduation progress bar ratios.
@@ -226,7 +259,7 @@ Optionally add a `Sidebar.tsx` nav entry and a `public/sitemap.xml` `<url>` entr
 
 ### 🛠️ E. How to Add a New Security Tool (`/tools/<slug>`)
 
-The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — all 34 tools currently in `toolsRegistry.ts` are live and shipped. To add a new tool in the future, follow these steps:
+The **Security Tools** section (`/tools`) is a registry-driven extension point on top of the routing convention in §4D — all 39 tools currently in `toolsRegistry.ts` are live and shipped. To add a new tool in the future, follow these steps:
 
 1. **`src/data/toolsRegistry.ts`** — append a `ToolMeta` entry (`slug`, `title`, `description`, `category`, `icon`, `phase`, `keywords`, `analogy`, `expert`, `faqs`, optional `relatedLinks`) with `status: 'planned'` while you build, then flip to `'live'` when it ships. `ToolsCatalog.tsx` and the sidebar-adjacent catalog card both render from this array automatically — nothing else to touch there.
 2. **`src/pages/Tools/<PascalCaseName>.tsx`** — build the page using the shared components in `src/components/Tools/` (`ToolPageShell` for the header/privacy-notice/JSON-LD wrapper, `BeginnerExpertExplainer` for the analogy/expert/FAQ card, `useClipboardCopy` for copy buttons, `FileDropInput` for file-accepting tools) and any pure-logic helpers you need in `src/lib/tools/` (one small, independently Vitest-tested module per concern — see the existing `base64.ts`/`jwt.ts`/`totp.ts`/etc. for the pattern).
@@ -719,6 +752,8 @@ The `rfcSlug()` helper (also exported from `researchData.ts`) turns a `number` f
 
 If adding a new category value, also add it to the exported `BULLETIN_CATEGORIES` array in the same file so the category filter chips stay in sync. No route-wiring needed (§4D) — the `?bulletin=<id>` deep link reuses the existing `/bulletins` route via the same mount-effect pattern described in §4I. Because the simulator is fully data-driven off each bulletin's own `simulator` field, a new bulletin gets correct Crisis Response Console narrative text automatically — there is no `if/else` chain left to remember to extend. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `BULLETINS` and fails if any one of them isn't indexed, and separately asserts all three difficulty tiers and every `BULLETIN_CATEGORIES` value are represented; `bulletinsData.test.ts` additionally guards that every `controlsMapped` id resolves to a real `CONTROL_TITLES` entry and that every bulletin carries a complete, non-empty `simulator` script.
 
+A second, independent consumer of `BULLETINS` exists at `/tools/tabletop-exercise-generator` (`src/lib/tools/tabletopGenerator.ts`) — it transforms a selected bulletin's `playbookSteps`/`simulator` fields into a printable, facilitator-ready tabletop script. Any new bulletin you add here automatically becomes selectable there too, with zero extra wiring.
+
 ---
 
 ### 🏛️ Y. How to Add a New Cheat Sheet (`/cheat-sheets`)
@@ -810,5 +845,136 @@ Vitest runs three separate **projects** (configured in `vitest.config.ts`, not `
 - Adding a new registry/data array (breaches, standards, certifications, etc.)? Don't write a new test file — extend the existing per-registry checks in `searchService.test.ts` (search-index coverage) and the array's own `*.test.ts` (id uniqueness, category/difficulty coverage), following the pattern already used for every registry listed in §4B/§4Q–Z.
 - Adding a new SSR-guarded module (§3B)? Add a case to `tests/ssr/ssrSafety.test.ts` — it runs under the `integration` project's real `node` environment (genuinely no `window`/`document`, not stubbed) and asserts the module's exported actions don't throw.
 - Adding a new page/route (§4D)? `routeRegistrySync.test.ts` already fails if `App.tsx`, `routeMeta.ts`, and `scripts/postbuild-ssg.mjs` fall out of sync — no test change needed there either.
+- Testing real interactive logic on a **page** (not just "it renders")? Do **not** colocate the test file inside `src/pages/` — `tests/pages/allPagesRender.test.tsx` globs `../../src/pages/**/*.tsx` and would try to mount your `*.test.tsx` file itself as if it were a page component, crashing the suite with "Calling the suite function inside test function is not allowed." Put it in `tests/pages/yourPage.test.tsx` instead (see `tests/pages/knowledgeGraph.test.tsx`), importing the page via a relative `../../src/pages/...` path — it still runs under the `component` project (jsdom) because `tests/pages/**/*.test.tsx` is in that project's `include` glob.
+- Writing a `src/lib/` module that genuinely needs browser APIs (`window`, `document`, `fetch`, `localStorage`) rather than pure/SSR-safe logic — e.g. `googleDrive.ts`, `studyPackExport.ts`? The `unit` project runs `src/**/*.test.ts` under `node`, which doesn't have those globals. Add a `// @vitest-environment jsdom` docblock comment as the *first* line of that specific test file to override just that file's environment, instead of moving the whole `unit` project to jsdom or relocating the file out of its natural colocation next to the module it tests. Keep the pure, truly-SSR-safe logic (e.g. Markdown string building in `studyPack.ts`) in a separate file from the browser-dependent glue (`studyPackExport.ts`) where practical, so most of a feature's logic stays testable under real `node` semantics.
 
-**Test environment gotchas** (see `src/test/setup.ts`): jsdom has no `window.matchMedia` and no `crypto.subtle` — both are polyfilled globally for the `component`/`integration` projects, so a tool page that hashes/signs on mount won't crash in tests for a reason unrelated to its own code. `localStorage` is cleared after every test to stop one persisted Zustand store's state (theme, bookmarks, preferences, tour, disclaimer, layout, airplane mode) from leaking into the next test file — if a test explicitly needs a particular store state, set it with `useYourStore.setState({...})` at the top of the test rather than relying on ordering.
+**Test environment gotchas** (see `src/test/setup.ts`): jsdom has no `window.matchMedia` and no `crypto.subtle` — both are polyfilled globally for the `component`/`integration` projects, so a tool page that hashes/signs on mount won't crash in tests for a reason unrelated to its own code. `localStorage` is cleared after every test to stop one persisted Zustand store's state (theme, bookmarks, preferences, tour, disclaimer, layout, airplane mode, what's-new, Drive sync) from leaking into the next test file — if a test explicitly needs a particular store state, set it with `useYourStore.setState({...})` at the top of the test rather than relying on ordering.
+
+**Accessibility assertions (B11, opt-in — not globally enforced):** `jest-axe`'s `toHaveNoViolations()` matcher is registered globally in `src/test/setup.ts` for the `component` project, so any test CAN call `expect(await axe(container)).toHaveNoViolations()` without every existing component test needing to pass it immediately (a mass simultaneous failure across 100+ pre-existing tests wasn't worth forcing in one PR). New interactive components — anything with real click/drag/keyboard interaction, not a static content page — **should** include this assertion; see `tests/pages/phase2Accessibility.test.tsx` for the pattern (one `it.each`-style loop over several playgrounds). This exact check is what caught `PlaygroundShell.tsx`'s shared `<h1>`→`<h3>` heading-order skip (fixed to `<h2>`) affecting every playground built on the shell — a single shared-component fix that resolved the same violation across dozens of pages at once, which is the whole point of auditing the shell before individual pages.
+
+---
+
+### 🏛️ BB. How to Add a New Concept to the Knowledge Graph (`/knowledge-graph`)
+
+`src/data/knowledgeGraphData.ts` powers `/knowledge-graph` differently from every other registry in this doc (§4B/§4Q-Z): instead of one array of content objects, it's a single hand-curated edge list, `KNOWLEDGE_GRAPH_EDGES: [string, string][]`, where each id is `${'standard' | 'term' | 'architecture'}:${id from that dataset}` (e.g. `'standard:oauth21'`, `'term:jwt'`, `'architecture:zero_trust'`). Nodes are **derived automatically** from whichever ids appear in at least one edge — `resolveNode()` looks each one up directly in `STANDARDS`/`ENCYCLOPEDIA_TERMS`/`ARCHITECTURES` (§4Q/§4A/§4T) for its label, description, and deep-link path, so there is no second node list to hand-maintain and no way for a node's display data to drift from its source of truth.
+
+To add a new relationship, append one tuple:
+
+```typescript
+['standard:dpop', 'term:token_binding']
+```
+
+There's no route-wiring step (§4D already done for this page) and no `searchService.ts` step — the graph composes three already-independently-searchable datasets rather than introducing new searchable content of its own. Run `npm run test` afterward: `knowledgeGraphData.test.ts` fails if either id in a new edge doesn't resolve to a real record in its source dataset (catches a typo'd id immediately, the equivalent of the search-sync check other registries get), and separately guards against duplicate/self-loop edges.
+
+---
+
+### 🏛️ CC. The "What's New" Changelog Modal
+
+`src/components/WhatsNewModal.tsx` + `src/store/whatsNewStore.ts` follow the same Zustand-persist "auto-open once, replay from a Header icon" shape as the Guided Tour/Disclaimer pair (§4M/§4N) — `lastSeenVersion`/`isOpen`/`openWhatsNew`/`closeWhatsNew`, mounted in `Header.tsx` next to `GuidedTour`/`DisclaimerModal`. The trigger condition is deliberately different, though: it only auto-opens for a *returning* visitor (`hasSeenDisclaimer === true`) whose `lastSeenVersion` doesn't match the latest release — a first-time visitor already getting the Disclaimer→Tour sequence never also gets this stacked on top; they'll simply see the current release the next time they return.
+
+To ship a new release entry, prepend one object to `WHATS_NEW_RELEASES` in `src/data/whatsNewData.ts`:
+
+```typescript
+{
+  version: '2026.08.15', // bump this — it becomes WHATS_NEW_VERSION (derived from the array's first entry)
+  date: '2026-08-15',
+  items: [
+    { title: 'Feature Title', description: 'One or two sentences.', path: '/optional-deep-link' }, // path is optional
+  ],
+}
+```
+
+Bumping `version` alone is what causes every returning visitor who's seen an older version to see the modal once more — no other state to reset.
+
+---
+
+### 🏛️ DD. How to Add an Optional, Env-Gated Feature (Google Drive Backup & Restore)
+
+`src/lib/googleDrive.ts` + `src/components/GoogleDriveSync.tsx` establish the first (so far only) pattern in this codebase for a feature gated behind a `VITE_...` environment variable — every other feature works with zero configuration, and this one must too when unconfigured:
+
+1. A `getXClientId()`-style function reads `import.meta.env.VITE_...` and returns `null` when unset or empty — never throw, never assume a value is present.
+2. The component checks that `null` first and renders a clearly-labeled, non-broken disabled state (see `GoogleDriveSync.tsx`'s "Cloud backup isn't configured for this deployment yet" panel) instead of dead buttons or a runtime error — every fork/clone of this repo must boot cleanly with the feature simply hidden/inert.
+3. Document the variable in `.env.example` (committed, with the value left blank and setup instructions in a comment) — never commit a real value. `.env`, `.env.local`, and `.env.*.local` are gitignored.
+4. Keep all calls to the third-party API direct from the browser (no server proxy) and never persist secrets/tokens beyond the current action's lifetime (`requestAccessToken()`'s token lives only in React state, never `localStorage`) — this is what keeps an env-gated integration compatible with the Zero-Backend/Complete-Privacy principle (§1) instead of quietly reintroducing a backend dependency.
+
+---
+
+### 🏛️ EE. Lazy-Loading a Heavy Dependency to Avoid Bloating a Page Chunk
+
+If a feature needs a library only inside one click handler — not for the page's initial render — dynamically `import()` it inside that handler instead of a static top-level import. `src/lib/studyPackExport.ts`'s `buildStudyPackZipBlob()` does this for `jszip`:
+
+```typescript
+export async function buildStudyPackZipBlob(): Promise<Blob> {
+  const { default: JSZip } = await import('jszip')
+  // ...
+}
+```
+
+A static `import JSZip from 'jszip'` at the top of that file added ~100KB to `Home.tsx`'s chunk (visible directly in `npm run build`'s per-chunk size output) for a feature most visitors never click; the dynamic import instead makes Vite split it into its own chunk, fetched only on demand. When adding any new heavy client-side library, compare `npm run build`'s chunk-size output before and after wiring it up — that diff is the actual signal for whether this pattern is worth applying, not a guess.
+
+---
+
+### 🏛️ FF. How to Add Packet-Capture Overlay to a Playground
+
+`src/lib/sdk/usePacketCapture.ts` + `src/lib/sdk/components/PacketCaptureOverlay.tsx` are a shared instrumentation layer — a "DevTools inside DevTools" Wireshark-style timeline over a playground's own mock request/response traffic — layered onto `PlaygroundShell` (§4F) as a one-line opt-in, not a new playground of its own.
+
+**1. Call the hook and pass its output to `PlaygroundShell`:**
+```typescript
+import { usePacketCapture } from '../../lib/sdk/usePacketCapture'
+
+const { frames: packetFrames, capture, clearFrames } = usePacketCapture()
+
+return (
+  <PlaygroundShell
+    // ...existing props
+    packetCapture={{ frames: packetFrames, onClear: clearFrames }}
+  >
+```
+This alone makes a new "Toggle Packet Capture" icon button appear in the shell's status bar (next to Reset) and renders `PacketCaptureOverlay` as a collapsible drawer, off by default — no drawer/button code to write yourself.
+
+**2. Call `capture(...)` alongside your existing `log(...)` calls at any point that represents a "wire" event** (a mock request being sent, a response received, or a protocol error):
+```typescript
+log('info', `[Front-channel] Redirecting to: ${authorizationUrl}`)
+capture({ direction: 'request', protocol: 'OAuth 2.1', summary: 'Authorization Request', raw: authorizationUrl })
+```
+`direction` is `'request' | 'response' | 'error'` — this is what drives the timeline block's color. No new state machine or trace-log logic is needed; `capture()` is purely additive next to a `log()` call you already have.
+
+**3. Clear captured frames on reset**, same as you already clear other local state in `onReset`:
+```typescript
+onReset={() => {
+  // ...existing reset logic
+  clearFrames()
+}}
+```
+
+`usePacketCapture()` caps its buffer at 50 frames (oldest dropped first) so a long session can't grow it unbounded — nothing for a playground author to manage. Currently wired into `AgentIdentityLab.tsx`, `BuildYourIdp.tsx`, and `Fapi2Lab.tsx`. Note: `OAuthVisualizer.tsx`, `SAMLWorkbench.tsx`, and `SCIMLab.tsx` predate the `PlaygroundShell`/`usePlayground` SDK convention entirely (custom bespoke UIs, no shell) — adopting packet capture there would first require migrating those three onto the shell, which is a separate, larger refactor deliberately left out of scope here to avoid destabilizing already-shipped, complex flows. Any *future* playground built on `PlaygroundShell` gets this feature for free with the one-line opt-in above.
+
+---
+
+### 🏛️ GG. How to Render a New Attack-Path Scenario (Custom Force-Directed Graph)
+
+`src/lib/graph/forcePath.ts` is a small, dependency-free graph primitive — no `d3-force`, no charting library — built for `/playground/attack-path-graph` (`Playgrounds/AttackPathGraph.tsx`) but reusable by any future feature that needs a force-directed node/edge diagram.
+
+**Two pure functions, both plain TypeScript with no React/DOM coupling:**
+- `findShortestPath(nodeIds, edges, startId, targetId)` — directed, unweighted BFS. Returns the ordered node-id path, or `null` if unreachable. Used both to validate scenario data in tests (`attackPathScenarios.test.ts` asserts the authored `shortestPath` matches what BFS actually computes) and at render time to highlight the true solution when "Reveal Shortest Path" is clicked.
+- `computeForceLayout(nodeIds, edges, width, height, iterations?)` — a spring/repulsion physics loop (Coulomb-style node repulsion + Hooke's-law edge springs, damped velocity integration) that returns a `Record<nodeId, {x, y}>`. Deterministic by construction: initial positions are placed on a circle indexed by array position (no `Math.random()`), so the exact same scenario always renders in the exact same layout — required by this codebase's no-`Math.random()`-in-render convention (§3B) and makes the layout itself snapshot-testable (see `forcePath.test.ts`'s determinism assertion).
+
+**To add a new scenario**, add an entry to `src/data/attackPathScenarios.ts` (`nodes: GraphNode[]`, `edges: GraphEdge[]`, `startNodeId`, `targetNodeId`, `shortestPath`) — the page picks it up automatically via the scenario-switcher buttons, no component changes needed. Keep `shortestPath` honest: `attackPathScenarios.test.ts` fails the build if it doesn't match a genuine BFS traversal of the scenario's own `edges` array, which is exactly the class of "unsolvable scenario shipped by accident" bug this check exists to catch.
+
+**To reuse the layout engine elsewhere**, call `computeForceLayout` inside a `useMemo` keyed on the graph's node/edge identity (never recompute on every render — `iterations` defaults to 250 and an O(n²) repulsion pass per iteration is not free for large graphs) and render the returned positions as plain SVG `<line>`/`<circle>` elements, exactly as `AttackPathGraph.tsx` does. There is no `d3-selection`/DOM-binding layer to fight — positions are just numbers you place yourself.
+
+---
+
+### 🏛️ HH. How to Add a Command to the Mock IAM Terminal
+
+`src/lib/sdk/components/IamTerminal.tsx` + `src/lib/tools/mockShell.ts` are a reusable SDK primitive — a scripted (not a real shell) terminal for muscle-memory CLI practice. Deliberately **not** built on `xterm.js`: this codebase consistently avoids heavy UI dependencies for interaction surfaces (same reasoning as the dependency-free force-graph in §4GG, or the custom 2D physics instead of Three.js) — a real shell isn't needed, just a scrollback + prompt line, so a small custom component covers it at a fraction of the bundle cost.
+
+**The grammar is strictly curated on purpose** — a fixed command list, a fixed flag set per command — explicitly not a general shell, to keep it safe/lightweight and avoid scope creep. `runShellCommand(rawInput)` in `mockShell.ts` is the single entry point; it tokenizes on whitespace and dispatches to one `run<Command>` handler per supported command (`openssl`, `curl`, `kinit`, `jwt-cli`), plus `help`.
+
+**To add a new command:**
+1. Write a handler function `async function runFoo(args: string[]): Promise<ShellCommandResult>` in `mockShell.ts`. Check `args` against your supported flag set explicitly; return `{ output: [...], isError: true }` with a "try: ..." usage hint for anything outside it — never throw.
+2. **Reuse an existing Tools-section helper for the mock output wherever one exists** rather than hand-writing fake strings — e.g. `openssl x509` reuses `parseCertificateOrCsr` from `x509.ts`, and `curl -X POST .../token` reuses `signJwtHmac` from `jwt.ts`, so the mock output has the same real shape/fields the actual tool page would produce.
+3. Add a `case 'foo': return runFoo(args)` branch to the `switch` in `runShellCommand`, and a line to `HELP_LINES` so `help` stays accurate.
+4. Add a `describe('foo', ...)` block to `mockShell.test.ts` covering both a supported invocation and an unsupported one (per the doc's own test requirement: every supported command produces its expected output, and an unsupported command returns a helpful message rather than crashing).
+
+**To embed the terminal in a page**, just render `<IamTerminal welcomeLines={[...]} />` — no props beyond that are required. It manages its own scrollback, command history (↑/↓ arrow recall), and the `clear` command internally. First piloted inside `InterviewCareerCenter.tsx`'s "Config Exercises" tab, alongside (not replacing) the existing regex/config-validation exercises, which serve a different pedagogical purpose.

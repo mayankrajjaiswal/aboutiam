@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Sparkles, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart } from 'lucide-react'
+import GoogleDriveSync from '../components/GoogleDriveSync'
+import StudyPackDownload from '../components/StudyPackDownload'
+import DailyPuzzleWidget from '../components/DailyPuzzleWidget'
 
 export default function Home() {
   return (
@@ -52,6 +55,11 @@ export default function Home() {
             Browse Academy
           </Link>
         </div>
+      </section>
+
+      {/* Daily Identity Puzzle */}
+      <section className="max-w-xl mx-auto">
+        <DailyPuzzleWidget />
       </section>
 
       {/* Dual-Track Visual Map (Beginner vs. Expert) */}
@@ -519,6 +527,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Optional Google Drive backup/restore for locally-persisted progress, and an offline Markdown study pack */}
+      <div className="grid sm:grid-cols-2 gap-6">
+        <GoogleDriveSync />
+        <StudyPackDownload />
+      </div>
     </div>
   )
 }

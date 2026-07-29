@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder, ArrowLeftRight
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -105,6 +105,7 @@ const coreItems = [
   { name: 'Master A-Z Encyclopedia', path: '/encyclopedia', icon: BookOpen },
   { name: 'Interactive Playgrounds', path: '/playground', icon: Cpu },
   { name: 'Identity Labs Academy', path: '/labs', icon: Award },
+  { name: 'Daily Identity Puzzle', path: '/daily-puzzle', icon: Puzzle },
 ]
 
 const toolsItems = [
@@ -116,15 +117,35 @@ const toolsItems = [
 const architectureItems = [
   { name: 'Identity Scenario Builder', path: '/scenario-builder', icon: Layers },
   { name: 'Maturity Assessments', path: '/assess', icon: Award },
+  { name: 'Modernization Backlog Game', path: '/playground/modernization-backlog', icon: ClipboardList },
+  { name: 'Build-Your-Own-IdP Sandbox', path: '/playground/build-your-idp', icon: KeyRound },
+  { name: 'FAPI 2.0 / Open Banking Lab', path: '/playground/fapi2', icon: ShieldAlert },
+  { name: 'CAEP Event Storm Visualizer', path: '/playground/caep-event-storm', icon: Waypoints },
+  { name: 'Attack-Path Graph Visualizer', path: '/playground/attack-path-graph', icon: GitBranch },
   { name: 'Identity Decision Matrix', path: '/decision-matrix', icon: Compass },
   { name: 'Threat Modeling Studio', path: '/threat-modeling', icon: ShieldAlert },
   { name: 'IAM Design Review', path: '/design-review', icon: CheckSquare },
   { name: 'Enterprise References', path: '/references', icon: Wrench },
   { name: 'Identity Case Studies', path: '/case-studies', icon: BookOpen },
   { name: 'Architecture Center', path: '/architecture', icon: Network },
+  { name: 'Knowledge Graph', path: '/knowledge-graph', icon: Waypoints },
+  { name: 'AD/LDAP OU & Schema Designer', path: '/playground/ldap-schema-designer', icon: Folder },
+  { name: 'Identity Fabric Builder', path: '/playground/identity-fabric', icon: Waypoints },
+  { name: 'OT/ICS Identity Simulator', path: '/playground/ot-ics-identity', icon: Cpu },
+  { name: 'CIEM Explorer', path: '/playground/ciem-explorer', icon: GitBranch },
+  { name: 'Legacy & Academic Federation Lab', path: '/playground/legacy-federation', icon: History },
 ]
 
 const ecosystemItems = [
+  { name: 'Agentic Identity Lab', path: '/playground/agent-identity', icon: Bot },
+  { name: 'NHI Sprawl Cleanup Game', path: '/playground/nhi-sprawl', icon: ScanSearch },
+  { name: 'Passkey Rollout Strategist', path: '/playground/passkey-rollout-strategist', icon: Fingerprint },
+  { name: 'OpenID4VC Wallet Studio', path: '/playground/openid4vc-wallet', icon: Wallet },
+  { name: 'Trust Registry Explorer', path: '/playground/trust-registry', icon: Building },
+  { name: 'Role Mining Workbench', path: '/playground/role-mining', icon: Users },
+  { name: 'Access Request Cart', path: '/playground/access-request-cart', icon: ShoppingCart },
+  { name: 'HR-to-IdP Attribute Mapper', path: '/playground/hr-attribute-mapper', icon: ArrowLeftRight },
+  { name: 'Liveness & Injection Attack Lab', path: '/playground/liveness-injection', icon: ScanSearch },
   { name: 'Vendor Knowledge Center', path: '/vendor', icon: Building },
   { name: 'IAM Landscape Directory', path: '/explore', icon: Compass },
   { name: 'Certification Hub', path: '/certifications', icon: Award },

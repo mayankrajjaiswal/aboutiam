@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  ShieldAlert, Smartphone, Globe, Sparkles
+  ShieldAlert, Smartphone, Globe, Sparkles, Brain, RotateCcw
 } from 'lucide-react'
 import ContentFeedback from '../components/ContentFeedback'
 import BookmarkButton from '../components/BookmarkButton'
 import { BREACHES, type Breach } from '../data/breachesData'
+import { useSpacedRepetitionStore } from '../store/spacedRepetitionStore'
+import { isCardDue, type ReviewGrade } from '../lib/learning/spacedRepetition'
 
-type MuseumTab = 'evolution' | 'breaches' | 'resources'
+type MuseumTab = 'evolution' | 'breaches' | 'resources' | 'quiz'
 type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced'
 
 const BREACH_IDS = BREACHES.map((b) => b.id)
@@ -48,7 +50,7 @@ export default function WallOfShame() {
       const params = new URLSearchParams(window.location.search)
       const tab = params.get('tab') as MuseumTab | null
       const lab = params.get('lab')
-      if (tab === 'evolution' || tab === 'breaches' || tab === 'resources') {
+      if (tab === 'evolution' || tab === 'breaches' || tab === 'resources' || tab === 'quiz') {
         setTimeout(() => {
           setActiveTab(tab)
         }, 0)
@@ -88,6 +90,37 @@ export default function WallOfShame() {
 
   // LastPass Vault Lab State
   const [lastpassIterations, setLastPassIterations] = useState(5000)
+
+  // Quiz Mode (spaced-repetition flashcards) state
+  const QUIZ_BATCH_CAP = 10
+  const schedules = useSpacedRepetitionStore((s) => s.schedules)
+  const recordReview = useSpacedRepetitionStore((s) => s.recordReview)
+  const [quizStartedAt] = useState(() => new Date().toISOString())
+  const [quizQueue, setQuizQueue] = useState<string[]>([])
+  const [quizIndex, setQuizIndex] = useState(0)
+  const [isQuizCardFlipped, setIsQuizCardFlipped] = useState(false)
+
+  const hasStudiedBefore = Object.keys(schedules).length > 0
+  const dueBreachIds = BREACHES.filter((b) => isCardDue(schedules[b.id], quizStartedAt)).map((b) => b.id)
+  const dueTodayCount = dueBreachIds.length
+
+  const startQuizReview = () => {
+    const queue = hasStudiedBefore ? dueBreachIds : BREACHES.slice(0, QUIZ_BATCH_CAP).map((b) => b.id)
+    setQuizQueue(queue)
+    setQuizIndex(0)
+    setIsQuizCardFlipped(false)
+  }
+
+  const gradeQuizCard = (grade: ReviewGrade) => {
+    const breachId = quizQueue[quizIndex]
+    if (!breachId) return
+    recordReview(breachId, grade, new Date().toISOString())
+    setIsQuizCardFlipped(false)
+    setQuizIndex((prev) => prev + 1)
+  }
+
+  const currentQuizBreach = BREACHES.find((b) => b.id === quizQueue[quizIndex])
+  const quizCardsRemaining = Math.max(0, quizQueue.length - quizIndex)
 
   // --- TAB 1: EVOLUTION OF IAM DATA ---
   const eras = [
@@ -179,10 +212,11 @@ export default function WallOfShame() {
       </div>
 
       {/* Museum Sub-Navigation Tabs */}
-      <div className="flex gap-2 bg-bg-card p-1.5 rounded-xl border border-border-subtle w-fit shadow-sm relative z-10">
+      <div className="flex flex-wrap gap-2 bg-bg-card p-1.5 rounded-xl border border-border-subtle w-fit shadow-sm relative z-10">
         {[
           { id: 'evolution', label: '🏛️ The IAM Evolution Timeline' },
           { id: 'breaches', label: '💣 Interactive Breach Labs' },
+          { id: 'quiz', label: '🧠 Quiz Mode' },
           { id: 'resources', label: '🌐 Global Resource Index' }
         ].map(t => (
           <button
@@ -900,6 +934,100 @@ const deriveKey = async (pass, salt) => {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* --- TAB 3: SPACED-REPETITION QUIZ MODE --- */}
+      {activeTab === 'quiz' && (
+        <div className="max-w-3xl pt-2 animate-fadeIn relative z-10 space-y-6">
+          <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-accent-glow text-accent-primary">
+                <Brain className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-text-primary">Active Recall Review</div>
+                <div className="text-xs text-text-secondary">
+                  {hasStudiedBefore
+                    ? `${dueTodayCount} of ${BREACHES.length} breach cards due today`
+                    : `${Math.min(QUIZ_BATCH_CAP, BREACHES.length)} starter cards ready — first session`}
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={startQuizReview}
+              disabled={hasStudiedBefore && dueTodayCount === 0}
+              className="px-4 py-2 rounded-xl bg-accent-primary hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              {quizQueue.length > 0 ? 'Restart Review' : 'Start Review'}
+            </button>
+          </div>
+
+          {quizQueue.length > 0 && currentQuizBreach && (
+            <div className="space-y-4">
+              <div className="text-xs font-bold text-text-secondary uppercase tracking-wider">
+                {quizCardsRemaining} card{quizCardsRemaining === 1 ? '' : 's'} remaining in this session
+              </div>
+
+              <div
+                onClick={() => setIsQuizCardFlipped((prev) => !prev)}
+                className="p-8 rounded-2xl bg-bg-card border-2 border-accent-primary/30 shadow-md cursor-pointer min-h-[220px] flex flex-col justify-center space-y-4"
+              >
+                {!isQuizCardFlipped ? (
+                  <>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-accent-primary">Front — Recall the incident</span>
+                    <h4 className="text-xl font-extrabold text-text-primary">{currentQuizBreach.title}</h4>
+                    <p className="text-sm text-text-secondary">Attack Vector: {currentQuizBreach.attackVector}</p>
+                    <p className="text-xs text-text-muted italic">Click card to reveal the root cause & remediation.</p>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-accent-secondary">Back — Root Cause & Remediation</span>
+                    <p className="text-sm text-text-primary font-semibold">{currentQuizBreach.rootCause}</p>
+                    <p className="text-sm text-text-secondary">{currentQuizBreach.remediation}</p>
+                  </>
+                )}
+              </div>
+
+              {isQuizCardFlipped && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <button
+                    onClick={() => gradeQuizCard('again')}
+                    className="py-2.5 rounded-xl bg-status-danger/10 hover:bg-status-danger/20 border border-status-danger/30 text-status-danger text-xs font-bold transition-all"
+                  >
+                    Again
+                  </button>
+                  <button
+                    onClick={() => gradeQuizCard('hard')}
+                    className="py-2.5 rounded-xl bg-status-warning/10 hover:bg-status-warning/20 border border-status-warning/30 text-status-warning text-xs font-bold transition-all"
+                  >
+                    Hard
+                  </button>
+                  <button
+                    onClick={() => gradeQuizCard('good')}
+                    className="py-2.5 rounded-xl bg-accent-glow hover:bg-accent-glow/75 border border-accent-primary/30 text-accent-primary text-xs font-bold transition-all"
+                  >
+                    Good
+                  </button>
+                  <button
+                    onClick={() => gradeQuizCard('easy')}
+                    className="py-2.5 rounded-xl bg-status-success/10 hover:bg-status-success/20 border border-status-success/30 text-status-success text-xs font-bold transition-all"
+                  >
+                    Easy
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {quizQueue.length > 0 && !currentQuizBreach && (
+            <div className="p-8 rounded-2xl bg-bg-card border border-border-subtle text-center space-y-2">
+              <div className="text-2xl">🎉</div>
+              <div className="text-sm font-bold text-text-primary">Session complete!</div>
+              <p className="text-xs text-text-secondary">You reviewed every due card. Come back tomorrow for the next batch.</p>
+            </div>
+          )}
         </div>
       )}
 

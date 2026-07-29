@@ -455,6 +455,9 @@ export default function CommunityHub() {
                   <Star className="w-4 h-4 text-amber-500 fill-current animate-pulse-slow" /> Security Badges & Achievements
                 </h3>
                 <p className="text-xs text-text-secondary mt-0.5">Solve lab sandbox targets and complete curriculum courses to break seals and unlock your corporate achievements.</p>
+                <Link to="/career-center" className="text-[11px] font-bold text-accent-primary hover:text-accent-hover transition-colors inline-block mt-1.5">
+                  Turn your progress into resume bullets and a downloadable verified badge →
+                </Link>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">

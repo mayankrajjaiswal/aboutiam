@@ -4,6 +4,7 @@ import {
   RefreshCw, Clipboard, ArrowRight, Check, Link2
 } from 'lucide-react'
 import { questions, computeScores, getMaturityTier, encodeAnswers, decodeAnswers } from '../lib/assess/scoring'
+import { mapScoreToGartnerLevel, estimatePeerPercentile, PEER_BENCHMARK_SOURCE_NOTE, GARTNER_LEVELS } from '../lib/assess/maturityBenchmark'
 
 function getSharedParam(): string | null {
   if (typeof window === 'undefined') return null
@@ -48,6 +49,8 @@ export default function Assess() {
   // Scoring Metrics Calculations
   const { percentage, averageScore } = computeScores(answers)
   const maturityTier = getMaturityTier(averageScore)
+  const gartnerLevel = mapScoreToGartnerLevel(percentage)
+  const peerPercentile = estimatePeerPercentile(percentage)
 
   const copyShareableLink = () => {
     const url = `${window.location.origin}${window.location.pathname}?a=${encodeAnswers(answers)}`
@@ -439,6 +442,52 @@ export default function Assess() {
                   )
                 })}
               </div>
+            </div>
+          </div>
+
+          {/* Gartner-Style Maturity Benchmark Overlay */}
+          <div className="grid md:grid-cols-5 gap-8">
+            <div className="md:col-span-2 p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+              <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
+                <Award className="w-4 h-4 text-accent-primary" /> Industry Maturity Level
+              </h4>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Your {percentage}% maturity score maps to:
+              </p>
+              <div className="p-4 rounded-xl bg-accent-glow border border-accent-primary/20">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-accent-primary">Level {gartnerLevel.level} of 5</span>
+                <h5 className="text-xl font-black text-text-primary">{gartnerLevel.name}</h5>
+                <p className="text-xs text-text-secondary mt-1.5 leading-relaxed">{gartnerLevel.summary}</p>
+              </div>
+              <div className="space-y-1.5 pt-1">
+                {GARTNER_LEVELS.map((l) => (
+                  <div key={l.level} className={`flex items-center gap-2 text-[10px] font-semibold ${l.level === gartnerLevel.level ? 'text-accent-primary' : 'text-text-muted'}`}>
+                    <span className={`w-4 h-4 rounded-full flex items-center justify-center border text-[9px] ${l.level === gartnerLevel.level ? 'border-accent-primary bg-accent-primary text-white' : 'border-border-subtle'}`}>{l.level}</span>
+                    {l.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="md:col-span-3 p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+              <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
+                <LineChart className="w-4 h-4 text-accent-secondary" /> Peer Percentile Comparison
+              </h4>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Your score outperforms an estimated <span className="font-bold text-text-primary">{peerPercentile}%</span> of peer organizations.
+              </p>
+              <div className="relative h-8 rounded-full bg-bg-nested border border-border-subtle overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-accent-primary to-accent-secondary transition-all duration-1000"
+                  style={{ width: `${peerPercentile}%` }}
+                />
+                <span className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-text-primary">
+                  {peerPercentile}th percentile
+                </span>
+              </div>
+              <p className="text-[10px] text-text-muted leading-relaxed pt-2 border-t border-border-subtle/30">
+                {PEER_BENCHMARK_SOURCE_NOTE}
+              </p>
             </div>
           </div>
         </div>

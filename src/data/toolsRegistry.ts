@@ -8,6 +8,7 @@ import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
+  PackageSearch, Scale, Presentation, AtomIcon,
 } from 'lucide-react'
 
 export type ToolCategory =
@@ -16,6 +17,8 @@ export type ToolCategory =
   | 'Hashing, Encoding & Secrets'
   | 'Auth & Directory Builders'
   | 'Emerging & Decentralized Identity'
+  | 'Supply Chain & Governance'
+  | 'Program & Vendor Management'
 
 export interface ToolFaq {
   q: string
@@ -603,6 +606,113 @@ export const TOOLS: ToolMeta[] = [
     ],
     relatedLinks: [{ label: 'Generate a did:key keypair →', href: '/tools/did-key-generator' }, { label: 'Issue and verify a Verifiable Credential →', href: '/playground/vc-did' }],
   },
+  {
+    slug: 'identity-sbom-analyzer',
+    title: 'Identity SBOM Analyzer — Auth-Adjacent Dependency Risk Report',
+    description: 'Paste a package.json (or a plain comma/newline-separated dependency list) to get an auth-relevant dependency risk report, cross-referenced against known JWT/SAML library CVEs, plus a downloadable "Identity SBOM" JSON export.',
+    category: 'Supply Chain & Governance',
+    icon: PackageSearch,
+    phase: 3,
+    status: 'live',
+    keywords: ['identity sbom', 'sbom generator', 'auth dependency scanner', 'jwt library cve', 'saml library cve', 'software bill of materials', 'supply chain security'],
+    analogy: 'Think of this like a food-allergen label check for your dependency tree — instead of scanning ingredients for known allergens, it scans your package.json for auth libraries (JWT, SAML, OAuth clients) with a history of serious, publicly disclosed signature-bypass vulnerabilities, and tells you exactly which installed version is affected.',
+    expert: 'Parses package.json dependencies/devDependencies (or a plain dependency list for non-npm ecosystems), matches package names against a curated table of historically CVE-disclosed auth-adjacent libraries, and does semver-aware version-range matching to confirm whether the installed version is actually affected — unmatched packages are never false-flagged. Matched CVE ids cross-reference the site\'s own CVE Tracker (`/research?cve=<id>`) for the full vulnerable/secure code breakdown. Everything runs and stays in your browser; the JSON "Identity SBOM" export is a client-side Blob download.',
+    faqs: [
+      { q: 'Does this upload my package.json anywhere?', a: 'No — parsing and matching both run entirely in your browser via JavaScript. Nothing you paste is ever sent to a server.' },
+      { q: 'Why wasn\'t a library I know has CVEs flagged?', a: 'The curated table only covers a hand-picked set of well-documented, historically disclosed auth-adjacent library CVEs (JWT/SAML libraries) — it is not a comprehensive vulnerability database. Unmatched packages are intentionally skipped rather than guessed at.' },
+      { q: 'What does "Info" severity mean in the report?', a: 'The package matched a known-risky library, but the installed version string couldn\'t be parsed (e.g. "latest", a git URL, or no version at all) — it may or may not be affected, so it\'s flagged for manual review instead of being silently skipped or falsely marked Critical.' },
+    ],
+    relatedLinks: [{ label: 'Browse the full CVE Tracker →', href: '/research' }, { label: 'Decode a JWT and check its algorithm →', href: '/tools/jwt-decoder' }],
+  },
+  {
+    slug: 'iam-tco-calculator',
+    title: 'IAM Build vs. Buy TCO Calculator — 3-Year Cost Comparison',
+    description: 'An editable-slider calculator comparing the 3-year total cost of ownership of building an in-house identity stack versus buying a commercial IDaaS subscription — engineer hours, licensing, and an optional breach-risk adjustment.',
+    category: 'Program & Vendor Management',
+    icon: Scale,
+    phase: 3,
+    status: 'live',
+    keywords: ['build vs buy', 'iam tco calculator', 'idaas cost comparison', 'identity total cost of ownership', 'keycloak vs okta cost'],
+    analogy: 'Deciding whether to build your own identity provider or buy one is like deciding whether to build your own car or lease one — building gives you full control but you pay in mechanics\' hours and maintenance risk, while leasing costs a predictable monthly fee but scales with how many cars (seats) you need.',
+    expert: 'A pure client-side projection: annual build cost = engineer count × fully-loaded annual engineer cost × (maintenance hours per year ÷ 2080 standard annual work hours); annual buy cost = per-seat licensing cost × seat count. An optional toggle applies a documented, illustrative uplift multiplier to the build total, reflecting the commonly-cited pattern that self-maintained auth stacks patch known vulnerabilities more slowly than a dedicated commercial vendor security team. Directional only — not a procurement-grade TCO model.',
+    faqs: [
+      { q: 'Is this a real procurement-grade TCO model?', a: 'No — it is a directional, illustrative comparison using documented default assumptions you can adjust. Real procurement decisions should incorporate your own negotiated pricing, compliance requirements, and migration costs.' },
+      { q: 'What does the breach-risk adjustment toggle do?', a: 'It applies a static, illustrative uplift multiplier to the build-option total only, reflecting the commonly observed pattern that self-hosted, self-maintained identity stacks tend to patch known vulnerabilities more slowly than a commercial IDaaS vendor\'s dedicated security team.' },
+    ],
+    relatedLinks: [{ label: 'Generate a tailored RFP question set →', href: '/tools/iam-rfp-generator' }, { label: 'Browse the IAM Landscape Directory →', href: '/explore' }],
+  },
+  {
+    slug: 'iam-rfp-generator',
+    title: 'IAM RFP Generator — Tailored Vendor Evaluation Questionnaire',
+    description: 'Answer a short questionnaire on org size, industry, and priority capabilities to generate a categorized, downloadable RFP — Security & Compliance, Integration, TCO, and Implementation Risk — with deep links to named vendors known to support each capability.',
+    category: 'Program & Vendor Management',
+    icon: ClipboardCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['iam rfp template', 'identity vendor rfp generator', 'idaas rfp questions', 'iam vendor evaluation questionnaire'],
+    analogy: 'Generic RFP templates ask every vendor the same 200 questions regardless of what you actually need — this is more like a tailor taking your measurements first, then only handing you the questions relevant to your org size, industry, and the specific capabilities (SSO, MFA, PAM, IGA, CIAM) you actually care about.',
+    expert: 'A pure client-side rules engine over a curated, categorized question bank (`src/data/rfpQuestionBank.ts`). Every question is either a category-mandatory baseline (always included) or gated by a capability tag and/or org-size tag matched against your questionnaire answers. Capability-tagged questions carry cross-referenced links to named products in the IAM Landscape Directory known to support that capability.',
+    faqs: [
+      { q: 'Is this a legally binding or exhaustive RFP template?', a: 'No — it is a starting point covering the categories and questions most commonly missed in vendor evaluations. Always add your organization\'s specific legal, security, and procurement requirements.' },
+      { q: 'How does it decide which questions to include?', a: 'Each question in the bank is tagged with the capability area(s) and/or org size it applies to. Selecting "MFA" as a priority capability, for example, pulls in phishing-resistant-authentication questions that a generic RFP would likely miss.' },
+    ],
+    relatedLinks: [{ label: 'Compare vendors side-by-side →', href: '/vendor' }, { label: 'Browse the IAM Landscape Directory →', href: '/explore' }],
+  },
+  {
+    slug: 'iam-salary-compass',
+    title: 'IAM Salary Compass — Identity & Access Management Compensation Guide',
+    description: 'A filterable, IAM-specific compensation comparator by role, seniority, specialization (Workforce IAM, CIAM, PAM, IGA), and region — directional estimates aggregated from public sources, not a substitute for local market research.',
+    category: 'Program & Vendor Management',
+    icon: Combine,
+    phase: 3,
+    status: 'live',
+    keywords: ['iam salary', 'identity engineer salary', 'pam engineer salary', 'ciam salary', 'identity architect compensation'],
+    analogy: 'Generic salary sites lump every "security engineer" into one bucket regardless of specialty — this is closer to a specialty-aware compensation guide that recognizes a PAM engineer and a CIAM engineer are different jobs with different market premiums, the way a general "doctor" salary figure would be useless without knowing if they\'re a surgeon or a general practitioner.',
+    expert: 'A static dataset (`src/data/iamSalaryData.ts`) of p25/p50/p75 US-national-average total-compensation figures per role × seniority × specialization combination, scaled by a region multiplier for the selected market. All figures are directional estimates aggregated from publicly-available identity/security compensation survey summaries — not a licensed compensation-benchmarking product.',
+    faqs: [
+      { q: 'Where does this data come from?', a: 'It is a directional estimate aggregated from publicly-available identity and security compensation survey summaries. It is not sourced from a paid compensation-benchmarking service and should not be treated as authoritative for a specific negotiation.' },
+      { q: 'Why does PAM/CIAM pay more than generalist IAM in some rows?', a: 'Specialized skill areas with a smaller qualified talent pool (like PAM vaulting/JIT architecture or large-scale CIAM) commonly command a premium over generalist workforce-IAM roles in public compensation aggregator data.' },
+    ],
+    relatedLinks: [{ label: 'Explore the Interview & Career Center →', href: '/career-center' }],
+  },
+  {
+    slug: 'tabletop-exercise-generator',
+    title: 'Tabletop Exercise Generator — Identity Incident Facilitator Script',
+    description: 'Answer a short questionnaire to generate a printable, facilitator-ready tabletop exercise script — objectives, timed injects, discussion prompts, and a scoring rubric — drawn directly from the Security Bulletins archive.',
+    category: 'Program & Vendor Management',
+    icon: Presentation,
+    phase: 3,
+    status: 'live',
+    keywords: ['tabletop exercise generator', 'incident response tabletop', 'security tabletop script', 'iam incident simulation'],
+    analogy: 'The Crisis Response Console lets one person click through a breach scenario alone at a keyboard — this generates the script a facilitator hands to an entire room for a live team tabletop exercise, the same incident turned into a group exercise instead of a solo simulation.',
+    expert: 'A pure template transform (`src/lib/tools/tabletopGenerator.ts`) over a selected entry from the existing Security Bulletins registry (`src/data/bulletinsData.ts`) — no new incident authoring. Produces a timed inject sequence (T+0/T+15/T+30) derived from the bulletin\'s own simulator narrative, one discussion prompt per real playbook step, and a 3-area scoring rubric (Identity Detection, Incident Communications, Remediation Execution) cross-referencing the bulletin\'s mapped compliance controls. Exports as downloadable Markdown.',
+    faqs: [
+      { q: 'Does this invent new incident scenarios?', a: 'No — every script is generated from one of the 18 real incident bulletins already in the Security Bulletins archive, so the injects and remediation guidance are grounded in an existing, reviewed scenario.' },
+      { q: 'Can I run this live with a team?', a: 'Yes — that is the point. Download the Markdown script and read out each timed inject to your team during a scheduled tabletop session, then use the discussion prompts and rubric to debrief afterward.' },
+    ],
+    relatedLinks: [{ label: 'Browse the full Security Bulletins archive →', href: '/bulletins' }],
+  },
+  {
+    slug: 'pqc-readiness-auditor',
+    title: 'PQC Readiness Auditor — Post-Quantum Crypto-Agility Checklist',
+    description: 'Paste a PEM certificate chain, a JWKS JSON blob, or a TLS cipher-suite list to flag quantum-vulnerable algorithms (RSA, ECDSA, EdDSA, AES-128), estimate hybrid post-quantum handshake size growth, and get a prioritized migration checklist.',
+    category: 'PKI & Certificates',
+    icon: AtomIcon,
+    phase: 3,
+    status: 'live',
+    keywords: ['post quantum cryptography', 'pqc migration', 'ml-kem', 'ml-dsa', 'crypto agility audit', 'nist fips 203 204 205', 'harvest now decrypt later'],
+    analogy: 'A structural engineer surveying a building for earthquake risk doesn\'t wait for the earthquake — they flag which beams (algorithms) were built to an outdated code (classical-only crypto) years before the ground actually shakes (a cryptographically relevant quantum computer). This tool is that survey for your certificates, keys, and cipher suites.',
+    expert: 'A pure static-rule-driven checklist, not real PQC signing or key exchange (browsers have no native ML-KEM/ML-DSA support yet). It reuses the existing PEM/JWK parsing helpers from `Tools/X509CertificateDecoder.tsx` and `Tools/JwksInspector.tsx` (`src/lib/tools/x509.ts`), matches detected algorithms against a curated risk table (`src/data/pqcAlgorithmRisk.ts`), and computes handshake-size-growth math using the cited reference values (a hybrid ML-DSA-87 signature ≈4.6KB vs. a classical ECDSA P-256 signature ≈96B).',
+    faqs: [
+      { q: 'Does this actually perform post-quantum cryptography?', a: 'No — browsers don\'t yet ship native ML-KEM/ML-DSA support. This is an analysis-only, static-rule-driven checklist plus size/latency math, not a real hybrid handshake.' },
+      { q: 'Why is ECDSA flagged as Critical, not just RSA?', a: 'Elliptic-curve discrete-log is broken by the same Shor\'s-algorithm class of attack as RSA factorization, and ECC actually requires fewer logical qubits to break than RSA at an equivalent classical security level — so it is not a lower-priority migration than RSA.' },
+      { q: 'What is "harvest now, decrypt later"?', a: 'An adversary captures today\'s classically-encrypted traffic now and stores it, planning to decrypt it retroactively once a sufficiently large quantum computer exists — which is why migration priority is about the confidentiality lifetime of the data, not just today\'s classical strength.' },
+    ],
+    relatedLinks: [
+      { label: 'Decode a certificate chain in detail →', href: '/tools/x509-certificate-decoder' },
+      { label: 'Inspect a JWKS document →', href: '/tools/jwks-inspector' },
+    ],
+  },
 ]
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {
@@ -616,6 +726,8 @@ export function getToolsByCategory(): { category: ToolCategory; tools: ToolMeta[
     'Hashing, Encoding & Secrets',
     'Auth & Directory Builders',
     'Emerging & Decentralized Identity',
+    'Supply Chain & Governance',
+    'Program & Vendor Management',
   ]
   return order.map((category) => ({
     category,

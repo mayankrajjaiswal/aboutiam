@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -381,6 +381,14 @@ export default function PlaygroundCatalog() {
       link: "/playground/hybrid-ad-sync",
       badge: "Active (Advanced)",
       enterpriseProducts: "Microsoft Entra Connect, AD FS"
+    },
+    {
+      title: "HR-to-IdP Attribute Mapper",
+      desc: "Click-to-connect mock HR fields (Workday/SAP-style) to AD/Entra/SCIM attributes, apply concat/regex/lookup-table transformations, and watch a live preview and conflict warnings update in real time.",
+      icon: ArrowLeftRight,
+      link: "/playground/hr-attribute-mapper",
+      badge: "Active (Standard)",
+      enterpriseProducts: "Workday, SAP SuccessFactors, Microsoft Entra Connect"
     }
   ]
 

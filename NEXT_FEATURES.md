@@ -165,30 +165,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group B — Governance, Program Management & Career
 
-### B4. HR-to-IdP Attribute Mapper
-
-**One-liner:** A drag-and-connect UI mapping mock HR-system fields (Workday/SAP-style) to AD/Entra/SCIM attributes, with a live transformation preview (concat, regex, lookup table) and conflict warnings.
-
-**Why unique:** Attribute mapping between HR-of-record systems and identity stores is one of the most common, error-prone real IAM implementation tasks, and nothing on the site models it interactively — existing SCIM tools (`ScimPayloadValidator`, `ScimDiffTool`) validate/diff payloads but don't model the *mapping design* step that produces them.
-
-**Where it fits:** New playground at `/playground/hr-attribute-mapper`, component `HrAttributeMapper.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group, next to `HybridAdSyncLab`/`SCIMLab`.
-
-**Design:**
-- Two columns: mock HR fields (left, e.g. `Legal_First_Name`, `Cost_Center`, `Manager_Employee_ID`) and target identity-store attributes (right, e.g. `givenName`, `department`, `manager`).
-- User connects a left field to a right field via a click-to-select-then-click-to-connect interaction (accessible alternative to drag-and-drop, per the same accessibility preference as B3); optionally applies a transformation (string concat of two HR fields into one attribute, a regex extraction, or a static lookup-table translation e.g. cost-center code → department name).
-- Live preview panel shows a sample HR record transformed into the resulting identity-store attribute set in real time as mappings/transforms are added.
-- Conflict warnings: mapping two different HR fields to the same target attribute, or leaving a required target attribute unmapped, surfaces a clear warning.
-
-**Data model:** `src/data/hrAttributeMappingFixtures.ts` — sample HR field sets and target schema definitions for 2-3 preset scenarios (Workday→Entra, SAP→AD).
-
-**Tests:** `src/lib/tools/attributeTransform.test.ts` — concat/regex/lookup-table transforms produce correct output on fixture data; `HrAttributeMapper.test.tsx` — duplicate-target-mapping and missing-required-attribute warnings render correctly.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### B11. Accessibility (WCAG 2.2 AA) Audit & Hardening Sweep
 
 **One-liner:** A systematic `axe-core`-driven accessibility audit of the 30+ Framer Motion playgrounds and drag/click-based builders (including this batch's B3/B4 and Phase 1's Modernization Backlog Game), fixing keyboard-navigation, focus-management, and ARIA gaps on custom simulator widgets.
@@ -288,9 +264,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, and B3 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, and B4 have shipped. Remaining order:
 
-- **B4** — HR Attribute Mapper (medium, pairs well with the just-shipped B3).
 - **A4, A7, A8** — Identity Fabric Builder, Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).
 - **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).
 - **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).

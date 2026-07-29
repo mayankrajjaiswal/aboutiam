@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder, ArrowLeftRight
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -139,6 +139,7 @@ const ecosystemItems = [
   { name: 'OpenID4VC Wallet Studio', path: '/playground/openid4vc-wallet', icon: Wallet },
   { name: 'Role Mining Workbench', path: '/playground/role-mining', icon: Users },
   { name: 'Access Request Cart', path: '/playground/access-request-cart', icon: ShoppingCart },
+  { name: 'HR-to-IdP Attribute Mapper', path: '/playground/hr-attribute-mapper', icon: ArrowLeftRight },
   { name: 'Vendor Knowledge Center', path: '/vendor', icon: Building },
   { name: 'IAM Landscape Directory', path: '/explore', icon: Compass },
   { name: 'Certification Hub', path: '/certifications', icon: Award },

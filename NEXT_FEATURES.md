@@ -85,10 +85,10 @@ Everything remaining is explicitly out of scope for this pass:
 - **C4** — Local AI Assistant Upgrade (highest engineering risk — dedicated spike first, own timeline — out of scope for this pass).
 - **C5** — AboutIAM Inspector Browser Extension (separate project — own go/no-go decision, sequence last — out of scope for this pass).
 
-## Final Wrap-Up (after Phase 2 ships)
+## Final Wrap-Up (after Phase 2 ships) — DONE
 
-- Run `npm run test` and `npm run lint` — zero new warnings.
-- Re-verify `routeRegistrySync.test.ts` and `searchService.test.ts` both pass for every new route/registry added in this phase.
-- Cross-check that no Phase 2 route slug or tool slug collided with an existing one in `src/routeMeta.ts` / `src/data/toolsRegistry.ts` before merging each feature.
-- Sweep every new page for the mobile-overflow issues called out in `GEMINI.md` §4E step 5.
-- Consider whether the Guided Tour (§4M) or Sidebar grouping needs rebalancing once ~20 more pages exist — the `ecosystem`/`architecture` sidebar groups in particular will have grown substantially; a sub-grouping pass may be warranted at that point (not now).
+- ✅ `npm run test` — 153 test files, 1111 tests, all passing. `npm run lint` — zero warnings/errors.
+- ✅ `routeRegistrySync.test.ts` (11 tests) and `searchService.test.ts` (part of the 47-test file) both re-verified passing standalone.
+- ✅ No route-slug or tool-slug collisions found across every Phase 2 addition (`App.tsx` paths and `toolsRegistry.ts` slugs both checked for duplicates — none).
+- ✅ Mobile-overflow sweep at a 375px viewport across the new Phase 2 pages found zero overflow on all of them. It also caught one **pre-existing** bug on `/career-center` (not introduced by Phase 2, but on the same page C3's terminal was piloted into): the section tab bar's `overflow-x-auto` container had no `min-w-0` on its flex/grid ancestor, so instead of scrolling internally it forced the whole page 935px wide. Fixed by adding `min-w-0` to the `lg:col-span-3` wrapper — the classic CSS Grid/Flexbox "min-width: auto" trap.
+- Considered Sidebar/Guided Tour rebalancing per this section's own note (ecosystem: 17 items, architecture: 19 items after Phase 2) — genuinely grown, but not yet at a point that demands a sub-grouping pass. Left untouched per the note's own "not now" framing; worth revisiting if more pages are added to either group.

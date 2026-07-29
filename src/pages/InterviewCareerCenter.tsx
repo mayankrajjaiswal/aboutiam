@@ -288,7 +288,7 @@ export default function InterviewCareerCenter() {
         </div>
 
         {/* RIGHT INTERACTIVE INTERVIEW PLATFORM */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="lg:col-span-3 space-y-6 min-w-0">
           {/* TRACK SUB-HEADER */}
           <div className="p-5 bg-bg-card border border-border-subtle rounded-xl space-y-1">
             <div className="flex items-center gap-2">

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -231,6 +231,13 @@ export default function PlaygroundCatalog() {
       desc: "Fire a Continuous Access Evaluation Protocol (CAEP) event from a mock IdP and watch it fan out to multiple subscribed relying parties in real time — each with its own subscription list, latency, and enforcement decision.",
       icon: Radio,
       link: "/playground/caep-event-storm",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Identity Fabric / Orchestration Flow Builder",
+      desc: "Wire a legacy protocol-only app to a modern protocol-only IdP through an orchestration node and watch the trace log narrate each protocol-translation step — models IdP migration without app rewrites and consistent policy enforcement across heterogeneous IdPs.",
+      icon: Waypoints,
+      link: "/playground/identity-fabric",
       badge: "Active (Advanced)",
     },
     {

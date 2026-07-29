@@ -65,6 +65,7 @@ const TabletopExerciseGenerator = lazy(() => import('./pages/Tools/TabletopExerc
 const PqcReadinessAuditor = lazy(() => import('./pages/Tools/PqcReadinessAuditor'))
 const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
 const HrAttributeMapper = lazy(() => import('./pages/Playgrounds/HrAttributeMapper'))
+const IdentityFabricBuilder = lazy(() => import('./pages/Playgrounds/IdentityFabricBuilder'))
 const IdentityBrokerSandbox = lazy(() => import('./pages/Playgrounds/IdentityBrokerSandbox'))
 const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
 const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
@@ -294,6 +295,7 @@ export default function App() {
               <Route path="/playground/hybrid-ad-sync" element={<HybridAdSyncLab />} />
               <Route path="/playground/ldap-schema-designer" element={<LdapSchemaDesigner />} />
               <Route path="/playground/hr-attribute-mapper" element={<HrAttributeMapper />} />
+              <Route path="/playground/identity-fabric" element={<IdentityFabricBuilder />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />

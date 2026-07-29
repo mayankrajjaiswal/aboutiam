@@ -36,30 +36,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### A4. Identity Fabric / Orchestration Flow Builder
-
-**One-liner:** A visual canvas for wiring a legacy SAML-only application to a modern OIDC-only IdP through an orchestration/protocol-translation node — models IdP migration without app rewrites and consistent policy enforcement across heterogeneous IdPs.
-
-**Why unique:** 2026's dominant enterprise IAM theme (Strata Maverics, PingOne DaVinci-style identity fabric/orchestration) is completely unaddressed — `HybridAdSyncLab.tsx` covers on-prem/cloud directory sync, not a multi-IdP protocol-translation routing layer.
-
-**Where it fits:** New playground at `/playground/identity-fabric`, component `IdentityFabricBuilder.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group.
-
-**Design:**
-- Canvas with 3 node types: Legacy App (fixed protocol, e.g. SAML-only), Modern IdP (fixed protocol, e.g. OIDC-only), Orchestration Node (the fabric — protocol-translating middleware).
-- User wires App → Orchestration → IdP; the trace log narrates the translation happening step by step (SAML AuthnRequest received → translated to OIDC authorization request → OIDC token received → translated back to a SAML assertion the legacy app understands).
-- 2-3 preset scenarios: "IdP migration without app rewrite," "consistent MFA policy enforced across 3 heterogeneous IdPs," "one orchestration node fronting both a legacy LDAP bind app and a modern OIDC app simultaneously."
-- Reuses existing SAML assertion generation (`SAMLWorkbench.tsx`) and OIDC token issuance (`OAuthVisualizer.tsx`) logic rather than reimplementing either protocol.
-
-**Data model:** `src/data/identityFabricScenarios.ts` — scenario definitions (app protocol, IdP protocol, expected translation steps).
-
-**Tests:** `src/pages/Playgrounds/IdentityFabricBuilder.test.tsx` — wiring an incompatible pair without the orchestration node fails with a clear error; wiring through the node succeeds and the trace log contains every expected translation step in order.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### A5. Trust Registry & Issuer Governance Explorer
 
 **One-liner:** Models a multi-country/multi-sector trust registry — a verifier checks not just a credential's cryptographic validity but whether the issuer is authorized in the relevant registry, including cross-border recognition and revocation-status scenarios.
@@ -264,9 +240,9 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, and B4 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, and A4 have shipped. Remaining order:
 
-- **A4, A7, A8** — Identity Fabric Builder, Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).
+- **A7, A8** — Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).
 - **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).
 - **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).
 - **A6** — Legacy & Academic Federation Playground (medium-hard, lower urgency).

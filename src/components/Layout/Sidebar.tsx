@@ -130,6 +130,7 @@ const architectureItems = [
   { name: 'Architecture Center', path: '/architecture', icon: Network },
   { name: 'Knowledge Graph', path: '/knowledge-graph', icon: Waypoints },
   { name: 'AD/LDAP OU & Schema Designer', path: '/playground/ldap-schema-designer', icon: Folder },
+  { name: 'Identity Fabric Builder', path: '/playground/identity-fabric', icon: Waypoints },
 ]
 
 const ecosystemItems = [

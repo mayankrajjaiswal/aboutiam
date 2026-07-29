@@ -205,6 +205,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "OpenID4VC Wallet Studio",
+      desc: "Issue a real SD-JWT verifiable credential, store it in a mock wallet, and selectively disclose only the claims a verifier actually requested — the OID4VCI/OID4VP flow behind eIDAS 2.0 EUDI Wallets.",
+      icon: Wallet,
+      link: "/playground/openid4vc-wallet",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "NHI Workload Mesh (SPIFFE)",
       desc: "Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.",
       icon: Network,

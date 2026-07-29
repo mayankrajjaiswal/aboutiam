@@ -106,6 +106,7 @@ const NhiSprawlLab = lazy(() => import('./pages/Playgrounds/NhiSprawlLab'))
 const PasskeyRolloutStrategist = lazy(() => import('./pages/Playgrounds/PasskeyRolloutStrategist'))
 const ModernizationBacklogGame = lazy(() => import('./pages/Playgrounds/ModernizationBacklogGame'))
 const BuildYourIdp = lazy(() => import('./pages/Playgrounds/BuildYourIdp'))
+const OpenId4VcWallet = lazy(() => import('./pages/Playgrounds/OpenId4VcWallet'))
 const AIThreatLab = lazy(() => import('./pages/Playgrounds/AIThreatLab'))
 const ZKPWallet = lazy(() => import('./pages/Playgrounds/ZKPWallet'))
 const AmbientTrust = lazy(() => import('./pages/Playgrounds/AmbientTrust'))
@@ -226,6 +227,7 @@ export default function App() {
               <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />
               <Route path="/playground/modernization-backlog" element={<ModernizationBacklogGame />} />
               <Route path="/playground/build-your-idp" element={<BuildYourIdp />} />
+              <Route path="/playground/openid4vc-wallet" element={<OpenId4VcWallet />} />
               <Route path="/playground/jwt" element={<JWTStudio />} />
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />

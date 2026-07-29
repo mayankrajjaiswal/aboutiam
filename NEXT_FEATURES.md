@@ -37,34 +37,6 @@ Every feature must update:
 
 ---
 
-## Feature 3 — OpenID4VC Wallet Studio
-
-**One-liner:** A full OID4VCI issuance + OID4VP presentation flow simulator — issue an SD-JWT mobile-driver's-license-style verifiable credential, selectively disclose only requested claims to a mock verifier, and visualize the QR-code/wallet handshake used by EUDI Wallets.
-
-**Why unique:** Goes beyond the existing `ZKPWallet.tsx` toy age-proof demo into the actual live 2026 EU regulatory standard (eIDAS 2.0 mandates member-state wallets using OpenID4VCI/VP + SD-JWT).
-
-**Where it fits:** New playground at `/playground/openid4vc-wallet`, component `OpenId4VcWallet.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group (near `ZKPWallet`). `PlaygroundCatalog.tsx` entry. Also cross-link from `/standards` if a new "OpenID4VC" standard entry is added (see below).
-
-**Design — 3 steps:**
-1. **Issuance (OID4VCI):** Mock Issuer (e.g. "Digital Motor Authority") issues an SD-JWT credential with several claims (name, birthdate, license class, address) each independently salted/hashed as an SD-JWT disclosure. Reuses/extends the existing SD-JWT decoder logic in `src/lib/tools/` (check `Tools/` for the existing SD-JWT Decoder tool's parsing lib and extend it with an *issuance* helper rather than duplicating SD-JWT logic).
-2. **Wallet storage:** Visualize the credential landing in a mock wallet UI with a claims list, each with a checkbox to include/exclude in the next presentation.
-3. **Presentation (OID4VP):** A mock verifier (e.g. "Bar — Age Check Only") requests specific claims via a presentation definition; user selectively discloses only the requested claim (e.g. "over 21: true" derived, not raw birthdate) and the verifier's log shows what it could and could not see.
-
-**Data model:** `src/data/openId4VcScenarios.ts` — 3-4 preset issuer/verifier scenario pairs (mDL age-check, university diploma, employment proof) each defining the full claim set and the verifier's requested subset.
-
-**Tests:**
-- `src/data/openId4VcScenarios.test.ts` — every scenario's requested claims are a subset of the issued claims.
-- `src/pages/Playgrounds/OpenId4VcWallet.test.tsx` — disclosure logic only reveals selected claims; verifier log never contains an undisclosed claim value.
-
-**Docs to update:**
-- `README.md` §B: new bullet.
-- `GEMINI.md` §2 table: new row.
-- Optional: add an `openid4vc` entry to `src/data/standardsData.ts` (§4Q pattern) with `relatedResources` pointing at this playground.
-
-**Feasibility:** Medium.
-
----
-
 ## Feature 4 — Identity Attack-Path Graph Visualizer
 
 **One-liner:** A BloodHound-style interactive force-directed graph — load a small seeded AD/cloud-IAM dataset and visually trace privilege-escalation paths (nested group membership → domain admin, leaked service-account key → lateral movement → cloud admin).
@@ -179,13 +151,12 @@ Every feature must update:
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), and #5 (Build-Your-Own-IdP Sandbox) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), and #3 (OpenID4VC Wallet Studio) have shipped. Remaining order:
 
-1. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
-2. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
-3. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-4. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-5. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
+2. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
+3. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+4. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

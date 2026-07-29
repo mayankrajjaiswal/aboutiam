@@ -990,7 +990,69 @@ Content-Type: application/json
     ],
     relatedResources: [
       { title: 'Verifiable Credentials & DID Lab', path: '/playground/vc-did', type: 'playground' },
-      { title: 'Zero-Knowledge Proof (ZKP) Wallet', path: '/playground/zkp-wallet', type: 'playground' }
+      { title: 'Zero-Knowledge Proof (ZKP) Wallet', path: '/playground/zkp-wallet', type: 'playground' },
+      { title: 'OpenID4VC Wallet Studio (SD-JWT profile)', path: '/playground/openid4vc-wallet', type: 'playground' }
+    ]
+  },
+  {
+    id: 'openid4vc',
+    title: 'OpenID4VC (OID4VCI / OID4VP)',
+    fullname: 'OpenID for Verifiable Credential Issuance & Presentation',
+    rfcs: ['OpenID4VCI (OIDF)', 'OpenID4VP (OIDF)', 'IETF SD-JWT VC'],
+    year: '2023',
+    difficulty: 'Advanced',
+    category: 'Decentralized Identity',
+    summary: 'A pair of OpenID Foundation profiles that reuse familiar OAuth 2.0/OIDC machinery — instead of a fresh JSON-LD credential model — to issue (OID4VCI) and present (OID4VP) SD-JWT-based Verifiable Credentials, letting a Wallet selectively disclose only the claims a Verifier actually requested.',
+    problem: 'The W3C Verifiable Credentials Data Model defines what a credential looks like, but not how a Wallet actually requests one from an Issuer, or presents one to a Verifier, over HTTP — every vendor filled that gap differently until OpenID4VC standardized it on top of OAuth 2.0.',
+    whyExists: 'eIDAS 2.0 mandates that every EU member state ship an EUDI (European Digital Identity) Wallet by 2026, and the EU\'s own Architecture Reference Framework (ARF) selected OpenID4VCI/VP + SD-JWT VC as the interoperable issuance/presentation profile every member state\'s wallet must speak.',
+    flowchart: `
++-------------------------------------------------------------+
+|            OID4VCI ISSUANCE + OID4VP PRESENTATION            |
++-------------------------------------------------------------+
+
+  [ Issuer ]                [ Wallet ]                  [ Verifier ]
+      |--1. Credential Offer ----->|                          |
+      |    (OID4VCI)               |                          |
+      |<--2. Token + Credential----|                          |
+      |    Request                |                          |
+      |--3. SD-JWT VC (all claims,|                          |
+      |    each independently     |                          |
+      |    salted/hashed) ------->|                          |
+      |                            |--4. Presentation Request-|
+      |                            |    (OID4VP, specific     |
+      |                            |    claims only) <--------|
+      |                            |--5. Presentation (JWT +  |
+      |                            |    only requested        |
+      |                            |    disclosures) -------->|
+`,
+    messageFormat: `// SD-JWT VC compact serialization: <issuer-jwt>~<disclosure>~<disclosure>~
+// Issuer JWT payload (excerpt):
+{
+  "iss": "https://dmv.example",
+  "vct": "urn:mdl",
+  "_sd": ["9gjVv...digest1", "abKvR...digest2"],
+  "_sd_alg": "sha-256"
+}
+// One disclosure = base64url(["2GLC42...salt", "age_over_21", true])`,
+    vulnerabilities: [
+      'A Wallet presenting more disclosures than a Verifier actually requested — real over-disclosure risk since nothing in the protocol itself stops a Wallet from revealing extra claims it holds.',
+      'Reusing the exact same presentation (JWT + disclosures) across multiple Verifiers without a Key Binding JWT, allowing colluding Verifiers to correlate the holder across contexts.',
+      'An Issuer choosing overly coarse claims (bundling several facts into one non-splittable disclosure) that defeats selective disclosure\'s entire purpose.'
+    ],
+    bestPractices: [
+      'Only disclose exactly what a Verifier\'s presentation definition requests — never the full credential — even when the Wallet technically holds more.',
+      'Bind presentations to the holder\'s key (Key Binding JWT / cnf claim) so a stolen presentation can\'t be replayed by someone else.',
+      'Issue fine-grained, independently disclosable claims (e.g. a standalone `age_over_21` boolean) rather than forcing Wallets to reveal a raw birthdate just to prove an age threshold.'
+    ],
+    vendorSupport: [
+      'EU Digital Identity Wallet (EUDI, eIDAS 2.0): The reference deployment mandating OID4VCI/VP + SD-JWT VC across all EU member states.',
+      'Microsoft Entra Verified ID: Supports OID4VCI issuance alongside its W3C VC/DID stack.',
+      'Ping Identity, Authlete, walt.id: OpenID4VC-conformant issuer/wallet/verifier SDKs and reference implementations.'
+    ],
+    relatedResources: [
+      { title: 'OpenID4VC Wallet Studio', path: '/playground/openid4vc-wallet', type: 'playground' },
+      { title: 'SD-JWT Decoder', path: '/tools/sd-jwt-decoder', type: 'tool' },
+      { title: 'Verifiable Credentials & DID Lab (W3C VC model)', path: '/playground/vc-did', type: 'playground' }
     ]
   },
   {

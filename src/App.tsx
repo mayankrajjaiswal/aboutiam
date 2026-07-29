@@ -67,6 +67,7 @@ const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesi
 const HrAttributeMapper = lazy(() => import('./pages/Playgrounds/HrAttributeMapper'))
 const IdentityFabricBuilder = lazy(() => import('./pages/Playgrounds/IdentityFabricBuilder'))
 const LivenessInjectionLab = lazy(() => import('./pages/Playgrounds/LivenessInjectionLab'))
+const OtIcsIdentityLab = lazy(() => import('./pages/Playgrounds/OtIcsIdentityLab'))
 const IdentityBrokerSandbox = lazy(() => import('./pages/Playgrounds/IdentityBrokerSandbox'))
 const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
 const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
@@ -298,6 +299,7 @@ export default function App() {
               <Route path="/playground/hr-attribute-mapper" element={<HrAttributeMapper />} />
               <Route path="/playground/identity-fabric" element={<IdentityFabricBuilder />} />
               <Route path="/playground/liveness-injection" element={<LivenessInjectionLab />} />
+              <Route path="/playground/ot-ics-identity" element={<OtIcsIdentityLab />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />

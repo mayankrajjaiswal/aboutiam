@@ -241,6 +241,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "OT/ICS Device Identity & Segmentation Simulator",
+      desc: "Toggle a factory-floor topology (PLCs, HMIs, sensors) between a flat network and identity-based microsegmentation, trigger a ransomware injection at an HMI, and compare the lateral-movement blast radius between the two modes.",
+      icon: Cpu,
+      link: "/playground/ot-ics-identity",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "Identity Fabric / Orchestration Flow Builder",
       desc: "Wire a legacy protocol-only app to a modern protocol-only IdP through an orchestration node and watch the trace log narrate each protocol-translation step — models IdP migration without app rewrites and consistent policy enforcement across heterogeneous IdPs.",
       icon: Waypoints,

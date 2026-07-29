@@ -83,29 +83,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### A8. OT/ICS Device Identity & Segmentation Simulator
-
-**One-liner:** A factory-floor topology (PLCs, HMIs, sensors, engineering workstation) where most devices can't do traditional authentication; apply identity-based microsegmentation instead of classic NAC, and watch a ransomware lateral-movement simulation show reduced dwell time and blast radius.
-
-**Why unique:** A completely untouched domain — every existing lab (Kerberos, AD, Zero Trust, PAM, Workload Mesh) is IT-centric; OT/ICS device identity (where most devices structurally cannot authenticate) is a distinct, real, and currently uncovered discipline (IEC 62443, identity-based microsegmentation).
-
-**Where it fits:** New playground at `/playground/ot-ics-identity`, component `OtIcsIdentityLab.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group.
-
-**Design:**
-- A factory-floor network diagram: PLCs, HMIs, sensors/RTUs (most flagged "cannot authenticate"), one engineering workstation, one IT/OT boundary gateway.
-- Toggle "Flat network" vs. "Identity-based microsegmentation" (classify-by-what-the-device-is: role/type/behavior fingerprint rather than authenticate-the-device).
-- Trigger a ransomware-injection scenario at one compromised HMI; animate lateral-movement spread across the flat network vs. the segmented network, with a dwell-time/blast-radius comparison readout (contextualize with the real-world stat: unsegmented OT ransomware dwell time ~42 days vs. ~5 days with full segmentation/visibility).
-
-**Data model:** `src/data/otIcsScenarios.ts` — network topology graph + per-node "can authenticate" flag + segmentation policy rules.
-
-**Tests:** `src/data/otIcsScenarios.test.ts` — topology is a valid connected graph; `OtIcsIdentityLab.test.tsx` — segmented mode strictly reduces the number of reachable nodes from the compromise point compared to flat mode.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### A10 (stretch, deprioritized). Avatar & Spatial Identity Verification Lab
 
 **One-liner:** Simulates age/identity assurance inside a headset-only VR/AR context — no front-facing camera, often a shared device — contrasting behavioral/gesture telemetry-based continuous authentication against wallet-based cryptographic age attestation.
@@ -217,9 +194,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, and A7 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, and A8 have shipped. Remaining order:
 
-- **A8** — OT/ICS Identity Lab (medium).
 - **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).
 - **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).
 - **A6** — Legacy & Academic Federation Playground (medium-hard, lower urgency).

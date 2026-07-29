@@ -10,32 +10,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group A — Emerging Standards & Cryptography
 
-### A3. Cloud Entitlement Graph Explorer (CIEM Lite)
-
-**One-liner:** Load a seeded AWS/Azure/GCP IAM policy set; render a permission graph highlighting toxic privilege-escalation combinations (e.g. `iam:PassRole` + `lambda:CreateFunction`) and "effective vs. granted" access gaps, with a "shrink to least privilege" recalculation mode.
-
-**Why unique:** A genuinely different discipline from PAM Vaulting (credential lifecycle) or Access Certification (SoD review) — this is inventory hygiene of *permissions themselves* across a cloud policy graph, the core CIEM (Cloud Infrastructure Entitlement Management) pedagogical idea, which nothing on the site currently covers.
-
-**Where it fits:** New playground at `/playground/ciem-explorer`, component `CiemExplorer.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group. **Sequencing note: build this after Phase 1 Feature 4 (Attack-Path Graph Visualizer) ships — it reuses that feature's force-graph rendering engine and shortest-path helper (`src/lib/graph/`) rather than building a second graph renderer from scratch.**
-
-**Design:**
-- Reuses the graph node/edge rendering primitive from Phase 1 #4, with cloud-specific node types (IAM Role, Policy, Resource, Cross-Account Trust) and edge types (`CanAssume`, `Grants`, `TrustsAccount`).
-- 2-3 seeded scenarios of increasing complexity; a "toxic combination" detector highlights known privilege-escalation patterns (curated static rule list, not a general SAT solver).
-- "Effective vs. granted" view: toggles between what a policy *grants* on paper vs. what's actually reachable once cross-account trusts and role-assumption chains are traced.
-- "Shrink to least privilege" button recalculates a minimal policy for a selected role based on which permissions were actually exercised in a seeded mock CloudTrail-style access log.
-
-**Data model:** `src/data/ciemScenarios.ts` — typed policy graph data per scenario (`roles, policies, resources, trustRelationships`) plus a `toxicCombinations` rule list and a mock access log for the least-privilege recalculation.
-
-**Tests:**
-- `src/data/ciemScenarios.test.ts` — every scenario's planted toxic combination is actually detectable by the rule list against that scenario's graph (solvability check, same pattern as Phase 1 #4's shortest-path validity test).
-- `src/pages/Playgrounds/CiemExplorer.test.tsx` — toxic-combination detector fires on the planted case and not on a clean role; least-privilege recalculation strictly narrows the original policy.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### A6. Legacy & Academic Federation Playground
 
 **One-liner:** One playground covering RADIUS AAA packet exchange, TACACS+ command authorization, and a Shibboleth/CAS/eduGAIN discovery-service simulation (WAYF picker → home IdP redirect) — the "protocols before OAuth/SAML dominance" story.
@@ -170,9 +144,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, and A5 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, and A3 have shipped. Remaining order:
 
-- **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).
 - **A6** — Legacy & Academic Federation Playground (medium-hard, lower urgency).
 - **C3** — In-Browser Mock IAM Terminal (medium, new SDK primitive — good to do once other features have stabilized conventions).
 - **B11** — Accessibility Audit & Hardening Sweep (ongoing, start threading through once enough interactive components exist to make a sweep worthwhile — don't block on this, but don't skip it either).

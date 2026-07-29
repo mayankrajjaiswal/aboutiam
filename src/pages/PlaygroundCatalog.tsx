@@ -269,6 +269,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "Cloud Entitlement Graph Explorer (CIEM Lite)",
+      desc: "Click a role in a seeded AWS-style IAM policy graph to see toxic privilege-escalation combinations (like iam:PassRole + lambda:CreateFunction), compare granted vs. effective permissions across cross-account trust chains, and shrink a role to least privilege from a mock access log.",
+      icon: GitBranch,
+      link: "/playground/ciem-explorer",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "NHI Workload Mesh (SPIFFE)",
       desc: "Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.",
       icon: Network,

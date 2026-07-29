@@ -112,6 +112,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Liveness Detection & Injection Attack Lab](https://www.aboutiam.com/playground/liveness-injection/): Pit presentation-replay, camera-feed-injection, and real-time face-swap attacks against static-photo, flash-challenge, depth-motion, and full PAD-scoring defenses to see which defense catches which attack class and why.
 - [OT/ICS Device Identity & Segmentation Simulator](https://www.aboutiam.com/playground/ot-ics-identity/): Toggle a factory-floor topology between a flat network and identity-based microsegmentation, trigger a ransomware injection at an HMI, and compare the lateral-movement blast radius between the two modes.
 - [Trust Registry & Issuer Governance Explorer](https://www.aboutiam.com/playground/trust-registry/): Verify a presented credential against a chosen trust registry — see cross-border recognition gaps between national registries and watch a revoked issuer fail authorization even though its signature is still cryptographically valid.
+- [Cloud Entitlement Graph Explorer (CIEM Lite)](https://www.aboutiam.com/playground/ciem-explorer/): Click a role in a seeded AWS-style IAM policy graph to see toxic privilege-escalation combinations, compare granted vs. effective permissions across cross-account trust chains, and shrink a role to least privilege from a mock access log.
 
 ## Advanced Ecosystem & Governance
 

@@ -132,6 +132,7 @@ const architectureItems = [
   { name: 'AD/LDAP OU & Schema Designer', path: '/playground/ldap-schema-designer', icon: Folder },
   { name: 'Identity Fabric Builder', path: '/playground/identity-fabric', icon: Waypoints },
   { name: 'OT/ICS Identity Simulator', path: '/playground/ot-ics-identity', icon: Cpu },
+  { name: 'CIEM Explorer', path: '/playground/ciem-explorer', icon: GitBranch },
 ]
 
 const ecosystemItems = [

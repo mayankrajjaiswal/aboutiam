@@ -123,6 +123,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **PAM Vaulting & Just-in-Time Elevation Lab:** Check out a vaulted credential, request time-boxed JIT elevation and approval, toggle session recording, and auto rotate on check-in.
 * **Hybrid Identity Sync Lab:** Toggle between Password Hash Sync, Pass-Through Authentication, and Federation (AD FS) to see how each handles an on-prem login.
 * **Role Mining Workbench:** Run Jaccard-similarity clustering over a seeded 30-user, 15-entitlement matrix to discover candidate roles from real overlap patterns — accept, reject, or leave candidates pending, and watch the orphan-entitlement count (permissions covered by no accepted role) drop as genuine role structure emerges.
+* **Access Request Cart Simulator:** Shop a mock entitlement catalog and submit a request through a deterministic approval chain — manager approval always runs first, a privileged entitlement additionally requires app-owner sign-off, and a Separation-of-Duties conflict against your cart or existing access triggers a compliance-officer override, blocking auto-approval.
 
 ### 🛠️ C. Security Tools (`/tools`)
 * **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. 38 tools are live:

@@ -211,29 +211,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group B — Governance, Program Management & Career
 
-### B2. Access Request Cart Simulator
-
-**One-liner:** A catalog of mock entitlements users "shop" for, routed through a rules-based mock approver chain (manager → app owner → SoD check) — visualizes why some requests auto-approve and others escalate.
-
-**Why unique:** Modern IGA's "shopping cart" access-request UX is a distinct, widely-used pattern nothing on the site currently models — complements, doesn't duplicate, the Access Certification Lab (which reviews *existing* access, not *requests for new* access).
-
-**Where it fits:** New playground at `/playground/access-request-cart`, component `AccessRequestCart.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group, next to `AccessCertificationLab`/`RoleMiningWorkbench`.
-
-**Design:**
-- A browsable entitlement catalog (reuse card-grid UI conventions from `Explore.tsx`/`ToolsCatalog.tsx`); user adds items to a cart and submits.
-- Each request routes through a deterministic approval chain: manager approval → (if privileged) app-owner approval → (if conflicting with existing access) an automatic SoD-conflict flag requiring a compliance-officer override.
-- Trace log narrates each hop's decision and why (mirrors `TraceTerminal` conventions from the SDK).
-
-**Data model:** `src/data/accessRequestCatalog.ts` — entitlement catalog with privilege level and SoD-conflict pairings.
-
-**Tests:** `src/data/accessRequestCatalog.test.ts` — every declared SoD-conflict pair references two real catalog entries; `AccessRequestCart.test.tsx` — a conflicting combination is correctly flagged and blocked pending override; a clean request auto-approves.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### B3. AD/LDAP OU & Schema Designer
 
 **One-liner:** Drag-to-build an OU tree with nested groups and GPO-inheritance preview, exportable as LDIF.
@@ -399,9 +376,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, and B1 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, and B2 have shipped. Remaining order:
 
-- **B2** — Access Request Cart Simulator (easy-medium, natural pair with B1).
 - **B7** — Tabletop Exercise Generator (easy-medium, reuses existing bulletin data).
 - **A1** — PQC Readiness Auditor (easy-medium, fills a real named gap).
 - **A2** — Hybrid PQC Cert Chain Visualizer (medium, extends A1's concepts into an existing playground).

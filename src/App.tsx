@@ -132,6 +132,7 @@ const CredentialStuffingLab = lazy(() => import('./pages/Playgrounds/CredentialS
 const CiamConsentSandbox = lazy(() => import('./pages/Playgrounds/CiamConsentSandbox'))
 const AccessCertificationLab = lazy(() => import('./pages/Playgrounds/AccessCertificationLab'))
 const RoleMiningWorkbench = lazy(() => import('./pages/Playgrounds/RoleMiningWorkbench'))
+const AccessRequestCart = lazy(() => import('./pages/Playgrounds/AccessRequestCart'))
 const RiskEngine = lazy(() => import('./pages/Playgrounds/RiskEngine'))
 const PamVaultingLab = lazy(() => import('./pages/Playgrounds/PamVaultingLab'))
 const HybridAdSyncLab = lazy(() => import('./pages/Playgrounds/HybridAdSyncLab'))
@@ -281,6 +282,7 @@ export default function App() {
               <Route path="/playground/ciam-consent" element={<CiamConsentSandbox />} />
               <Route path="/playground/access-certification" element={<AccessCertificationLab />} />
               <Route path="/playground/role-mining" element={<RoleMiningWorkbench />} />
+              <Route path="/playground/access-request-cart" element={<AccessRequestCart />} />
               <Route path="/playground/risk-engine" element={<RiskEngine />} />
               <Route path="/playground/pam-vaulting" element={<PamVaultingLab />} />
               <Route path="/playground/hybrid-ad-sync" element={<HybridAdSyncLab />} />

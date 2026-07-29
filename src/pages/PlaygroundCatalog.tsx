@@ -344,6 +344,14 @@ export default function PlaygroundCatalog() {
       enterpriseProducts: "SailPoint, Saviynt, Omada"
     },
     {
+      title: "Access Request Cart Simulator",
+      desc: "Shop a mock entitlement catalog and submit a request through a deterministic approval chain — manager approval, app-owner sign-off for privileged items, and a compliance-officer override for Separation-of-Duties conflicts.",
+      icon: ClipboardCheck,
+      link: "/playground/access-request-cart",
+      badge: "Active (Standard)",
+      enterpriseProducts: "SailPoint, Saviynt, Omada"
+    },
+    {
       title: "Adaptive Risk-Based Authentication Engine",
       desc: "Toggle risk signals (impossible travel, device reputation, behavior anomaly) and watch a composite UEBA-style score drive an allow / step-up / block decision in real time.",
       icon: Gauge,

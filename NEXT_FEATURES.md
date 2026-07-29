@@ -36,30 +36,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### A5. Trust Registry & Issuer Governance Explorer
-
-**One-liner:** Models a multi-country/multi-sector trust registry — a verifier checks not just a credential's cryptographic validity but whether the issuer is authorized in the relevant registry, including cross-border recognition and revocation-status scenarios.
-
-**Why unique:** eIDAS 2.0/EUDI Wallet interoperability in 2026 hinges on **trust registries** (who is allowed to issue what, and who recognizes whom) — a materially different concern from credential issuance/presentation mechanics, which Phase 1 Feature 3 (OpenID4VC Wallet Studio) already covers.
-
-**Where it fits:** New playground at `/playground/trust-registry`, component `TrustRegistryExplorer.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group, placed directly next to Phase 1's OpenID4VC Wallet Studio. **Sequencing note: build immediately after Phase 1 Feature 3 ships, reusing its `openId4VcScenarios.ts` data model and SD-JWT helpers rather than duplicating credential-issuance logic.**
-
-**Design:**
-- A registry browser: multiple national/sectoral trust registries, each listing authorized issuers and their status (active/revoked/suspended).
-- A verification flow: user presents a credential from Phase 1 Feature 3's wallet; the verifier's log shows two independent checks — (1) is the signature cryptographically valid, (2) is the issuer currently listed and authorized in the registry the verifier trusts.
-- Scenario: "a German university diploma issuer is authorized in the DE registry but not yet recognized by a French employer's registry" — demonstrates cross-border recognition gaps as a real 2026 EUDI interoperability pain point.
-- Revocation scenario: an issuer is revoked mid-session; previously-issued credentials from that issuer now fail verification even though the signature itself is still mathematically valid.
-
-**Data model:** `src/data/trustRegistryScenarios.ts` — registries, issuer authorization lists, and cross-registry recognition mappings.
-
-**Tests:** `src/data/trustRegistryScenarios.test.ts` — every scenario's "expected verification outcome" is derivable purely from the registry data (no hidden logic); `TrustRegistryExplorer.test.tsx` — revoking an issuer mid-session correctly fails subsequent verification of that issuer's credentials.
-
-**Docs to update:** `README.md` §B new bullet (placed adjacent to the OpenID4VC Wallet Studio bullet once that exists); `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### A6. Legacy & Academic Federation Playground
 
 **One-liner:** One playground covering RADIUS AAA packet exchange, TACACS+ command authorization, and a Shibboleth/CAS/eduGAIN discovery-service simulation (WAYF picker → home IdP redirect) — the "protocols before OAuth/SAML dominance" story.
@@ -194,9 +170,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, and A8 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, and A5 have shipped. Remaining order:
 
-- **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).
 - **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).
 - **A6** — Legacy & Academic Federation Playground (medium-hard, lower urgency).
 - **C3** — In-Browser Mock IAM Terminal (medium, new SDK primitive — good to do once other features have stabilized conventions).

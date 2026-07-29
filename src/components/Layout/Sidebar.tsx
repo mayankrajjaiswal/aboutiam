@@ -139,6 +139,7 @@ const ecosystemItems = [
   { name: 'NHI Sprawl Cleanup Game', path: '/playground/nhi-sprawl', icon: ScanSearch },
   { name: 'Passkey Rollout Strategist', path: '/playground/passkey-rollout-strategist', icon: Fingerprint },
   { name: 'OpenID4VC Wallet Studio', path: '/playground/openid4vc-wallet', icon: Wallet },
+  { name: 'Trust Registry Explorer', path: '/playground/trust-registry', icon: Building },
   { name: 'Role Mining Workbench', path: '/playground/role-mining', icon: Users },
   { name: 'Access Request Cart', path: '/playground/access-request-cart', icon: ShoppingCart },
   { name: 'HR-to-IdP Attribute Mapper', path: '/playground/hr-attribute-mapper', icon: ArrowLeftRight },

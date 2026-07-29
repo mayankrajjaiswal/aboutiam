@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -224,6 +224,13 @@ export default function PlaygroundCatalog() {
       desc: "Issue a real SD-JWT verifiable credential, store it in a mock wallet, and selectively disclose only the claims a verifier actually requested — the OID4VCI/OID4VP flow behind eIDAS 2.0 EUDI Wallets.",
       icon: Wallet,
       link: "/playground/openid4vc-wallet",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Trust Registry & Issuer Governance Explorer",
+      desc: "Verify a presented credential against a chosen national trust registry — see cross-border recognition gaps between registries and watch a revoked issuer fail authorization even though its signature is still cryptographically valid.",
+      icon: Landmark,
+      link: "/playground/trust-registry",
       badge: "Active (Advanced)",
     },
     {

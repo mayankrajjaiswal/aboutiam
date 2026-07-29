@@ -369,28 +369,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### B8. Gartner/Forrester Maturity Benchmark Overlay
-
-**One-liner:** Extends the existing GRC Maturity Wizard (`Assess.tsx`) results view with an overlay mapping the user's score to Gartner's published 5-level IAM maturity model (Initial→Transformational) and a percentile comparison against a static, cited industry-survey dataset.
-
-**Why unique:** The current Assess tool scores organizational readiness in isolation; naming which industry-standard maturity level that score corresponds to, and how it compares to peers, is significantly more actionable — and it's purely additive to already-shipped code.
-
-**Where it fits:** No new route — extends `src/pages/Assess.tsx`'s existing results view. No sidebar change.
-
-**Design:**
-- A new results-view panel: "You map to Gartner Level 2 (Defined)" using published, non-proprietary level *descriptions* as a legend (do not reproduce Gartner's copyrighted report content — write original one-line summaries of each public level name).
-- A percentile bar chart comparing the user's score against a static, cited dataset (e.g. published industry-survey aggregate stats, clearly sourced) — reuses `Assess.tsx`'s existing chart component.
-
-**Data model:** `src/lib/assess/maturityBenchmark.ts` — pure function mapping a numeric score range to a maturity level + a static peer-percentile dataset with source citations.
-
-**Tests:** `src/lib/assess/maturityBenchmark.test.ts` — every score range maps to exactly one maturity level with no gaps/overlaps; boundary scores resolve predictably.
-
-**Docs to update:** `GEMINI.md` §2 — amend the existing `/assess` row's description; `README.md` — amend the existing GRC Maturity Wizard bullet in §D in place.
-
-**Feasibility:** Easy.
-
----
-
 ### B9. IAM Salary Compass
 
 **One-liner:** A static, citation-backed dataset (role × level × specialization × region multiplier) rendered as an interactive comparator/percentile chart, explicitly labeled as directional data aggregated from public sources.
@@ -558,9 +536,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9 (Compliance Deadlines additions) and C2 (Read-Aloud Mode) have shipped. Remaining order:
+A9, C2, and B8 have shipped. Remaining order:
 
-- **B8** — Gartner/Forrester Maturity Overlay (easy, purely additive).
 - **B6, B5, B9** — TCO Calculator, RFP Generator, Salary Compass (easy tools, natural trio, ship together).
 - **C1** — Daily Identity Puzzle (easy, high engagement value, good to ship early to start building habit/return-visit data).
 - **B10** — Portfolio Builder + Badge + PDF Export (easy-medium, high resume/virality value).

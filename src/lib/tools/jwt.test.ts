@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { base64UrlEncode } from './base64'
-import { decodeJwt, isWeakAlg, signJwtHmac, verifyJwtHmac } from './jwt'
+import { decodeJwt, exportPublicKeyJwk, generateRsaKeyPair, isWeakAlg, signJwtHmac, signJwtRsa, verifyJwtHmac, verifyJwtRsa } from './jwt'
 
 // The canonical jwt.io example token/secret.
 const SAMPLE_TOKEN =
@@ -47,6 +47,47 @@ describe('HMAC signing and verification', () => {
     const tamperedPayload = base64UrlEncode(JSON.stringify({ role: 'admin' }))
     const tampered = `${header}.${tamperedPayload}.${signature}`
     expect(await verifyJwtHmac(tampered, 'my-secret')).toBe(false)
+  })
+})
+
+describe('RSA signing and verification', () => {
+  it('round-trips a freshly signed RS256 token against its own public key', async () => {
+    const keyPair = await generateRsaKeyPair()
+    const token = await signJwtRsa({ alg: 'RS256', typ: 'JWT' }, { sub: 'abc123' }, keyPair.privateKey)
+    expect(await verifyJwtRsa(token, keyPair.publicKey)).toBe(true)
+  })
+
+  it('rejects a token signed by a different keypair', async () => {
+    const keyPairA = await generateRsaKeyPair()
+    const keyPairB = await generateRsaKeyPair()
+    const token = await signJwtRsa({ alg: 'RS256', typ: 'JWT' }, { sub: 'abc123' }, keyPairA.privateKey)
+    expect(await verifyJwtRsa(token, keyPairB.publicKey)).toBe(false)
+  })
+
+  it('detects tampering with the payload of an RS256 token', async () => {
+    const keyPair = await generateRsaKeyPair()
+    const token = await signJwtRsa({ alg: 'RS256', typ: 'JWT' }, { role: 'user' }, keyPair.privateKey)
+    const [header, , signature] = token.split('.')
+    const tamperedPayload = base64UrlEncode(JSON.stringify({ role: 'admin' }))
+    const tampered = `${header}.${tamperedPayload}.${signature}`
+    expect(await verifyJwtRsa(tampered, keyPair.publicKey)).toBe(false)
+  })
+
+  it('rejects a non-RS256 token', async () => {
+    const keyPair = await generateRsaKeyPair()
+    const token = await signJwtHmac('HS256', { alg: 'HS256', typ: 'JWT' }, { sub: 'abc123' }, 'secret')
+    expect(await verifyJwtRsa(token, keyPair.publicKey)).toBe(false)
+  })
+
+  it('exports a public key as a JWKS-ready JWK tagged with kid/use/alg', async () => {
+    const keyPair = await generateRsaKeyPair()
+    const jwk = await exportPublicKeyJwk(keyPair.publicKey, 'my-key-id')
+    expect(jwk.kty).toBe('RSA')
+    expect(jwk.use).toBe('sig')
+    expect(jwk.alg).toBe('RS256')
+    expect(jwk.kid).toBe('my-key-id')
+    expect(jwk.n).toBeDefined()
+    expect(jwk.e).toBeDefined()
   })
 })
 

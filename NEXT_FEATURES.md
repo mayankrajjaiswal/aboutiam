@@ -95,34 +95,6 @@ Every feature must update:
 
 ---
 
-## Feature 5 — Build-Your-Own-IdP Sandbox
-
-**One-liner:** A guided, step-by-step builder that assembles a minimal OIDC Provider — configure signing keys, discovery document fields, token lifetimes, and a consent screen — then watch a mock Relying Party consume the resulting `.well-known/openid-configuration` and complete a login, entirely offline.
-
-**Why unique:** Fills the gap between *reading about* OIDC (Standards Explorer) and *configuring* a real IdP (Keycloak/Auth0/Ory) without needing a backend — this is assembly/configuration practice, distinct from the existing `OAuthVisualizer.tsx` (which only visualizes a fixed flow) and `OidcDiscoveryAuditor.tsx` tool (which only decodes an existing document).
-
-**Where it fits:** New playground at `/playground/build-your-idp`, component `BuildYourIdp.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group. `PlaygroundCatalog.tsx` entry.
-
-**Design — wizard steps:**
-1. **Generate keys:** RS256 keypair via Web Crypto (reuse `Tools/JwtGenerator.tsx`'s existing RS256 keypair generation helper — do not duplicate).
-2. **Configure discovery doc:** Issuer URL, supported scopes, response types, endpoints — live-preview the generated `openid-configuration` JSON (reuse rendering conventions from `OidcDiscoveryAuditor.tsx`).
-3. **Configure a client:** redirect URI, client ID, scope grants.
-4. **Consent screen builder:** toggle which scopes require explicit consent; preview the resulting consent screen.
-5. **Run it:** a mock RP ("Demo App") performs the full authorization-code + PKCE flow against the user's just-built IdP config entirely in-memory — reuses the animated request/response visualization pattern from `OAuthVisualizer.tsx` — and mints a real signed ID token using the keys from step 1, which the user can then decode via a "Send to JWT Decoder" deep link (`/tools/jwt-decoder?token=...`).
-
-**Data model:** No new persisted registry needed — this is pure in-session interactive state (Zustand not required; component `useState`/`useReducer` is sufficient since nothing needs to persist across sessions).
-
-**Tests:**
-- `src/pages/Playgrounds/BuildYourIdp.test.tsx` — discovery doc JSON reflects configured values; generated ID token is correctly signed by the session's own keypair and verifies against its own JWKS; consent screen only prompts for scopes flagged as requiring consent.
-
-**Docs to update:**
-- `README.md` §B: new bullet.
-- `GEMINI.md` §2 table: new row.
-
-**Feasibility:** Medium (mostly composition of existing JWT/JWKS/OIDC-discovery logic already built for the Tools section — low net-new crypto work).
-
----
-
 ## Feature 6 — FAPI 2.0 / Open Banking Security Profile Playground
 
 **One-liner:** A dedicated simulator for FAPI 2.0 message signing, mTLS-bound (or DPoP-bound) tokens, and Pushed Authorization Requests (PAR) — demonstrating why plain OAuth 2.0 isn't sufficient for high-value financial-grade APIs.
@@ -207,14 +179,13 @@ Every feature must update:
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), and #9 (Identity SBOM Analyzer) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), and #5 (Build-Your-Own-IdP Sandbox) have shipped. Remaining order:
 
-1. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
-2. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
-3. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
-4. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-5. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-6. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
+2. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
+3. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
+4. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+5. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

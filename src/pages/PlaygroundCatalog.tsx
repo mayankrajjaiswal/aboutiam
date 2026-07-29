@@ -198,6 +198,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "Build-Your-Own-IdP Sandbox",
+      desc: "Assemble a minimal OIDC Provider step by step — generate signing keys, configure the discovery document, register a client, build a consent screen — then watch a mock Relying Party consume it and complete a real signed login, entirely offline.",
+      icon: KeySquare,
+      link: "/playground/build-your-idp",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "NHI Workload Mesh (SPIFFE)",
       desc: "Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.",
       icon: Network,

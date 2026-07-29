@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -117,6 +117,7 @@ const architectureItems = [
   { name: 'Identity Scenario Builder', path: '/scenario-builder', icon: Layers },
   { name: 'Maturity Assessments', path: '/assess', icon: Award },
   { name: 'Modernization Backlog Game', path: '/playground/modernization-backlog', icon: ClipboardList },
+  { name: 'Build-Your-Own-IdP Sandbox', path: '/playground/build-your-idp', icon: KeyRound },
   { name: 'Identity Decision Matrix', path: '/decision-matrix', icon: Compass },
   { name: 'Threat Modeling Studio', path: '/threat-modeling', icon: ShieldAlert },
   { name: 'IAM Design Review', path: '/design-review', icon: CheckSquare },

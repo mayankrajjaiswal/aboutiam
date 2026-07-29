@@ -1,4 +1,4 @@
-import { base64UrlDecode, base64UrlEncode, base64UrlEncodeBytes } from './base64'
+import { base64UrlDecode, base64UrlDecodeBytes, base64UrlEncode, base64UrlEncodeBytes } from './base64'
 import type { HashAlgorithm } from './hash'
 import { hmacSign } from './hmac'
 import { derToPem } from './pem'
@@ -92,6 +92,20 @@ export async function signJwtRsa(header: object, payload: object, privateKey: Cr
   const signingInput = `${headerB64}.${payloadB64}`
   const signatureBuffer = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', privateKey, new TextEncoder().encode(signingInput))
   return `${signingInput}.${base64UrlEncodeBytes(new Uint8Array(signatureBuffer))}`
+}
+
+export async function verifyJwtRsa(token: string, publicKey: CryptoKey): Promise<boolean> {
+  const decoded = decodeJwt(token)
+  if (decoded.header?.alg !== 'RS256') return false
+  const signingInput = `${decoded.headerRaw}.${decoded.payloadRaw}`
+  const signatureBytes = base64UrlDecodeBytes(decoded.signature)
+  return crypto.subtle.verify('RSASSA-PKCS1-v1_5', publicKey, signatureBytes, new TextEncoder().encode(signingInput))
+}
+
+/** Exports a public key as a JWKS-ready JWK, tagging it for signature verification. */
+export async function exportPublicKeyJwk(publicKey: CryptoKey, kid: string): Promise<JsonWebKey> {
+  const jwk = await crypto.subtle.exportKey('jwk', publicKey)
+  return { ...jwk, use: 'sig', alg: 'RS256', key_ops: undefined, kid }
 }
 
 export function isWeakAlg(alg: unknown): boolean {

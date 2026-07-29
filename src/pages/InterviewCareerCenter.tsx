@@ -19,6 +19,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useClipboardCopy } from '../components/Tools/useClipboardCopy'
+import PortfolioExport from '../components/PortfolioExport'
 import { CAREER_TRACKS } from '../data/interviewData'
 import { usePreferenceStore } from '../store/preferenceStore'
 
@@ -820,6 +821,7 @@ export default function InterviewCareerCenter() {
                 {/* --- 6. RESUME AND PORTFOLIO REVIEW --- */}
                 {activeSection === 'resume' && (
                   <div className="space-y-6">
+                    <PortfolioExport />
                     <div className="grid md:grid-cols-2 gap-6">
                       {/* Left: Bullet Points */}
                       <div className="p-5 rounded-xl bg-bg-card border border-border-subtle space-y-4 shadow-sm">

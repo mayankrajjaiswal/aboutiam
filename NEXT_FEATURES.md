@@ -323,29 +323,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### B10. Portfolio Builder + Verified Completion Badge + PDF Export
-
-**One-liner:** Pick completed Academy tracks/playgrounds/certifications to auto-draft quantified resume bullets, generate an Open Badges 2.0-compliant SVG badge on track graduation with a "share to LinkedIn" link, and export a one-click PDF portfolio — all pure composition over existing localStorage progress state.
-
-**Why unique:** Merges three related research findings (resume-bullet generation, shareable verified credentials, portfolio export) into one cohesive, low-marginal-cost feature with strong virality/resume value, since all the underlying progress tracking (`aboutiam-academy-progress`, `aboutiam_labs_completed`, `CERTIFICATIONS` quiz results) already exists.
-
-**Where it fits:** No new top-level route — extends `InterviewCareerCenter.tsx` (resume-bullet builder) and `CommunityHub.tsx` (badge display), with a new shared component `src/components/PortfolioExport.tsx` used by both. Consider one new lightweight route `/portfolio` if the combined feature grows large enough to warrant its own page — decide during implementation based on how much UI it actually needs; default to extending existing pages first.
-
-**Design:**
-- **Resume bullets:** reads existing localStorage progress (Academy tracks, completed labs, certification quiz passes) and drafts quantified bullets (e.g. "Completed hands-on training across 6 IAM domains including OAuth 2.0/OIDC, SAML, and Zero Trust architecture (AboutIAM Academy)") — a template-based generator, `src/lib/career/resumeBulletGenerator.ts`.
-- **Verified Completion Badge:** on Academy track graduation (reuses the existing graduation-detection logic already computing progress bars in `Learn.tsx`) or a passed flagship certification mock quiz, generate a downloadable Open Badges 2.0-compliant SVG (badge metadata baked into the image per the OB spec — this is what makes it "verifiable" without any backend, since the badge is self-contained) plus a pre-filled "Share to LinkedIn" post-composer link.
-- **PDF Export:** a one-click jsPDF (new, small dependency — evaluate bundle-size impact before adding; it's a widely-used, reasonably light library) or print-CSS-driven summary combining resume bullets + earned badges, styled for LinkedIn "Licenses & Certifications" upload.
-
-**Data model:** No new registry — reads existing localStorage keys. New pure module `src/lib/career/openBadge.ts` (SVG+metadata generation) and `src/lib/career/resumeBulletGenerator.ts`.
-
-**Tests:** `src/lib/career/resumeBulletGenerator.test.ts` — given a mock progress state, generates the expected bullet set; `src/lib/career/openBadge.test.ts` — generated SVG contains valid, spec-conformant embedded Open Badges metadata; `PortfolioExport.test.tsx` — renders only badges/bullets for actually-completed items, never fabricates progress.
-
-**Docs to update:** `README.md` §A — amend the Career Center bullet and the Community Hub bullet in place; `GEMINI.md` §2 — amend both existing rows' descriptions; if `jsPDF` is added, note the new dependency in `GEMINI.md` §1's tech stack list.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### B11. Accessibility (WCAG 2.2 AA) Audit & Hardening Sweep
 
 **One-liner:** A systematic `axe-core`-driven accessibility audit of the 30+ Framer Motion playgrounds and drag/click-based builders (including this batch's B3/B4 and Phase 1's Modernization Backlog Game), fixing keyboard-navigation, focus-management, and ARIA gaps on custom simulator widgets.
@@ -445,9 +422,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, and C1 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, and B10 have shipped. Remaining order:
 
-- **B10** — Portfolio Builder + Badge + PDF Export (easy-medium, high resume/virality value).
 - **B1, B2** — Role Mining Workbench, Access Request Cart (easy-medium, natural pair).
 - **B7** — Tabletop Exercise Generator (easy-medium, reuses existing bulletin data).
 - **A1** — PQC Readiness Auditor (easy-medium, fills a real named gap).

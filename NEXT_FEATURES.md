@@ -37,43 +37,9 @@ Every feature must update:
 
 ---
 
-## Feature 4 — Identity Attack-Path Graph Visualizer
-
-**One-liner:** A BloodHound-style interactive force-directed graph — load a small seeded AD/cloud-IAM dataset and visually trace privilege-escalation paths (nested group membership → domain admin, leaked service-account key → lateral movement → cloud admin).
-
-**Why unique:** Genuinely new visual format for the site — nothing currently uses graph/network visualization. This is a widely-used real SOC/red-team skill (BloodHound-style attack-path analysis) that no beginner-to-expert resource currently teaches interactively in-browser.
-
-**Where it fits:** New playground at `/playground/attack-path-graph`, component `AttackPathGraph.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group (pairs conceptually with `KerberosLab`/`GpoSimulator`/Threat Modeling Studio). `PlaygroundCatalog.tsx` entry.
-
-**Technical approach:** Add a lightweight force-directed graph dependency. Prefer **no new heavy dependency** if avoidable — implement a small custom force-simulation (Barnes-Hut is overkill; a simple spring/repulsion physics loop over ≤40 nodes running on `requestAnimationFrame` is entirely feasible and keeps the zero-backend/light-bundle ethos). If a library is justified, `d3-force` (headless physics only, render via existing SVG, no `d3-selection` DOM coupling) is the lightest reasonable option — evaluate bundle size impact before adding.
-
-**Design:**
-- Nodes: Users, Groups, Service Accounts, Machines/Roles, "Domain Admin"/"Cloud Admin" target nodes. Edges: `MemberOf`, `AdminTo`, `HasSession`, `CanRDP`, `Owns` (mirrors real BloodHound edge types, simplified).
-- 2-3 preset seeded scenarios of increasing difficulty (a 10-node "obvious path" scenario for beginners, a 25-30 node "multiple false paths" scenario for advanced).
-- User clicks nodes to build a hypothesis path; a "Reveal Shortest Path" button highlights the actual escalation path with an explanation of each hop's real-world technique name (Kerberoasting, GenericAll ACL abuse, etc. — cross-link to existing `KerberosLab`/Wall of Shame entries where applicable).
-- Score based on path-found efficiency and hint usage (via `usePlayground`).
-
-**Data model:** `src/data/attackPathScenarios.ts` — typed graph data (`nodes: GraphNode[]`, `edges: GraphEdge[]`, `startNodeId`, `targetNodeId`, `shortestPath: string[]`) per scenario.
-
-**Tests:**
-- `src/data/attackPathScenarios.test.ts` — every scenario's `shortestPath` is a valid connected path through its own `edges` array (graph-validity check — prevents an unsolvable scenario from shipping).
-- `src/lib/graph/forcePath.test.ts` (if a custom shortest-path helper is written, e.g. BFS over the edge list) — unit tests for path-finding correctness on a small fixture graph.
-
-**Docs to update:**
-- `README.md` §B: new bullet.
-- `GEMINI.md` §2 table: new row. If the custom force-graph renderer becomes reusable, document it as a new §4-lettered subsection ("How to Render a New Attack-Path Scenario").
-
-**Feasibility:** Medium-Hard (graph physics + rendering is the most novel engineering in this whole batch — budget the most review time here).
-
----
-
 ## Suggested Execution Order
 
-Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
-
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), #3 (OpenID4VC Wallet Studio), #6 (FAPI 2.0 Playground), #10 (CAEP Event Storm Visualizer), and #8 (Live Packet Capture Overlay) have shipped. Remaining order:
-
-1. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+All 12 features have shipped: #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), #3 (OpenID4VC Wallet Studio), #6 (FAPI 2.0 Playground), #10 (CAEP Event Storm Visualizer), #8 (Live Packet Capture Overlay), and #4 (Attack-Path Graph Visualizer).
 
 ## Final Wrap-Up (after all 12 ship)
 

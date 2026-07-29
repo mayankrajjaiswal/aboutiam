@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -223,6 +223,13 @@ export default function PlaygroundCatalog() {
       desc: "Fire a Continuous Access Evaluation Protocol (CAEP) event from a mock IdP and watch it fan out to multiple subscribed relying parties in real time — each with its own subscription list, latency, and enforcement decision.",
       icon: Radio,
       link: "/playground/caep-event-storm",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Identity Attack-Path Graph Visualizer",
+      desc: "A BloodHound-style force-directed graph — click hop-by-hop through a seeded identity graph to trace a privilege-escalation path from a low-privilege user to Domain Admin or Cloud Admin, then reveal the true shortest path and its real-world techniques.",
+      icon: GitBranch,
+      link: "/playground/attack-path-graph",
       badge: "Active (Advanced)",
     },
     {

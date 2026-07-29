@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -120,6 +120,7 @@ const architectureItems = [
   { name: 'Build-Your-Own-IdP Sandbox', path: '/playground/build-your-idp', icon: KeyRound },
   { name: 'FAPI 2.0 / Open Banking Lab', path: '/playground/fapi2', icon: ShieldAlert },
   { name: 'CAEP Event Storm Visualizer', path: '/playground/caep-event-storm', icon: Waypoints },
+  { name: 'Attack-Path Graph Visualizer', path: '/playground/attack-path-graph', icon: GitBranch },
   { name: 'Identity Decision Matrix', path: '/decision-matrix', icon: Compass },
   { name: 'Threat Modeling Studio', path: '/threat-modeling', icon: ShieldAlert },
   { name: 'IAM Design Review', path: '/design-review', icon: CheckSquare },

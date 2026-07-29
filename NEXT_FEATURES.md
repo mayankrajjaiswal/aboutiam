@@ -482,26 +482,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### C2. Read-Aloud Mode
-
-**One-liner:** A "🔊 Listen" button using the Web Speech API's `SpeechSynthesis` (zero-dependency, offline-capable) added to Encyclopedia terms/analogies and the Beginner Primer.
-
-**Why unique:** A meaningful accessibility win (dyslexia, low vision, audio-first learners) at near-zero bundle cost — nothing on the site currently offers audio narration.
-
-**Where it fits:** New shared component `src/components/ReadAloudButton.tsx`, wired into `Encyclopedia.tsx` (term detail view) and `BeginnerPrimer.tsx` first; expand to other long-form pages later if well-received. No new route.
-
-**Design:**
-- `ReadAloudButton` takes a `text: string` prop, calls `window.speechSynthesis.speak(new SpeechSynthesisUtterance(text))` on click, with a play/pause/stop state machine and the mandatory `typeof window !== 'undefined'` SSR guard (§3B).
-- Respect voice/rate preference via a small local-only settings affordance (persisted in `localStorage`, same lightweight pattern as `themeStore.ts`) rather than a full new Zustand store if state is trivial enough for a simple hook.
-
-**Tests:** `src/components/ReadAloudButton.test.tsx` — renders without crashing when `speechSynthesis` is unavailable (jsdom has no real TTS — mock the API per `src/test/setup.ts` conventions, §4AA's "test environment gotchas"); clicking calls `speak` with the correct text.
-
-**Docs to update:** `README.md` §A — amend the Encyclopedia bullet in place, mention Read-Aloud Mode; `GEMINI.md` §2 — amend the `/encyclopedia` row's description.
-
-**Feasibility:** Easy.
-
----
-
 ### C3. In-Browser Mock IAM Terminal
 
 **One-liner:** A scripted (not real-shell) terminal built on `xterm.js` accepting a curated command grammar (`openssl`, `curl`, `kinit`, a mock `jwt-cli`) against fabricated IAM infrastructure — closer to muscle-memory CLI practice than the Career Center's static code snippets.
@@ -578,27 +558,26 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9 (Compliance Deadlines additions) has shipped. Remaining order:
+A9 (Compliance Deadlines additions) and C2 (Read-Aloud Mode) have shipped. Remaining order:
 
-1. **C2** — Read-Aloud Mode (easy, high accessibility value).
-2. **B8** — Gartner/Forrester Maturity Overlay (easy, purely additive).
-3. **B6, B5, B9** — TCO Calculator, RFP Generator, Salary Compass (easy tools, natural trio, ship together).
-4. **C1** — Daily Identity Puzzle (easy, high engagement value, good to ship early to start building habit/return-visit data).
-5. **B10** — Portfolio Builder + Badge + PDF Export (easy-medium, high resume/virality value).
-6. **B1, B2** — Role Mining Workbench, Access Request Cart (easy-medium, natural pair).
-7. **B7** — Tabletop Exercise Generator (easy-medium, reuses existing bulletin data).
-8. **A1** — PQC Readiness Auditor (easy-medium, fills a real named gap).
-9. **A2** — Hybrid PQC Cert Chain Visualizer (medium, extends A1's concepts into an existing playground).
-10. **B3, B4** — LDAP Schema Designer, HR Attribute Mapper (medium, pair well).
-11. **A4, A7, A8** — Identity Fabric Builder, Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).
-12. **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).
-13. **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).
-14. **A6** — Legacy & Academic Federation Playground (medium-hard, lower urgency).
-15. **C3** — In-Browser Mock IAM Terminal (medium, new SDK primitive — good to do once other features have stabilized conventions).
-16. **B11** — Accessibility Audit & Hardening Sweep (ongoing, start threading through once enough interactive components exist to make a sweep worthwhile — don't block on this, but don't skip it either).
-17. **A10** — Avatar & Spatial Identity Lab (stretch, only if there's appetite after everything else — out of scope for this pass).
-18. **C4** — Local AI Assistant Upgrade (highest engineering risk — dedicated spike first, own timeline — out of scope for this pass).
-19. **C5** — AboutIAM Inspector Browser Extension (separate project — own go/no-go decision, sequence last — out of scope for this pass).
+- **B8** — Gartner/Forrester Maturity Overlay (easy, purely additive).
+- **B6, B5, B9** — TCO Calculator, RFP Generator, Salary Compass (easy tools, natural trio, ship together).
+- **C1** — Daily Identity Puzzle (easy, high engagement value, good to ship early to start building habit/return-visit data).
+- **B10** — Portfolio Builder + Badge + PDF Export (easy-medium, high resume/virality value).
+- **B1, B2** — Role Mining Workbench, Access Request Cart (easy-medium, natural pair).
+- **B7** — Tabletop Exercise Generator (easy-medium, reuses existing bulletin data).
+- **A1** — PQC Readiness Auditor (easy-medium, fills a real named gap).
+- **A2** — Hybrid PQC Cert Chain Visualizer (medium, extends A1's concepts into an existing playground).
+- **B3, B4** — LDAP Schema Designer, HR Attribute Mapper (medium, pair well).
+- **A4, A7, A8** — Identity Fabric Builder, Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).
+- **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).
+- **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).
+- **A6** — Legacy & Academic Federation Playground (medium-hard, lower urgency).
+- **C3** — In-Browser Mock IAM Terminal (medium, new SDK primitive — good to do once other features have stabilized conventions).
+- **B11** — Accessibility Audit & Hardening Sweep (ongoing, start threading through once enough interactive components exist to make a sweep worthwhile — don't block on this, but don't skip it either).
+- **A10** — Avatar & Spatial Identity Lab (stretch, only if there's appetite after everything else — out of scope for this pass).
+- **C4** — Local AI Assistant Upgrade (highest engineering risk — dedicated spike first, own timeline — out of scope for this pass).
+- **C5** — AboutIAM Inspector Browser Extension (separate project — own go/no-go decision, sequence last — out of scope for this pass).
 
 ## Final Wrap-Up (after Phase 2 ships)
 

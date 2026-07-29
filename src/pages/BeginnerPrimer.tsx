@@ -4,6 +4,7 @@ import {
   ArrowRight, ShieldCheck, Terminal, Compass, Info
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import ReadAloudButton from '../components/ReadAloudButton'
 
 export default function BeginnerPrimer() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null)
@@ -93,9 +94,12 @@ export default function BeginnerPrimer() {
       {/* What is IAM? Simple Analogy */}
       <section className="grid md:grid-cols-2 gap-8 items-center pt-4">
         <div className="space-y-4">
-          <h3 className="text-2xl font-extrabold text-text-primary">What is Identity & Access Management?</h3>
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="text-2xl font-extrabold text-text-primary">What is Identity & Access Management?</h3>
+            <ReadAloudButton text="What is Identity and Access Management? In the physical world, your house has a front door lock. Your car has a physical key. Your office has a plastic badge. In the digital world, websites, mobile apps, and databases don't have physical doors. Instead, they use IAM as their software bouncer. Every time you log into Spotify, check your bank account, or download a file at work, an IAM engine verifies who you are and determines what resources you are allowed to see." />
+          </div>
           <p className="text-sm text-text-secondary leading-relaxed font-semibold">
-            In the physical world, your house has a front door lock. Your car has a physical key. Your office has a plastic badge. 
+            In the physical world, your house has a front door lock. Your car has a physical key. Your office has a plastic badge.
           </p>
           <p className="text-sm text-text-secondary leading-relaxed font-semibold">
             In the digital world, websites, mobile apps, and databases don't have physical doors. Instead, they use **IAM** as their software bouncer. Every time you log into Spotify, check your bank account, or download a file at work, an IAM engine verifies **who you are** and determines **what resources you are allowed to see**.

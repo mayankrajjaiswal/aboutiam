@@ -336,6 +336,14 @@ export default function PlaygroundCatalog() {
       enterpriseProducts: "SailPoint, Saviynt, Omada"
     },
     {
+      title: "Role Mining Workbench",
+      desc: "Run Jaccard-similarity clustering over a seeded 30-user entitlement matrix to discover candidate roles — accept, reject, and merge proposals while watching the orphan-entitlement count drop.",
+      icon: Network,
+      link: "/playground/role-mining",
+      badge: "Active (Standard)",
+      enterpriseProducts: "SailPoint, Saviynt, Omada"
+    },
+    {
       title: "Adaptive Risk-Based Authentication Engine",
       desc: "Toggle risk signals (impossible travel, device reputation, behavior anomaly) and watch a composite UEBA-style score drive an allow / step-up / block decision in real time.",
       icon: Gauge,

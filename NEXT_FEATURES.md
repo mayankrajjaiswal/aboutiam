@@ -211,29 +211,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group B — Governance, Program Management & Career
 
-### B1. Role Mining Workbench
-
-**One-liner:** Feed a static seeded user×entitlement matrix; run a client-side Jaccard-similarity clustering heuristic to propose candidate roles; accept/reject/merge proposals and watch the orphan-entitlement count drop.
-
-**Why unique:** IGA platforms (SailPoint, Saviynt, Omada) center much of their value on role mining — discovering entitlement-to-role patterns — which nothing on the site covers beyond the single-purpose Access Certification Lab (which reviews existing assignments, not discovers structure).
-
-**Where it fits:** New playground at `/playground/role-mining`, component `RoleMiningWorkbench.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group, next to `AccessCertificationLab`.
-
-**Design:**
-- A seeded matrix (~30 users × ~15 entitlements) rendered as a heatmap grid.
-- `src/lib/analytics/jaccardClustering.ts` — a pure function computing pairwise Jaccard similarity between users' entitlement sets and proposing candidate role clusters above a similarity threshold.
-- User reviews each proposed role candidate (a named cluster of commonly co-occurring entitlements), accepts/rejects/merges it into an actual role; live-updates an "orphan entitlements" counter (entitlements not covered by any accepted role) and a "role explosion risk" counter (too many single-purpose roles instead of consolidated ones).
-
-**Data model:** `src/data/roleMiningDataset.ts` — the seeded user×entitlement matrix, deterministic (no `Math.random()`).
-
-**Tests:** `src/lib/analytics/jaccardClustering.test.ts` — known small fixture matrix produces the expected clusters at a given threshold; `RoleMiningWorkbench.test.tsx` — accepting a role candidate reduces the orphan count correctly.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### B2. Access Request Cart Simulator
 
 **One-liner:** A catalog of mock entitlements users "shop" for, routed through a rules-based mock approver chain (manager → app owner → SoD check) — visualizes why some requests auto-approve and others escalate.
@@ -422,9 +399,9 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, and B10 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, and B1 have shipped. Remaining order:
 
-- **B1, B2** — Role Mining Workbench, Access Request Cart (easy-medium, natural pair).
+- **B2** — Access Request Cart Simulator (easy-medium, natural pair with B1).
 - **B7** — Tabletop Exercise Generator (easy-medium, reuses existing bulletin data).
 - **A1** — PQC Readiness Auditor (easy-medium, fills a real named gap).
 - **A2** — Hybrid PQC Cert Chain Visualizer (medium, extends A1's concepts into an existing playground).

@@ -136,6 +136,7 @@ const ecosystemItems = [
   { name: 'NHI Sprawl Cleanup Game', path: '/playground/nhi-sprawl', icon: ScanSearch },
   { name: 'Passkey Rollout Strategist', path: '/playground/passkey-rollout-strategist', icon: Fingerprint },
   { name: 'OpenID4VC Wallet Studio', path: '/playground/openid4vc-wallet', icon: Wallet },
+  { name: 'Role Mining Workbench', path: '/playground/role-mining', icon: Users },
   { name: 'Vendor Knowledge Center', path: '/vendor', icon: Building },
   { name: 'IAM Landscape Directory', path: '/explore', icon: Compass },
   { name: 'Certification Hub', path: '/certifications', icon: Award },

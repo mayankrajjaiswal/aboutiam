@@ -20,10 +20,15 @@ describe('every page under src/pages renders without throwing', () => {
     expect(pagePaths.length).toBeGreaterThan(0)
   })
 
+  // 130+ pages render in this one process — some (e.g. IdentityTimeline's
+  // multi-era inline simulators) are heavy enough that the 5s default timeout
+  // can flake under CI/system load even though the render itself completes in
+  // well under a second in isolation. A longer per-test timeout costs nothing
+  // when the render is fast, and avoids a false failure when it isn't.
   it.each(pagePaths)('%s', async (path) => {
     const mod = await pageModules[path]()
     const Page = mod.default
     expect(typeof Page).toBe('function')
     expect(() => renderWithProviders(<Page />)).not.toThrow()
-  })
+  }, 15000)
 })

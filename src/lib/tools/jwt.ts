@@ -102,8 +102,12 @@ export async function verifyJwtRsa(token: string, publicKey: CryptoKey): Promise
   return crypto.subtle.verify('RSASSA-PKCS1-v1_5', publicKey, signatureBytes, new TextEncoder().encode(signingInput))
 }
 
+// TS's lib.dom.d.ts JsonWebKey type omits `kid` even though it's a standard
+// JWK member (RFC 7517 §4.5) — widen locally rather than losing the field.
+export type JsonWebKeyWithKid = JsonWebKey & { kid?: string }
+
 /** Exports a public key as a JWKS-ready JWK, tagging it for signature verification. */
-export async function exportPublicKeyJwk(publicKey: CryptoKey, kid: string): Promise<JsonWebKey> {
+export async function exportPublicKeyJwk(publicKey: CryptoKey, kid: string): Promise<JsonWebKeyWithKid> {
   const jwk = await crypto.subtle.exportKey('jwk', publicKey)
   return { ...jwk, use: 'sig', alg: 'RS256', key_ops: undefined, kid }
 }

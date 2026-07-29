@@ -190,6 +190,13 @@ We mandate the inclusion of Vitest unit tests for all state mutations, mathemati
 - **Static reference data with no dependency on props/state** (e.g. a curated list of templates/options) defined inside the component body → hoist it to module scope instead of wrapping it in `useMemo`/adding it as a dependency. It gets recreated every render for no reason otherwise, and every `useMemo`/`useEffect` that reads it must awkwardly list it as a dependency.
 - **A plain helper function whose only inputs are values already in a `useMemo`'s dependency array** → inline its body directly into the `useMemo` callback instead of calling it as a separate function. Removes the missing-dependency warning entirely (no function reference to omit) instead of suppressing it.
 
+### 🧬 E. TypeScript DOM-Lib Typing Gotchas (`npx tsc -b`)
+
+`npm run test` type-checks nothing (Vitest transpiles with esbuild, no type errors surface there) — a bad type only fails `npx tsc -b` / `npm run build`. Run a full `npm run build` before committing, not just `npm run test`, or a type error like the ones below ships straight to `main`.
+
+- **`crypto.subtle.exportKey('jwk', ...)` → `JsonWebKey`** — this TypeScript version's bundled `lib.dom.d.ts` omits `kid` from the `JsonWebKey` interface even though it's a standard JWK member (RFC 7517 §4.5). Don't spread a `kid` field onto a bare `JsonWebKey`-typed object; define a local `type JsonWebKeyWithKid = JsonWebKey & { kid?: string }` and use that as the return/variable type instead (see `exportPublicKeyJwk` in `src/lib/tools/jwt.ts`).
+- **`Array.prototype.map` return type narrowing** — building a fixed-choice array (e.g. `['🟩', '🟥']` from a ternary) infers a union-literal element type, so a later `.push()` of any value outside that union fails. Give the array an explicit widened type (e.g. `const blocks: string[] = arr.map(...)`) when more values get pushed afterward — see `buildResultEmojiGrid` in `src/lib/games/dailyPuzzle.ts`.
+
 ---
 
 ## 4. Developer Maintenance & Extension Playbook

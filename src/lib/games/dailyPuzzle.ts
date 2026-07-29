@@ -17,7 +17,7 @@ export function getDailyPuzzle(dateString: string, bank: DailyPuzzle[] = DAILY_P
 
 /** Wordle-style emoji result grid: one block per attempt, padded to maxAttempts with unused slots. */
 export function buildResultEmojiGrid(attempts: boolean[], maxAttempts = 3): string {
-  const blocks = attempts.slice(0, maxAttempts).map((correct) => (correct ? '🟩' : '🟥'))
+  const blocks: string[] = attempts.slice(0, maxAttempts).map((correct) => (correct ? '🟩' : '🟥'))
   while (blocks.length < maxAttempts) blocks.push('⬜')
   return blocks.join('')
 }

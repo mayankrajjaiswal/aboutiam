@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useClipboardCopy } from '../components/Tools/useClipboardCopy'
 import PortfolioExport from '../components/PortfolioExport'
+import { IamTerminal } from '../lib/sdk/components/IamTerminal'
 import { CAREER_TRACKS } from '../data/interviewData'
 import { usePreferenceStore } from '../store/preferenceStore'
 
@@ -690,6 +691,18 @@ export default function InterviewCareerCenter() {
                         </div>
                       </div>
                     ))}
+
+                    <div className="p-5 rounded-xl bg-bg-card border border-border-subtle space-y-3 shadow-sm">
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-black text-text-primary flex items-center gap-1.5">
+                          <Terminal className="w-4 h-4 text-accent-primary" /> CLI Muscle-Memory Practice
+                        </h4>
+                        <p className="text-xs text-text-secondary leading-relaxed bg-bg-sidebar p-3.5 rounded-lg border border-border-subtle/50">
+                          A scripted terminal for the commands identity engineers actually type — try <code className="font-mono">openssl x509 -in cert.pem -text -noout</code>, <code className="font-mono">curl -X POST https://mock-idp/token</code>, <code className="font-mono">kinit user@REALM.EXAMPLE</code>, or <code className="font-mono">jwt-cli decode &lt;token&gt;</code>. Type <code className="font-mono">help</code> for the full list.
+                        </p>
+                      </div>
+                      <IamTerminal welcomeLines={['AboutIAM Mock Terminal — type "help" to see available commands.']} />
+                    </div>
                   </div>
                 )}
 

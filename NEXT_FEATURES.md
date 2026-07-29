@@ -45,27 +45,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group C — Engagement, Accessibility & Format Innovation
 
-### C3. In-Browser Mock IAM Terminal
-
-**One-liner:** A scripted (not real-shell) terminal built on `xterm.js` accepting a curated command grammar (`openssl`, `curl`, `kinit`, a mock `jwt-cli`) against fabricated IAM infrastructure — closer to muscle-memory CLI practice than the Career Center's static code snippets.
-
-**Why unique:** A genuinely more novel interaction format than anything currently in the Career Center's config-terminal snippets — typed, stateful, exploration-forgiving (tab-complete, history, wrong-command feedback).
-
-**Where it fits:** New shared component `src/lib/sdk/components/IamTerminal.tsx` (SDK-level, reusable), first wired into `InterviewCareerCenter.tsx`'s existing coding-terminal exercises, replacing/upgrading the static snippet display for at least one exercise as a pilot before wider rollout.
-
-**Design:**
-- `xterm.js` renders the terminal chrome; a small custom command interpreter (`src/lib/tools/mockShell.ts`) parses a strictly curated grammar (fixed command list, fixed flag set per command — explicitly NOT a general shell, to keep it safe/lightweight and avoid scope creep into "build a real shell").
-- Each supported command has a scripted mock response drawing on real syntax/output shape (e.g. `openssl x509 -in cert.pem -text -noout` prints a realistic-looking mock certificate dump; `curl -X POST https://mock-idp/token` prints a realistic mock token response) — reuses existing cert/token generation helpers from the Tools section rather than hand-writing fake output strings.
-- Tab-completion and command history are xterm.js/interpreter-level features, not new architectural surface.
-
-**Tests:** `src/lib/tools/mockShell.test.ts` — every supported command produces its expected mock output; an unsupported command returns a helpful "command not found, try: ..." message rather than crashing.
-
-**Docs to update:** `GEMINI.md` — add a new §4-lettered subsection ("How to Add a Command to the Mock IAM Terminal") documenting the curated-grammar extension pattern, since this is a genuine new reusable SDK primitive; `README.md` — amend the Career Center bullet in place.
-
-**Feasibility:** Medium.
-
----
-
 ### C4. Local AI Assistant Upgrade (Opt-In WebLLM)
 
 **One-liner:** An opt-in, never-auto-loaded "Download Local AI Model" button that runs a genuine small transformer (e.g. Qwen2.5-0.5B or Llama-3.2-1B via WebLLM, WebGPU with WASM fallback) fully client-side for free-form IAM Q&A, layered on top of — never replacing — the existing deterministic rule-based Assistant.
@@ -121,9 +100,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, A3, and A6 have shipped. All of Group A and Group B are now done. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, A3, A6, and C3 have shipped. All of Group A is done, and C3 shipped with a lightweight custom terminal component instead of `xterm.js` (a scope decision consistent with this codebase's established preference for small dependency-free UI primitives over heavy libraries — see `GEMINI.md` §4HH). Remaining order:
 
-- **C3** — In-Browser Mock IAM Terminal (medium, new SDK primitive — good to do once other features have stabilized conventions).
 - **B11** — Accessibility Audit & Hardening Sweep (ongoing, start threading through once enough interactive components exist to make a sweep worthwhile — don't block on this, but don't skip it either).
 - **A10** — Avatar & Spatial Identity Lab (stretch, only if there's appetite after everything else — out of scope for this pass).
 - **C4** — Local AI Assistant Upgrade (highest engineering risk — dedicated spike first, own timeline — out of scope for this pass).

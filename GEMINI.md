@@ -953,3 +953,19 @@ onReset={() => {
 **To add a new scenario**, add an entry to `src/data/attackPathScenarios.ts` (`nodes: GraphNode[]`, `edges: GraphEdge[]`, `startNodeId`, `targetNodeId`, `shortestPath`) — the page picks it up automatically via the scenario-switcher buttons, no component changes needed. Keep `shortestPath` honest: `attackPathScenarios.test.ts` fails the build if it doesn't match a genuine BFS traversal of the scenario's own `edges` array, which is exactly the class of "unsolvable scenario shipped by accident" bug this check exists to catch.
 
 **To reuse the layout engine elsewhere**, call `computeForceLayout` inside a `useMemo` keyed on the graph's node/edge identity (never recompute on every render — `iterations` defaults to 250 and an O(n²) repulsion pass per iteration is not free for large graphs) and render the returned positions as plain SVG `<line>`/`<circle>` elements, exactly as `AttackPathGraph.tsx` does. There is no `d3-selection`/DOM-binding layer to fight — positions are just numbers you place yourself.
+
+---
+
+### 🏛️ HH. How to Add a Command to the Mock IAM Terminal
+
+`src/lib/sdk/components/IamTerminal.tsx` + `src/lib/tools/mockShell.ts` are a reusable SDK primitive — a scripted (not a real shell) terminal for muscle-memory CLI practice. Deliberately **not** built on `xterm.js`: this codebase consistently avoids heavy UI dependencies for interaction surfaces (same reasoning as the dependency-free force-graph in §4GG, or the custom 2D physics instead of Three.js) — a real shell isn't needed, just a scrollback + prompt line, so a small custom component covers it at a fraction of the bundle cost.
+
+**The grammar is strictly curated on purpose** — a fixed command list, a fixed flag set per command — explicitly not a general shell, to keep it safe/lightweight and avoid scope creep. `runShellCommand(rawInput)` in `mockShell.ts` is the single entry point; it tokenizes on whitespace and dispatches to one `run<Command>` handler per supported command (`openssl`, `curl`, `kinit`, `jwt-cli`), plus `help`.
+
+**To add a new command:**
+1. Write a handler function `async function runFoo(args: string[]): Promise<ShellCommandResult>` in `mockShell.ts`. Check `args` against your supported flag set explicitly; return `{ output: [...], isError: true }` with a "try: ..." usage hint for anything outside it — never throw.
+2. **Reuse an existing Tools-section helper for the mock output wherever one exists** rather than hand-writing fake strings — e.g. `openssl x509` reuses `parseCertificateOrCsr` from `x509.ts`, and `curl -X POST .../token` reuses `signJwtHmac` from `jwt.ts`, so the mock output has the same real shape/fields the actual tool page would produce.
+3. Add a `case 'foo': return runFoo(args)` branch to the `switch` in `runShellCommand`, and a line to `HELP_LINES` so `help` stays accurate.
+4. Add a `describe('foo', ...)` block to `mockShell.test.ts` covering both a supported invocation and an unsupported one (per the doc's own test requirement: every supported command produces its expected output, and an unsupported command returns a helpful message rather than crashing).
+
+**To embed the terminal in a page**, just render `<IamTerminal welcomeLines={[...]} />` — no props beyond that are required. It manages its own scrollback, command history (↑/↓ arrow recall), and the `clear` command internally. First piloted inside `InterviewCareerCenter.tsx`'s "Config Exercises" tab, alongside (not replacing) the existing regex/config-validation exercises, which serve a different pedagogical purpose.

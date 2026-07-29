@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { KeyRound, FileJson, Users, ShieldCheck, Play, CheckCircle2, ExternalLink } from 'lucide-react'
 import { usePlayground } from '../../lib/sdk/usePlayground'
+import { usePacketCapture } from '../../lib/sdk/usePacketCapture'
 import { PlaygroundShell } from '../../lib/sdk/components/PlaygroundShell'
 import { TraceTerminal } from '../../lib/sdk/components/TraceTerminal'
 import { generateRsaKeyPair, exportPublicKeyPem, exportPublicKeyJwk, signJwtRsa, verifyJwtRsa } from '../../lib/tools/jwt'
@@ -39,6 +40,7 @@ export default function BuildYourIdp() {
     initialScore: 100,
     maxHints: 3
   })
+  const { frames: packetFrames, capture, clearFrames } = usePacketCapture()
 
   const [wizardStep, setWizardStep] = useState(0)
 
@@ -112,6 +114,7 @@ export default function BuildYourIdp() {
       codeChallenge
     })
     log('info', `[Front-channel] Demo App redirects the browser to: ${authorizationUrl}`)
+    capture({ direction: 'request', protocol: 'OAuth 2.1', summary: 'Authorization Request (front-channel redirect)', raw: authorizationUrl })
 
     const consentedScopes = scopeGrants.filter((s) => consentRequired.includes(s))
     if (consentedScopes.length > 0) {
@@ -121,6 +124,7 @@ export default function BuildYourIdp() {
     const codeBytes = crypto.getRandomValues(new Uint8Array(12))
     const authorizationCode = `AUTH_${Array.from(codeBytes).map((b) => b.toString(16).padStart(2, '0')).join('')}`
     log('success', `[Front-channel] Authorization granted. IdP redirects back to ${redirectUri} with code=${authorizationCode}`)
+    capture({ direction: 'response', protocol: 'OAuth 2.1', summary: 'Authorization Response (redirect back to client)', raw: `${redirectUri}?code=${authorizationCode}` })
 
     const now = Math.floor(Date.now() / 1000)
     const idTokenPayload: Record<string, unknown> = {
@@ -135,12 +139,17 @@ export default function BuildYourIdp() {
 
     const idToken = await signJwtRsa({ alg: 'RS256', typ: 'JWT', kid: KEY_ID }, idTokenPayload, keyPair.privateKey)
     log('info', `[Back-channel] Demo App POSTs code=${authorizationCode} + code_verifier to ${discoveryDocument.token_endpoint}.`)
+    capture({ direction: 'request', protocol: 'OAuth 2.1', summary: 'Token Request (back-channel POST)', raw: `POST ${discoveryDocument.token_endpoint}\ncode=${authorizationCode}\ncode_verifier=${codeVerifier}` })
     log('success', `[Back-channel] IdP mints and returns a real RS256-signed ID token.`)
+    capture({ direction: 'response', protocol: 'OAuth 2.1', summary: 'Token Response (id_token)', raw: idToken })
 
     const verified = await verifyJwtRsa(idToken, keyPair.publicKey)
     log(verified ? 'success' : 'error', verified
       ? 'Demo App fetched the JWKS and verified the ID token signature successfully.'
       : 'ID token signature verification against the JWKS failed.')
+    if (!verified) {
+      capture({ direction: 'error', protocol: 'OAuth 2.1', summary: 'ID token signature verification failed', raw: idToken })
+    }
 
     setRunResult({ codeChallenge, authorizationUrl, authorizationCode, idToken, idTokenPayload, verified })
     setIsRunning(false)
@@ -179,9 +188,11 @@ export default function BuildYourIdp() {
         setPublicJwk(null)
         setRunResult(null)
         resetPlayground()
+        clearFrames()
         log('info', 'IdP sandbox reset. Start again from Step 1.')
       }}
       sidebarContent={<TraceTerminal logs={logs} />}
+      packetCapture={{ frames: packetFrames, onClear: clearFrames }}
     >
       <div className="space-y-6">
         <div className="flex gap-2 overflow-x-auto pb-1">

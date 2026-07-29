@@ -54,4 +54,13 @@ describe('Fapi2Lab page', () => {
     fireEvent.click(screen.getByTitle(/reset simulator/i))
     expect(screen.queryAllByText(FAPI2_SCENARIOS[0].attackSuccessLog)).toHaveLength(0)
   })
+
+  it('captures request/response packet frames for a simulated attack, viewable via the Packet Capture drawer', () => {
+    renderWithProviders(<Fapi2Lab />)
+    const simulateButtons = screen.getAllByRole('button', { name: /simulate attack/i })
+    fireEvent.click(simulateButtons[0])
+
+    fireEvent.click(screen.getByTitle(/toggle packet capture/i))
+    expect(screen.getByText(/Packet Capture \(2\)/i)).toBeInTheDocument()
+  })
 })

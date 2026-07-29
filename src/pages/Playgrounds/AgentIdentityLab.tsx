@@ -5,6 +5,7 @@ import {
   Layers, Info, Eye
 } from 'lucide-react'
 import { usePlayground } from '../../lib/sdk/usePlayground'
+import { usePacketCapture } from '../../lib/sdk/usePacketCapture'
 import { PlaygroundShell } from '../../lib/sdk/components/PlaygroundShell'
 import { TraceTerminal } from '../../lib/sdk/components/TraceTerminal'
 import { AGENT_IDENTITY_SCENARIOS, type AgentIdentityScenario } from '../../data/agentIdentityScenarios'
@@ -66,6 +67,7 @@ export default function AgentIdentityLab() {
     initialScore: 100,
     maxHints: 3
   })
+  const { frames: packetFrames, capture, clearFrames } = usePacketCapture()
 
   // Sequentially sign tokens whenever hops or scopes change
   useEffect(() => {
@@ -193,6 +195,7 @@ export default function AgentIdentityLab() {
     setHops(updated)
     setIsAddingHop(false)
     log('success', `Issued OAuth 2.1 On-Behalf-Of (OBO) token to delegate to sub-agent "${newAgentName}" with scopes: [${selectedScopesForNewAgent.join(', ')}]`)
+    capture({ direction: 'response', protocol: 'OAuth 2.1 OBO', summary: `Delegation token issued to "${newAgentName}"`, raw: `sub: ${newAgentRole}\nscopes: [${selectedScopesForNewAgent.join(', ')}]` })
 
     // Verify checkpoint 1: User built a 2-hop delegation chain
     if (currentStep === 0 && updated.length >= 3) {
@@ -226,12 +229,15 @@ export default function AgentIdentityLab() {
     }
 
     const finalHop = hops[hops.length - 1]
-    
+
+    capture({ direction: 'request', protocol: 'MCP Tool Call', summary: `Tool call to "${currentScenario.targetTool}"`, raw: finalHop.token || '(token still generating)' })
+
     // Verify required scopes are present
     const missingScopes = currentScenario.requiredToolScopes.filter(s => !finalHop.scopes.includes(s))
-    
+
     if (missingScopes.length > 0) {
       log('error', `❌ [Execution Blocked] Target tool "${currentScenario.targetTool}" rejected call: Missing required scopes [${missingScopes.join(', ')}]. Final agent token only had: [${finalHop.scopes.join(', ')}]`)
+      capture({ direction: 'error', protocol: 'MCP Tool Call', summary: 'Execution blocked — missing required scopes', raw: `missing: [${missingScopes.join(', ')}]` })
       alert(`Execution Blocked! The final sub-agent lacks the required scopes to operate the tool: ${missingScopes.join(', ')}`)
       return
     }
@@ -249,6 +255,7 @@ export default function AgentIdentityLab() {
       }
       
       log('success', `✓ [Success] Executed Tool Call on "${currentScenario.targetTool}" under rigid least-privilege context. Token verified successfully.`)
+      capture({ direction: 'response', protocol: 'MCP Tool Call', summary: `"${currentScenario.targetTool}" call succeeded`, raw: `scopes: [${finalHop.scopes.join(', ')}]` })
       
       if (isCompromised) {
         completeStep(2, `Checkpoint 3 Verified: Blast radius containment fully validated under active compromise emulator.`)
@@ -302,9 +309,11 @@ export default function AgentIdentityLab() {
         setIsCompromised(false)
         setIsAddingHop(false)
         setInspectHopIndex(0)
+        clearFrames()
         log('info', 'Playground reset successfully.')
       }}
       sidebarContent={<TraceTerminal logs={logs} />}
+      packetCapture={{ frames: packetFrames, onClear: clearFrames }}
     >
       <div className="space-y-6">
         

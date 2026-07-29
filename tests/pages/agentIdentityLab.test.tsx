@@ -69,7 +69,7 @@ describe('AgentIdentityLab page', () => {
 
   it('blocks privilege escalation if a non-human agent attempts to request scope not present in parent', async () => {
     renderWithProviders(<AgentIdentityLab />)
-    
+
     const addHopBtn = screen.getByRole('button', { name: /add delegation hop/i })
     fireEvent.click(addHopBtn)
 
@@ -77,5 +77,21 @@ describe('AgentIdentityLab page', () => {
     expect(screen.getAllByText(/support:read/i).length).toBeGreaterThan(0)
     expect(screen.getAllByText(/refund:request/i).length).toBeGreaterThan(0)
     expect(screen.queryByText(/secrets:read/i)).not.toBeInTheDocument() // secrets:read doesn't exist for support scenario
+  })
+
+  it('captures a packet frame when a delegation token is issued, viewable via the Packet Capture drawer', async () => {
+    renderWithProviders(<AgentIdentityLab />)
+
+    fireEvent.click(screen.getByRole('button', { name: /add delegation hop/i }))
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /issue delegate token/i })).toBeInTheDocument()
+    })
+    fireEvent.click(screen.getByRole('button', { name: /issue delegate token/i }))
+
+    await waitFor(() => {
+      expect(screen.getByTitle(/toggle packet capture/i)).toBeInTheDocument()
+    })
+    fireEvent.click(screen.getByTitle(/toggle packet capture/i))
+    expect(screen.getByText(/Packet Capture \(1\)/i)).toBeInTheDocument()
   })
 })

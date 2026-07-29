@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Send, ShieldCheck, Radio, FileSignature, ToggleLeft, ToggleRight, Play } from 'lucide-react'
 import { usePlayground } from '../../lib/sdk/usePlayground'
+import { usePacketCapture } from '../../lib/sdk/usePacketCapture'
 import { PlaygroundShell } from '../../lib/sdk/components/PlaygroundShell'
 import { TraceTerminal } from '../../lib/sdk/components/TraceTerminal'
 import { FAPI2_SCENARIOS, type Fapi2ControlKey } from '../../data/fapi2Scenarios'
@@ -24,6 +25,7 @@ export default function Fapi2Lab() {
     initialScore: 100,
     maxHints: 3
   })
+  const { frames: packetFrames, capture, clearFrames } = usePacketCapture()
 
   const [controls, setControls] = useState<Record<Fapi2ControlKey, boolean>>({
     par: false,
@@ -45,9 +47,11 @@ export default function Fapi2Lab() {
     const enabled = controls[scenario.controlKey]
 
     log('info', `[Attack Attempt] ${scenario.title}: ${scenario.attackDescription}`)
+    capture({ direction: 'request', protocol: 'FAPI 2.0', summary: `Attack attempt: ${scenario.title}`, raw: scenario.attackDescription })
 
     if (enabled) {
       log('success', scenario.attackBlockedLog)
+      capture({ direction: 'response', protocol: 'FAPI 2.0', summary: `${scenario.controlName}: blocked`, raw: scenario.attackBlockedLog })
       setLastResult((prev) => ({ ...prev, [scenario.controlKey]: 'blocked' }))
       if (currentStep === stepIndex) {
         completeStep(stepIndex, `Checkpoint ${stepIndex + 1} verified: "${scenario.controlName}" successfully blocked the attack.`)
@@ -57,6 +61,7 @@ export default function Fapi2Lab() {
       }
     } else {
       log('warning', scenario.attackSuccessLog)
+      capture({ direction: 'error', protocol: 'FAPI 2.0', summary: `${scenario.controlName}: attack succeeded`, raw: scenario.attackSuccessLog })
       setLastResult((prev) => ({ ...prev, [scenario.controlKey]: 'succeeded' }))
     }
   }
@@ -84,9 +89,11 @@ export default function Fapi2Lab() {
         setControls({ par: false, senderConstrainedToken: false, signedResponse: false })
         setLastResult({ par: null, senderConstrainedToken: null, signedResponse: null })
         resetPlayground()
+        clearFrames()
         log('info', 'FAPI 2.0 lab reset. All controls disabled.')
       }}
       sidebarContent={<TraceTerminal logs={logs} />}
+      packetCapture={{ frames: packetFrames, onClear: clearFrames }}
     >
       <div className="space-y-6">
         {FAPI2_SCENARIOS.map((scenario, idx) => {

@@ -77,6 +77,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Terms, License & Disclaimer (`/terms`):** MIT license summary and an educational/simulated-environment disclaimer clarifying that the attack-technique labs (SAML Signature Wrapping, Golden SAML, JWT cracking, etc.) run entirely client-side against mock data, plus a no-warranty clause.
 
 ### 💻 B. Simulators & Playgrounds (`/playground`)
+* **Live Packet Capture Overlay:** A shared, opt-in "DevTools inside DevTools" instrumentation layer — a collapsible, Wireshark-style timeline of a playground's own mock request/response traffic, toggled from a status-bar icon button, off by default. Currently enabled on the Agentic Identity Lab, Build-Your-Own-IdP Sandbox, and FAPI 2.0 Playground; any future playground built on the shared Playground SDK gets it with a one-line opt-in.
 * **OAuth 2.0 / OIDC Flow Visualizer:** Animates Front-Channel redirects and Back-Channel direct connections step-by-step. Generates dynamic **PKCE verifier/challenge pairs** and inspects raw HTTP requests.
 * **JWT Studio:** Cryptographically signs headers and payloads using browser-native HMAC-SHA256, and simulates the infamous **`none` algorithm** and **JWKS spoofing** exploits.
 * **SAML 2.0 XML Workbench:** Generates raw Assertion packages, signs XML, and runs **SAML Signature Wrapping (SSW)** injections.

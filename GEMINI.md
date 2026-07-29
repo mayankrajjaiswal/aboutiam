@@ -886,3 +886,40 @@ export async function buildStudyPackZipBlob(): Promise<Blob> {
 ```
 
 A static `import JSZip from 'jszip'` at the top of that file added ~100KB to `Home.tsx`'s chunk (visible directly in `npm run build`'s per-chunk size output) for a feature most visitors never click; the dynamic import instead makes Vite split it into its own chunk, fetched only on demand. When adding any new heavy client-side library, compare `npm run build`'s chunk-size output before and after wiring it up — that diff is the actual signal for whether this pattern is worth applying, not a guess.
+
+---
+
+### 🏛️ FF. How to Add Packet-Capture Overlay to a Playground
+
+`src/lib/sdk/usePacketCapture.ts` + `src/lib/sdk/components/PacketCaptureOverlay.tsx` are a shared instrumentation layer — a "DevTools inside DevTools" Wireshark-style timeline over a playground's own mock request/response traffic — layered onto `PlaygroundShell` (§4F) as a one-line opt-in, not a new playground of its own.
+
+**1. Call the hook and pass its output to `PlaygroundShell`:**
+```typescript
+import { usePacketCapture } from '../../lib/sdk/usePacketCapture'
+
+const { frames: packetFrames, capture, clearFrames } = usePacketCapture()
+
+return (
+  <PlaygroundShell
+    // ...existing props
+    packetCapture={{ frames: packetFrames, onClear: clearFrames }}
+  >
+```
+This alone makes a new "Toggle Packet Capture" icon button appear in the shell's status bar (next to Reset) and renders `PacketCaptureOverlay` as a collapsible drawer, off by default — no drawer/button code to write yourself.
+
+**2. Call `capture(...)` alongside your existing `log(...)` calls at any point that represents a "wire" event** (a mock request being sent, a response received, or a protocol error):
+```typescript
+log('info', `[Front-channel] Redirecting to: ${authorizationUrl}`)
+capture({ direction: 'request', protocol: 'OAuth 2.1', summary: 'Authorization Request', raw: authorizationUrl })
+```
+`direction` is `'request' | 'response' | 'error'` — this is what drives the timeline block's color. No new state machine or trace-log logic is needed; `capture()` is purely additive next to a `log()` call you already have.
+
+**3. Clear captured frames on reset**, same as you already clear other local state in `onReset`:
+```typescript
+onReset={() => {
+  // ...existing reset logic
+  clearFrames()
+}}
+```
+
+`usePacketCapture()` caps its buffer at 50 frames (oldest dropped first) so a long session can't grow it unbounded — nothing for a playground author to manage. Currently wired into `AgentIdentityLab.tsx`, `BuildYourIdp.tsx`, and `Fapi2Lab.tsx`. Note: `OAuthVisualizer.tsx`, `SAMLWorkbench.tsx`, and `SCIMLab.tsx` predate the `PlaygroundShell`/`usePlayground` SDK convention entirely (custom bespoke UIs, no shell) — adopting packet capture there would first require migrating those three onto the shell, which is a separate, larger refactor deliberately left out of scope here to avoid destabilizing already-shipped, complex flows. Any *future* playground built on `PlaygroundShell` gets this feature for free with the one-line opt-in above.

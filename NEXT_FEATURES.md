@@ -67,39 +67,13 @@ Every feature must update:
 
 ---
 
-## Feature 8 — Live Packet/Handshake Capture Overlay
-
-**One-liner:** A reusable "DevTools inside DevTools" overlay component that intercepts a playground's own mock request/response traffic during any existing flow-based simulator run (OAuth, SAML, SCIM) and renders it as an animated, click-to-inspect Wireshark-style packet timeline.
-
-**Why unique:** This is not a new playground but a shared instrumentation layer that makes every existing flow-based playground more visceral — a genuinely new *interaction pattern* layered onto existing content rather than new content itself.
-
-**Where it fits:** New shared SDK component `src/lib/sdk/components/PacketCaptureOverlay.tsx` + a companion hook `src/lib/sdk/usePacketCapture.ts`. Wire it into `PlaygroundShell` as an optional prop (`packetCapture?: boolean`) so any playground opts in with one line, starting with `OAuthVisualizer.tsx`, `SAMLWorkbench.tsx`, and `SCIMLab.tsx` (the three most redirect/message-heavy flows) as the initial rollout, plus the new `BuildYourIdp.tsx` (Feature 5) and `Fapi2Lab.tsx` (Feature 6) from day one.
-
-**Design:**
-- `usePacketCapture()` exposes a `capture(frame: { direction: 'request'|'response', protocol: string, summary: string, raw: string })` function that each playground calls at its existing trace-log points (no new logic — just an additional call alongside existing `log(...)` calls).
-- `PacketCaptureOverlay` renders captured frames as a horizontal timeline of color-coded blocks (request = blue, response = teal, error = red — reusing the existing theme accent tokens from `index.css` per §3A); clicking a frame expands a raw-payload inspector panel (reuse `TraceTerminal`'s monospace styling).
-- Ships as a collapsible drawer at the bottom of `PlaygroundShell`, off by default, toggled via a new icon button in the shell's existing status-bar area.
-
-**Tests:**
-- `src/lib/sdk/usePacketCapture.test.ts` — frames append in order, capped at a max buffer (avoid unbounded memory growth in a long session), and `direction` styling maps correctly.
-- Update **one** existing playground test (`OAuthVisualizer.test.tsx` if present, else add one) to assert `packetCapture` frames appear when the flow runs.
-
-**Docs to update:**
-- `GEMINI.md`: add a new §4-lettered subsection ("How to Add Packet-Capture Overlay to a Playground") documenting the one-line `PlaygroundShell` opt-in — this is a genuine new extension pattern, so it belongs in the Developer Maintenance & Extension Playbook, not just the pages table.
-- `README.md` §B: mention it as a cross-cutting enhancement note under the Playgrounds section intro rather than a single bullet (since it touches multiple existing entries).
-
-**Feasibility:** Medium (mechanically simple, but touches multiple existing files carefully — do this one with extra regression-test care since it modifies shipped playgrounds).
-
----
-
 ## Suggested Execution Order
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), #3 (OpenID4VC Wallet Studio), #6 (FAPI 2.0 Playground), and #10 (CAEP Event Storm Visualizer) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), #3 (OpenID4VC Wallet Studio), #6 (FAPI 2.0 Playground), #10 (CAEP Event Storm Visualizer), and #8 (Live Packet Capture Overlay) have shipped. Remaining order:
 
-1. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-2. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

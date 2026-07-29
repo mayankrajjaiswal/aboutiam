@@ -1,5 +1,7 @@
-import React from 'react'
-import { Award, Lightbulb, RotateCcw, Shield, HelpCircle } from 'lucide-react'
+import React, { useState } from 'react'
+import { Award, Lightbulb, RotateCcw, Shield, HelpCircle, Radar } from 'lucide-react'
+import { PacketCaptureOverlay } from './PacketCaptureOverlay'
+import type { PacketFrame } from '../usePacketCapture'
 
 export interface PlaygroundShellProps {
   title: string;
@@ -14,6 +16,8 @@ export interface PlaygroundShellProps {
   onReset: () => void;
   children: React.ReactNode;
   sidebarContent?: React.ReactNode;
+  /** Optional opt-in (§4-lettered "How to Add Packet-Capture Overlay to a Playground" doc) — pass usePacketCapture()'s frames/clearFrames to enable the collapsible drawer. */
+  packetCapture?: { frames: PacketFrame[]; onClear: () => void };
 }
 
 export function PlaygroundShell({
@@ -28,11 +32,14 @@ export function PlaygroundShell({
   onRevealHint,
   onReset,
   children,
-  sidebarContent
+  sidebarContent,
+  packetCapture
 }: PlaygroundShellProps) {
+  const [isPacketDrawerOpen, setIsPacketDrawerOpen] = useState(false)
+
   return (
     <div className="space-y-6">
-      
+
       {/* Module Title / Status Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm">
         <div className="space-y-1 flex-grow">
@@ -64,8 +71,21 @@ export function PlaygroundShell({
             </div>
           </div>
 
+          {/* Packet Capture Toggle (only rendered when the playground opts in) */}
+          {packetCapture && (
+            <button
+              onClick={() => setIsPacketDrawerOpen((prev) => !prev)}
+              className={`p-2.5 rounded-xl border transition-all shadow-sm ${
+                isPacketDrawerOpen ? 'bg-accent-glow border-accent-primary/40 text-accent-primary' : 'bg-bg-sidebar border-border-subtle text-text-secondary hover:bg-bg-nested hover:border-accent-primary/40 hover:text-text-primary'
+              }`}
+              title="Toggle Packet Capture"
+            >
+              <Radar className="w-4 h-4" />
+            </button>
+          )}
+
           {/* Reset Action */}
-          <button 
+          <button
             onClick={onReset}
             className="p-2.5 rounded-xl bg-bg-sidebar border border-border-subtle hover:bg-bg-nested hover:border-accent-primary/40 text-text-secondary hover:text-text-primary transition-all shadow-sm"
             title="Reset Simulator"
@@ -74,6 +94,11 @@ export function PlaygroundShell({
           </button>
         </div>
       </div>
+
+      {/* Packet Capture Drawer (collapsible, off by default) */}
+      {packetCapture && isPacketDrawerOpen && (
+        <PacketCaptureOverlay frames={packetCapture.frames} onClear={packetCapture.onClear} />
+      )}
 
       {/* Main Grid Wrapper */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">

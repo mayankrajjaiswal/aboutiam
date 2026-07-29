@@ -98,4 +98,18 @@ describe('BuildYourIdp page', () => {
     fireEvent.click(screen.getByRole('button', { name: /5\. run it/i }))
     expect(screen.getByRole('button', { name: /generate keys in step 1 first/i })).toBeDisabled()
   })
+
+  it('captures request/response packet frames when the flow runs, viewable via the Packet Capture drawer', async () => {
+    renderWithProviders(<BuildYourIdp />)
+    await generateKeys()
+    fireEvent.click(screen.getByRole('button', { name: /5\. run it/i }))
+    fireEvent.click(screen.getByRole('button', { name: /run authorization code \+ pkce flow/i }))
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/ID token signature verified/i).length).toBeGreaterThan(0)
+    })
+
+    fireEvent.click(screen.getByTitle(/toggle packet capture/i))
+    expect(screen.getByText(/Packet Capture \(4\)/i)).toBeInTheDocument()
+  })
 })

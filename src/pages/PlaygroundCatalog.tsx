@@ -212,6 +212,13 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "FAPI 2.0 / Open Banking Security Profile Lab",
+      desc: "Simulate the three controls FAPI 2.0 adds on top of plain OAuth 2.0 for financial-grade APIs — Pushed Authorization Requests, sender-constrained tokens, and signed authorization responses — and watch each one independently block a real attack.",
+      icon: ShieldAlert,
+      link: "/playground/fapi2",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "NHI Workload Mesh (SPIFFE)",
       desc: "Simulate service-to-service attestations, issuing dynamic X.509 SVID credentials to secure microservice pipelines without static API keys.",
       icon: Network,

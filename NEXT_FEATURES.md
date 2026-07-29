@@ -67,34 +67,6 @@ Every feature must update:
 
 ---
 
-## Feature 6 — FAPI 2.0 / Open Banking Security Profile Playground
-
-**One-liner:** A dedicated simulator for FAPI 2.0 message signing, mTLS-bound (or DPoP-bound) tokens, and Pushed Authorization Requests (PAR) — demonstrating why plain OAuth 2.0 isn't sufficient for high-value financial-grade APIs.
-
-**Why unique:** FAPI 2.0 is a named gap — not covered in the Standards Explorer, playgrounds, or Architecture Center's protocol tier — despite the Architecture Center already having a dedicated banking architecture that would benefit from linking to it.
-
-**Where it fits:** New playground at `/playground/fapi2`, component `Fapi2Lab.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group. `PlaygroundCatalog.tsx` entry. Add a new `fapi2` entry to `src/data/standardsData.ts` (§4Q) with `relatedResources` linking here, and link from the existing banking architecture's node in `src/data/architectureData.ts` (§4T).
-
-**Design:**
-- Step 1 — **PAR:** show why sending authorization parameters directly in a browser redirect URL is a security smell (parameter tampering, URL leakage in logs) versus pushing them server-to-server first and getting back a short-lived `request_uri`.
-- Step 2 — **Sender-constrained tokens:** toggle between mTLS client-certificate binding and DPoP (reuse the existing DPoP concept from `SessionHijackingLab.tsx`/CAEP) and show a stolen bearer token being rejected because it isn't bound to the attacker's key/cert.
-- Step 3 — **Message signing (JARM/JAR):** show a signed (not just TLS-protected) authorization response/request and what tampering detection looks like if a MITM alters an unsigned response.
-- A final "Attack attempt" toggle simulates a classic OAuth attack (token replay, parameter injection) and shows FAPI 2.0's specific mitigation blocking it, with a trace log.
-
-**Data model:** `src/data/fapi2Scenarios.ts` — 2-3 attack/defense scenario pairs.
-
-**Tests:**
-- `src/data/fapi2Scenarios.test.ts` — scenario shape validation.
-- `src/pages/Playgrounds/Fapi2Lab.test.tsx` — attack is blocked when the correct FAPI control is enabled, succeeds (with a warning log) when disabled — proving the pedagogical contrast actually renders both branches.
-
-**Docs to update:**
-- `README.md` §B: new bullet.
-- `GEMINI.md` §2 table: new row.
-
-**Feasibility:** Medium.
-
----
-
 ## Feature 8 — Live Packet/Handshake Capture Overlay
 
 **One-liner:** A reusable "DevTools inside DevTools" overlay component that intercepts a playground's own mock request/response traffic during any existing flow-based simulator run (OAuth, SAML, SCIM) and renders it as an animated, click-to-inspect Wireshark-style packet timeline.
@@ -151,12 +123,11 @@ Every feature must update:
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), and #3 (OpenID4VC Wallet Studio) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), #3 (OpenID4VC Wallet Studio), and #6 (FAPI 2.0 Playground) have shipped. Remaining order:
 
-1. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
-2. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-3. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-4. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
+2. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+3. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

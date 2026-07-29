@@ -1160,7 +1160,61 @@ X509v3 Subject Alternative Name:
     ],
     relatedResources: [
       { title: 'Session Hijacking & Token Theft Lab', path: '/playground/session-hijacking', type: 'playground' },
-      { title: 'OAuth PKCE Generator Tool', path: '/tools/oauth-pkce-generator', type: 'tool' }
+      { title: 'OAuth PKCE Generator Tool', path: '/tools/oauth-pkce-generator', type: 'tool' },
+      { title: 'FAPI 2.0 / Open Banking Security Profile Lab', path: '/playground/fapi2', type: 'playground' }
+    ]
+  },
+  {
+    id: 'fapi2',
+    title: 'FAPI 2.0',
+    fullname: 'Financial-grade API Security Profile 2.0',
+    rfcs: ['FAPI 2.0 Security Profile (OIDF)', 'FAPI 2.0 Message Signing (OIDF)', 'RFC 9126 (PAR)'],
+    year: '2024',
+    difficulty: 'Advanced',
+    category: 'Federation & SSO',
+    summary: 'A stricter OpenID Foundation profile of OAuth 2.0/OIDC purpose-built for high-value financial and government APIs — it removes footguns plain OAuth allows (parameters in the browser URL, plain bearer tokens, unsigned responses) and replaces them with mandatory Pushed Authorization Requests, sender-constrained tokens, and signed messages.',
+    problem: 'Plain OAuth 2.0 is intentionally flexible so it fits everything from a consumer social-login button to a bank transfer API — but that flexibility means nothing stops an implementer from making choices (bearer tokens, unsigned redirects, parameters in the URL) that are fine for a "log in with Google" button but genuinely dangerous for moving real money.',
+    whyExists: 'Open Banking and Open Finance regulations (UK Open Banking, Australia\'s CDR, Brazil\'s Open Finance) needed one interoperable, opinionated security profile that every bank and TPP (Third-Party Provider) could implement identically, rather than each regulator inventing its own OAuth hardening rules.',
+    flowchart: `
++-------------------------------------------------------------+
+|         FAPI 2.0 HARDENED AUTHORIZATION FLOW                 |
++-------------------------------------------------------------+
+
+  [ TPP / Client ]                              [ Bank / Authorization Server ]
+      |--1. PAR: push auth params server-to-server -------->|
+      |<-2. Short-lived request_uri (opaque) ----------------|
+      |--3. Redirect browser with ONLY request_uri --------->|
+      |<-4. Signed (JARM) authorization response ------------|
+      |--5. Token request, bound to mTLS cert / DPoP key --->|
+      |<-6. Sender-constrained access token ------------------|
+`,
+    messageFormat: `// PAR request (step 1) — parameters never touch the browser URL
+POST /as/par HTTP/1.1
+Authorization: Bearer <client_assertion or mTLS>
+
+response_type=code&client_id=tpp-123&redirect_uri=https://tpp.example/cb
+&scope=accounts&code_challenge=E9Melhoa...&code_challenge_method=S256
+
+// Response
+{ "request_uri": "urn:ietf:params:oauth:request_uri:6esc_11ACC5bwc014ltc14eY22c", "expires_in": 90 }`,
+    vulnerabilities: [
+      'Falling back to plain bearer tokens "temporarily" during a migration, silently reintroducing the exact token-theft risk sender-constraining was meant to close.',
+      'Implementing PAR but still accepting the legacy non-PAR authorization endpoint as a fallback, leaving the original tampering vector reachable.',
+      'Skipping response signing (JARM) because "TLS already protects it," missing that TLS protects the channel, not detection of an in-path tamper by anyone who can intercept it.'
+    ],
+    bestPractices: [
+      'Require PAR unconditionally — never leave the legacy direct-parameter authorization endpoint enabled alongside it.',
+      'Bind every issued access and refresh token to the client\'s mTLS certificate or a DPoP key; reject any token presented without a matching proof.',
+      'Sign authorization responses (JARM) so the client can cryptographically verify nothing was altered in transit, independent of TLS.'
+    ],
+    vendorSupport: [
+      'UK Open Banking, Australia CDR, Brazil Open Finance: Regulatory ecosystems mandating FAPI (1.0 or 2.0) conformance for all participants.',
+      'Ping Identity, Curity, Authlete: FAPI 2.0-certified authorization server implementations.',
+      'Open Banking-focused API gateways (Kong, Apigee financial-grade add-ons) offer FAPI conformance modules.'
+    ],
+    relatedResources: [
+      { title: 'FAPI 2.0 / Open Banking Security Profile Lab', path: '/playground/fapi2', type: 'playground' },
+      { title: 'OAuth Request Builder', path: '/tools/oauth-builder', type: 'tool' }
     ]
   }
 ]

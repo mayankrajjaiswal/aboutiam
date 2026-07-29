@@ -1000,7 +1000,10 @@ export const ARCHITECTURES: Architecture[] = [
         threatModel: 'Threat: Malware forging fraudulent SWIFT messages (cf. Bangladesh Bank heist). Mitigation: Enforce hardware-token dual-authorization and out-of-band confirmation for high-value wires.',
         bestPractice: 'Segregate SWIFT terminal access on dedicated, hardened workstations with no general internet access.'
       }
-    }
+    },
+    relatedResources: [
+      { title: 'FAPI 2.0 / Open Banking Security Profile Lab', path: '/playground/fapi2', type: 'playground' }
+    ]
   },
   {
     id: 'healthcare',

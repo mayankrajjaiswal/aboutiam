@@ -118,6 +118,7 @@ const architectureItems = [
   { name: 'Maturity Assessments', path: '/assess', icon: Award },
   { name: 'Modernization Backlog Game', path: '/playground/modernization-backlog', icon: ClipboardList },
   { name: 'Build-Your-Own-IdP Sandbox', path: '/playground/build-your-idp', icon: KeyRound },
+  { name: 'FAPI 2.0 / Open Banking Lab', path: '/playground/fapi2', icon: ShieldAlert },
   { name: 'Identity Decision Matrix', path: '/decision-matrix', icon: Compass },
   { name: 'Threat Modeling Studio', path: '/threat-modeling', icon: ShieldAlert },
   { name: 'IAM Design Review', path: '/design-review', icon: CheckSquare },

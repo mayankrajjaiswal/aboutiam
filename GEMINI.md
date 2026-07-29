@@ -92,6 +92,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/playground/fido2`** | `FIDO2Lab.tsx` | WebAuthn key emulator. Parses clientDataJSON and authenticatorData payloads. |
 | **`/playground/access`** | `AccessControlLab.tsx` | Dynamic ABAC/RBAC engine evaluating department, device, and network. |
 | **`/playground/ldap`** | `LDAPTreeSimulator.tsx` | AD directory tree simulator. Searches objects dynamically using LDAP filters. |
+| **`/playground/ldap-schema-designer`** | `Playgrounds/LdapSchemaDesigner.tsx` | Builds (not just queries) an OU tree from scratch — add nested OUs/groups/users, link GPOs, and toggle inheritance blocking. Pure tree logic lives in `src/lib/tools/ldapSchemaTree.ts` (`computeEffectiveGpos` mirrors real AD Group Policy inheritance/blocking semantics) with LDIF serialization split into `src/lib/tools/ldifExport.ts`. |
 | **`/playground/zta`** | `ZTAPlanner.tsx` | Zero Trust risk controller based on NIST SP 800-207. |
 | **`/playground/scim`** | `Playgrounds/SCIMLab.tsx` | Visual Identity Provider (IdP) to Service Provider (SP) SCIM sync pipeline. |
 | **`/playground/oauth-attack`** | `Playgrounds/OAuthAttackLab.tsx` | Hack-and-defend sandbox mapping PKCE bypasses, wildcard redirects, and CSRF state omissions. |

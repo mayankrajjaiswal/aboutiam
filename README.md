@@ -85,6 +85,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **FIDO2 / WebAuthn Lab:** Emulates asymmetric public-key credential negotiations, parsing `clientDataJSON` and `authenticatorData` bytes.
 * **Access Control Engine:** Runs dynamic, context-aware **ABAC** evaluations (evaluating device compliance, location network, and department) and contrasts it against static **RBAC** groups.
 * **LDAP Tree Simulator:** Renders a nested Active Directory domain schema. Typing standard LDAP filters (e.g. `(memberOf=cn=Admins)`) dynamically matches and highlights nodes.
+* **AD/LDAP OU & Schema Designer:** Build an Organizational Unit tree from scratch — add nested OUs, groups, and user placeholders, apply GPOs that cascade down through inheritance (or block it on a specific child OU while still applying GPOs linked directly to that OU), and export the constructed schema as syntactically valid LDIF.
 * **Zero Trust Planner:** Models NIST SP 800-207 trust algorithms, calculating access risk scores based on real-time parameters.
 * **SCIM Provisioning Lab & Sync Engine:** Simulates real-time Identity Provider (IdP) to Service Provider (SP) user lifecycle sync loops (CRUD), simulating `HTTP 429` (Rate-Limiting) and `HTTP 409` (Conflict) sync queues.
 * **OAuth 2.0 Attack Lab:** Hands-on hack-and-defend sandbox demonstrating PKCE bypasses, open-redirect URI wildcards, and CSRF session state omissions.

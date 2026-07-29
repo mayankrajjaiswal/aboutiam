@@ -165,27 +165,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group B — Governance, Program Management & Career
 
-### B3. AD/LDAP OU & Schema Designer
-
-**One-liner:** Drag-to-build an OU tree with nested groups and GPO-inheritance preview, exportable as LDIF.
-
-**Why unique:** The existing `LDAPTreeSimulator.tsx` is search/filter-only against a fixed pre-built tree — this is *design*, letting the user construct a tree from scratch and see inheritance/export mechanics, a genuinely different skill (directory architecture, not directory querying).
-
-**Where it fits:** New playground at `/playground/ldap-schema-designer`, component `LdapSchemaDesigner.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group, next to `LDAPTreeSimulator`/`GpoSimulator`.
-
-**Design:**
-- A tree-builder UI (add/nest OU, add group, add user placeholder) — prefer simple "Add Child" buttons + indentation over full drag-and-drop for accessibility (consistent with the codebase's general preference, see Phase 1 Feature 11's note on avoiding complex DnD).
-- GPO inheritance preview: applying a GPO at a parent OU visually cascades to child OUs unless explicitly blocked at a child (mirrors real AD Group Policy inheritance/blocking semantics, reuses concepts from `GpoSimulator.tsx`).
-- Export button generates a valid LDIF representation of the constructed tree (reuse the export/`Blob`-download pattern already used by several tools).
-
-**Tests:** `src/lib/tools/ldifExport.test.ts` — a constructed tree serializes to syntactically valid LDIF; `LdapSchemaDesigner.test.tsx` — a GPO applied at a parent cascades to children, and blocking inheritance at a child correctly stops it.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### B4. HR-to-IdP Attribute Mapper
 
 **One-liner:** A drag-and-connect UI mapping mock HR-system fields (Workday/SAP-style) to AD/Entra/SCIM attributes, with a live transformation preview (concat, regex, lookup table) and conflict warnings.
@@ -309,9 +288,9 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, and A2 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, and B3 have shipped. Remaining order:
 
-- **B3, B4** — LDAP Schema Designer, HR Attribute Mapper (medium, pair well).
+- **B4** — HR Attribute Mapper (medium, pairs well with the just-shipped B3).
 - **A4, A7, A8** — Identity Fabric Builder, Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).
 - **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).
 - **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).

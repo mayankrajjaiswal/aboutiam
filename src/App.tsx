@@ -63,6 +63,7 @@ const IamRfpGenerator = lazy(() => import('./pages/Tools/IamRfpGenerator'))
 const IamSalaryCompass = lazy(() => import('./pages/Tools/IamSalaryCompass'))
 const TabletopExerciseGenerator = lazy(() => import('./pages/Tools/TabletopExerciseGenerator'))
 const PqcReadinessAuditor = lazy(() => import('./pages/Tools/PqcReadinessAuditor'))
+const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
 const IdentityBrokerSandbox = lazy(() => import('./pages/Playgrounds/IdentityBrokerSandbox'))
 const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
 const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
@@ -290,6 +291,7 @@ export default function App() {
               <Route path="/playground/risk-engine" element={<RiskEngine />} />
               <Route path="/playground/pam-vaulting" element={<PamVaultingLab />} />
               <Route path="/playground/hybrid-ad-sync" element={<HybridAdSyncLab />} />
+              <Route path="/playground/ldap-schema-designer" element={<LdapSchemaDesigner />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />

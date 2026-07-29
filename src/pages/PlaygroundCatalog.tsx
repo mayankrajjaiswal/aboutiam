@@ -135,6 +135,14 @@ export default function PlaygroundCatalog() {
       badge: "Active (Standard)",
     },
     {
+      title: "AD/LDAP OU & Schema Designer",
+      desc: "Build an Organizational Unit tree from scratch — add nested OUs, groups, and users, apply GPOs that cascade through inheritance (or block it), and export the result as valid LDIF.",
+      icon: Server,
+      link: "/playground/ldap-schema-designer",
+      badge: "Active (Standard)",
+      enterpriseProducts: "Microsoft Active Directory, PingDirectory"
+    },
+    {
       title: "JWT Signature Secret Cracker",
       desc: "Run client-side dictionary attacks against weak HS256 tokens to crack and discover the signature secret within seconds.",
       icon: Key,

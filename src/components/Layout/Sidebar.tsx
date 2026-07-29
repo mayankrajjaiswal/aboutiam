@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -129,6 +129,7 @@ const architectureItems = [
   { name: 'Identity Case Studies', path: '/case-studies', icon: BookOpen },
   { name: 'Architecture Center', path: '/architecture', icon: Network },
   { name: 'Knowledge Graph', path: '/knowledge-graph', icon: Waypoints },
+  { name: 'AD/LDAP OU & Schema Designer', path: '/playground/ldap-schema-designer', icon: Folder },
 ]
 
 const ecosystemItems = [

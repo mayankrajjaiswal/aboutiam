@@ -10,32 +10,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group A — Emerging Standards & Cryptography
 
-### A1. PQC Migration Planner & Crypto-Agility Auditor
-
-**One-liner:** Paste a certificate chain, JWKS, or TLS config; the tool flags classical-only algorithms (RSA-2048, ECDSA P-256), estimates hybrid post-quantum certificate size/latency bloat, and outputs a prioritized crypto-inventory checklist.
-
-**Why unique:** Post-quantum migration is a 2025-2026 convergence point (NIST FIPS 203/204/205 finalized, EO-14412 federal mandate, NIS2 national-strategy milestones) that nothing on the site — including the full 12-feature Phase 1 plan — currently addresses at all.
-
-**Where it fits:** New tool at `/tools/pqc-readiness-auditor`, page `Tools/PqcReadinessAuditor.tsx`, following the §4E tool convention (registry entry + `ToolPageShell` + `BeginnerExpertExplainer`). Sidebar: `tools` group.
-
-**Design:**
-- Textarea paste of a PEM cert chain, a JWKS JSON blob, or a pasted TLS cipher-suite list (reuse the parsing helpers already built for `Tools/X509CertificateDecoder.tsx` and `Tools/JwksInspector.tsx` — do not re-implement PEM/JWK parsing).
-- `src/lib/tools/pqcReadiness.ts` — matches detected algorithms against a static risk table (`src/data/pqcAlgorithmRisk.ts`: `{ algorithm, quantumVulnerable: boolean, recommendedHybrid, migrationPriority }`).
-- Since browsers have no native ML-KEM/ML-DSA support yet, this is **analysis only, not real PQC signing/key-exchange** — the report is a static-rule-driven checklist plus size/latency math (hybrid ML-DSA-87 signatures ≈4.6KB vs. ECDSA's ≈96B — show the handshake-size delta).
-- Output: categorized checklist (Critical/High/Medium/Info) + downloadable JSON report, same export pattern as `Tools/IdentitySbomAnalyzer.tsx` (Phase 1 Feature 9 convention).
-
-**Data model:** `src/data/pqcAlgorithmRisk.ts` — curated static table of classical algorithms and their quantum-vulnerability status/recommended hybrid replacement, with citation notes.
-
-**Tests:**
-- `src/lib/tools/pqcReadiness.test.ts` — every classical algorithm in a test cert chain is correctly flagged; a config with only PQC-hybrid algorithms produces zero findings; size-delta math is correct for known reference values.
-- `src/data/pqcAlgorithmRisk.test.ts` — every entry has a valid `migrationPriority`.
-
-**Docs to update:** `src/data/toolsRegistry.ts` new entry (`status: 'live'`); `README.md` §C new bullet (new "Post-Quantum & Crypto-Agility" grouping); `GEMINI.md` §2 table new row; `public/sitemap.xml` + `public/llms.txt`.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### A2. Hybrid PQC Certificate Chain Visualizer
 
 **One-liner:** Extends the existing `CertChainValidator.tsx` playground with a toggle showing classical vs. hybrid dual-signature certificates side by side, visualizing handshake size/latency cost and a "harvest now, decrypt later" attack timeline.
@@ -355,9 +329,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, and B7 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, and A1 have shipped. Remaining order:
 
-- **A1** — PQC Readiness Auditor (easy-medium, fills a real named gap).
 - **A2** — Hybrid PQC Cert Chain Visualizer (medium, extends A1's concepts into an existing playground).
 - **B3, B4** — LDAP Schema Designer, HR Attribute Mapper (medium, pair well).
 - **A4, A7, A8** — Identity Fabric Builder, Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).

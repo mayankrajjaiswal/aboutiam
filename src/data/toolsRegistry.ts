@@ -8,7 +8,7 @@ import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
-  PackageSearch, Scale, Presentation,
+  PackageSearch, Scale, Presentation, AtomIcon,
 } from 'lucide-react'
 
 export type ToolCategory =
@@ -691,6 +691,27 @@ export const TOOLS: ToolMeta[] = [
       { q: 'Can I run this live with a team?', a: 'Yes — that is the point. Download the Markdown script and read out each timed inject to your team during a scheduled tabletop session, then use the discussion prompts and rubric to debrief afterward.' },
     ],
     relatedLinks: [{ label: 'Browse the full Security Bulletins archive →', href: '/bulletins' }],
+  },
+  {
+    slug: 'pqc-readiness-auditor',
+    title: 'PQC Readiness Auditor — Post-Quantum Crypto-Agility Checklist',
+    description: 'Paste a PEM certificate chain, a JWKS JSON blob, or a TLS cipher-suite list to flag quantum-vulnerable algorithms (RSA, ECDSA, EdDSA, AES-128), estimate hybrid post-quantum handshake size growth, and get a prioritized migration checklist.',
+    category: 'PKI & Certificates',
+    icon: AtomIcon,
+    phase: 3,
+    status: 'live',
+    keywords: ['post quantum cryptography', 'pqc migration', 'ml-kem', 'ml-dsa', 'crypto agility audit', 'nist fips 203 204 205', 'harvest now decrypt later'],
+    analogy: 'A structural engineer surveying a building for earthquake risk doesn\'t wait for the earthquake — they flag which beams (algorithms) were built to an outdated code (classical-only crypto) years before the ground actually shakes (a cryptographically relevant quantum computer). This tool is that survey for your certificates, keys, and cipher suites.',
+    expert: 'A pure static-rule-driven checklist, not real PQC signing or key exchange (browsers have no native ML-KEM/ML-DSA support yet). It reuses the existing PEM/JWK parsing helpers from `Tools/X509CertificateDecoder.tsx` and `Tools/JwksInspector.tsx` (`src/lib/tools/x509.ts`), matches detected algorithms against a curated risk table (`src/data/pqcAlgorithmRisk.ts`), and computes handshake-size-growth math using the cited reference values (a hybrid ML-DSA-87 signature ≈4.6KB vs. a classical ECDSA P-256 signature ≈96B).',
+    faqs: [
+      { q: 'Does this actually perform post-quantum cryptography?', a: 'No — browsers don\'t yet ship native ML-KEM/ML-DSA support. This is an analysis-only, static-rule-driven checklist plus size/latency math, not a real hybrid handshake.' },
+      { q: 'Why is ECDSA flagged as Critical, not just RSA?', a: 'Elliptic-curve discrete-log is broken by the same Shor\'s-algorithm class of attack as RSA factorization, and ECC actually requires fewer logical qubits to break than RSA at an equivalent classical security level — so it is not a lower-priority migration than RSA.' },
+      { q: 'What is "harvest now, decrypt later"?', a: 'An adversary captures today\'s classically-encrypted traffic now and stores it, planning to decrypt it retroactively once a sufficiently large quantum computer exists — which is why migration priority is about the confidentiality lifetime of the data, not just today\'s classical strength.' },
+    ],
+    relatedLinks: [
+      { label: 'Decode a certificate chain in detail →', href: '/tools/x509-certificate-decoder' },
+      { label: 'Inspect a JWKS document →', href: '/tools/jwks-inspector' },
+    ],
   },
 ]
 

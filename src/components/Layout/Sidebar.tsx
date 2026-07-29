@@ -141,6 +141,7 @@ const ecosystemItems = [
   { name: 'Role Mining Workbench', path: '/playground/role-mining', icon: Users },
   { name: 'Access Request Cart', path: '/playground/access-request-cart', icon: ShoppingCart },
   { name: 'HR-to-IdP Attribute Mapper', path: '/playground/hr-attribute-mapper', icon: ArrowLeftRight },
+  { name: 'Liveness & Injection Attack Lab', path: '/playground/liveness-injection', icon: ScanSearch },
   { name: 'Vendor Knowledge Center', path: '/vendor', icon: Building },
   { name: 'IAM Landscape Directory', path: '/explore', icon: Compass },
   { name: 'Certification Hub', path: '/certifications', icon: Award },

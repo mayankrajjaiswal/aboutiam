@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -161,6 +161,13 @@ export default function PlaygroundCatalog() {
       desc: "Simulate Generative AI voice deepfake attacks against legacy MFA and witness how FIDO2 hardware bounds defeat synthetic cloning.",
       icon: Bot,
       link: "/playground/ai-threat-lab",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Liveness Detection & Injection Attack Lab",
+      desc: "Pit presentation-replay, camera-feed-injection, and real-time face-swap attacks against static-photo, flash-challenge, depth-motion, and full ISO 30107-3 PAD-scoring defenses to see which defense catches which attack class and why.",
+      icon: ScanFace,
+      link: "/playground/liveness-injection",
       badge: "Active (Advanced)",
     },
     {

@@ -83,29 +83,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### A7. Liveness Detection & Injection Attack Lab
-
-**One-liner:** Simulates a face-verification pipeline where the user toggles attacker techniques (presentation replay, camera-feed injection, face-swap) against defensive countermeasures (challenge-response flash patterns, depth mapping, PAD scoring) to see which defense catches which attack class.
-
-**Why unique:** 2026's decisive shift is from presentation attacks to **injection attacks** (synthetic video piped directly into the verification SDK, bypassing the camera entirely) — the existing `AIThreatLab.tsx` covers voice deepfakes vs. legacy MFA, not camera-injection liveness detection specifically, so this complements rather than duplicates it.
-
-**Where it fits:** New playground at `/playground/liveness-injection`, component `LivenessInjectionLab.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group, next to `AIThreatLab`.
-
-**Design:**
-- A mock "face verification" panel with a selectable attack vector (replay a recorded video / inject a synthetic feed bypassing the camera driver / real-time face-swap).
-- A selectable defense stack (single static photo check / challenge-response flash-color-sequence / passive depth-and-micro-movement analysis / full ISO 30107-3-style PAD scoring).
-- Matrix result: for each attack×defense pairing, show pass/fail with a one-line technical explanation of why (e.g. "flash challenge-response defeats replay because the attacker's pre-recorded video can't react to a randomized light pattern in real time, but does NOT defeat camera-feed injection since the injected stream can be scripted to respond").
-
-**Data model:** `src/data/livenessAttackMatrix.ts` — the attack×defense outcome matrix with explanations, so the UI is purely data-driven (no hardcoded if/else chain — same drift-avoidance lesson already learned repeatedly in `GEMINI.md` §4B/X).
-
-**Tests:** `src/data/livenessAttackMatrix.test.ts` — every attack has at least one defense that stops it and at least one that doesn't (so the lesson is always demonstrable); `LivenessInjectionLab.test.tsx` — selecting an attack/defense pair renders the matrix's recorded outcome and explanation.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### A8. OT/ICS Device Identity & Segmentation Simulator
 
 **One-liner:** A factory-floor topology (PLCs, HMIs, sensors, engineering workstation) where most devices can't do traditional authentication; apply identity-based microsegmentation instead of classic NAC, and watch a ransomware lateral-movement simulation show reduced dwell time and blast radius.
@@ -240,9 +217,9 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, and A4 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, and A7 have shipped. Remaining order:
 
-- **A7, A8** — Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).
+- **A8** — OT/ICS Identity Lab (medium).
 - **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).
 - **A3** — CIEM Explorer (medium — **only after Phase 1 Feature 4 ships**, reuses its graph engine).
 - **A6** — Legacy & Academic Federation Playground (medium-hard, lower urgency).

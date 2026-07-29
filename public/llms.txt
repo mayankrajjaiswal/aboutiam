@@ -109,6 +109,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [AD/LDAP OU & Schema Designer](https://www.aboutiam.com/playground/ldap-schema-designer/): Build an Organizational Unit tree from scratch, apply GPOs that cascade through inheritance (or block it), and export the constructed schema as valid LDIF.
 - [HR-to-IdP Attribute Mapper](https://www.aboutiam.com/playground/hr-attribute-mapper/): Click-to-connect mock HR fields (Workday/SAP-style) to AD/Entra/SCIM attributes, apply concat/regex/lookup-table transformations, and watch a live preview and conflict warnings update in real time.
 - [Identity Fabric / Orchestration Flow Builder](https://www.aboutiam.com/playground/identity-fabric/): Wire a legacy protocol-only app to a modern protocol-only IdP through an orchestration node, and watch the trace log narrate each protocol-translation step for IdP migration and cross-IdP policy consistency scenarios.
+- [Liveness Detection & Injection Attack Lab](https://www.aboutiam.com/playground/liveness-injection/): Pit presentation-replay, camera-feed-injection, and real-time face-swap attacks against static-photo, flash-challenge, depth-motion, and full PAD-scoring defenses to see which defense catches which attack class and why.
 
 ## Advanced Ecosystem & Governance
 

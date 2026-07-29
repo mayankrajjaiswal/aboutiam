@@ -80,6 +80,26 @@ export const COMPLIANCE_DEADLINES: ComplianceDeadline[] = [
     verifiedDate: '2026-07-21',
     confidence: 'estimated',
   },
+  {
+    id: 'eu-ai-act-biometric',
+    regulation: 'EU AI Act — Biometric Categorization & Transparency Rules',
+    jurisdiction: 'European Union',
+    deadlineDate: '2026-08-02',
+    description: 'Transparency obligations for biometric categorization and emotion-recognition AI systems come into force; high-risk biometric identification rules follow in a later phase.',
+    officialLink: 'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai',
+    verifiedDate: '2026-07-29',
+    confidence: 'confirmed',
+  },
+  {
+    id: 'eu-age-verification-blueprint',
+    regulation: 'EU Age Verification Blueprint',
+    jurisdiction: 'European Union',
+    deadlineDate: '2026-12-01',
+    description: 'Privacy-preserving, zero-knowledge-proof-based age-assurance blueprint deadline for platforms serving minors — directly relevant to the ZKP age-proof pattern.',
+    officialLink: 'https://digital-strategy.ec.europa.eu/en/policies/euclid-age-verification-app',
+    verifiedDate: '2026-07-29',
+    confidence: 'estimated',
+  },
 ]
 
 export function getUpcomingDeadlines(): ComplianceDeadline[] {

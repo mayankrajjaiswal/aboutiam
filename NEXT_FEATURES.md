@@ -369,29 +369,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group C — Engagement, Accessibility & Format Innovation
 
-### C1. Daily Identity Puzzle ("Wordle for IAM")
-
-**One-liner:** One daily puzzle (decode a JWT and spot the vulnerability, identify the tampered SAML field, guess the protocol from progressively revealing clues), date-seeded so every visitor gets the same puzzle, with a shareable emoji-grid result via a compact URL-encoded challenge code.
-
-**Why unique:** A single shared daily moment, distinct from the static CTF Arena (always-available, not daily) and Phase 1's spaced-repetition quiz (a personal review queue, not a shared daily event) — proven retention mechanic (Wordle-style daily regularity + autonomy + competence) with a close security-education precedent (PortSwigger's Mystery Lab Challenge).
-
-**Where it fits:** A new `Home.tsx` widget (most visibility) plus an optional deep-linkable `/daily-puzzle` route for direct sharing. Sidebar: no new entry needed if it's primarily a Home widget; add to `core` group if it gets a dedicated route.
-
-**Design:**
-- `src/lib/games/dailyPuzzle.ts` — a deterministic function taking a date string (passed in, never `Date.now()` directly per the environment's script-execution constraints and general good practice for testability) and a puzzle bank, returning the day's puzzle via a stable date-seeded index (no `Math.random()`).
-- Puzzle bank rotates across formats: JWT-vulnerability-spotting, SAML-tamper-detection, protocol-guess-from-clues — reuses existing JWT/SAML tooling logic for validation, not new crypto.
-- On completion, generate a compact result string (like Wordle's emoji grid — e.g. a sequence of 🟩/🟨/⬜ for guess-accuracy per attempt) and a shareable URL following the existing `Assess.tsx` `?a=<digits>` URL-hydration convention so a shared link can replay/verify the result without a backend.
-
-**Data model:** `src/data/dailyPuzzleBank.ts` — the rotating puzzle bank, large enough to not visibly repeat within a reasonable window (e.g. 90+ entries for a ~3-month non-repeat cycle).
-
-**Tests:** `src/lib/games/dailyPuzzle.test.ts` — the same date always yields the same puzzle (determinism); different dates cycle through the bank without early repeats within the guaranteed window; the shareable result string round-trips correctly.
-
-**Docs to update:** `README.md` §A new bullet; `GEMINI.md` §2 new row if it gets its own route, otherwise a note under the `Home.tsx` row.
-
-**Feasibility:** Easy.
-
----
-
 ### C3. In-Browser Mock IAM Terminal
 
 **One-liner:** A scripted (not real-shell) terminal built on `xterm.js` accepting a curated command grammar (`openssl`, `curl`, `kinit`, a mock `jwt-cli`) against fabricated IAM infrastructure — closer to muscle-memory CLI practice than the Career Center's static code snippets.
@@ -468,9 +445,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, and the B6/B5/B9 trio (TCO Calculator, RFP Generator, Salary Compass) have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, and C1 have shipped. Remaining order:
 
-- **C1** — Daily Identity Puzzle (easy, high engagement value, good to ship early to start building habit/return-visit data).
 - **B10** — Portfolio Builder + Badge + PDF Export (easy-medium, high resume/virality value).
 - **B1, B2** — Role Mining Workbench, Access Request Cart (easy-medium, natural pair).
 - **B7** — Tabletop Exercise Generator (easy-medium, reuses existing bulletin data).

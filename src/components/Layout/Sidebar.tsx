@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -105,6 +105,7 @@ const coreItems = [
   { name: 'Master A-Z Encyclopedia', path: '/encyclopedia', icon: BookOpen },
   { name: 'Interactive Playgrounds', path: '/playground', icon: Cpu },
   { name: 'Identity Labs Academy', path: '/labs', icon: Award },
+  { name: 'Daily Identity Puzzle', path: '/daily-puzzle', icon: Puzzle },
 ]
 
 const toolsItems = [

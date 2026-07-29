@@ -38,6 +38,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/daily-puzzle/</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/vendor/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>

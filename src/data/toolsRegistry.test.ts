@@ -22,7 +22,8 @@ describe('Security Tools Registry (toolsRegistry.ts)', () => {
       'Hashing, Encoding & Secrets',
       'Auth & Directory Builders',
       'Emerging & Decentralized Identity',
-      'Supply Chain & Governance'
+      'Supply Chain & Governance',
+      'Program & Vendor Management'
     ])
 
     TOOLS.forEach(t => {

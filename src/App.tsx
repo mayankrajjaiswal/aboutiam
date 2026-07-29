@@ -57,6 +57,9 @@ const Pbkdf2Generator = lazy(() => import('./pages/Tools/Pbkdf2Generator'))
 const CertBundleSplitter = lazy(() => import('./pages/Tools/CertBundleSplitter'))
 const DidDocumentValidator = lazy(() => import('./pages/Tools/DidDocumentValidator'))
 const IdentitySbomAnalyzer = lazy(() => import('./pages/Tools/IdentitySbomAnalyzer'))
+const IamTcoCalculator = lazy(() => import('./pages/Tools/IamTcoCalculator'))
+const IamRfpGenerator = lazy(() => import('./pages/Tools/IamRfpGenerator'))
+const IamSalaryCompass = lazy(() => import('./pages/Tools/IamSalaryCompass'))
 const IdentityBrokerSandbox = lazy(() => import('./pages/Playgrounds/IdentityBrokerSandbox'))
 const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
 const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
@@ -225,6 +228,9 @@ export default function App() {
               <Route path="/tools/cert-bundle-splitter" element={<CertBundleSplitter />} />
               <Route path="/tools/did-document-validator" element={<DidDocumentValidator />} />
               <Route path="/tools/identity-sbom-analyzer" element={<IdentitySbomAnalyzer />} />
+              <Route path="/tools/iam-tco-calculator" element={<IamTcoCalculator />} />
+              <Route path="/tools/iam-rfp-generator" element={<IamRfpGenerator />} />
+              <Route path="/tools/iam-salary-compass" element={<IamSalaryCompass />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />
               <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
               <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />

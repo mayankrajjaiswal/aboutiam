@@ -302,52 +302,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### B5. IAM RFP & Vendor-Fit Question Bank Generator
-
-**One-liner:** A questionnaire on org size/industry/existing stack generates a downloadable, categorized RFP (security/compliance, integration, TCO, implementation risk) with deep links into the existing Vendor Center/Explore catalog for named vendors.
-
-**Why unique:** No interactive RFP-generation tool exists in the space beyond static checklists critiqued for missing outcome-based evaluation — this produces a tailored document, not a generic template, and is the connective tissue tying together the site's existing Vendor Center (18 profiles) and Explore catalog (21 products).
-
-**Where it fits:** New tool at `/tools/iam-rfp-generator`, page `Tools/IamRfpGenerator.tsx`, §4E convention. Sidebar: `tools` group.
-
-**Design:**
-- Short questionnaire: org size, industry/regulatory context, existing IdP(s), priority capabilities (SSO, MFA, PAM, IGA, CIAM).
-- `src/lib/tools/rfpGenerator.ts` — pure function mapping questionnaire answers to a curated question set drawn from a static bank (`src/data/rfpQuestionBank.ts`), categorized into Security/Compliance, Integration, TCO, and Implementation Risk sections.
-- Output: a formatted, downloadable Markdown/PDF-exportable RFP document; where a question bank entry references a capability that maps to specific `EXPLORE_PRODUCTS`/vendor entries, render a "Vendors known to support this →" deep link to `/vendor?compare=<key1>,<key2>` or `/explore?product=<id>`.
-
-**Data model:** `src/data/rfpQuestionBank.ts` — categorized question bank with applicability tags (which org-size/industry/capability combinations pull in which questions).
-
-**Tests:** `src/lib/tools/rfpGenerator.test.ts` — a given questionnaire answer set always includes its mapped category's mandatory questions; every question bank entry with a vendor-capability tag resolves to real `EXPLORE_PRODUCTS`/vendor ids (cross-reference guard, same pattern as the `controlsMapped` check in `bulletinsData.test.ts`).
-
-**Docs to update:** `src/data/toolsRegistry.ts` new entry; `README.md` §C new bullet ("Program & Vendor Management" grouping — new bucket, add alongside B6); `GEMINI.md` §2 new row.
-
-**Feasibility:** Easy.
-
----
-
-### B6. Build vs. Buy / TCO Calculator
-
-**One-liner:** An editable-slider client-side calculator comparing 3-year total cost of ownership of an in-house Keycloak/Ory-style build vs. a commercial IDaaS subscription (engineer-hours, licensing, breach-risk-adjusted cost).
-
-**Why unique:** No interactive build-vs-buy TCO tool exists in the space; this pairs naturally with B5's RFP generator as the other half of a vendor-decision toolkit.
-
-**Where it fits:** New tool at `/tools/iam-tco-calculator`, page `Tools/IamTcoCalculator.tsx`, §4E convention. Sidebar: `tools` group, next to B5.
-
-**Design:**
-- Sliders/inputs: number of engineers, average fully-loaded engineer cost, expected build/maintenance hours, commercial per-seat licensing cost, seat count, and a "breach-risk-adjusted cost" toggle applying a static industry-average breach-cost multiplier weighted by the self-built option's typically slower security-patch cadence.
-- Reuses the `Assess.tsx` charting pattern (Framer Motion animated bar/line chart) to show a 3-year cost curve for both options side by side.
-- Output includes a plain-English caveat block (this is directional, not a procurement-grade TCO model) — same transparency framing as B9's Salary Compass.
-
-**Data model:** No registry needed — a pure calculation module `src/lib/tools/tcoCalculator.ts` with documented default constants (citable, not invented).
-
-**Tests:** `src/lib/tools/tcoCalculator.test.ts` — the calculator is monotonic in each input (more engineer-hours always increases build cost, more seats always increases buy cost) and the breach-risk toggle strictly increases the build-option's total when enabled.
-
-**Docs to update:** `src/data/toolsRegistry.ts` new entry; `README.md` §C new bullet (same "Program & Vendor Management" grouping as B5); `GEMINI.md` §2 new row.
-
-**Feasibility:** Easy.
-
----
-
 ### B7. Tabletop Exercise Generator
 
 **One-liner:** A questionnaire (industry, IdP type, team size, scenario theme) produces a printable/PDF-exportable tabletop exercise script — objectives, timed injects, discussion questions, and a scoring rubric — generated directly from the existing 18 Security Bulletins as source material.
@@ -366,28 +320,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 **Docs to update:** `src/data/toolsRegistry.ts` new entry; `README.md` §C new bullet, and amend the existing Security Bulletins bullet in §A to mention the generator reuses its data; `GEMINI.md` §2 new row, plus a one-line addition to §4X noting a new consumer of `BULLETINS`.
 
 **Feasibility:** Easy-Medium.
-
----
-
-### B9. IAM Salary Compass
-
-**One-liner:** A static, citation-backed dataset (role × level × specialization × region multiplier) rendered as an interactive comparator/percentile chart, explicitly labeled as directional data aggregated from public sources.
-
-**Why unique:** IAM-specific salary data is fragmented across generic sites (PayScale/Glassdoor) with wide, inconsistent ranges — a single IAM-focused, specialization-aware (e.g. PAM/CIEM premium) comparator doesn't exist elsewhere and complements the existing static Career Center content.
-
-**Where it fits:** New tool/page at `/tools/iam-salary-compass`, page `Tools/IamSalaryCompass.tsx`, §4E convention (even though it's more "content" than "utility," it fits the tool-page shell/registry pattern cleanly). Sidebar: `tools` group. Cross-link from `InterviewCareerCenter.tsx`.
-
-**Design:**
-- Filterable comparator: role (Engineer/Architect/Analyst/Manager), seniority level, specialization (workforce IAM / CIAM / PAM / IGA), and region multiplier.
-- Renders a percentile range chart (reuse `Assess.tsx`/B6's chart conventions) with a prominent, permanent disclaimer: "Directional estimates aggregated from public sources; not a substitute for local market research."
-
-**Data model:** `src/data/iamSalaryData.ts` — the static dataset with per-entry source citations and a `lastVerifiedDate`.
-
-**Tests:** `src/data/iamSalaryData.test.ts` — every entry has a valid role/level/specialization combination and a non-empty citation.
-
-**Docs to update:** `src/data/toolsRegistry.ts` new entry; `README.md` §C new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Easy.
 
 ---
 
@@ -536,9 +468,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, and B8 have shipped. Remaining order:
+A9, C2, B8, and the B6/B5/B9 trio (TCO Calculator, RFP Generator, Salary Compass) have shipped. Remaining order:
 
-- **B6, B5, B9** — TCO Calculator, RFP Generator, Salary Compass (easy tools, natural trio, ship together).
 - **C1** — Daily Identity Puzzle (easy, high engagement value, good to ship early to start building habit/return-visit data).
 - **B10** — Portfolio Builder + Badge + PDF Export (easy-medium, high resume/virality value).
 - **B1, B2** — Role Mining Workbench, Access Request Cart (easy-medium, natural pair).

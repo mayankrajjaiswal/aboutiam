@@ -17,6 +17,7 @@ import {
   Terminal,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { useClipboardCopy } from '../components/Tools/useClipboardCopy'
 import { CAREER_TRACKS } from '../data/interviewData'
 import { usePreferenceStore } from '../store/preferenceStore'
@@ -204,6 +205,9 @@ export default function InterviewCareerCenter() {
           <p className="text-xs text-text-secondary max-w-xl">
             Acquire role-based enterprise IAM mastery, practice mock interviews, audit architectural diagrams, and prepare for high-impact security hires.
           </p>
+          <Link to="/tools/iam-salary-compass" className="inline-block text-[11px] font-bold text-accent-primary hover:text-accent-hover transition-colors">
+            Curious what these roles pay? Check the IAM Salary Compass →
+          </Link>
         </div>
         <div className="flex gap-4">
           <div className="p-3 bg-bg-card rounded-lg border border-border-subtle flex items-center gap-2.5">

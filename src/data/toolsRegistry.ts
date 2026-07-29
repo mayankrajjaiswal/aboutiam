@@ -8,7 +8,7 @@ import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
-  PackageSearch,
+  PackageSearch, Scale,
 } from 'lucide-react'
 
 export type ToolCategory =
@@ -18,6 +18,7 @@ export type ToolCategory =
   | 'Auth & Directory Builders'
   | 'Emerging & Decentralized Identity'
   | 'Supply Chain & Governance'
+  | 'Program & Vendor Management'
 
 export interface ToolFaq {
   q: string
@@ -623,6 +624,57 @@ export const TOOLS: ToolMeta[] = [
     ],
     relatedLinks: [{ label: 'Browse the full CVE Tracker →', href: '/research' }, { label: 'Decode a JWT and check its algorithm →', href: '/tools/jwt-decoder' }],
   },
+  {
+    slug: 'iam-tco-calculator',
+    title: 'IAM Build vs. Buy TCO Calculator — 3-Year Cost Comparison',
+    description: 'An editable-slider calculator comparing the 3-year total cost of ownership of building an in-house identity stack versus buying a commercial IDaaS subscription — engineer hours, licensing, and an optional breach-risk adjustment.',
+    category: 'Program & Vendor Management',
+    icon: Scale,
+    phase: 3,
+    status: 'live',
+    keywords: ['build vs buy', 'iam tco calculator', 'idaas cost comparison', 'identity total cost of ownership', 'keycloak vs okta cost'],
+    analogy: 'Deciding whether to build your own identity provider or buy one is like deciding whether to build your own car or lease one — building gives you full control but you pay in mechanics\' hours and maintenance risk, while leasing costs a predictable monthly fee but scales with how many cars (seats) you need.',
+    expert: 'A pure client-side projection: annual build cost = engineer count × fully-loaded annual engineer cost × (maintenance hours per year ÷ 2080 standard annual work hours); annual buy cost = per-seat licensing cost × seat count. An optional toggle applies a documented, illustrative uplift multiplier to the build total, reflecting the commonly-cited pattern that self-maintained auth stacks patch known vulnerabilities more slowly than a dedicated commercial vendor security team. Directional only — not a procurement-grade TCO model.',
+    faqs: [
+      { q: 'Is this a real procurement-grade TCO model?', a: 'No — it is a directional, illustrative comparison using documented default assumptions you can adjust. Real procurement decisions should incorporate your own negotiated pricing, compliance requirements, and migration costs.' },
+      { q: 'What does the breach-risk adjustment toggle do?', a: 'It applies a static, illustrative uplift multiplier to the build-option total only, reflecting the commonly observed pattern that self-hosted, self-maintained identity stacks tend to patch known vulnerabilities more slowly than a commercial IDaaS vendor\'s dedicated security team.' },
+    ],
+    relatedLinks: [{ label: 'Generate a tailored RFP question set →', href: '/tools/iam-rfp-generator' }, { label: 'Browse the IAM Landscape Directory →', href: '/explore' }],
+  },
+  {
+    slug: 'iam-rfp-generator',
+    title: 'IAM RFP Generator — Tailored Vendor Evaluation Questionnaire',
+    description: 'Answer a short questionnaire on org size, industry, and priority capabilities to generate a categorized, downloadable RFP — Security & Compliance, Integration, TCO, and Implementation Risk — with deep links to named vendors known to support each capability.',
+    category: 'Program & Vendor Management',
+    icon: ClipboardCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['iam rfp template', 'identity vendor rfp generator', 'idaas rfp questions', 'iam vendor evaluation questionnaire'],
+    analogy: 'Generic RFP templates ask every vendor the same 200 questions regardless of what you actually need — this is more like a tailor taking your measurements first, then only handing you the questions relevant to your org size, industry, and the specific capabilities (SSO, MFA, PAM, IGA, CIAM) you actually care about.',
+    expert: 'A pure client-side rules engine over a curated, categorized question bank (`src/data/rfpQuestionBank.ts`). Every question is either a category-mandatory baseline (always included) or gated by a capability tag and/or org-size tag matched against your questionnaire answers. Capability-tagged questions carry cross-referenced links to named products in the IAM Landscape Directory known to support that capability.',
+    faqs: [
+      { q: 'Is this a legally binding or exhaustive RFP template?', a: 'No — it is a starting point covering the categories and questions most commonly missed in vendor evaluations. Always add your organization\'s specific legal, security, and procurement requirements.' },
+      { q: 'How does it decide which questions to include?', a: 'Each question in the bank is tagged with the capability area(s) and/or org size it applies to. Selecting "MFA" as a priority capability, for example, pulls in phishing-resistant-authentication questions that a generic RFP would likely miss.' },
+    ],
+    relatedLinks: [{ label: 'Compare vendors side-by-side →', href: '/vendor' }, { label: 'Browse the IAM Landscape Directory →', href: '/explore' }],
+  },
+  {
+    slug: 'iam-salary-compass',
+    title: 'IAM Salary Compass — Identity & Access Management Compensation Guide',
+    description: 'A filterable, IAM-specific compensation comparator by role, seniority, specialization (Workforce IAM, CIAM, PAM, IGA), and region — directional estimates aggregated from public sources, not a substitute for local market research.',
+    category: 'Program & Vendor Management',
+    icon: Combine,
+    phase: 3,
+    status: 'live',
+    keywords: ['iam salary', 'identity engineer salary', 'pam engineer salary', 'ciam salary', 'identity architect compensation'],
+    analogy: 'Generic salary sites lump every "security engineer" into one bucket regardless of specialty — this is closer to a specialty-aware compensation guide that recognizes a PAM engineer and a CIAM engineer are different jobs with different market premiums, the way a general "doctor" salary figure would be useless without knowing if they\'re a surgeon or a general practitioner.',
+    expert: 'A static dataset (`src/data/iamSalaryData.ts`) of p25/p50/p75 US-national-average total-compensation figures per role × seniority × specialization combination, scaled by a region multiplier for the selected market. All figures are directional estimates aggregated from publicly-available identity/security compensation survey summaries — not a licensed compensation-benchmarking product.',
+    faqs: [
+      { q: 'Where does this data come from?', a: 'It is a directional estimate aggregated from publicly-available identity and security compensation survey summaries. It is not sourced from a paid compensation-benchmarking service and should not be treated as authoritative for a specific negotiation.' },
+      { q: 'Why does PAM/CIAM pay more than generalist IAM in some rows?', a: 'Specialized skill areas with a smaller qualified talent pool (like PAM vaulting/JIT architecture or large-scale CIAM) commonly command a premium over generalist workforce-IAM roles in public compensation aggregator data.' },
+    ],
+    relatedLinks: [{ label: 'Explore the Interview & Career Center →', href: '/career-center' }],
+  },
 ]
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {
@@ -637,6 +689,7 @@ export function getToolsByCategory(): { category: ToolCategory; tools: ToolMeta[
     'Auth & Directory Builders',
     'Emerging & Decentralized Identity',
     'Supply Chain & Governance',
+    'Program & Vendor Management',
   ]
   return order.map((category) => ({
     category,

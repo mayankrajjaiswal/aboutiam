@@ -256,27 +256,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-### B7. Tabletop Exercise Generator
-
-**One-liner:** A questionnaire (industry, IdP type, team size, scenario theme) produces a printable/PDF-exportable tabletop exercise script — objectives, timed injects, discussion questions, and a scoring rubric — generated directly from the existing 18 Security Bulletins as source material.
-
-**Why unique:** The existing Crisis Response Console (`SecurityBulletins.tsx`) is single-scenario and interactive-only; real security teams need an exportable, facilitator-usable script for a live team tabletop session, which is a genuinely different artifact/use case from an in-browser simulation.
-
-**Where it fits:** New tool at `/tools/tabletop-exercise-generator`, page `Tools/TabletopExerciseGenerator.tsx`, §4E convention. Sidebar: `tools` group.
-
-**Design:**
-- Questionnaire: industry, primary IdP type, team size, and a scenario theme picked from the existing `BULLETIN_CATEGORIES` (§4X) — **reuses `bulletinsData.ts`'s `BULLETINS` array as the source incident**, no new incident authoring needed.
-- `src/lib/tools/tabletopGenerator.ts` — transforms a selected bulletin's `playbookSteps`/`simulator` fields into a timed-inject facilitator script structure (objectives, T+0/T+15/T+30 injects, discussion prompts, a scoring rubric across identity/detection/communications capability areas).
-- Export as a downloadable, printable Markdown/PDF document.
-
-**Tests:** `src/lib/tools/tabletopGenerator.test.ts` — every `BULLETINS` entry successfully generates a complete script with a non-empty inject sequence and rubric (guards against a future bulletin missing fields this generator depends on).
-
-**Docs to update:** `src/data/toolsRegistry.ts` new entry; `README.md` §C new bullet, and amend the existing Security Bulletins bullet in §A to mention the generator reuses its data; `GEMINI.md` §2 new row, plus a one-line addition to §4X noting a new consumer of `BULLETINS`.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### B11. Accessibility (WCAG 2.2 AA) Audit & Hardening Sweep
 
 **One-liner:** A systematic `axe-core`-driven accessibility audit of the 30+ Framer Motion playgrounds and drag/click-based builders (including this batch's B3/B4 and Phase 1's Modernization Backlog Game), fixing keyboard-navigation, focus-management, and ARIA gaps on custom simulator widgets.
@@ -376,9 +355,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, and B2 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, and B7 have shipped. Remaining order:
 
-- **B7** — Tabletop Exercise Generator (easy-medium, reuses existing bulletin data).
 - **A1** — PQC Readiness Auditor (easy-medium, fills a real named gap).
 - **A2** — Hybrid PQC Cert Chain Visualizer (medium, extends A1's concepts into an existing playground).
 - **B3, B4** — LDAP Schema Designer, HR Attribute Mapper (medium, pair well).

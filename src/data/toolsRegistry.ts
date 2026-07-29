@@ -8,7 +8,7 @@ import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
-  PackageSearch, Scale,
+  PackageSearch, Scale, Presentation,
 } from 'lucide-react'
 
 export type ToolCategory =
@@ -674,6 +674,23 @@ export const TOOLS: ToolMeta[] = [
       { q: 'Why does PAM/CIAM pay more than generalist IAM in some rows?', a: 'Specialized skill areas with a smaller qualified talent pool (like PAM vaulting/JIT architecture or large-scale CIAM) commonly command a premium over generalist workforce-IAM roles in public compensation aggregator data.' },
     ],
     relatedLinks: [{ label: 'Explore the Interview & Career Center →', href: '/career-center' }],
+  },
+  {
+    slug: 'tabletop-exercise-generator',
+    title: 'Tabletop Exercise Generator — Identity Incident Facilitator Script',
+    description: 'Answer a short questionnaire to generate a printable, facilitator-ready tabletop exercise script — objectives, timed injects, discussion prompts, and a scoring rubric — drawn directly from the Security Bulletins archive.',
+    category: 'Program & Vendor Management',
+    icon: Presentation,
+    phase: 3,
+    status: 'live',
+    keywords: ['tabletop exercise generator', 'incident response tabletop', 'security tabletop script', 'iam incident simulation'],
+    analogy: 'The Crisis Response Console lets one person click through a breach scenario alone at a keyboard — this generates the script a facilitator hands to an entire room for a live team tabletop exercise, the same incident turned into a group exercise instead of a solo simulation.',
+    expert: 'A pure template transform (`src/lib/tools/tabletopGenerator.ts`) over a selected entry from the existing Security Bulletins registry (`src/data/bulletinsData.ts`) — no new incident authoring. Produces a timed inject sequence (T+0/T+15/T+30) derived from the bulletin\'s own simulator narrative, one discussion prompt per real playbook step, and a 3-area scoring rubric (Identity Detection, Incident Communications, Remediation Execution) cross-referencing the bulletin\'s mapped compliance controls. Exports as downloadable Markdown.',
+    faqs: [
+      { q: 'Does this invent new incident scenarios?', a: 'No — every script is generated from one of the 18 real incident bulletins already in the Security Bulletins archive, so the injects and remediation guidance are grounded in an existing, reviewed scenario.' },
+      { q: 'Can I run this live with a team?', a: 'Yes — that is the point. Download the Markdown script and read out each timed inject to your team during a scheduled tabletop session, then use the discussion prompts and rubric to debrief afterward.' },
+    ],
+    relatedLinks: [{ label: 'Browse the full Security Bulletins archive →', href: '/bulletins' }],
   },
 ]
 

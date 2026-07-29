@@ -61,6 +61,7 @@ const IdentitySbomAnalyzer = lazy(() => import('./pages/Tools/IdentitySbomAnalyz
 const IamTcoCalculator = lazy(() => import('./pages/Tools/IamTcoCalculator'))
 const IamRfpGenerator = lazy(() => import('./pages/Tools/IamRfpGenerator'))
 const IamSalaryCompass = lazy(() => import('./pages/Tools/IamSalaryCompass'))
+const TabletopExerciseGenerator = lazy(() => import('./pages/Tools/TabletopExerciseGenerator'))
 const IdentityBrokerSandbox = lazy(() => import('./pages/Playgrounds/IdentityBrokerSandbox'))
 const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
 const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
@@ -235,6 +236,7 @@ export default function App() {
               <Route path="/tools/iam-tco-calculator" element={<IamTcoCalculator />} />
               <Route path="/tools/iam-rfp-generator" element={<IamRfpGenerator />} />
               <Route path="/tools/iam-salary-compass" element={<IamSalaryCompass />} />
+              <Route path="/tools/tabletop-exercise-generator" element={<TabletopExerciseGenerator />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />
               <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
               <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />

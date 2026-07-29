@@ -104,6 +104,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [IAM Build vs. Buy TCO Calculator](https://www.aboutiam.com/tools/iam-tco-calculator/): An editable-slider calculator comparing the 3-year total cost of ownership of building an in-house identity stack versus buying a commercial IDaaS subscription.
 - [IAM RFP Generator](https://www.aboutiam.com/tools/iam-rfp-generator/): Answer a short questionnaire to generate a categorized, downloadable RFP with deep links to named vendors known to support each capability.
 - [IAM Salary Compass](https://www.aboutiam.com/tools/iam-salary-compass/): A filterable, IAM-specific compensation comparator by role, seniority, specialization, and region — directional estimates aggregated from public sources.
+- [Tabletop Exercise Generator](https://www.aboutiam.com/tools/tabletop-exercise-generator/): Answer a short questionnaire to generate a printable, facilitator-ready tabletop exercise script — objectives, timed injects, discussion prompts, and a scoring rubric — drawn from the Security Bulletins archive.
 
 ## Advanced Ecosystem & Governance
 

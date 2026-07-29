@@ -176,36 +176,6 @@ Every feature must update:
 
 ---
 
-## Feature 9 — Identity Supply-Chain / SBOM-for-Auth Analyzer
-
-**One-liner:** Paste a `package.json` (or similar manifest) and get a mock "auth-relevant dependency risk report" — flags packages with a history of auth-adjacent CVEs (JWT libraries, SAML parsers, OAuth clients), cross-references the existing CVE Tracker, and exports an "Identity SBOM."
-
-**Why unique:** Fills a real 2026 supply-chain concern (attacks on auth-adjacent libraries) not covered by the existing `ResearchCenter.tsx` CVE directory, which is read-only reference material rather than an interactive analyzer of *your own* stack.
-
-**Where it fits:** New tool at `/tools/identity-sbom-analyzer`, page `Tools/IdentitySbomAnalyzer.tsx`, following the §4E tool convention exactly (registry entry + `ToolPageShell` + `BeginnerExpertExplainer`). Sidebar: `tools` group. New pure-logic helper `src/lib/tools/identitySbom.ts`.
-
-**Design:**
-- Textarea paste of `package.json` `dependencies`/`devDependencies` (or a manual comma-separated package list, for non-npm ecosystems — keep the parser format-tolerant).
-- `identitySbom.ts` matches parsed package names/version ranges against a curated static table (`src/data/authRiskyLibraries.ts`) of known auth-relevant libraries and their historically disclosed CVE ids.
-- Cross-reference: any matched CVE id that also exists in `CVE_DATABASE` (`src/data/researchData.ts`, §4W) renders a "View full CVE profile →" deep link to `/research?cve=<id>` — this is the connective tissue that makes it feel integrated rather than a standalone toy.
-- Output: a categorized report (Critical/High/Medium/Info) plus a downloadable JSON "Identity SBOM" (list of matched libraries + flagged CVEs + a generated timestamp) — client-side `Blob` download, no upload anywhere (privacy notice via the existing `PrivacyNotice` component already used by `ToolsCatalog`/`ToolPageShell`).
-
-**Data model:** `src/data/authRiskyLibraries.ts` — curated array of `{ packageName, ecosystem, knownCveIds: string[], notes }`. Cross-checked against `CVE_DATABASE` ids in a test.
-
-**Tests:**
-- `src/lib/tools/identitySbom.test.ts` — parser handles a real `package.json` fixture, unknown packages are silently skipped (not false-flagged), version-range matching correctly scopes a CVE to only affected versions.
-- `src/data/authRiskyLibraries.test.ts` — every `knownCveIds` entry that has a corresponding `CVE_DATABASE` id actually resolves (catches a stale/typo'd cross-reference immediately, same pattern as the `controlsMapped` check in `bulletinsData.test.ts`).
-
-**Docs to update:**
-- `src/data/toolsRegistry.ts` — new `ToolMeta` entry, `status: 'live'`.
-- `README.md` §C: add to the tools bullet list under a fitting sub-bucket (new "Supply Chain & Governance" grouping, or extend "Hashing, Encoding & Secrets").
-- `GEMINI.md` §2 table: new row for `/tools/identity-sbom-analyzer`.
-- `public/llms.txt` + `public/sitemap.xml`.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ## Feature 10 — Continuous Access Evaluation (CAEP) Event Storm Visualizer
 
 **One-liner:** A dedicated real-time Shared Signals Framework simulator — multiple mock relying parties subscribe to a mock IdP's CAEP event stream; triggering events (session-revoked, device-compliance-changed, IP-changed) animates propagation/latency/enforcement fanning out to each subscriber as a pub-sub diagram.
@@ -237,15 +207,14 @@ Every feature must update:
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), and #11 (Modernization Backlog Game) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), and #9 (Identity SBOM Analyzer) have shipped. Remaining order:
 
-1. **#9 Identity SBOM Analyzer** — tools-convention reuse, cross-links to existing CVE tracker.
-2. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
-3. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
-4. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
-5. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-6. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-7. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#5 Build-Your-Own-IdP Sandbox** — medium, but mostly composes already-built JWT/JWKS/OIDC logic.
+2. **#3 OpenID4VC Wallet Studio** — medium, extends existing SD-JWT logic.
+3. **#6 FAPI 2.0 Playground** — medium, cross-links banking architecture + new standards entry.
+4. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
+5. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+6. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

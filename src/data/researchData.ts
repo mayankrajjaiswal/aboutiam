@@ -214,6 +214,32 @@ export const CVE_DATABASE: CveDetails[] = [
     secureCode: `// Secure: explicitly reject "none" and any unexpected algorithm\njwt.verify(token, secretOrPublicKey, { algorithms: ['RS256'] })`
   },
   {
+    id: 'CVE-2015-2951',
+    title: 'PyJWT `alg: none` Signature Bypass',
+    cvss: 9.8,
+    component: 'PyJWT (Python library, pre-1.3.0)',
+    vulnerabilityType: 'Missing Signature Verification',
+    difficulty: 'Beginner',
+    description: 'PyJWT versions before 1.3.0 did not reject a JWT whose header claimed `alg: "none"`, allowing `jwt.decode()` to accept an unsigned, attacker-forged token as valid.',
+    exploitScenario: 'Attacker strips the signature from a captured token, rewrites the header to `{"alg":"none"}` and the payload to an admin claim, and `jwt.decode()` accepts it without verifying anything.',
+    patchRemediation: 'Upgrade past PyJWT 1.3.0 and always pass an explicit `algorithms=[...]` allowlist to `jwt.decode()` so `none` can never be negotiated.',
+    vulnerableCode: `# Vulnerable: no algorithms allowlist passed to decode()\npayload = jwt.decode(token, key)`,
+    secureCode: `# Secure: explicit algorithm allowlist rejects "none"\npayload = jwt.decode(token, key, algorithms=['RS256'])`
+  },
+  {
+    id: 'CVE-2016-7036',
+    title: 'python-jose RSA/HMAC Key-Confusion Signature Forgery',
+    cvss: 8.1,
+    component: 'python-jose (Python library)',
+    vulnerabilityType: 'Algorithm Confusion',
+    difficulty: 'Intermediate',
+    description: 'python-jose\'s decode path did not enforce that the key type matched the algorithm family in the token header, so a token signed `HS256` could be verified against an RSA public key treated as an HMAC secret.',
+    exploitScenario: 'A server distributes its RS256 public key for verification; an attacker signs a forged token with `alg: HS256` using that public key as the HMAC secret, and the library accepts it as valid.',
+    patchRemediation: 'Upgrade to a patched python-jose release and always pass an explicit `algorithms=[...]` allowlist to `jwt.decode()`, matching the key type actually in use.',
+    vulnerableCode: `# Vulnerable: no algorithm allowlist, so alg confusion is possible\nclaims = jose_jwt.decode(token, rsa_public_key)`,
+    secureCode: `# Secure: explicit algorithm allowlist matching the key type\nclaims = jose_jwt.decode(token, rsa_public_key, algorithms=['RS256'])`
+  },
+  {
     id: 'CVE-2019-7644',
     title: 'node-samlify Signature Wrapping (SAML Auth Bypass)',
     cvss: 9.8,

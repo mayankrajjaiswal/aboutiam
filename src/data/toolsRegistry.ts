@@ -8,6 +8,7 @@ import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
+  PackageSearch,
 } from 'lucide-react'
 
 export type ToolCategory =
@@ -16,6 +17,7 @@ export type ToolCategory =
   | 'Hashing, Encoding & Secrets'
   | 'Auth & Directory Builders'
   | 'Emerging & Decentralized Identity'
+  | 'Supply Chain & Governance'
 
 export interface ToolFaq {
   q: string
@@ -603,6 +605,24 @@ export const TOOLS: ToolMeta[] = [
     ],
     relatedLinks: [{ label: 'Generate a did:key keypair →', href: '/tools/did-key-generator' }, { label: 'Issue and verify a Verifiable Credential →', href: '/playground/vc-did' }],
   },
+  {
+    slug: 'identity-sbom-analyzer',
+    title: 'Identity SBOM Analyzer — Auth-Adjacent Dependency Risk Report',
+    description: 'Paste a package.json (or a plain comma/newline-separated dependency list) to get an auth-relevant dependency risk report, cross-referenced against known JWT/SAML library CVEs, plus a downloadable "Identity SBOM" JSON export.',
+    category: 'Supply Chain & Governance',
+    icon: PackageSearch,
+    phase: 3,
+    status: 'live',
+    keywords: ['identity sbom', 'sbom generator', 'auth dependency scanner', 'jwt library cve', 'saml library cve', 'software bill of materials', 'supply chain security'],
+    analogy: 'Think of this like a food-allergen label check for your dependency tree — instead of scanning ingredients for known allergens, it scans your package.json for auth libraries (JWT, SAML, OAuth clients) with a history of serious, publicly disclosed signature-bypass vulnerabilities, and tells you exactly which installed version is affected.',
+    expert: 'Parses package.json dependencies/devDependencies (or a plain dependency list for non-npm ecosystems), matches package names against a curated table of historically CVE-disclosed auth-adjacent libraries, and does semver-aware version-range matching to confirm whether the installed version is actually affected — unmatched packages are never false-flagged. Matched CVE ids cross-reference the site\'s own CVE Tracker (`/research?cve=<id>`) for the full vulnerable/secure code breakdown. Everything runs and stays in your browser; the JSON "Identity SBOM" export is a client-side Blob download.',
+    faqs: [
+      { q: 'Does this upload my package.json anywhere?', a: 'No — parsing and matching both run entirely in your browser via JavaScript. Nothing you paste is ever sent to a server.' },
+      { q: 'Why wasn\'t a library I know has CVEs flagged?', a: 'The curated table only covers a hand-picked set of well-documented, historically disclosed auth-adjacent library CVEs (JWT/SAML libraries) — it is not a comprehensive vulnerability database. Unmatched packages are intentionally skipped rather than guessed at.' },
+      { q: 'What does "Info" severity mean in the report?', a: 'The package matched a known-risky library, but the installed version string couldn\'t be parsed (e.g. "latest", a git URL, or no version at all) — it may or may not be affected, so it\'s flagged for manual review instead of being silently skipped or falsely marked Critical.' },
+    ],
+    relatedLinks: [{ label: 'Browse the full CVE Tracker →', href: '/research' }, { label: 'Decode a JWT and check its algorithm →', href: '/tools/jwt-decoder' }],
+  },
 ]
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {
@@ -616,6 +636,7 @@ export function getToolsByCategory(): { category: ToolCategory; tools: ToolMeta[
     'Hashing, Encoding & Secrets',
     'Auth & Directory Builders',
     'Emerging & Decentralized Identity',
+    'Supply Chain & Governance',
   ]
   return order.map((category) => ({
     category,

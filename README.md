@@ -117,12 +117,13 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **Hybrid Identity Sync Lab:** Toggle between Password Hash Sync, Pass-Through Authentication, and Federation (AD FS) to see how each handles an on-prem login.
 
 ### 🛠️ C. Security Tools (`/tools`)
-* **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. 34 tools are live:
+* **Free, 100% client-side IAM/security utilities** — no signup, no uploads, nothing leaves the device. 35 tools are live:
   * **Tokens & Assertions:** JWT Decoder, JWT Generator, JWKS Key-Set Inspector, SAML Decoder, SD-JWT Decoder.
   * **PKI & Certificates:** Basic/Bearer Auth Header Decoder, JWK↔PEM Converter, X.509 Certificate & CSR Decoder, X.509 CSR Generator, PEM Certificate Bundle Splitter & Chain Order Checker.
   * **Hashing, Encoding & Secrets:** Base64/Base64URL Encoder-Decoder, SHA-256 & Hash Generator, HMAC Generator & Verifier, UUID & ULID Generator, Password Generator & Entropy Checker, bcrypt Hash Generator, Passphrase & Entropy Strength Calculator, PBKDF2 Key Derivation & Hash Verifier, Ansible Vault Encryptor & Decryptor, Mozilla SOPS GitOps Secrets Simulator, Hardware Key Ring & HSM Emulator.
   * **Auth & Directory Builders:** OAuth PKCE Generator, TOTP Generator & Verifier, LDAP Filter Builder, SCIM Payload Validator, OAuth Request Builder, OIDC Discovery Document Auditor, SAML Metadata Builder, SCIM Diff & Reconciliation Tool, Standards Conformance Checker.
   * **Emerging & Decentralized Identity:** WebAuthn/Passkey Assertion Decoder, DID Key Generator, DID Document Validator & Resolver Preview.
+  * **Supply Chain & Governance:** Identity SBOM Analyzer — paste a `package.json` for an auth-relevant dependency risk report cross-referenced against known JWT/SAML library CVEs, with a downloadable "Identity SBOM" JSON export.
 * Every tool page pairs a **beginner analogy** with an **expert technical specification** (RFC/spec-referenced), matching the Encyclopedia's teaching pattern, plus its own SEO-optimized route, meta tags, and JSON-LD structured data for search discoverability.
 * All backlog items from `FIXED_TODO.md` (including sitemap hygiene and automatic IndexNow pings) have been fully completed and validated.
 

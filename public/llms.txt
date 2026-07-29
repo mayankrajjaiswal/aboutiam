@@ -93,6 +93,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [PBKDF2 Key Derivation & Hash Verifier](https://www.aboutiam.com/tools/pbkdf2-generator/): Derive a key from a password using PBKDF2 with a configurable salt, iteration count, and hash function, and verify a password against a stored derived hash — all via the Web Crypto API.
 - [PEM Certificate Bundle Splitter & Chain Order Checker](https://www.aboutiam.com/tools/cert-bundle-splitter/): Paste a multi-certificate PEM bundle to split it into individual certificates, inspect each one's subject/issuer/expiry, and check whether the leaf-to-root chain order is correct.
 - [DID Document Validator & Resolver Preview](https://www.aboutiam.com/tools/did-document-validator/): Paste a Decentralized Identifier (DID) Document JSON and validate it against the W3C DID Core structural requirements, with a pretty-printed, field-by-field resolved preview.
+- [Identity SBOM Analyzer — Auth-Adjacent Dependency Risk Report](https://www.aboutiam.com/tools/identity-sbom-analyzer/): Paste a package.json to get an auth-relevant dependency risk report, cross-referenced against known JWT/SAML library CVEs, plus a downloadable "Identity SBOM" JSON export.
 
 ## Advanced Ecosystem & Governance
 

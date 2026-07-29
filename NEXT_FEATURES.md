@@ -92,42 +92,14 @@ Every feature must update:
 
 ---
 
-## Feature 10 — Continuous Access Evaluation (CAEP) Event Storm Visualizer
-
-**One-liner:** A dedicated real-time Shared Signals Framework simulator — multiple mock relying parties subscribe to a mock IdP's CAEP event stream; triggering events (session-revoked, device-compliance-changed, IP-changed) animates propagation/latency/enforcement fanning out to each subscriber as a pub-sub diagram.
-
-**Why unique:** `SessionHijackingLab.tsx` already *mentions* CAEP as one toggle among several session-defense controls, but nothing treats CAEP as its own first-class protocol topic the way Standards Explorer entries do for OIDC/SAML/SCIM — this gives it a dedicated visual simulator.
-
-**Where it fits:** New playground at `/playground/caep-event-storm`, component `CaepEventStorm.tsx` in `src/pages/Playgrounds/`. Sidebar: `architecture` group (protocol-tier, alongside `TokenExchange`, `ConditionalAccess`). `PlaygroundCatalog.tsx` entry. Add a `caep` entry to `src/data/standardsData.ts` if one doesn't already exist (verify first — `SessionHijackingLab.tsx`'s existing CAEP toggle may already reference one; if so, extend its `relatedResources` to link here instead of creating a duplicate).
-
-**Design:**
-- Central "IdP Event Bus" node with 3-4 mock relying-party nodes connected as subscribers (SVG connector lines, matching the existing animated-connector visual language from `ReferenceBuilder.tsx`/`ArchitectureCenter.tsx`).
-- A control panel to fire a CAEP event type; each subscriber node animates receipt with a simulated latency delay and shows its own enforcement decision (e.g. "Revoked session at RP-2 in 340ms", "RP-3 ignored event — not subscribed to this event type").
-- A "chaos toggle" simulates a subscriber that's offline/slow (ties into the existing Airplane Mode simulator per §4G) — demonstrates the real-world problem of inconsistent enforcement latency across relying parties.
-
-**Data model:** `src/data/caepEventScenarios.ts` — event type definitions and per-subscriber simulated latency/behavior profiles.
-
-**Tests:**
-- `src/data/caepEventScenarios.test.ts` — every event type has at least one subscriber behavior defined.
-- `src/pages/Playgrounds/CaepEventStorm.test.tsx` — firing an event updates every subscribed node's state; an unsubscribed node's state is untouched; the offline-chaos toggle delays/drops delivery to the affected node only.
-
-**Docs to update:**
-- `README.md` §B: new bullet.
-- `GEMINI.md` §2 table: new row.
-
-**Feasibility:** Medium.
-
----
-
 ## Suggested Execution Order
 
 Ordered by a mix of (a) unlocking cross-links for later features, (b) risk-adjusted effort, and (c) novelty payoff:
 
-Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), #3 (OpenID4VC Wallet Studio), and #6 (FAPI 2.0 Playground) have shipped. Remaining order:
+Features #1 (Agentic Identity & MCP Trust Simulator), #12 (Spaced-Repetition Quiz), #2 (NHI Sprawl Game), #7 (Passkey Rollout Strategist), #11 (Modernization Backlog Game), #9 (Identity SBOM Analyzer), #5 (Build-Your-Own-IdP Sandbox), #3 (OpenID4VC Wallet Studio), #6 (FAPI 2.0 Playground), and #10 (CAEP Event Storm Visualizer) have shipped. Remaining order:
 
-1. **#10 CAEP Event Storm Visualizer** — medium, new pub-sub visual pattern.
-2. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
-3. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
+1. **#8 Live Packet Capture Overlay** — medium engineering risk because it touches multiple *existing shipped* playgrounds; do this after the team is warmed up on the codebase's trace-log conventions, and budget full regression testing of every playground it's wired into.
+2. **#4 Attack-Path Graph Visualizer** — hardest (new rendering primitive); do last so the force-graph engineering doesn't block the other features from shipping.
 
 ## Final Wrap-Up (after all 12 ship)
 

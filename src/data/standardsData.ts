@@ -930,6 +930,7 @@ Content-Type: application/json
     ],
     relatedResources: [
       { title: 'CAEP Continuous Access Evaluation Lab', path: '/playground/caep', type: 'playground' },
+      { title: 'CAEP Event Storm Visualizer (multi-subscriber fan-out)', path: '/playground/caep-event-storm', type: 'playground' },
       { title: 'Session Hijacking & Token Theft Lab', path: '/playground/session-hijacking', type: 'playground' }
     ]
   },

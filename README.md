@@ -165,6 +165,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 * **File Export:** JSZip (lazy-loaded via dynamic `import()` only when the Offline Study Pack download is triggered, so it never adds to the Home page's initial bundle)
 * **Optional Cloud Sync:** Google Identity Services (OAuth token client) + the Drive v3 REST API for the opt-in Backup & Restore feature — no SDK dependency, called directly with `fetch`; gated entirely behind an optional `VITE_GOOGLE_CLIENT_ID` env var (see `.env.example`)
 * **Testing Core:** Vitest across three projects — `unit` (pure logic, colocated `*.test.ts`), `component` (React Testing Library + jsdom, colocated `*.test.tsx` plus a data-driven smoke test rendering every page), and `integration` (cross-file consistency and SSR-safety checks in `tests/`) — with coverage reporting via `@vitest/coverage-v8`
+* **Quality & Accessibility:** `jest-axe` is wired into the `component` test project as an opt-in `toHaveNoViolations()` assertion (not globally enforced, to avoid a mass simultaneous failure across pre-existing tests) — new interactive components are expected to include it; see `tests/pages/phase2Accessibility.test.tsx`. An initial sweep already caught and fixed a shared `PlaygroundShell.tsx` heading-order (`h1`→`h3`) skip affecting every playground built on the shell.
 
 ---
 

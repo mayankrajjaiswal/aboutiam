@@ -20,29 +20,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-## Group B — Governance, Program Management & Career
-
-### B11. Accessibility (WCAG 2.2 AA) Audit & Hardening Sweep
-
-**One-liner:** A systematic `axe-core`-driven accessibility audit of the 30+ Framer Motion playgrounds and drag/click-based builders (including this batch's B3/B4 and Phase 1's Modernization Backlog Game), fixing keyboard-navigation, focus-management, and ARIA gaps on custom simulator widgets.
-
-**Why unique:** Not a feature — load-bearing credibility/inclusivity work for a platform claiming "one-stop" status; WCAG 2.2 AA is the accepted baseline for education platforms and no systematic audit currently exists per README/GEMINI.md.
-
-**Where it fits:** Cross-cutting — no new route. Add `@axe-core/react` (dev-only, or `jest-axe`/`vitest-axe` equivalent) as a dev dependency wired into the existing `component` Vitest project (§4AA) so future component tests can assert zero critical a11y violations, then run a manual sweep prioritizing the newest/most complex interactive widgets first.
-
-**Design:**
-- Phase 1: wire an axe-core assertion helper into `src/test/renderWithProviders.tsx` (opt-in per test, not globally enforced immediately, to avoid a mass simultaneous failure across 100+ existing component tests) so new tests can adopt it incrementally.
-- Phase 2: manually sweep the highest-risk existing components (drag/click builders, canvas-style playgrounds, custom dropdown/accordion widgets) for keyboard-nav and focus-trap issues; fix incrementally, filing what's found rather than trying to land it all in one PR.
-- Phase 3: require the axe-core assertion on every *new* interactive component test going forward (document this in `GEMINI.md` §4AA's test-project table as a new row/note).
-
-**Tests:** The sweep itself *is* test-writing — no separate "test the audit" needed. Each fixed component gets (or already has) a component test asserting no critical axe violations.
-
-**Docs to update:** `GEMINI.md` §4AA — add a note that new interactive components should include an axe-core assertion; `README.md` — no bullet needed (this is infrastructure, not a user-facing feature), but consider a short mention in a "Quality & Accessibility" line if one doesn't exist.
-
-**Feasibility:** Medium effort, spread over time — treat as an ongoing hardening initiative, not a single PR; schedule after the highest-priority Group A/B features ship, but before Phase 2 is considered "done."
-
----
-
 ## Group C — Engagement, Accessibility & Format Innovation
 
 ### C4. Local AI Assistant Upgrade (Opt-In WebLLM)
@@ -100,10 +77,11 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, A3, A6, and C3 have shipped. All of Group A is done, and C3 shipped with a lightweight custom terminal component instead of `xterm.js` (a scope decision consistent with this codebase's established preference for small dependency-free UI primitives over heavy libraries — see `GEMINI.md` §4HH). Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, A3, A6, C3, and an initial B11 pass have all shipped. All of Group A and Group B are done. C3 shipped with a lightweight custom terminal component instead of `xterm.js` (a scope decision consistent with this codebase's established preference for small dependency-free UI primitives over heavy libraries — see `GEMINI.md` §4HH). B11's three phases (opt-in `jest-axe` matcher, a manual sweep of the newest Phase 2 playgrounds, and the `GEMINI.md`/`README.md` documentation) are done as an initial installment — per its own "ongoing hardening initiative, not a single PR" framing, extending the sweep to more of the site's 30+ pre-existing interactive components remains open for a future pass, but is not blocking Phase 2 completion.
 
-- **B11** — Accessibility Audit & Hardening Sweep (ongoing, start threading through once enough interactive components exist to make a sweep worthwhile — don't block on this, but don't skip it either).
-- **A10** — Avatar & Spatial Identity Lab (stretch, only if there's appetite after everything else — out of scope for this pass).
+Everything remaining is explicitly out of scope for this pass:
+
+- **A10** — Avatar & Spatial Identity Lab (stretch, only if there's appetite after everything else).
 - **C4** — Local AI Assistant Upgrade (highest engineering risk — dedicated spike first, own timeline — out of scope for this pass).
 - **C5** — AboutIAM Inspector Browser Extension (separate project — own go/no-go decision, sequence last — out of scope for this pass).
 

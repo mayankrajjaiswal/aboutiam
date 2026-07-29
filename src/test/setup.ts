@@ -1,7 +1,14 @@
 import '@testing-library/jest-dom/vitest'
 import { webcrypto } from 'node:crypto'
-import { afterEach } from 'vitest'
+import { afterEach, expect } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import { toHaveNoViolations } from 'jest-axe'
+
+// Opt-in accessibility assertion (§4HH-adjacent, §4AA/B11) — registers the
+// `toHaveNoViolations()` matcher globally so any test CAN call
+// `expect(await axe(container)).toHaveNoViolations()`, without forcing every
+// existing component test to suddenly assert on it.
+expect.extend(toHaveNoViolations)
 
 // jsdom ships window.crypto.getRandomValues but not crypto.subtle (Web Crypto's
 // async digest/sign/derive API) — several tool pages call it eagerly on mount

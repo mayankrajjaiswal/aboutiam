@@ -115,10 +115,10 @@ export function PlaygroundShell({
           
           {/* Help Drawer (Hints Panel) */}
           <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
-            <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5">
+            <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5">
               <HelpCircle className="w-4 h-4 text-accent-primary" />
               Developer Assist & Guidance
-            </h3>
+            </h2>
             
             <p className="text-xs text-text-secondary leading-relaxed">
               Stuck on a protocol flow or experiencing validation bypass issues? Leverage active developer hints below. Note that utilizing hints decreases your overall GRC security score.

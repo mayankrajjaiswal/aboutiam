@@ -10,26 +10,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Group A — Emerging Standards & Cryptography
 
-### A2. Hybrid PQC Certificate Chain Visualizer
-
-**One-liner:** Extends the existing `CertChainValidator.tsx` playground with a toggle showing classical vs. hybrid dual-signature certificates side by side, visualizing handshake size/latency cost and a "harvest now, decrypt later" attack timeline.
-
-**Why unique:** Makes the abstract PQC migration story (A1) visceral inside an already-shipped, well-understood playground rather than a new standalone page.
-
-**Where it fits:** No new route — a new mode/toggle inside `src/pages/Playgrounds/CertChainValidator.tsx`. No sidebar change.
-
-**Design:**
-- A "Classical / Hybrid PQC" toggle at the top of the existing cert-chain visualization; hybrid mode swaps the leaf cert's signature algorithm display and annotates the chain with the size delta per hop.
-- A dedicated "Harvest Now, Decrypt Later" timeline strip: shows an attacker capturing today's classical-encrypted traffic, then a marker on a future date when a sufficiently large quantum computer could retroactively decrypt it — contrasted against the hybrid-protected timeline where this risk doesn't apply.
-
-**Tests:** Extend `CertChainValidator.test.tsx` (or add one if none exists) — toggling to hybrid mode updates the displayed signature algorithm and size annotations; the harvest-now-decrypt-later timeline only renders in classical mode.
-
-**Docs to update:** `README.md` — amend the existing "mTLS & Certificate Chain Validator" bullet in place (don't add a new bullet, it's the same feature). `GEMINI.md` §2 — amend the existing `/playground/cert-chain` row description.
-
-**Feasibility:** Medium.
-
----
-
 ### A3. Cloud Entitlement Graph Explorer (CIEM Lite)
 
 **One-liner:** Load a seeded AWS/Azure/GCP IAM policy set; render a permission graph highlighting toxic privilege-escalation combinations (e.g. `iam:PassRole` + `lambda:CreateFunction`) and "effective vs. granted" access gaps, with a "shrink to least privilege" recalculation mode.
@@ -329,9 +309,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, and A1 have shipped. Remaining order:
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, and A2 have shipped. Remaining order:
 
-- **A2** — Hybrid PQC Cert Chain Visualizer (medium, extends A1's concepts into an existing playground).
 - **B3, B4** — LDAP Schema Designer, HR Attribute Mapper (medium, pair well).
 - **A4, A7, A8** — Identity Fabric Builder, Liveness/Injection Lab, OT/ICS Identity Lab (medium, independent — parallelize if multiple contributors).
 - **A5** — Trust Registry Explorer (medium — **only after Phase 1 Feature 3 ships**).

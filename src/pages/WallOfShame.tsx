@@ -212,7 +212,7 @@ export default function WallOfShame() {
       </div>
 
       {/* Museum Sub-Navigation Tabs */}
-      <div className="flex gap-2 bg-bg-card p-1.5 rounded-xl border border-border-subtle w-fit shadow-sm relative z-10">
+      <div className="flex flex-wrap gap-2 bg-bg-card p-1.5 rounded-xl border border-border-subtle w-fit shadow-sm relative z-10">
         {[
           { id: 'evolution', label: '🏛️ The IAM Evolution Timeline' },
           { id: 'breaches', label: '💣 Interactive Breach Labs' },

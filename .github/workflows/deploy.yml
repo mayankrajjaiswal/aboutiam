@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Audit dependencies for vulnerabilities
-        run: npm audit --audit-level=moderate
+        run: npm run audit:check
 
       - name: Build Application
         run: npm run build

@@ -29,7 +29,7 @@ jobs:
         run: npm run lint
 
       - name: Audit dependencies for vulnerabilities
-        run: npm audit --audit-level=moderate
+        run: npm run audit:check
 
       - name: Run Tests
         run: npm run test

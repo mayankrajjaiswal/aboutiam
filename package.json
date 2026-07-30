@@ -15,6 +15,7 @@
     "test:integration": "vitest run --project integration",
     "test:coverage": "vitest run --coverage",
     "spellcheck": "cspell \"src/**/*.{ts,tsx}\" \"README.md\" \"GEMINI.md\"",
+    "audit:check": "node scripts/audit-check.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {

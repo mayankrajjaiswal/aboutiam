@@ -8,18 +8,6 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ---
 
-## Group A — Emerging Standards & Cryptography
-
-### A10 (stretch, deprioritized). Avatar & Spatial Identity Verification Lab
-
-**One-liner:** Simulates age/identity assurance inside a headset-only VR/AR context — no front-facing camera, often a shared device — contrasting behavioral/gesture telemetry-based continuous authentication against wallet-based cryptographic age attestation.
-
-**Why deprioritized:** Real, researched gap (existing biometric/liveness approaches genuinely don't map to headset-only contexts), but speculative resonance with the current audience compared to the rest of Group A. Keep as a documented stretch goal — only start after A1-A9 ship and if there's appetite for more spatial-computing content.
-
-**Feasibility:** Medium-Hard.
-
----
-
 ## Group C — Engagement, Accessibility & Format Innovation
 
 ### C4. Local AI Assistant Upgrade (Opt-In WebLLM)
@@ -79,12 +67,11 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ## Suggested Execution Order
 
-A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, A3, A6, C3, and an initial B11 pass have all shipped. All of Group A and Group B are done. C3 shipped with a lightweight custom terminal component instead of `xterm.js` (a scope decision consistent with this codebase's established preference for small dependency-free UI primitives over heavy libraries — see `GEMINI.md` §4HH). B11's three phases (opt-in `jest-axe` matcher, a manual sweep of the newest Phase 2 playgrounds, and the `GEMINI.md`/`README.md` documentation) are done as an initial installment — per its own "ongoing hardening initiative, not a single PR" framing, extending the sweep to more of the site's 30+ pre-existing interactive components remains open for a future pass, but is not blocking Phase 2 completion.
+A9, C2, B8, the B6/B5/B9 trio, C1, B10, B1, B2, B7, A1, A2, B3, B4, A4, A7, A8, A5, A3, A6, C3, an initial B11 pass, and A10 have all shipped. All of Group A and Group B are done. C3 shipped with a lightweight custom terminal component instead of `xterm.js` (a scope decision consistent with this codebase's established preference for small dependency-free UI primitives over heavy libraries — see `GEMINI.md` §4HH). B11's three phases (opt-in `jest-axe` matcher, a manual sweep of the newest Phase 2 playgrounds, and the `GEMINI.md`/`README.md` documentation) are done as an initial installment — per its own "ongoing hardening initiative, not a single PR" framing, extending the sweep to more of the site's 30+ pre-existing interactive components remains open for a future pass, but is not blocking Phase 2 completion. A10 had no detailed spec in this doc (it was a thin, deprioritized stretch-goal one-liner) — its risk×defense matrix, scenarios, and copy were designed from scratch against the closest shipped analog (A7's `livenessAttackMatrix.ts` pattern); see `GEMINI.md`'s `/playground/spatial-identity-lab` row for the design rationale.
 
 Everything remaining is explicitly out of scope for this pass:
 
-- **A10** — Avatar & Spatial Identity Lab (stretch, only if there's appetite after everything else).
-- **C4** — Local AI Assistant Upgrade (highest engineering risk — dedicated spike first, own timeline — out of scope for this pass).
+- **C4** — Local AI Assistant Upgrade: a technical spike shipped (see `GEMINI.md` §Z-spike) confirming bundle-splitting/worker-isolation works and the default UX is unaffected, but real download/load-time measurement and the WASM-fallback decision are still open — a full ship/no-ship call is its own follow-up conversation.
 - **C5** — AboutIAM Inspector Browser Extension (separate project — own go/no-go decision, sequence last — out of scope for this pass).
 
 ## Final Wrap-Up (after Phase 2 ships) — DONE

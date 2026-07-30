@@ -16,6 +16,7 @@ import {
   INTERVIEW_QUESTIONS
 } from '../data/aiKnowledgeGraph'
 import type { ResourceLink } from '../data/aiKnowledgeGraph'
+import type { WebllmConnector, WebllmProgress } from '../lib/ai/webllmConnector'
 
 interface Message {
   sender: 'user' | 'assistant'
@@ -23,7 +24,14 @@ interface Message {
   code?: string
   codeLang?: string
   resources?: ResourceLink[]
+  source?: 'local-ai'
 }
+
+// Phase 2 C4 spike: opt-in, never-auto-loaded local LLM (see GEMINI.md §Z-spike
+// and docs/webllm-spike-findings.md). `webllmConnector` is dynamically
+// imported only after the user explicitly clicks "Download & Enable" below,
+// so `@mlc-ai/web-llm` never lands in this page's eagerly-loaded chunk.
+type LocalAiStatus = 'off' | 'loading' | 'ready' | 'error'
 
 type TabType = 'chat' | 'compare' | 'learn' | 'interview'
 
@@ -117,6 +125,12 @@ export default function Assistant() {
   const [isTyping, setIsTyping] = useState(false)
   const [isCopied, setIsCopied] = useState<number | null>(null)
   const chatEndRef = useRef<HTMLDivElement | null>(null)
+
+  // --- LOCAL AI SPIKE STATE (C4) ---
+  const [localAiStatus, setLocalAiStatus] = useState<LocalAiStatus>('off')
+  const [localAiProgress, setLocalAiProgress] = useState<WebllmProgress | null>(null)
+  const [localAiError, setLocalAiError] = useState<string | null>(null)
+  const connectorRef = useRef<WebllmConnector | null>(null)
 
   // --- COMPARE STATE ---
   const [activeComparisonId, setActiveComparisonId] = useState<string>('oauth_vs_oidc')
@@ -281,12 +295,70 @@ allow { input.user.role == "admin" }`,
     setInput('')
     setIsTyping(true)
 
+    if (localAiStatus === 'ready' && connectorRef.current) {
+      const connector = connectorRef.current
+      let streamed = ''
+      setMessages(prev => [...prev, { sender: 'assistant', text: '', source: 'local-ai' }])
+      connector
+        .generate(textToSend, (token) => {
+          streamed += token
+          setMessages(prev => {
+            const next = [...prev]
+            next[next.length - 1] = { sender: 'assistant', text: streamed, source: 'local-ai' }
+            return next
+          })
+        })
+        .catch((err) => {
+          const message = err instanceof Error ? err.message : 'Local generation failed.'
+          setMessages(prev => {
+            const next = [...prev]
+            next[next.length - 1] = { sender: 'assistant', text: `⚠️ ${message}`, source: 'local-ai' }
+            return next
+          })
+        })
+        .finally(() => setIsTyping(false))
+      return
+    }
+
     setTimeout(() => {
       const response = getSimulatedResponse(textToSend)
       setMessages(prev => [...prev, response])
       setIsTyping(false)
     }, 1200)
   }
+
+  const handleEnableLocalAi = async () => {
+    setLocalAiStatus('loading')
+    setLocalAiError(null)
+    setLocalAiProgress(null)
+    try {
+      const { createWebllmConnector, detectWebGpuSupport } = await import('../lib/ai/webllmConnector')
+      if (!detectWebGpuSupport()) {
+        setLocalAiError('WebGPU is not available in this browser. The WASM-only fallback path is not yet implemented in this spike.')
+        setLocalAiStatus('error')
+        return
+      }
+      const connector = createWebllmConnector()
+      connectorRef.current = connector
+      await connector.load((progress) => setLocalAiProgress(progress))
+      setLocalAiStatus('ready')
+    } catch (err) {
+      setLocalAiError(err instanceof Error ? err.message : 'Failed to load the local model.')
+      setLocalAiStatus('error')
+    }
+  }
+
+  const handleDisableLocalAi = () => {
+    connectorRef.current?.dispose()
+    connectorRef.current = null
+    setLocalAiStatus('off')
+    setLocalAiProgress(null)
+    setLocalAiError(null)
+  }
+
+  useEffect(() => {
+    return () => connectorRef.current?.dispose()
+  }, [])
 
   // --- RENDER HELPERS ---
   const activeComparison = useMemo(() => {
@@ -369,14 +441,16 @@ allow { input.user.role == "admin" }`,
                         </div>
                       )}
                       <div className={`space-y-4 max-w-[85%] text-sm leading-relaxed p-4 rounded-2xl border ${
-                        isAI 
-                          ? 'bg-bg-sidebar/50 border-border-subtle text-text-primary' 
+                        isAI
+                          ? m.source === 'local-ai'
+                            ? 'bg-bg-sidebar/50 border-purple-400/60 ring-1 ring-purple-400/30 text-text-primary'
+                            : 'bg-bg-sidebar/50 border-border-subtle text-text-primary'
                           : 'bg-accent-primary border-accent-primary text-white shadow-md'
                       }`}>
-                        <span className={`text-[9px] font-bold uppercase tracking-wider block ${isAI ? 'text-accent-primary' : 'text-white/70'}`}>
-                          {isAI ? 'AboutIAM AI Architect' : 'Your Query'}
+                        <span className={`text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${isAI ? (m.source === 'local-ai' ? 'text-purple-400' : 'text-accent-primary') : 'text-white/70'}`}>
+                          {isAI ? (m.source === 'local-ai' ? <><FlaskConical className="w-3 h-3" /> Local AI (Experimental)</> : 'AboutIAM AI Architect') : 'Your Query'}
                         </span>
-                        <p className="whitespace-pre-line">{m.text}</p>
+                        <p className="whitespace-pre-line">{m.text || (isAI && m.source === 'local-ai' ? '…' : '')}</p>
                         
                         {m.code && (
                           <div className="space-y-2 mt-4 font-mono relative">
@@ -420,6 +494,63 @@ allow { input.user.role == "admin" }`,
                   </div>
                 )}
                 <div ref={chatEndRef} />
+              </div>
+
+              {/* C4 Spike: Opt-in Local AI toggle */}
+              <div className="px-4 pt-3 border-t border-border-subtle bg-bg-sidebar/40 z-10 shrink-0">
+                <details className="group" open={localAiStatus !== 'off'}>
+                  <summary className="cursor-pointer text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5 select-none">
+                    <FlaskConical className="w-3.5 h-3.5" /> Experimental: Enable Local AI (Spike)
+                  </summary>
+                  <div className="mt-2 pb-3 text-xs text-text-secondary space-y-2">
+                    {localAiStatus === 'off' && (
+                      <>
+                        <p>
+                          Downloads a small open-weight language model (~200MB) and runs it fully
+                          client-side in a Web Worker — nothing leaves your browser. Requires WebGPU.
+                          This is an early technical spike, not the finished feature: quality and
+                          speed are unpolished.
+                        </p>
+                        <button
+                          onClick={handleEnableLocalAi}
+                          className="px-3 py-1.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-[11px] font-bold transition-colors"
+                        >
+                          Download &amp; Enable
+                        </button>
+                      </>
+                    )}
+                    {localAiStatus === 'loading' && (
+                      <p className="animate-pulse">
+                        Loading model{localAiProgress ? `: ${localAiProgress.text} (${localAiProgress.percent}%)` : '…'}
+                      </p>
+                    )}
+                    {localAiStatus === 'error' && (
+                      <>
+                        <p className="text-status-error">{localAiError}</p>
+                        <button
+                          onClick={handleDisableLocalAi}
+                          className="px-3 py-1.5 rounded-lg border border-border-subtle hover:bg-bg-nested text-text-secondary text-[11px] font-bold transition-colors"
+                        >
+                          Reset
+                        </button>
+                      </>
+                    )}
+                    {localAiStatus === 'ready' && (
+                      <>
+                        <p className="text-status-success">
+                          Local model loaded. New messages are now answered by the on-device model
+                          (see the purple badge).
+                        </p>
+                        <button
+                          onClick={handleDisableLocalAi}
+                          className="px-3 py-1.5 rounded-lg border border-border-subtle hover:bg-bg-nested text-text-secondary text-[11px] font-bold transition-colors"
+                        >
+                          Disable
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </details>
               </div>
 
               {/* Chat Input */}

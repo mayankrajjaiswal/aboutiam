@@ -49,4 +49,10 @@ describe('persisted stores survive import and use with no window/document (§3B 
     const { useSpacedRepetitionStore } = await import('../../src/store/spacedRepetitionStore')
     expect(() => useSpacedRepetitionStore.getState().recordReview('ssr-test-breach', 'good', '2026-01-01T00:00:00.000Z')).not.toThrow()
   })
+
+  it('webllmConnector (C4 spike): import and detectWebGpuSupport degrade to false, do not throw', async () => {
+    const { detectWebGpuSupport, createWebllmConnector } = await import('../../src/lib/ai/webllmConnector')
+    expect(detectWebGpuSupport()).toBe(false)
+    expect(() => createWebllmConnector()).not.toThrow()
+  })
 })

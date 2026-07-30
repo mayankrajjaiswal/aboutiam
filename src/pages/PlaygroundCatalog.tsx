@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 
 export default function PlaygroundCatalog() {
@@ -252,6 +252,13 @@ export default function PlaygroundCatalog() {
       desc: "RADIUS AAA Access-Request/Access-Accept exchanges, TACACS+'s separated authentication/authorization/accounting phases, and a Shibboleth/eduGAIN WAYF discovery-service redirect — the protocols still running enormous amounts of real enterprise network-auth and academic federation infrastructure today.",
       icon: Radio,
       link: "/playground/legacy-federation",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Avatar & Spatial Identity Verification Lab",
+      desc: "A headset-only VR/AR session has no front-facing camera and is often a shared device. Pit wallet-based cryptographic age attestation against continuous behavioral/gesture telemetry across four risk scenarios — mid-session handoff, unattended takeover, a motion-capture replay bot, and deliberate credential lending — to see why neither alone catches everything.",
+      icon: Glasses,
+      link: "/playground/spatial-identity-lab",
       badge: "Active (Advanced)",
     },
     {

@@ -71,6 +71,7 @@ const OtIcsIdentityLab = lazy(() => import('./pages/Playgrounds/OtIcsIdentityLab
 const TrustRegistryExplorer = lazy(() => import('./pages/Playgrounds/TrustRegistryExplorer'))
 const CiemExplorer = lazy(() => import('./pages/Playgrounds/CiemExplorer'))
 const LegacyFederationLab = lazy(() => import('./pages/Playgrounds/LegacyFederationLab'))
+const SpatialIdentityLab = lazy(() => import('./pages/Playgrounds/SpatialIdentityLab'))
 const IdentityBrokerSandbox = lazy(() => import('./pages/Playgrounds/IdentityBrokerSandbox'))
 const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
 const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
@@ -306,6 +307,7 @@ export default function App() {
               <Route path="/playground/trust-registry" element={<TrustRegistryExplorer />} />
               <Route path="/playground/ciem-explorer" element={<CiemExplorer />} />
               <Route path="/playground/legacy-federation" element={<LegacyFederationLab />} />
+              <Route path="/playground/spatial-identity-lab" element={<SpatialIdentityLab />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />

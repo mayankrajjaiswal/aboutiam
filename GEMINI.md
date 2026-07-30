@@ -21,7 +21,7 @@ AboutIAM is engineered as a **100% Client-Side, Zero-Backend Application**, ensu
 - **Optional Cloud Sync:** Google Identity Services token client + the Drive v3 REST API, called directly with `fetch` (no `gapi`/SDK dependency) — powers the opt-in Google Drive Backup & Restore feature (§4DD), gated behind `VITE_GOOGLE_CLIENT_ID`.
 - **Testing Core:** Vitest (Vite-native unit testing with mock SSR safeguards).
 - **Discoverability:** `robots.txt`, `sitemap.xml`, `llms.txt`, `manifest.webmanifest`, and `security.txt` live in `public/` and all reference the production domain directly — update them alongside any future domain change.
-- **Security Hardening:** A strict `Content-Security-Policy` (`connect-src 'none'`) and `Referrer-Policy` are enforced via `<meta>` tags in `index.html` (GitHub Pages serves no custom HTTP headers, so this is the only enforcement mechanism). `.github/workflows/deploy.yml` and `ci.yml` pin all third-party GitHub Actions to commit SHA (not mutable tags) and gate on `npm audit`; `.github/dependabot.yml` keeps both npm and Actions pins current.
+- **Security Hardening:** A strict `Content-Security-Policy` (`connect-src 'none'`) and `Referrer-Policy` are enforced via `<meta>` tags in `index.html` (GitHub Pages serves no custom HTTP headers, so this is the only enforcement mechanism). `.github/workflows/deploy.yml` and `ci.yml` pin all third-party GitHub Actions to commit SHA (not mutable tags) and gate on `npm run audit:check` (§3G); `.github/dependabot.yml` keeps both npm and Actions pins current.
 
 ---
 
@@ -108,6 +108,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/playground/liveness-injection`** | `Playgrounds/LivenessInjectionLab.tsx` | Complements `AIThreatLab.tsx` (voice deepfakes) with camera-based liveness -- a fully data-driven attack×defense matrix (`src/data/livenessAttackMatrix.ts`) so the UI has zero hardcoded if/else outcome logic; the same flash-challenge defense that blocks presentation replay is explicitly bypassed by camera-feed injection. |
 | **`/playground/ot-ics-identity`** | `Playgrounds/OtIcsIdentityLab.tsx` | The first IT-independent identity lab -- most field devices (`src/data/otIcsScenarios.ts`) structurally cannot authenticate. `src/lib/tools/otIcsSegmentation.ts`'s `computeReachableNodes` runs a real BFS lateral-movement simulation: in segmented mode a zone-crossing edge only survives if BOTH endpoints can authenticate, trapping a compromised HMI inside its own zone. |
 | **`/playground/legacy-federation`** | `Playgrounds/LegacyFederationLab.tsx` | Three tabs, one playground: RADIUS (`evaluateRadiusAccess` in `src/lib/tools/legacyFederation.ts`, combined AAA), TACACS+ (`checkTacacsCommand`, separately-logged authentication/authorization/accounting phases), and a Shibboleth/eduGAIN WAYF picker (`buildWayfAssertion`, backed by `src/data/legacyFederationData.ts`'s mock federation metadata). |
+| **`/playground/spatial-identity-lab`** | `Playgrounds/SpatialIdentityLab.tsx` | A10 (was a deprioritized stretch goal, no detailed spec — designed against the `livenessAttackMatrix.ts` risk×defense pattern). `src/data/spatialIdentityMatrix.ts`'s 4×4 matrix contrasts wallet-based cryptographic age attestation (proves a credential claim, not physical presence — stops nothing on its own) against continuous behavioral/gesture telemetry (stops 3 of 4 risks, but is defeated by a motion-capture replay bot the same way flash-challenge liveness is defeated by camera-feed injection); only pairing attestation with a live challenge-response prompt catches every risk. |
 | **`/playground/zkp-wallet`** | `ZKPWallet.tsx` | Generates mathematical zero-knowledge age proofs without exposing raw birthdates. |
 | **`/playground/ambient-trust`** | `AmbientTrust.tsx` | Tracks continuous, ambient biometric telemetry and decays session trust scores. |
 | **`/playground/workload-mesh`** | `WorkloadMesh.tsx` | Demonstrates SPIFFE/SPIRE attestations and X.509 SVID credentials. |
@@ -196,6 +197,20 @@ We mandate the inclusion of Vitest unit tests for all state mutations, mathemati
 
 - **`crypto.subtle.exportKey('jwk', ...)` → `JsonWebKey`** — this TypeScript version's bundled `lib.dom.d.ts` omits `kid` from the `JsonWebKey` interface even though it's a standard JWK member (RFC 7517 §4.5). Don't spread a `kid` field onto a bare `JsonWebKey`-typed object; define a local `type JsonWebKeyWithKid = JsonWebKey & { kid?: string }` and use that as the return/variable type instead (see `exportPublicKeyJwk` in `src/lib/tools/jwt.ts`).
 - **`Array.prototype.map` return type narrowing** — building a fixed-choice array (e.g. `['🟩', '🟥']` from a ternary) infers a union-literal element type, so a later `.push()` of any value outside that union fails. Give the array an explicit widened type (e.g. `const blocks: string[] = arr.map(...)`) when more values get pushed afterward — see `buildResultEmojiGrid` in `src/lib/games/dailyPuzzle.ts`.
+
+### 🗺️ F. Committed Build Artifacts Go Stale Without a Full Build (`public/sitemap.xml`, `llms.txt`, `rss.xml`)
+
+`public/sitemap.xml`, `public/llms.txt`, and `public/rss.xml` (§4H) are regenerated by `npm run build` from `ROUTE_META`/`TOOLS`, then committed as the "dev copy & fallback source." `npm run test` never runs the build, so committing a new page/tool without also running a full `npm run build` leaves these three files silently stale — this has happened more than once, each time only caught by manually diffing after the fact.
+
+`tests/integration/generatedArtifactsFresh.test.ts` now catches this automatically: it counts `<url>` entries in the committed `sitemap.xml` against `ROUTE_META.length`, checks every `ROUTE_META` route has a matching link in `llms.txt`, and checks every `status: 'live'` tool has a matching link in `rss.xml` — all read straight off disk, no need to actually re-run the generator scripts. If it fails, the fix is always the same: run `npm run build` and commit the regenerated `public/*` files (the `lastBuildDate`/`lastmod` timestamp diff is expected and fine to commit).
+
+### 🔒 G. The `npm run audit:check` Security Gate (`scripts/audit-check.mjs`)
+
+CI (`ci.yml`) and `deploy.yml` run `npm run audit:check` instead of a bare `npm audit --audit-level=moderate`, because plain `npm audit` has no way to say "this specific advisory doesn't apply to how we use this package" — it just hard-fails on anything at or above the threshold, forever, until upstream ships a fix. That's what happened with `GHSA-qwww-vcr4-c8h2` (a `react-router` RSC-mode CSRF advisory this app can't hit — it's a client-side SPA using plain `BrowserRouter`/`Routes`/`Route`, never the unstable RSC APIs the advisory names): no non-breaking fix exists yet, and the raw gate blocked every single PR, including every open Dependabot PR, regardless of what each one actually bumped.
+
+`scripts/audit-check.mjs` runs `npm audit --json` itself and checks each reported vulnerability (severity ≥ `moderate`, matching the old flag) against a small, explicit `ALLOWLIST` array — each entry needs a real `reason` and a `reviewBy` date, and the script refuses to run (exit 1) once that date has passed, forcing a re-check instead of letting a stale exception silently live forever. A vulnerability is only treated as covered if every advisory it (or, transitively, an upstream package it depends on) cites is on the allow-list; anything else still fails the build exactly like plain `npm audit` would.
+
+To add a new entry: confirm the advisory genuinely doesn't apply to this app's actual usage (not just "it's inconvenient right now"), then add `{ ghsaId, package, reason, reviewBy }` to `ALLOWLIST`. Prefer fixing the real vulnerability (`npm audit fix`, or `npm audit fix --force` after checking the breaking change is safe) over allow-listing whenever a fix is actually available — the allow-list is for the specific case for a fix doesn't exist yet.
 
 ---
 
@@ -822,6 +837,25 @@ mfa: [
 ```
 
 No route-wiring needed (§4D) — all three deep-link patterns (`?tab=compare&compare=<id>`, `?tab=learn&level=<lvl>&goal=<goal>`, `?tab=interview&q=<id>`) reuse the existing `/assistant` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `COMPARISONS`/`LEARNING_TRACKS`/`INTERVIEW_QUESTIONS` and fails if any one of them isn't indexed; `aiKnowledgeGraph.test.ts` additionally guards id uniqueness, non-empty comparison tables/use-case lists, that every learning track's level/goal is actually selectable in the UI, and that every knowledge-graph key has at least one resource.
+
+### 🏛️ Z-spike. C4 Technical Spike — Opt-In Local AI (WebLLM), status: investigation only, not shipped
+
+Phase 2 §C4 flagged this as the highest-risk item in the backlog and asked for a dedicated spike before committing to a ship date. This is that spike, landed 2026-07-30 — **experimental and gated off by default**, not a finished feature.
+
+**What exists today:** the Knowledge Chat tab in `Assistant.tsx` has a collapsed "🧪 Experimental: Enable Local AI (Spike)" `<details>` block above the input. Left untouched, the page is byte-for-byte the same experience as before — zero network calls, zero extra bundle weight. Only clicking "Download & Enable" triggers `import('../lib/ai/webllmConnector')`, which:
+- Checks `detectWebGpuSupport()` (`'gpu' in navigator`) and refuses to proceed if WebGPU is unavailable — **the WASM-only fallback path is explicitly not implemented in this spike**, per the doc's own instruction not to silently degrade.
+- Spins up `src/lib/ai/webllm.worker.ts`, a thin wrapper around `@mlc-ai/web-llm`'s own `WebWorkerMLCEngineHandler` (the library already implements the worker message-passing protocol — no custom protocol was hand-rolled).
+- Loads `SmolLM2-360M-Instruct-q4f16_1-MLC` (`SPIKE_MODEL_ID` in `webllmConnector.ts`), the smallest chat-capable prebuilt model in WebLLM's registry — `vram_required_MB: 376`, materially smaller than the doc's own ~400-700MB Qwen2.5-0.5B estimate.
+- Streams generated tokens back into the chat as a distinct purple-badged "Local AI (Experimental)" message, never mixed up with the deterministic canned responses.
+
+**Measured/confirmed in this pass:**
+- Default page load: unchanged — confirmed via Playwright (no console errors beyond the pre-existing dev-only Vite HMR/CSP warning, no network requests to any WebLLM CDN) and via `npm run build`: `@mlc-ai/web-llm` and the worker land in their own `webllmConnector-*.js` / `webllm.worker-*.js` chunks, not in `Assistant-*.js`, `vendor-*.js`, or the eager `index-*.js` entry chunk.
+- `webllmConnector.ts`'s `load()`/`generate()`/`dispose()` contract is unit-tested against a mocked `Worker` (`webllmConnector.test.ts`) — progress-percent parsing, token streaming order, and load/generate error propagation as rejected promises (not uncaught throws) are all covered without downloading a real model, per the doc's own testing note.
+- `detectWebGpuSupport()` degrades to `false` under Node/no-`navigator` (verified in `tests/ssr/ssrSafety.test.ts`), so this module is safe to import from the static build pipeline.
+- The test browser (current Chromium via Playwright) reports `'gpu' in navigator === true`, so only the WebGPU path is reachable in this environment — **the WASM-fallback performance question from the doc remains genuinely unmeasured**, not merely untested.
+- The actual model download/load-time/tokens-per-second numbers were **intentionally not measured in this pass** (deferred by explicit user choice to avoid a ~200MB download mid-session) — the toggle UI, warning copy, and code path up to (but not including) the real `CreateWebWorkerMLCEngine()` call were verified instead.
+
+**Go/no-go input for a follow-up conversation, not a verdict:** the worker-isolation and bundle-splitting approach works and is low-risk to leave merged as-is (default UX is provably unaffected). What's still open before this could ship as a real feature: an actual measured download/load-time run, a WASM-fallback decision (implement it, or disable the option outright on non-WebGPU browsers with clearer messaging), and cross-browser cache-persistence testing (does the ~200MB model actually get cached via IndexedDB/Cache API on a second visit, or re-download every time).
 
 ---
 

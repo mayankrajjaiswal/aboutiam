@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder, ArrowLeftRight
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder, ArrowLeftRight, Glasses
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -134,6 +134,7 @@ const architectureItems = [
   { name: 'OT/ICS Identity Simulator', path: '/playground/ot-ics-identity', icon: Cpu },
   { name: 'CIEM Explorer', path: '/playground/ciem-explorer', icon: GitBranch },
   { name: 'Legacy & Academic Federation Lab', path: '/playground/legacy-federation', icon: History },
+  { name: 'Avatar & Spatial Identity Lab', path: '/playground/spatial-identity-lab', icon: Glasses },
 ]
 
 const ecosystemItems = [

@@ -823,6 +823,25 @@ mfa: [
 
 No route-wiring needed (§4D) — all three deep-link patterns (`?tab=compare&compare=<id>`, `?tab=learn&level=<lvl>&goal=<goal>`, `?tab=interview&q=<id>`) reuse the existing `/assistant` route via the same mount-effect pattern described in §4I. Run `npm run test` afterward: `searchService.test.ts` loops over every entry in `COMPARISONS`/`LEARNING_TRACKS`/`INTERVIEW_QUESTIONS` and fails if any one of them isn't indexed; `aiKnowledgeGraph.test.ts` additionally guards id uniqueness, non-empty comparison tables/use-case lists, that every learning track's level/goal is actually selectable in the UI, and that every knowledge-graph key has at least one resource.
 
+### 🏛️ Z-spike. C4 Technical Spike — Opt-In Local AI (WebLLM), status: investigation only, not shipped
+
+Phase 2 §C4 flagged this as the highest-risk item in the backlog and asked for a dedicated spike before committing to a ship date. This is that spike, landed 2026-07-30 — **experimental and gated off by default**, not a finished feature.
+
+**What exists today:** the Knowledge Chat tab in `Assistant.tsx` has a collapsed "🧪 Experimental: Enable Local AI (Spike)" `<details>` block above the input. Left untouched, the page is byte-for-byte the same experience as before — zero network calls, zero extra bundle weight. Only clicking "Download & Enable" triggers `import('../lib/ai/webllmConnector')`, which:
+- Checks `detectWebGpuSupport()` (`'gpu' in navigator`) and refuses to proceed if WebGPU is unavailable — **the WASM-only fallback path is explicitly not implemented in this spike**, per the doc's own instruction not to silently degrade.
+- Spins up `src/lib/ai/webllm.worker.ts`, a thin wrapper around `@mlc-ai/web-llm`'s own `WebWorkerMLCEngineHandler` (the library already implements the worker message-passing protocol — no custom protocol was hand-rolled).
+- Loads `SmolLM2-360M-Instruct-q4f16_1-MLC` (`SPIKE_MODEL_ID` in `webllmConnector.ts`), the smallest chat-capable prebuilt model in WebLLM's registry — `vram_required_MB: 376`, materially smaller than the doc's own ~400-700MB Qwen2.5-0.5B estimate.
+- Streams generated tokens back into the chat as a distinct purple-badged "Local AI (Experimental)" message, never mixed up with the deterministic canned responses.
+
+**Measured/confirmed in this pass:**
+- Default page load: unchanged — confirmed via Playwright (no console errors beyond the pre-existing dev-only Vite HMR/CSP warning, no network requests to any WebLLM CDN) and via `npm run build`: `@mlc-ai/web-llm` and the worker land in their own `webllmConnector-*.js` / `webllm.worker-*.js` chunks, not in `Assistant-*.js`, `vendor-*.js`, or the eager `index-*.js` entry chunk.
+- `webllmConnector.ts`'s `load()`/`generate()`/`dispose()` contract is unit-tested against a mocked `Worker` (`webllmConnector.test.ts`) — progress-percent parsing, token streaming order, and load/generate error propagation as rejected promises (not uncaught throws) are all covered without downloading a real model, per the doc's own testing note.
+- `detectWebGpuSupport()` degrades to `false` under Node/no-`navigator` (verified in `tests/ssr/ssrSafety.test.ts`), so this module is safe to import from the static build pipeline.
+- The test browser (current Chromium via Playwright) reports `'gpu' in navigator === true`, so only the WebGPU path is reachable in this environment — **the WASM-fallback performance question from the doc remains genuinely unmeasured**, not merely untested.
+- The actual model download/load-time/tokens-per-second numbers were **intentionally not measured in this pass** (deferred by explicit user choice to avoid a ~200MB download mid-session) — the toggle UI, warning copy, and code path up to (but not including) the real `CreateWebWorkerMLCEngine()` call were verified instead.
+
+**Go/no-go input for a follow-up conversation, not a verdict:** the worker-isolation and bundle-splitting approach works and is low-risk to leave merged as-is (default UX is provably unaffected). What's still open before this could ship as a real feature: an actual measured download/load-time run, a WASM-fallback decision (implement it, or disable the option outright on non-WebGPU browsers with clearer messaging), and cross-browser cache-persistence testing (does the ~200MB model actually get cached via IndexedDB/Cache API on a second visit, or re-download every time).
+
 ---
 
 ### 🏛️ AA. How to Add a Test

@@ -24,6 +24,8 @@ This is the sibling document to `NEXT_FEATURES.md` (Phase 1's 12 approved featur
 
 ### C4. Local AI Assistant Upgrade (Opt-In WebLLM)
 
+**Spike completed 2026-07-30** — see `GEMINI.md` §Z-spike for measured results (bundle-splitting confirmed working, worker message contract unit-tested, default-UX-unaffected confirmed in-browser). Not shipped: real download/load-time weren't measured this pass (deferred by choice), and the WASM-fallback path is still unimplemented. This section stays until a follow-up conversation makes an actual ship/no-ship call.
+
 **One-liner:** An opt-in, never-auto-loaded "Download Local AI Model" button that runs a genuine small transformer (e.g. Qwen2.5-0.5B or Llama-3.2-1B via WebLLM, WebGPU with WASM fallback) fully client-side for free-form IAM Q&A, layered on top of — never replacing — the existing deterministic rule-based Assistant.
 
 **Why unique:** The current `/assistant` Knowledge Chat is rule-based/keyword-matched (§Z's `KNOWLEDGE_GRAPH`), not a real LLM; this adds genuine generative capability while preserving the zero-download default experience for everyone who doesn't opt in — a meaningfully different value proposition than anything else on the site.

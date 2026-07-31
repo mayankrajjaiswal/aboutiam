@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart } from 'lucide-react'
 import GoogleDriveSync from '../components/GoogleDriveSync'
@@ -6,8 +7,11 @@ import DailyPuzzleWidget from '../components/DailyPuzzleWidget'
 import FactOfTheDay from '../components/FactOfTheDay'
 import ProfileExportImport from '../components/ProfileExportImport'
 import ContinueLearningCard from '../components/ContinueLearningCard'
+import StartHereWizard from '../components/StartHereWizard'
 
 export default function Home() {
+  const [isStartHereOpen, setIsStartHereOpen] = useState(false)
+
   return (
     <div className="space-y-16 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Hero Section */}
@@ -58,7 +62,15 @@ export default function Home() {
             Browse Academy
           </Link>
         </div>
+        <button
+          onClick={() => setIsStartHereOpen(true)}
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-primary hover:text-accent-hover underline"
+        >
+          <Compass className="w-3.5 h-3.5" /> Not sure where to start?
+        </button>
       </section>
+
+      <StartHereWizard isOpen={isStartHereOpen} onClose={() => setIsStartHereOpen(false)} />
 
       {/* Continue Where You Left Off — renders nothing for a brand-new visitor with no progress yet */}
       <ContinueLearningCard />

@@ -14,27 +14,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group D — Navigation, UX & Onboarding
 
-### D3. Goal-Based "Start Here" Routing Wizard
-
-**One-liner:** A short 2-3 question wizard ("What brings you here today?" — Learn IAM fundamentals / Prep for an interview / Explore hands-on labs / Assess my org) that routes to a pre-built page *sequence*, distinct from the existing static Personalization selector which only tags a depth/role preference without actively routing anywhere.
-
-**Why unique:** The existing Personalization control (Header "Personalize") passively adjusts content depth across pages a user *already chose* to visit; this actively decides *where to send* a brand-new, undecided visitor — filling the gap between the first-visit Disclaimer/Tour (orientation) and actually starting a learning path.
-
-**Where it fits:** A new modal/panel triggered from `Home.tsx` (e.g. a prominent "Not sure where to start?" button), component `src/components/StartHereWizard.tsx`. No new route — it's a routing layer over existing pages.
-
-**Design:**
-- `src/data/startHereRoutes.ts` — a small static mapping from each goal answer to an ordered array of `{ path, label }` steps (e.g. "Prep for an interview" → Career Center → relevant Certification → Interview Prep tab of the Assistant).
-- After answering, show the recommended sequence as a checklist the user can follow at their own pace (not a forced walkthrough) — persisted in `localStorage` so returning to the wizard's result later still shows progress against that specific path.
-- Distinct from D2: D2 surfaces *past* activity; D3 helps a visitor with *no* activity yet decide where to begin.
-
-**Tests:** `src/data/startHereRoutes.test.ts` — every route in every goal's sequence resolves to a real, currently-registered route in `routeMeta.ts` (guards against a future route rename silently breaking the wizard).
-
-**Docs to update:** `README.md` §A new bullet; `GEMINI.md` §2 — note on the `Home.tsx` row.
-
-**Feasibility:** Medium.
-
----
-
 ### D6. Mobile Bottom Tab Bar
 
 **One-liner:** A fixed bottom navigation bar on mobile viewports for the 4-5 highest-traffic destinations (Home, Learn, Playgrounds, Tools, Search), keeping them within thumb reach without replacing the full sidebar (still reachable via a "More" entry).

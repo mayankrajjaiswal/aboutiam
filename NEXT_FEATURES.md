@@ -100,25 +100,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group E — New Unique IAM Content Domains
 
-### E2. Passwordless/FIDO Certification Explainer
-
-**One-liner:** A static reference explaining FIDO Alliance's certification programs (Authenticator L1/L1+/L2/L2+, Biometric Component/PAD certification, identity-verification certification) and what each level actually guarantees, plus a periodically-refreshed snapshot of notable certified product categories.
-
-**Why unique:** Distinct from the existing Passkey Fleet Rollout Strategist (a budget-allocation strategy game) — this is a reference/explainer closing the real "what does 'FIDO Certified' actually mean" knowledge gap. Explicitly scoped as an evergreen explainer, not a live-mirrored copy of FIDO's continuously-changing 1,000+ product directory, which a zero-backend static site cannot keep in sync with anyway.
-
-**Where it fits:** New Encyclopedia-style content, either as a new Standards Explorer entry (`fido-certification`) or a dedicated section within the existing Passkey Internals/Rollout Strategist playgrounds' reference material — prefer the Standards Explorer entry, since it's reference content, not an interactive simulator.
-
-**Design:**
-- New `IdentityStandard` entry in `standardsData.ts` following the §4Q convention, with a `bestPractices`/`vendorSupport` section explicitly labeled with a "last verified" date and a clear "for the live, current product directory, see FIDO Alliance's own site →" outbound link rather than pretending to replicate it.
-
-**Tests:** Covered automatically by the existing `searchService.test.ts` loop over `STANDARDS` (§4Q) — no new test file needed.
-
-**Docs to update:** `README.md` — amend the Living Standards bullet's entry-count mention; `GEMINI.md` §2 — amend the `/standards` row if entry counts are cited there.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### E4. Cyber-Insurance Identity Readiness Calculator
 
 **One-liner:** An interactive scorer mapping identity controls (phishing-resistant MFA coverage, PAM deployment, Zero Trust/conditional-access posture) to real insurer underwriting criteria, outputting a directional "this posture typically swings premium ±X%" estimate with citations and real denial case studies.

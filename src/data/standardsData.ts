@@ -258,6 +258,69 @@ grant_type=authorization_code
     ]
   },
   {
+    id: 'fido-certification',
+    title: 'FIDO Certification Programs',
+    fullname: 'FIDO Alliance Authenticator & Biometric Certification',
+    rfcs: ['FIDO Alliance Certification Program Policies'],
+    year: '2015 — ongoing',
+    difficulty: 'Intermediate',
+    category: 'Passwordless & Biometrics',
+    summary: 'The FIDO Alliance runs a family of independent certification programs — Authenticator Certification, Biometric Component Certification, and Identity Verification Certification — that test whether a device or component actually behaves the way the WebAuthn/FIDO2 specifications require, not just whether a vendor claims it does.',
+    problem: '"FIDO2 compliant" is a marketing claim any vendor can make; without independent testing, a buyer has no way to verify a device correctly implements attestation, key storage isolation, or presentation-attack detection the way the spec assumes.',
+    whyExists: 'To give relying parties and buyers a real, third-party-tested guarantee behind the "FIDO Certified" label, at graduated assurance levels rather than one pass/fail bar — a hardware security key and a phone\'s platform authenticator warrant different scrutiny.',
+    flowchart: `
++-------------------------------------------------------------+
+|              FIDO CERTIFICATION PROGRAM FAMILY               |
++-------------------------------------------------------------+
+
+  Authenticator Certification
+    L1   -> Software-only, basic self-attestation review
+    L1+  -> L1 + basic vulnerability/malware-resistance testing
+    L2   -> Hardware-backed key isolation required
+    L2+  -> L2 + certified secure element / restricted OS
+
+  Biometric Component Certification
+    PAD Level 1/2/3 -> Presentation Attack Detection (spoof resistance)
+
+  Identity Verification Certification
+    Tests the IDV vendor's own liveness/document-check pipeline,
+    separate from the authenticator hardware itself
+`,
+    messageFormat: `// A certification is a claim ABOUT a product, not a protocol message —
+// there is no FIDO-certification wire format. What is verifiable is the
+// public certificate record FIDO Alliance publishes per certified product:
+{
+  "vendor": "Example Security Key Co.",
+  "productName": "ExampleKey 5 NFC",
+  "certificationLevel": "FIDO2 L2",
+  "certificateNumber": "FIDO20020230101001",
+  "certifiedDate": "2023-01-10"
+}`,
+    vulnerabilities: [
+      'Treating "FIDO Certified" as a single bar — the levels test meaningfully different things (software self-attestation vs. certified secure hardware).',
+      'Assuming Authenticator Certification implies Biometric/PAD certification, or vice versa — they are separate programs testing separate components.',
+      'A static site (like this one) cannot mirror FIDO Alliance\'s continuously-changing 1,000+ certified-product directory and stay accurate — treat any locally-cached product list as stale.'
+    ],
+    bestPractices: [
+      'When specifying a hardware key requirement, name the actual certification level needed (e.g. "FIDO2 L2 or higher"), not just "FIDO2 certified."',
+      'For biometric unlock flows, check for PAD Level 2 or 3 certification specifically — Authenticator Certification alone says nothing about spoof resistance.',
+      'Re-verify a product\'s current certification status against FIDO Alliance\'s own live directory before procurement — do not rely on a vendor datasheet or a cached snapshot.',
+      'Last verified: 2026-07-31. For the live, current product directory, see the FIDO Alliance\'s own certified product site → https://fidoalliance.org/certification/fido-certified-products/'
+    ],
+    vendorSupport: [
+      'Yubico: FIDO2 L1/L2 certified hardware security key lineup.',
+      'Google Titan Security Keys: FIDO2 L1 certified.',
+      'Microsoft Entra ID / Windows Hello: Platform authenticator certified under the FIDO2 program.',
+      'Apple/Google platform biometrics: Certified under the Biometric Component Certification program for on-device PAD.',
+      'This is an evergreen explainer, not a live-mirrored copy of FIDO Alliance\'s own continuously-updated directory — see bestPractices above for the authoritative source link.'
+    ],
+    relatedResources: [
+      { title: 'Passkey Fleet Rollout Strategist', path: '/playground/passkey-rollout-strategist', type: 'playground' },
+      { title: 'Passkey Internals Playground', path: '/playground/passkey-internals', type: 'playground' },
+      { title: 'FIDO2 / WebAuthn Lab', path: '/playground/fido2', type: 'playground' }
+    ]
+  },
+  {
     id: 'saml2',
     title: 'SAML 2.0',
     fullname: 'Security Assertion Markup Language 2.0',

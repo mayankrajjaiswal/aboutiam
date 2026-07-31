@@ -35,26 +35,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### D4. "Related Content" Recommendation Rail
-
-**One-liner:** A "You might also like" strip at the bottom of tool, playground, glossary, and architecture pages, populated from the already-curated Knowledge Graph relationship edges — currently only visible on the standalone Knowledge Graph view.
-
-**Why unique:** The relationship data already exists and is hand-curated (`/knowledge-graph`); surfacing it contextually on the content pages themselves, where a reader is far more likely to act on it, is a pure reuse/UX task rather than new content authoring.
-
-**Where it fits:** New shared component `src/components/RelatedContentRail.tsx`, wired into `ToolPageShell` (so every tool page gets it automatically), `Encyclopedia.tsx`'s term detail view, `ArchitectureCenter.tsx`, and playground pages that have real Knowledge Graph edges. No new route.
-
-**Design:**
-- Takes a content `id` (matching the Knowledge Graph's node id scheme) and looks up its direct neighbors from the existing graph data module, rendering up to 3-4 as small cards with a one-line "why related" label (reuse the edge-label data already present in the graph, don't invent new copy).
-- Renders nothing if a page's id has no graph entry yet (graceful degradation — not every one of 100+ pages needs to be in the graph before this ships).
-
-**Tests:** `src/components/RelatedContentRail.test.tsx` — renders the correct neighbor set for a node with edges; renders nothing (not an empty box) for a node with none.
-
-**Docs to update:** `README.md` §A — amend the Knowledge Graph bullet to mention it now also surfaces inline; `GEMINI.md` §2 — note on the `/knowledge-graph` row and a one-line addition to §4E (tool pages now get a Related Content rail via `ToolPageShell` automatically).
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### D6. Mobile Bottom Tab Bar
 
 **One-liner:** A fixed bottom navigation bar on mobile viewports for the 4-5 highest-traffic destinations (Home, Learn, Playgrounds, Tools, Search), keeping them within thumb reach without replacing the full sidebar (still reachable via a "More" entry).

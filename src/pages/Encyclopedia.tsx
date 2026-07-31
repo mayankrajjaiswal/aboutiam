@@ -5,6 +5,7 @@ import { ENCYCLOPEDIA_TERMS } from '../data/encyclopediaData'
 import BookmarkButton from '../components/BookmarkButton'
 import ContentFeedback from '../components/ContentFeedback'
 import ReadAloudButton from '../components/ReadAloudButton'
+import RelatedContentRail from '../components/RelatedContentRail'
 
 export interface Term {
   id: string
@@ -216,6 +217,8 @@ export default function Encyclopedia() {
               <div className="flex justify-end pt-2 border-t border-border-subtle/50 relative z-10">
                 <ContentFeedback id={`term-${selectedTerm.id}`} title={selectedTerm.term} />
               </div>
+
+              <RelatedContentRail nodeId={`term:${selectedTerm.id}`} />
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center text-center p-12 border border-dashed border-border-subtle rounded-2xl bg-bg-card/50">

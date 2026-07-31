@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import type { ToolMeta } from '../../data/toolsRegistry'
 import PrivacyNotice from './PrivacyNotice'
 import BookmarkButton from '../BookmarkButton'
+import RelatedContentRail from '../RelatedContentRail'
 
 const SITE_URL = 'https://www.aboutiam.com'
 
@@ -69,6 +70,8 @@ export default function ToolPageShell({ tool, children }: ToolPageShellProps) {
       <PrivacyNotice />
 
       {children}
+
+      <RelatedContentRail nodeId={`tool:${tool.slug}`} />
     </div>
   )
 }

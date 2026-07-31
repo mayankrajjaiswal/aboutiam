@@ -8,6 +8,7 @@ import {
   HardHat, Router, Cog, Truck, Factory, CreditCard, ScanLine, Boxes, Layers
 } from 'lucide-react'
 import { ARCHITECTURES } from '../data/architectureData'
+import RelatedContentRail from '../components/RelatedContentRail'
 
 const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const
 
@@ -1142,6 +1143,10 @@ export default function ArchitectureCenter() {
           </div>
         </div>
       )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <RelatedContentRail nodeId={`architecture:${activeArchObj.id}`} />
+      </div>
     </div>
   )
 }

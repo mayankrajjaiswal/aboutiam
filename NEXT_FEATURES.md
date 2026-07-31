@@ -180,26 +180,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### D12. Executive Journey Workflow Breadcrumb
-
-**One-liner:** A small, persistent cross-page breadcrumb (`Assess › Board Report › Modernization Backlog › Compliance Deadlines`) that guides a GRC-minded visitor through a logical sequence of already-existing pages, rendered only when the visitor is inside that journey (not on every page site-wide).
-
-**Why unique:** Directly modeled on `pqctoday.com`'s Command Center, which frames its own multi-page tools as a single guided workflow (`Assess › Report › Command Center › Comply`) rather than four disconnected pages a visitor has to know to seek out individually. AboutIAM already has every page this journey needs (`/assess`, the (planned, E5) Executive Board Report, the shipped Modernization Backlog Game, and the Compliance Deadlines tab) but nothing currently threads them together as a sequence.
-
-**Where it fits:** New shared component `src/components/JourneyBreadcrumb.tsx`, rendered on `Assess.tsx`'s results view, the upgraded E5 Executive Command Center hub, `ModernizationBacklogGame` (wherever that page lives), and the Compliance Deadlines tab — each showing the same 4-step breadcrumb with the current step highlighted and the others as direct links. No new route; this is chrome layered onto existing pages.
-
-**Design:**
-- `src/data/executiveJourneySteps.ts` — a small static ordered array (`{ label, path }`) defining the 4-step sequence, imported by every page in the sequence so the breadcrumb can never drift between pages (single source of truth, same discipline as every other shared-registry pattern in this codebase).
-- Purely a navigational aid — a visitor can still reach any of the 4 pages directly without ever seeing the breadcrumb (e.g. via direct link, search, or sidebar); it only appears once they're inside the journey.
-
-**Tests:** `src/data/executiveJourneySteps.test.ts` — every step's `path` resolves to a real, currently-registered route.
-
-**Docs to update:** `README.md` — amend the GRC Maturity Wizard bullet in §D to mention the guided journey; `GEMINI.md` §2 — note on the `/assess` row.
-
-**Feasibility:** Easy.
-
----
-
 ## Group E — New Unique IAM Content Domains
 
 ### E1. IAM Hall of Fame — Standard-Bearers Profile Gallery

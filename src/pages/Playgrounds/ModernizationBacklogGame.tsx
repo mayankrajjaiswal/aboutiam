@@ -5,6 +5,7 @@ import { PlaygroundShell } from '../../lib/sdk/components/PlaygroundShell'
 import { TraceTerminal } from '../../lib/sdk/components/TraceTerminal'
 import { MODERNIZATION_BACKLOG_ITEMS, MAX_POSSIBLE_RISK_REDUCTION } from '../../data/modernizationBacklogItems'
 import { scoreRoadmap, BUDGET_PER_QUARTER, type RoadmapAssignment } from '../../lib/games/modernizationScoring'
+import JourneyBreadcrumb from '../../components/JourneyBreadcrumb'
 
 const QUARTER_LABELS = ['Unscheduled', 'Q1', 'Q2', 'Q3', 'Q4']
 
@@ -106,6 +107,7 @@ export default function ModernizationBacklogGame() {
       sidebarContent={<TraceTerminal logs={logs} />}
     >
       <div className="space-y-6">
+        <JourneyBreadcrumb currentPath="/playground/modernization-backlog" />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[1, 2, 3, 4].map((q) => (
             <div key={q} className={`p-3 rounded-xl border text-xs ${quarterCosts[q] > BUDGET_PER_QUARTER ? 'bg-status-danger/10 border-status-danger/40' : 'bg-bg-nested border-border-subtle'}`}>

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import { getUpcomingDeadlines, getPastDeadlines, getJurisdictions } from '../data/complianceDeadlines'
 import { STANDARDS } from '../data/standardsData'
+import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
 
 const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const
 
@@ -131,6 +132,7 @@ export default function StandardsExplorer() {
       {/* COMPLIANCE DEADLINES TRACKER VIEW */}
       {pageView === 'deadlines' ? (
         <div className="space-y-6 overflow-y-auto">
+          <JourneyBreadcrumb currentPath="/standards?view=deadlines" />
           <div className="p-4 rounded-2xl bg-status-warning/5 border border-status-warning/20 flex items-start gap-3 text-xs text-text-secondary leading-relaxed">
             <ShieldAlert className="w-4 h-4 text-status-warning shrink-0 mt-0.5" />
             <span>Regulatory deadlines can shift with implementing acts and phased rollouts. Always re-verify against each entry's official source before relying on these dates for compliance planning — this is an educational starting point, not compliance advice.</span>

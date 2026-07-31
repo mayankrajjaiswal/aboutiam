@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { questions, computeScores, getMaturityTier, encodeAnswers, decodeAnswers } from '../lib/assess/scoring'
 import { mapScoreToGartnerLevel, estimatePeerPercentile, PEER_BENCHMARK_SOURCE_NOTE, GARTNER_LEVELS } from '../lib/assess/maturityBenchmark'
+import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
 
 function getSharedParam(): string | null {
   if (typeof window === 'undefined') return null
@@ -278,6 +279,7 @@ export default function Assess() {
       {showResults && (
         /* Results Executive Panel */
         <div className="space-y-8 animate-fadeIn">
+          <JourneyBreadcrumb currentPath="/assess" />
           {isSharedReport && (
             <div className="p-4 rounded-xl bg-accent-glow border border-accent-primary/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
               <span className="text-text-secondary font-medium">

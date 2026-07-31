@@ -434,6 +434,8 @@ The one exception is `/assess`'s shareable report link, which uses a synchronous
 
 The Command Palette's empty-query state (`CommandPalette.tsx`) shows Recent Queries (`useSearchHistory.ts`, capped at 5, most-recent-first, de-duplicated) above a hand-curated **Popular** shortlist (`src/data/curatedPopularSearches.ts`) — the honest zero-backend substitute for live trending search. Refresh the Popular list periodically (e.g. quarterly); every entry's link is covered by `curatedPopularSearches.test.ts` against `ROUTE_META`/`ARCHITECTURES`/`ENCYCLOPEDIA_TERMS`.
 
+Ctrl+K isn't the only power-user shortcut: `useChordedShortcuts.ts` (mounted once at `Header.tsx`, same pattern) listens for Gmail/GitHub-style `g`-then-letter chords against the table in `src/data/chordedShortcuts.ts` (a new destination is added there, not hand-coded into the hook), and `?` toggles `ShortcutsOverlay.tsx`, which renders that same table plus the general/slash-command shortcuts — so a new chord is automatically listed without touching the overlay.
+
 ---
 
 ### 🏛️ J. How to Add a New Achievement Rule

@@ -97,26 +97,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### D9. Keyboard Shortcuts Cheat Sheet + Chorded Navigation
-
-**One-liner:** A `?`-triggered overlay listing every keyboard shortcut, plus Gmail/GitHub-style `g`-then-letter chorded navigation (`g h` → Home, `g l` → Learn, `g t` → Tools, `g p` → Playgrounds) for power users, extending beyond the existing Ctrl+K palette.
-
-**Why unique:** Ctrl+K covers search/jump-to-anything; chorded shortcuts for the half-dozen most-visited top-level destinations are a distinct, faster muscle-memory pattern common on developer-facing sites (GitHub, Gmail, Linear) that AboutIAM doesn't yet offer, and a discoverable `?` cheat sheet is what makes any shortcut system actually learnable rather than a hidden trick.
-
-**Where it fits:** New shared hook `src/lib/navigation/useChordedShortcuts.ts` and component `src/components/ShortcutsOverlay.tsx`, both mounted once at `Header.tsx` alongside the existing `CommandPalette`/`GuidedTour` mounts (§4M's established "mount once, available everywhere" pattern).
-
-**Design:**
-- `useChordedShortcuts` listens for a `g` keypress followed by a second key within a short timeout window (e.g. 800ms), matching against a small static `{ chord: 'g h', path: '/' }`-style table; ignores keypresses while focus is inside any input/textarea/contentEditable (critical — must not hijack normal typing anywhere on the site, including every tool's paste/textarea inputs).
-- `?` (when not focused in an input) opens `ShortcutsOverlay`, listing both the chorded navigation shortcuts and any existing ones (Ctrl+K, theme toggle, etc. — audit `Header.tsx`/`CommandPalette.tsx` for what already exists before writing the list, so it's complete and accurate).
-
-**Tests:** `useChordedShortcuts.test.ts` — a `g` then `h` within the timeout window navigates to `/`; a `g` then `h` typed while a text input is focused does nothing; the timeout expiring resets the chord state so a stray `g` doesn't linger and misfire later.
-
-**Docs to update:** `README.md` §A — new bullet describing the shortcuts system; `GEMINI.md` — a short note near the Command Palette description (§2's `Home.tsx`/global-feature area) documenting the chord table's location for future additions.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### D10. Persistent Floating "Ask AI" Launcher
 
 **One-liner:** A small, persistent floating action button (bottom-right, dismissible/collapsible) that opens the existing AI Knowledge Assistant's Knowledge Chat from *any* page on the site, instead of requiring a navigation to `/assistant` first.

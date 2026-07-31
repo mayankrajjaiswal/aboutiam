@@ -9,6 +9,8 @@ import { useWhatsNewStore } from '../../store/whatsNewStore'
 import { getRouteMeta } from '../../routeMeta'
 import CommandPalette from '../Search/CommandPalette'
 import GuidedTour from '../GuidedTour'
+import ShortcutsOverlay from '../ShortcutsOverlay'
+import { useChordedShortcuts } from '../../lib/navigation/useChordedShortcuts'
 import DisclaimerModal from '../DisclaimerModal'
 import WhatsNewModal from '../WhatsNewModal'
 import PersonalizationSelector from '../PersonalizationSelector'
@@ -53,6 +55,7 @@ export default function Header() {
   const openTour = useTourStore((s) => s.openTour)
   const openWhatsNew = useWhatsNewStore((s) => s.openWhatsNew)
   const resetCoachMarks = useCoachMarkStore((s) => s.resetAll)
+  const { isOverlayOpen: isShortcutsOverlayOpen, closeOverlay: closeShortcutsOverlay } = useChordedShortcuts()
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -248,6 +251,9 @@ export default function Header() {
 
       {/* First-visit / replayable Guided Feature Tour overlay modal */}
       <GuidedTour />
+
+      {/* "?"-triggered keyboard shortcuts cheat sheet, also listing the g-then-letter chords */}
+      <ShortcutsOverlay isOpen={isShortcutsOverlayOpen} onClose={closeShortcutsOverlay} />
 
       {/* First-visit Educational/Privacy Disclaimer overlay modal */}
       <DisclaimerModal />

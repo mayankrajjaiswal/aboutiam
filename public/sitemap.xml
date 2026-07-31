@@ -518,6 +518,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/tools/raci-builder/</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/risk-register-builder/</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/tools/pqc-readiness-auditor/</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>

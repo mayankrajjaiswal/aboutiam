@@ -8,7 +8,7 @@ import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
-  PackageSearch, Scale, Presentation, AtomIcon,
+  PackageSearch, Scale, Presentation, AtomIcon, UserCheck, AlertOctagon,
 } from 'lucide-react'
 import type { TaskTag } from './taskTags'
 
@@ -747,6 +747,42 @@ export const TOOLS: ToolMeta[] = [
       { label: 'Decode a certificate chain in detail →', href: '/tools/x509-certificate-decoder' },
       { label: 'Inspect a JWKS document →', href: '/tools/jwks-inspector' },
     ],
+  },
+  {
+    slug: 'raci-builder',
+    taskTags: ['check-compliance'],
+    title: 'IAM RACI Builder — Identity Program Governance Matrix',
+    description: 'Assign Responsible/Accountable/Consulted/Informed roles across common IAM program activities — SSO onboarding, access recertification, PAM rotation, incident response, vendor risk review — with built-in validation for missing owners and overloaded roles.',
+    category: 'Program & Vendor Management',
+    icon: UserCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['iam raci matrix', 'identity governance raci', 'iam program ownership', 'raci chart identity'],
+    analogy: 'Nothing on the site helps a team formalize who actually owns what in an identity program — this is closer to a seating chart for accountability: every recurring task gets exactly one person in the "the buck stops here" seat, and at least one person actually doing the work.',
+    expert: 'A curated starter activity list (`src/data/iamRaciActivities.ts`, editable/extensible) crossed with user-defined roles into an editable RACI matrix. Pure validation logic (`src/lib/tools/raciValidation.ts`) enforces exactly one Accountable owner and at least one Responsible party per activity, and flags a governance smell when the same person holds both Responsible and Accountable on too many activities. Exports as downloadable Markdown/CSV.',
+    faqs: [
+      { q: 'Can I add my own activities instead of the starter list?', a: 'Yes — the starter list is just a head start covering common IAM program activities. Add, rename, or remove rows freely.' },
+      { q: 'Why flag someone being both Responsible and Accountable?', a: 'It is not automatically wrong for one person to do both on a single activity, but if the same person holds both roles across many activities, there is no independent check on their own work — a common real-world governance gap.' },
+    ],
+    relatedLinks: [{ label: 'Score identity risks in the Risk Register Builder →', href: '/tools/risk-register-builder' }],
+  },
+  {
+    slug: 'risk-register-builder',
+    taskTags: ['check-compliance'],
+    title: 'IAM Risk Register Builder — Impact x Likelihood Scoring',
+    description: 'Add identity program risks, score each by impact x likelihood on a standard 5x5 matrix, assign an owner and mitigation with a target date, and export a standard risk-register table — a continuously-maintained artifact, not a one-time assessment.',
+    category: 'Program & Vendor Management',
+    icon: AlertOctagon,
+    phase: 3,
+    status: 'live',
+    keywords: ['iam risk register', 'identity risk assessment', 'impact likelihood matrix', 'grc risk register template'],
+    analogy: 'The GRC Maturity Wizard scores your overall posture and the Modernization Backlog Game sequences remediation into a roadmap — this is the more granular artifact underneath both: the actual list of specific risks (like "no MFA on the legacy VPN") that a GRC team is expected to keep current, not just assess once.',
+    expert: 'A standard 5x5 impact x likelihood matrix (`src/lib/tools/riskRegisterScoring.ts`) computing score = impact x likelihood and mapping it to a Low/Medium/High/Critical tier via fixed boundaries (1-4/5-9/10-14/15-25). Ships with a small starter set of common identity risks (drawn loosely from the Security Bulletins/breach categories for realism) that the user can keep, edit, or delete. Exports as downloadable CSV/Markdown.',
+    faqs: [
+      { q: 'How is the risk score calculated?', a: 'Score = Impact x Likelihood, each rated 1-5, giving a 1-25 range mapped to a Low/Medium/High/Critical tier — the same standard 5x5 risk-matrix convention used across most GRC frameworks.' },
+      { q: 'Do I have to use the starter risks?', a: 'No — they are realistic examples to start from, not a mandatory fixed list. Edit or delete any of them and add your own.' },
+    ],
+    relatedLinks: [{ label: 'Assign ownership in the RACI Builder →', href: '/tools/raci-builder' }, { label: 'Run the GRC Maturity Wizard →', href: '/assess' }],
   },
 ]
 

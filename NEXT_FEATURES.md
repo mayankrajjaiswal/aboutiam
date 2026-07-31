@@ -207,48 +207,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### E9. IAM RACI Builder
-
-**One-liner:** An interactive Responsible/Accountable/Consulted/Informed matrix builder for identity-program governance — pick from a curated list of common IAM activities (SSO onboarding, access recertification, PAM credential rotation, incident response, vendor risk review) and assign each a role from an org-chart-style role list, with built-in validation (every activity needs exactly one Accountable owner, no activity should have zero Responsible parties).
-
-**Why unique:** Directly observed as a dedicated tool on `pqctoday.com`'s Command Center ("Who owns it? Assign accountability and set the governance model"). Genuinely new to AboutIAM — nothing on the site currently helps a team formalize *who owns what* in an identity program; the closest existing content (Access Certification Lab, Role Mining Workbench) is about *user* entitlements, not *program governance* accountability.
-
-**Where it fits:** New tool at `/tools/raci-builder`, page `Tools/RaciBuilder.tsx`, §4E convention. Sidebar: `tools` group, cross-linked from the new E5 Command Center's "Who owns it?" card.
-
-**Design:**
-- `src/data/iamRaciActivities.ts` — a curated starter list of common IAM program activities, editable/extensible by the user (add a custom activity row), each needing an assigned role per RACI letter.
-- `src/lib/tools/raciValidation.ts` — pure validation rules (exactly one Accountable per activity; at least one Responsible; warn if the same person is both Responsible and Accountable for too many activities, a common real-world governance smell).
-- Export as a downloadable Markdown/CSV table.
-
-**Tests:** `src/lib/tools/raciValidation.test.ts` — a matrix with zero or multiple Accountable owners for one activity fails validation with a clear message; a well-formed matrix passes.
-
-**Docs to update:** `src/data/toolsRegistry.ts` new entry; `README.md` §C — new bullet in the existing "Program & Vendor Management" grouping; `GEMINI.md` §2 new row.
-
-**Feasibility:** Easy.
-
----
-
-### E10. IAM Risk Register Builder
-
-**One-liner:** A structured risk-register builder for identity programs — add risks (e.g. "no MFA on legacy VPN," "orphaned service accounts," "single IdP with no failover"), score each by impact × likelihood, assign an owner, and record a mitigation/target date, producing a standard risk-register table export.
-
-**Why unique:** Directly observed as a dedicated tool on `pqctoday.com`'s Command Center ("Build a PQC risk register with impact, likelihood, owners, and mitigations"). Distinct from the GRC Maturity Wizard (which *scores* overall posture) and the IAM Modernization Backlog Game (which *sequences* remediation into a roadmap) — a risk register is a different, more granular artifact security/GRC teams are typically expected to maintain continuously, not a one-time assessment or a single planning exercise.
-
-**Where it fits:** New tool at `/tools/risk-register-builder`, page `Tools/RiskRegisterBuilder.tsx`, §4E convention. Sidebar: `tools` group, cross-linked from the E5 Command Center hub and from `Assess.tsx`'s results view (a low-scoring pillar is a natural candidate to add as a risk-register entry).
-
-**Design:**
-- A standard 5×5 impact/likelihood matrix (reuse the visual grid pattern already established elsewhere on the site for scored matrices, e.g. the Adaptive Risk-Based Authentication Engine's scoring visualization, rather than inventing a new grid component) computing a risk score and tier (Low/Medium/High/Critical) per entry.
-- A small starter set of common identity risks pre-populated as editable examples (drawn loosely from the existing Security Bulletins/breach categories for realism) that the user can keep, edit, or delete — not a mandatory fixed list.
-- Export as a downloadable CSV/Markdown table suitable for pasting into a real GRC tracking tool.
-
-**Tests:** `src/lib/tools/riskRegisterScoring.test.ts` — impact × likelihood combinations map to the correct tier boundaries consistently; every starter example risk has a non-empty mitigation and owner field.
-
-**Docs to update:** `src/data/toolsRegistry.ts` new entry; `README.md` §C — new bullet in the existing "Program & Vendor Management" grouping; `GEMINI.md` §2 new row.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### Explicitly Rejected from Group E
 
 - **IAM Patent Timeline (à la PQC Today's "Patents" section)** — research found no landmark OAuth/SAML/Kerberos patent *disputes* comparable to PQC's genuinely active, contentious patent landscape; OAuth's real patent story is deliberate *avoidance* (Open Web Foundation non-assert agreements), which is thin, single-fact content better suited to one Encyclopedia glossary entry than a dedicated section or page. **Skip the dedicated section; consider one Encyclopedia entry only.**

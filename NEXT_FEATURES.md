@@ -119,26 +119,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### E3. Digital Identity Wallet & mDL Adoption Tracker
-
-**One-liner:** A hand-curated registry (same pattern as `complianceDeadlines.ts`) of US states issuing standards-based mobile driver's licenses, TSA/REAL ID acceptance status, and Apple/Google/Samsung Wallet support.
-
-**Why unique:** Compliance Deadlines tracks *regulatory dates*; this tracks *consumer rollout/adoption status* — a genuinely different axis — and directly complements the already-shipped OpenID4VC Wallet Studio playground's issuance mechanics with real-world "who's actually live today" context.
-
-**Where it fits:** New tab on `StandardsExplorer.tsx` (`?view=wallet-adoption`), following the same tab-based extension pattern already used for the Compliance Deadlines tab. No new top-level route.
-
-**Design:**
-- `src/data/walletAdoptionTracker.ts` — per-state entries (`state, mdlStatus: 'live' | 'pilot' | 'paused' | 'none', tsaAccepted, walletSupport: string[], sourceLink, verifiedDate`) — refreshed quarterly, same maintenance cadence discipline as Compliance Deadlines.
-- Rendered as a filterable table/map-style list (a literal US map SVG is a nice-to-have, not required for v1 — a sortable table is sufficient and far lower effort).
-
-**Tests:** `src/data/walletAdoptionTracker.test.ts` — every entry has a valid `mdlStatus` enum value and a non-empty `sourceLink`.
-
-**Docs to update:** `README.md` — amend the Living Standards & RFC Explorer bullet in §A to mention the new tab; `GEMINI.md` §2 — amend the `/standards` row.
-
-**Feasibility:** Easy.
-
----
-
 ### E4. Cyber-Insurance Identity Readiness Calculator
 
 **One-liner:** An interactive scorer mapping identity controls (phishing-resistant MFA coverage, PAM deployment, Zero Trust/conditional-access posture) to real insurer underwriting criteria, outputting a directional "this posture typically swings premium ±X%" estimate with citations and real denial case studies.

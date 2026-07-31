@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import {
   BookOpen, Search, ArrowLeft, Layers, ShieldCheck,
   Terminal, Check, ShieldAlert, Network,
-  Info, Calendar, Building, CalendarClock, ExternalLink
+  Info, Calendar, Building, CalendarClock, ExternalLink, Smartphone, X, Plane
 } from 'lucide-react'
 import { getUpcomingDeadlines, getPastDeadlines, getJurisdictions } from '../data/complianceDeadlines'
 import { STANDARDS } from '../data/standardsData'
+import { WALLET_ADOPTION_TRACKER, type MdlStatus } from '../data/walletAdoptionTracker'
 import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
 
 const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const
@@ -33,7 +34,7 @@ export default function StandardsExplorer() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeStandardId, setActiveStandardId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'summary' | 'flow' | 'security' | 'vendors'>('summary')
-  const [pageView, setPageView] = useState<'standards' | 'deadlines'>('standards')
+  const [pageView, setPageView] = useState<'standards' | 'deadlines' | 'wallet-adoption'>('standards')
   const [deadlineJurisdiction, setDeadlineJurisdiction] = useState('All')
   const [showPastDeadlines, setShowPastDeadlines] = useState(false)
   const [difficultyFilter, setDifficultyFilter] = useState<(typeof DIFFICULTIES)[number]>('All')
@@ -55,6 +56,12 @@ export default function StandardsExplorer() {
       if (params.get('view') === 'deadlines') {
         setTimeout(() => {
           setPageView('deadlines')
+        }, 0)
+      }
+
+      if (params.get('view') === 'wallet-adoption') {
+        setTimeout(() => {
+          setPageView('wallet-adoption')
         }, 0)
       }
     }
@@ -124,6 +131,12 @@ export default function StandardsExplorer() {
               className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'deadlines' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
             >
               <CalendarClock className="w-3.5 h-3.5" /> Compliance Deadlines
+            </button>
+            <button
+              onClick={() => setPageView('wallet-adoption')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'wallet-adoption' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            >
+              <Smartphone className="w-3.5 h-3.5" /> Wallet/mDL Adoption
             </button>
           </div>
         )}
@@ -205,6 +218,57 @@ export default function StandardsExplorer() {
               ))}
             </div>
           )}
+        </div>
+      ) : pageView === 'wallet-adoption' ? (
+        <div className="space-y-6 overflow-y-auto">
+          <div className="p-4 rounded-2xl bg-status-warning/5 border border-status-warning/20 flex items-start gap-3 text-xs text-text-secondary leading-relaxed">
+            <ShieldAlert className="w-4 h-4 text-status-warning shrink-0 mt-0.5" />
+            <span>Consumer mDL/wallet rollout status shifts quickly as states launch pilots. Always re-verify against each entry's official source link — this is a directional snapshot, refreshed quarterly, not a live feed.</span>
+          </div>
+          <div className="rounded-2xl border border-border-subtle bg-bg-card overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-border-subtle text-left text-[10px] font-black text-text-muted uppercase tracking-wider">
+                  <th className="p-3">State</th>
+                  <th className="p-3">mDL Status</th>
+                  <th className="p-3 flex items-center gap-1"><Plane className="w-3 h-3" /> TSA Accepted</th>
+                  <th className="p-3">Wallet Support</th>
+                  <th className="p-3">Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                {WALLET_ADOPTION_TRACKER.map((entry) => {
+                  const statusStyle: Record<MdlStatus, string> = {
+                    live: 'bg-status-success/10 text-status-success border-status-success/20',
+                    pilot: 'bg-status-warning/10 text-status-warning border-status-warning/20',
+                    paused: 'bg-status-danger/10 text-status-danger border-status-danger/20',
+                    none: 'bg-bg-nested text-text-muted border-border-subtle',
+                  }
+                  return (
+                    <tr key={entry.state} className="border-b border-border-subtle/50 last:border-0">
+                      <td className="p-3 font-bold text-text-primary">{entry.state}</td>
+                      <td className="p-3">
+                        <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border ${statusStyle[entry.mdlStatus]}`}>
+                          {entry.mdlStatus}
+                        </span>
+                      </td>
+                      <td className="p-3">
+                        {entry.tsaAccepted ? <Check className="w-4 h-4 text-status-success" /> : <X className="w-4 h-4 text-text-muted" />}
+                      </td>
+                      <td className="p-3 text-text-secondary">
+                        {entry.walletSupport.length > 0 ? entry.walletSupport.join(', ') : '—'}
+                      </td>
+                      <td className="p-3">
+                        <a href={entry.sourceLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent-primary hover:text-accent-hover font-bold">
+                          Source <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : !activeStandardId ? (
         <div className="space-y-6">

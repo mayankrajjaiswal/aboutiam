@@ -317,26 +317,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group F — Interactive Formats, Accessibility & Zero-Backend Growth
 
-### F3. Offline "IAM Field Guide" PDF Export
-
-**One-liner:** A one-click, client-side PDF export compiling the Encyclopedia, Cheat Sheets, and Standards reference content into a genuinely offline, printable field guide, using jsPDF's native text/table APIs rather than screenshotting the DOM.
-
-**Why unique:** A natural sibling to the already-shipped Offline Study Pack (Markdown/`.zip` export), not a duplicate — this targets a different output/use case: a polished, printable, searchable-text PDF for physical reading or a printed reference binder, versus the Study Pack's Markdown files meant for notes-app/AI-tool ingestion.
-
-**Where it fits:** Extends the same trigger point as the existing Offline Study Pack (`Home.tsx` or wherever that download button lives), adding a second "Download IAM Field Guide (PDF)" option alongside it. No new route.
-
-**Design:**
-- Lazy-load `jsPDF` (and its `autoTable` plugin for the tabular cheat-sheet content) via dynamic `import()` only when the PDF export is triggered — same bundle-discipline pattern already used for `JSZip` in the Offline Study Pack, so this never adds to the initial page load.
-- Use jsPDF's native text/table drawing APIs for the Encyclopedia/Cheat Sheets/Standards content (real, searchable, selectable PDF text) — explicitly avoid an `html2canvas`-based DOM screenshot approach, which produces non-searchable raster text and defeats the point of a "field guide."
-
-**Tests:** `src/lib/export/fieldGuidePdf.test.ts` — the generator produces a well-formed PDF byte stream from a fixture content set without throwing; a smoke test confirms the expected number of sections are present in the generated document's structure (jsPDF exposes enough of its internal state to assert this without needing to actually render/rasterize the PDF in a test environment).
-
-**Docs to update:** `README.md` §A — amend the existing Offline Study Pack bullet to mention the new PDF sibling option; `GEMINI.md` §1 tech stack — add `jsPDF` as a new lazy-loaded dependency, following the same one-line disclosure pattern already used for `JSZip`.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ### F5. Cryptographic Local Completion Certificate
 
 **One-liner:** Extends the already-shipped Dynamic Portfolio Builder's Open Badges SVG export with a Web Crypto-signed certificate and a small "Verify a Certificate" tool that checks the signature locally via `SubtleCrypto.verify()`.

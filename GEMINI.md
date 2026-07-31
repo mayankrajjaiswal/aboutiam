@@ -17,7 +17,7 @@ AboutIAM is engineered as a **100% Client-Side, Zero-Backend Application**, ensu
 - **Search Engine Core:** MiniSearch (~9kb high-performance client-side indexing with TF-IDF relevance weighting, prefix searches, and fuzzy matching).
 - **State Management:** Zustand + Persist middleware (persisting user course completions and layout states in `localStorage`).
 - **Motion Canvas:** Framer Motion (handling animated vector SVG flow paths and popup transitions).
-- **File Export:** JSZip, dynamically `import()`-ed at the moment a user clicks "Download Study Pack" (`src/lib/studyPackExport.ts`) rather than statically imported — keeps the ~100KB library out of the `Home.tsx` chunk entirely (§4EE).
+- **File Export:** JSZip, dynamically `import()`-ed at the moment a user clicks "Download Study Pack" (`src/lib/studyPackExport.ts`) rather than statically imported — keeps the ~100KB library out of the `Home.tsx` chunk entirely (§4EE). `jsPDF` + `jspdf-autotable` (~400KB combined) follow the identical pattern for the sibling "Download IAM Field Guide (PDF)" button (`src/lib/export/fieldGuidePdf.ts`).
 - **Optional Cloud Sync:** Google Identity Services token client + the Drive v3 REST API, called directly with `fetch` (no `gapi`/SDK dependency) — powers the opt-in Google Drive Backup & Restore feature (§4DD), gated behind `VITE_GOOGLE_CLIENT_ID`.
 - **Testing Core:** Vitest (Vite-native unit testing with mock SSR safeguards).
 - **Discoverability:** `robots.txt`, `sitemap.xml`, `llms.txt`, `manifest.webmanifest`, and `security.txt` live in `public/` and all reference the production domain directly — update them alongside any future domain change.

@@ -22,6 +22,8 @@
     "@mlc-ai/web-llm": "^0.2.84",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^12.42.2",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
     "jszip": "^3.10.1",
     "lucide-react": "^1.28.0",
     "minisearch": "^7.2.0",

@@ -118,6 +118,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [IAM RACI Builder — Identity Program Governance Matrix](https://www.aboutiam.com/tools/raci-builder/): Assign Responsible/Accountable/Consulted/Informed roles across common IAM program activities, with built-in validation for missing owners and overloaded roles.
 - [IAM Risk Register Builder — Impact x Likelihood Scoring](https://www.aboutiam.com/tools/risk-register-builder/): Add identity program risks, score each by impact x likelihood on a standard 5x5 matrix, assign an owner and mitigation, and export a standard risk-register table.
 - [PQC Readiness Auditor — Post-Quantum Crypto-Agility Checklist](https://www.aboutiam.com/tools/pqc-readiness-auditor/): Paste a PEM certificate chain, JWKS JSON, or TLS cipher-suite list to flag quantum-vulnerable algorithms, estimate hybrid post-quantum handshake size growth, and get a prioritized migration checklist.
+- [Cyber-Insurance Identity Readiness Calculator](https://www.aboutiam.com/tools/cyber-insurance-readiness/): Score your identity posture against the controls cyber insurers explicitly underwrite against for a directional premium-impact estimate, gap checklist, and real MFA-related coverage-denial case studies.
 
 ## Advanced Ecosystem & Governance
 

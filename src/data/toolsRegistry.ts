@@ -8,7 +8,7 @@ import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
-  PackageSearch, Scale, Presentation, AtomIcon, UserCheck, AlertOctagon,
+  PackageSearch, Scale, Presentation, AtomIcon, UserCheck, AlertOctagon, Umbrella,
 } from 'lucide-react'
 import type { TaskTag } from './taskTags'
 
@@ -673,6 +673,25 @@ export const TOOLS: ToolMeta[] = [
       { q: 'What does the breach-risk adjustment toggle do?', a: 'It applies a static, illustrative uplift multiplier to the build-option total only, reflecting the commonly observed pattern that self-hosted, self-maintained identity stacks tend to patch known vulnerabilities more slowly than a commercial IDaaS vendor\'s dedicated security team.' },
     ],
     relatedLinks: [{ label: 'Generate a tailored RFP question set →', href: '/tools/iam-rfp-generator' }, { label: 'Browse the IAM Landscape Directory →', href: '/explore' }],
+  },
+  {
+    slug: 'cyber-insurance-readiness',
+    taskTags: ['check-compliance'],
+    title: 'Cyber-Insurance Identity Readiness Calculator',
+    description: 'Score your identity posture against the controls cyber insurers explicitly underwrite against — phishing-resistant MFA, PAM governance, Zero Trust — for a directional premium-impact estimate, gap checklist, and real MFA-related coverage-denial case studies.',
+    category: 'Program & Vendor Management',
+    icon: Umbrella,
+    phase: 3,
+    status: 'live',
+    keywords: ['cyber insurance readiness', 'cyber insurance mfa requirements', 'identity insurance premium', 'cyber insurance underwriting checklist'],
+    analogy: 'A home insurer charges less if you have working smoke detectors and a monitored alarm, and can deny a claim if you told them you had one and didn\'t — cyber insurers now underwrite identity controls (MFA, PAM) the exact same way, and this scores your posture against exactly the questions they ask on the application.',
+    expert: 'A pure client-side additive scorer (`src/lib/tools/insuranceReadiness.ts`) over 6 controls insurers commonly underwrite against in 2024-2026 applications, each contributing fixed points toward a 0-100 readiness score. The score maps to one of 4 directional premium-impact bands via a fixed threshold table — strictly monotonic, since enabling any additional control can only add points, never subtract. Includes 2 real, cited cyber-insurance coverage disputes tied specifically to inadequate/misrepresented MFA.',
+    faqs: [
+      { q: 'Is the premium-impact percentage a real quote?', a: 'No — it is a directional estimate illustrating how underwriters typically respond to this class of gap, not a quote from any specific carrier. Real premiums depend on your industry, revenue, claims history, and the specific carrier\'s own model.' },
+      { q: 'Why does the score never go down when I add a control?', a: 'The scorer is purely additive — each control contributes a fixed number of points only when present, and no control ever subtracts points, so the score is monotonic by construction.' },
+      { q: 'Are the case studies real?', a: 'Yes — both are real, publicly-documented cyber-insurance coverage disputes with case citations and a linked source, not hypothetical scenarios. Each carries a "last verified" date since case outcomes and public commentary can be updated over time.' },
+    ],
+    relatedLinks: [{ label: 'Compare 3-year build vs. buy TCO →', href: '/tools/iam-tco-calculator' }, { label: 'Assess overall GRC maturity →', href: '/assess' }],
   },
   {
     slug: 'iam-rfp-generator',

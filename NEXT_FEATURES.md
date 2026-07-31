@@ -14,27 +14,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group E — New Unique IAM Content Domains
 
-### E4. Cyber-Insurance Identity Readiness Calculator
-
-**One-liner:** An interactive scorer mapping identity controls (phishing-resistant MFA coverage, PAM deployment, Zero Trust/conditional-access posture) to real insurer underwriting criteria, outputting a directional "this posture typically swings premium ±X%" estimate with citations and real denial case studies.
-
-**Why unique:** A dollar-exposure/insurance framing for identity investment doesn't exist anywhere on the site — distinct from the GRC Maturity Wizard (process maturity scoring) and the TCO Calculator (build-vs-buy cost), this is specifically about how identity posture affects a real, external financial outcome (insurance premiums/claim eligibility).
-
-**Where it fits:** New tool at `/tools/cyber-insurance-readiness`, page `Tools/CyberInsuranceReadiness.tsx`, §4E convention. Sidebar: `tools` group, next to the existing TCO Calculator.
-
-**Design:**
-- Questionnaire on the specific controls insurers explicitly underwrite against in 2026 (universal phishing-resistant MFA on privileged/remote/email/cloud-admin paths, documented PAM governance, Zero Trust posture) — `src/lib/tools/insuranceReadiness.ts` maps answers to a directional premium-impact estimate and a checklist of gaps.
-- Include 2-3 real, citable denial case studies (e.g. well-documented public insurance-denial disputes tied to inadequate MFA/PAM) as cautionary context, clearly sourced.
-- Same "directional estimate, not a quote" disclaimer discipline already established for the Salary Compass and TCO Calculator.
-
-**Tests:** `src/lib/tools/insuranceReadiness.test.ts` — the scorer is monotonic (adding a missing control never decreases the readiness score); every cited case study has a real source link.
-
-**Docs to update:** `src/data/toolsRegistry.ts` new entry; `README.md` §C — new bullet in the existing "Program & Vendor Management" grouping; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### E5. Executive Command Center (upgraded from Board Report Generator)
 
 **One-liner:** A dedicated executive hub page organizing the site's existing GRC/program-management tools around four board-level questions — "What's at risk?" (Assess), "What's the deadline?" (Compliance Deadlines), "What will it cost?" (TCO Calculator), "Who owns it?" (the new E9 RACI Builder) — plus a "Generate Board Summary" one-page export using dollar-exposure framing, explicitly surfacing non-human-identity governance as a named 2026 boardroom gap.

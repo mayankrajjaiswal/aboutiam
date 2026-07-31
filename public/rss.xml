@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Jul 2026 19:49:44 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 31 Jul 2026 20:02:36 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: JWT Decoder — Inspect & Verify Tokens Online]]></title>
@@ -293,6 +293,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/iam-tco-calculator</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[An editable-slider calculator comparing the 3-year total cost of ownership of building an in-house identity stack versus buying a commercial IDaaS subscription — engineer hours, licensing, and an optional breach-risk adjustment.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Cyber-Insurance Identity Readiness Calculator]]></title>
+      <link>https://www.aboutiam.com/tools/cyber-insurance-readiness</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/cyber-insurance-readiness</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Score your identity posture against the controls cyber insurers explicitly underwrite against — phishing-resistant MFA, PAM governance, Zero Trust — for a directional premium-impact estimate, gap checklist, and real MFA-related coverage-denial case studies.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

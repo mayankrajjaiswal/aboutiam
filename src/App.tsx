@@ -67,6 +67,7 @@ const TabletopExerciseGenerator = lazy(() => import('./pages/Tools/TabletopExerc
 const RaciBuilder = lazy(() => import('./pages/Tools/RaciBuilder'))
 const RiskRegisterBuilder = lazy(() => import('./pages/Tools/RiskRegisterBuilder'))
 const PqcReadinessAuditor = lazy(() => import('./pages/Tools/PqcReadinessAuditor'))
+const CyberInsuranceReadiness = lazy(() => import('./pages/Tools/CyberInsuranceReadiness'))
 const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
 const HrAttributeMapper = lazy(() => import('./pages/Playgrounds/HrAttributeMapper'))
 const IdentityFabricBuilder = lazy(() => import('./pages/Playgrounds/IdentityFabricBuilder'))
@@ -260,6 +261,7 @@ export default function App() {
               <Route path="/tools/raci-builder" element={<RaciBuilder />} />
               <Route path="/tools/risk-register-builder" element={<RiskRegisterBuilder />} />
               <Route path="/tools/pqc-readiness-auditor" element={<PqcReadinessAuditor />} />
+              <Route path="/tools/cyber-insurance-readiness" element={<CyberInsuranceReadiness />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />
               <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
               <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />

@@ -19,9 +19,11 @@ describe('useBookmarksStore (Zustand Bookmarks Engine)', () => {
     expect(useBookmarksStore.getState().bookmarks).toEqual([])
   })
 
-  it('should add a new bookmark on toggle', () => {
+  it('should add a new bookmark on toggle, stamped with addedAt', () => {
     useBookmarksStore.getState().toggleBookmark(sampleItem)
-    expect(useBookmarksStore.getState().bookmarks).toEqual([sampleItem])
+    const [saved] = useBookmarksStore.getState().bookmarks
+    expect(saved).toMatchObject(sampleItem)
+    expect(typeof saved.addedAt).toBe('string')
   })
 
   it('should remove an existing bookmark on toggle', () => {

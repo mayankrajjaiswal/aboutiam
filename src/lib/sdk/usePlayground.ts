@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { touchLabCompletion } from '../home/lastTouched'
 
 export interface TraceLog {
   timestamp: string;
@@ -85,6 +86,7 @@ export function usePlayground({
           completedLabs.push(moduleId)
           localStorage.setItem('aboutiam_labs_completed', JSON.stringify(completedLabs))
         }
+        touchLabCompletion(moduleId)
       } catch (e) {
         console.error('Failed to save completed lab inside localStorage:', e)
       }

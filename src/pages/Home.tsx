@@ -5,6 +5,7 @@ import StudyPackDownload from '../components/StudyPackDownload'
 import DailyPuzzleWidget from '../components/DailyPuzzleWidget'
 import FactOfTheDay from '../components/FactOfTheDay'
 import ProfileExportImport from '../components/ProfileExportImport'
+import ContinueLearningCard from '../components/ContinueLearningCard'
 
 export default function Home() {
   return (
@@ -58,6 +59,9 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* Continue Where You Left Off — renders nothing for a brand-new visitor with no progress yet */}
+      <ContinueLearningCard />
 
       {/* Daily Identity Puzzle */}
       <section className="max-w-xl mx-auto">

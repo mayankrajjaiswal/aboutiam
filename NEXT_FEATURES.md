@@ -14,27 +14,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group D — Navigation, UX & Onboarding
 
-### D2. "Continue Where You Left Off" Home Widget
-
-**One-liner:** A persistent dashboard card on `Home.tsx` surfacing the last 1-3 things the user touched — an in-progress Academy module, a half-finished playground, a bookmarked tool — with a one-click resume link.
-
-**Why unique:** All the underlying state (Academy progress, playground completions, bookmarks) already exists in localStorage; nothing currently surfaces "pick up where you left off" as its own widget, and it's one of the highest-leverage retention patterns in e-learning UX research.
-
-**Where it fits:** New component `src/components/ContinueLearningCard.tsx`, rendered on `Home.tsx` near the existing Identity Trivia/Daily Puzzle widgets. No new route.
-
-**Design:**
-- `src/lib/home/continueLearning.ts` — a pure function reading the existing Academy progress store, playground-completion list, and bookmarks store, and returning a ranked list of "resumable" items (most-recently-touched first — requires adding a lightweight `lastTouchedAt` timestamp to the Academy progress and playground-completion writes if not already tracked; check `src/store/` for what's already there before adding new fields).
-- Each card item deep-links directly to the relevant page/module (Academy track anchor, playground route, or bookmarked tool/term link).
-- Empty state (brand-new visitor with no progress) doesn't render the widget at all — no clutter for first-time visitors, who already get the Disclaimer/Tour sequence.
-
-**Tests:** `src/lib/home/continueLearning.test.ts` — a mock state with progress across all three sources returns them ranked correctly by recency; an empty state returns an empty list (component then renders nothing).
-
-**Docs to update:** `README.md` §A — amend the `Home.tsx` bullet in place; `GEMINI.md` §2 — amend the `/` row's description.
-
-**Feasibility:** Easy.
-
----
-
 ### D3. Goal-Based "Start Here" Routing Wizard
 
 **One-liner:** A short 2-3 question wizard ("What brings you here today?" — Learn IAM fundamentals / Prep for an interview / Explore hands-on labs / Assess my org) that routes to a pre-built page *sequence*, distinct from the existing static Personalization selector which only tags a depth/role preference without actively routing anywhere.

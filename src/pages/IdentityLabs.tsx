@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  Award, ShieldAlert, CheckSquare, ArrowLeft, Play, Terminal, HelpCircle, 
+import {
+  Award, ShieldAlert, CheckSquare, ArrowLeft, Play, Terminal, HelpCircle,
   Check, Lock, Unlock, Sparkles, Star, RefreshCw, ShieldCheck
 } from 'lucide-react'
+import { touchLabCompletion } from '../lib/home/lastTouched'
 
 // Labs Configuration Types
 type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert'
@@ -72,6 +73,7 @@ export default function IdentityLabs() {
       if (typeof window !== 'undefined') {
         localStorage.setItem('aboutiam_labs_completed', JSON.stringify(updated))
       }
+      touchLabCompletion(id)
       
       const newScore = stats.score + scoreAwarded
       const newStars = stats.stars + starsEarned

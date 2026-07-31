@@ -5,6 +5,8 @@ export interface BookmarkedItem {
   id: string
   title: string
   link: string
+  /** When this bookmark was added — absent on bookmarks saved before this field existed. */
+  addedAt?: string
 }
 
 interface BookmarksState {
@@ -22,7 +24,7 @@ export const useBookmarksStore = create<BookmarksState>()(
         set((state) => ({
           bookmarks: state.bookmarks.some((b) => b.id === item.id)
             ? state.bookmarks.filter((b) => b.id !== item.id)
-            : [...state.bookmarks, item]
+            : [...state.bookmarks, { ...item, addedAt: new Date().toISOString() }]
         }))
     }),
     {

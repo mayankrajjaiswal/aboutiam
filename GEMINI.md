@@ -31,7 +31,7 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 
 | Path | Component Name | Description |
 | :--- | :--- | :--- |
-| **`/`** | `Home.tsx` | Overview Dashboard. Features dual-tracks (Beginners vs. Experts), a date-seeded "Fact of the Day" widget rotating through the site's own trivia and Encyclopedia analogies (`src/lib/home/factOfTheDay.ts`), Google Drive Backup, and the zero-account local Export/Import Profile card (`ProfileExportImport.tsx`; single source of truth for which keys are included is `src/lib/backup/knownStorageKeys.ts`). |
+| **`/`** | `Home.tsx` | Overview Dashboard. Features dual-tracks (Beginners vs. Experts), a "Continue Where You Left Off" widget (`ContinueLearningCard.tsx` / `src/lib/home/continueLearning.ts`, ranked by `src/lib/home/lastTouched.ts` timestamps written from `Learn.tsx`/`IdentityLabs.tsx`/`usePlayground.ts`), a date-seeded "Fact of the Day" widget rotating through the site's own trivia and Encyclopedia analogies (`src/lib/home/factOfTheDay.ts`), Google Drive Backup, and the zero-account local Export/Import Profile card (`ProfileExportImport.tsx`; single source of truth for which keys are included is `src/lib/backup/knownStorageKeys.ts`). |
 | **`/primer`** | `BeginnerPrimer.tsx` | Layman's Onboarding Portal. Deconstructs security into "The Internet's Digital Bouncer" analogy. |
 | **`/roadmap`** | `Roadmap.tsx` | Zero-to-Hero Learning Pathway. Chronological guide detailing sequential tracks. |
 | **`/learn`** | `Learn.tsx` | IAM Academy. 6 tracks, 36 expandable modules with local progress bar persistent tracking. |

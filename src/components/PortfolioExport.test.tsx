@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent } from '@testing-library/react'
+import { renderWithProviders as render } from '../test/renderWithProviders'
 import PortfolioExport from './PortfolioExport'
 
 describe('PortfolioExport', () => {
@@ -60,5 +61,13 @@ describe('PortfolioExport', () => {
     render(<PortfolioExport />)
     fireEvent.click(screen.getByLabelText(/copy bullet/i))
     expect(navigator.clipboard.writeText).toHaveBeenCalledOnce()
+  })
+
+  it('offers the signed certificate download with the mandatory honesty caveat and a link to the verifier', () => {
+    window.localStorage.setItem('aboutiam_labs_completed', JSON.stringify(['lab-oauth']))
+    render(<PortfolioExport />)
+    expect(screen.getByRole('button', { name: /certificate/i })).toBeInTheDocument()
+    expect(screen.getByText(/not a substitute for third-party-issued professional certification/i)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /certificate verifier/i })).toHaveAttribute('href', '/tools/certificate-verifier')
   })
 })

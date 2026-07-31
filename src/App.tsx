@@ -66,6 +66,7 @@ const IamSalaryCompass = lazy(() => import('./pages/Tools/IamSalaryCompass'))
 const TabletopExerciseGenerator = lazy(() => import('./pages/Tools/TabletopExerciseGenerator'))
 const RaciBuilder = lazy(() => import('./pages/Tools/RaciBuilder'))
 const RiskRegisterBuilder = lazy(() => import('./pages/Tools/RiskRegisterBuilder'))
+const CertificateVerifier = lazy(() => import('./pages/Tools/CertificateVerifier'))
 const PqcReadinessAuditor = lazy(() => import('./pages/Tools/PqcReadinessAuditor'))
 const CyberInsuranceReadiness = lazy(() => import('./pages/Tools/CyberInsuranceReadiness'))
 const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
@@ -263,6 +264,7 @@ export default function App() {
               <Route path="/tools/tabletop-exercise-generator" element={<TabletopExerciseGenerator />} />
               <Route path="/tools/raci-builder" element={<RaciBuilder />} />
               <Route path="/tools/risk-register-builder" element={<RiskRegisterBuilder />} />
+              <Route path="/tools/certificate-verifier" element={<CertificateVerifier />} />
               <Route path="/tools/pqc-readiness-auditor" element={<PqcReadinessAuditor />} />
               <Route path="/tools/cyber-insurance-readiness" element={<CyberInsuranceReadiness />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />

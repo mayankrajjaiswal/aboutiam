@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
-import { Award, Download, Briefcase, Copy, Check } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Award, Download, Briefcase, Copy, Check, ShieldCheck } from 'lucide-react'
 import { generateResumeBullets } from '../lib/career/resumeBulletGenerator'
 import { buildBadgeSvg } from '../lib/career/openBadge'
+import { signCertificate } from '../lib/career/certificateSigner'
 
 const TOTAL_ACADEMY_MODULES = 36
 const BADGE_THRESHOLD = 20
@@ -75,6 +77,25 @@ export default function PortfolioExport() {
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
     link.download = 'aboutiam_academy_badge.svg'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const downloadCertificate = async () => {
+    const issuedOn = new Date().toISOString().slice(0, 10)
+    const signed = await signCertificate({
+      recipientName: 'AboutIAM Learner',
+      completedModuleCount,
+      totalModuleCount: TOTAL_ACADEMY_MODULES,
+      completedLabCount,
+      issuedOn,
+      certificateId: `aboutiam-${issuedOn}-${completedModuleCount}-${completedLabCount}`,
+    })
+    const blob = new Blob([JSON.stringify(signed, null, 2)], { type: 'application/json;charset=utf-8' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = 'aboutiam_completion_certificate.json'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -155,6 +176,33 @@ export default function PortfolioExport() {
           </button>
         </div>
       )}
+
+      <div className="p-3.5 rounded-lg bg-bg-sidebar border border-border-subtle/50 space-y-2">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <ShieldCheck className="w-5 h-5 text-accent-secondary shrink-0" />
+            <div>
+              <p className="text-xs font-bold text-text-primary">Signed Completion Certificate</p>
+              <p className="text-[10px] text-text-secondary">A Web Crypto-signed JSON certificate you can check with the Certificate Verifier tool.</p>
+            </div>
+          </div>
+          <button
+            onClick={downloadCertificate}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-accent-secondary/30 text-accent-secondary hover:bg-accent-glow/40 text-[11px] font-bold transition-all shrink-0"
+          >
+            <Download className="w-3.5 h-3.5" /> Certificate
+          </button>
+        </div>
+        <p className="text-[10px] text-text-muted leading-relaxed">
+          This confirms the certificate's contents haven't been altered since AboutIAM generated it in your browser
+          — it is not a substitute for third-party-issued professional certification and should not be represented
+          as one. Verify any certificate at the{' '}
+          <Link to="/tools/certificate-verifier" className="text-accent-primary hover:text-accent-hover font-semibold">
+            Certificate Verifier
+          </Link>
+          .
+        </p>
+      </div>
     </div>
   )
 }

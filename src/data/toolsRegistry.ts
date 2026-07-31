@@ -8,7 +8,7 @@ import {
   ScanSearch, FileSignature, Binary, Hash, ShieldCheck, Shuffle, Lock, Link,
   Timer, ListTree, Users, KeySquare, LockKeyhole, FileKey, FileCheck, FileCode,
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
-  PackageSearch, Scale, Presentation, AtomIcon, UserCheck, AlertOctagon, Umbrella,
+  PackageSearch, Scale, Presentation, AtomIcon, UserCheck, AlertOctagon, Umbrella, BadgeCheck,
 } from 'lucide-react'
 import type { TaskTag } from './taskTags'
 
@@ -802,6 +802,23 @@ export const TOOLS: ToolMeta[] = [
       { q: 'Do I have to use the starter risks?', a: 'No — they are realistic examples to start from, not a mandatory fixed list. Edit or delete any of them and add your own.' },
     ],
     relatedLinks: [{ label: 'Assign ownership in the RACI Builder →', href: '/tools/raci-builder' }, { label: 'Run the GRC Maturity Wizard →', href: '/assess' }],
+  },
+  {
+    slug: 'certificate-verifier',
+    title: 'Completion Certificate Verifier — Check a Signed AboutIAM Certificate',
+    description: 'Paste or upload a signed AboutIAM completion certificate to verify its ECDSA P-256 signature locally via SubtleCrypto.verify() — confirms the certificate\'s contents match its own signature, not a substitute for third-party professional certification.',
+    category: 'PKI & Certificates',
+    icon: BadgeCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['completion certificate verifier', 'verify signed certificate', 'subtlecrypto verify', 'ecdsa signature verification'],
+    analogy: 'This is a wax-seal check, not a notary: it proves the certificate\'s contents haven\'t been altered since it was sealed, the same way an unbroken wax seal proves a letter wasn\'t opened — it does not, and cannot, prove who legitimately had the stamp in the first place.',
+    expert: 'Verifies a `SignedCertificate` (`payload`, `signature`, `publicKeyJwk`) produced by `src/lib/career/certificateSigner.ts` — imports the embedded public key via `crypto.subtle.importKey`, re-canonicalizes the payload to the exact JSON string that was originally signed, and calls `crypto.subtle.verify` with ECDSA/SHA-256. Because this is a purely client-side application, the signing private key ships inside the app bundle like everything else — so a valid signature proves only that the certificate is internally self-consistent (its claimed contents match its own signature), not that it is unforgeable by a sufficiently motivated party inspecting the app\'s own source.',
+    faqs: [
+      { q: 'Does a valid signature mean this certificate is legitimate?', a: 'It means the certificate\'s claimed contents match its own embedded signature and have not been altered since AboutIAM generated it in your browser. It is not, and cannot be, a substitute for third-party-issued professional certification.' },
+      { q: 'Why can\'t this be truly tamper-proof against forgery?', a: 'A pure client-side app cannot keep a signing key secret — the key ships in the same inspectable browser bundle as everything else. This tool proves internal consistency (a tamper-evidence checksum), not cryptographic non-forgeability.' },
+    ],
+    relatedLinks: [{ label: 'Generate your own signed certificate in the Career Center →', href: '/career-center' }],
   },
 ]
 

@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Jul 2026 20:58:56 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 31 Jul 2026 21:27:05 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: JWT Decoder — Inspect & Verify Tokens Online]]></title>
@@ -349,6 +349,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/risk-register-builder</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Add identity program risks, score each by impact x likelihood on a standard 5x5 matrix, assign an owner and mitigation with a target date, and export a standard risk-register table — a continuously-maintained artifact, not a one-time assessment.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Completion Certificate Verifier — Check a Signed AboutIAM Certificate]]></title>
+      <link>https://www.aboutiam.com/tools/certificate-verifier</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/certificate-verifier</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Paste or upload a signed AboutIAM completion certificate to verify its ECDSA P-256 signature locally via SubtleCrypto.verify() — confirms the certificate's contents match its own signature, not a substitute for third-party professional certification.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

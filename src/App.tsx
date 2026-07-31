@@ -99,6 +99,8 @@ const ConditionalAccess = lazy(() => import('./pages/Playgrounds/ConditionalAcce
 const OpaPlayground = lazy(() => import('./pages/Playgrounds/OpaPlayground'))
 const TokenExchange = lazy(() => import('./pages/Playgrounds/TokenExchange'))
 const ItdrLab = lazy(() => import('./pages/Playgrounds/ItdrLab'))
+const GamingIdentityLab = lazy(() => import('./pages/Playgrounds/GamingIdentityLab'))
+const StixTaxiiIocLab = lazy(() => import('./pages/Playgrounds/StixTaxiiIocLab'))
 const DeviceTrust = lazy(() => import('./pages/Playgrounds/DeviceTrust'))
 const PasskeyInternals = lazy(() => import('./pages/Playgrounds/PasskeyInternals'))
 const CommunityForums = lazy(() => import('./pages/CommunityForums'))
@@ -294,6 +296,8 @@ export default function App() {
               <Route path="/playground/opa" element={<OpaPlayground />} />
               <Route path="/playground/token-exchange" element={<TokenExchange />} />
               <Route path="/playground/itdr" element={<ItdrLab />} />
+              <Route path="/playground/gaming-identity" element={<GamingIdentityLab />} />
+              <Route path="/playground/stix-taxii-ioc" element={<StixTaxiiIocLab />} />
               <Route path="/playground/device-trust" element={<DeviceTrust />} />
               <Route path="/playground/passkey-internals" element={<PasskeyInternals />} />
               <Route path="/playground/ai-threat-lab" element={<AIThreatLab />} />

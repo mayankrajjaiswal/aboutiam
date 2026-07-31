@@ -14,51 +14,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group E — New Unique IAM Content Domains
 
-### E6. Gaming & Esports Identity Playground
-
-**One-liner:** Models account-linking across platforms, smurf/ban-evasion detection via device+behavioral fingerprinting, anti-cheat identity binding ("ban the person, not just the account"), and continuous KYC for real-money wagering platforms.
-
-**Why unique:** A genuinely untouched vertical — every existing lab targets enterprise/workforce/consumer-web identity; gaming/esports identity (cross-platform account linking, anti-cheat identity binding, wagering KYC) is a distinct, real discipline with its own IAM challenges nothing on the site addresses.
-
-**Where it fits:** New playground at `/playground/gaming-identity`, component `GamingIdentityLab.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group.
-
-**Design:**
-- Scenario 1 — Account linking: a player links a console account, a PC launcher account, and a mobile account into one persistent identity; trace log shows how a ban decision on the underlying identity propagates across all three linked platform accounts (the "ban the person, not the account" pattern).
-- Scenario 2 — Smurf/ban-evasion detection: toggle device-fingerprint and behavioral-pattern signals (mouse/input cadence, hardware ID) on a fresh account created shortly after a ban; show the detection system flagging it as a likely evasion attempt with a confidence score.
-- Scenario 3 — Wagering KYC: model a continuous (not one-time) identity-verification requirement for a real-money platform, re-triggering verification on risk signals (large withdrawal, new device, geolocation change).
-
-**Data model:** `src/data/gamingIdentityScenarios.ts` — the three scenario definitions with their signal sets and expected outcomes.
-
-**Tests:** `src/data/gamingIdentityScenarios.test.ts` — every scenario's planted signal set produces its documented expected outcome deterministically.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
-### E7. STIX/TAXII Identity-IOC Fan-Out Simulator
-
-**One-liner:** Models STIX 2.1 object relationships (Indicator → Malware/Identity/Threat-Actor SDOs) and a mock TAXII 2.1 collection/subscription exchange specifically for identity-relevant indicators of compromise (leaked-credential hashes, compromised-token indicators) — teaching the exchange *format and protocol*, not detection logic.
-
-**Why unique:** Distinct from the already-shipped CAEP Event Storm Visualizer (Shared Signals Framework session-state propagation) and the ITDR Lab (SIEM log monitoring/mitigation) — this is specifically about how identity threat intelligence is *structured and exchanged between organizations* (STIX object model, TAXII collections/subscriptions), a format nothing else on the site touches.
-
-**Where it fits:** New playground at `/playground/stix-taxii-ioc`, component `StixTaxiiIocLab.tsx` in `src/pages/Playgrounds/`. Sidebar: `ecosystem` group, next to `ItdrLab`.
-
-**Design:**
-- A visual STIX object graph builder: user assembles an `Indicator` SDO (e.g. a leaked-credential hash pattern) and links it via STIX relationship objects to a `Malware`/`Threat-Actor`/`Identity` SDO, seeing the resulting bundle as both a graph and the underlying JSON.
-- A mock TAXII exchange: the assembled bundle is "published" to a mock TAXII collection; 2-3 mock subscriber organizations with different subscription filters receive (or correctly don't receive) the bundle based on their filter criteria, visualized as a simple fan-out diagram (reuse rendering conventions from the CAEP Event Storm Visualizer where sensible, since the fan-out shape is conceptually similar even though the payload/protocol is entirely different).
-
-**Data model:** `src/data/stixTaxiiScenarios.ts` — sample STIX object sets and subscriber filter definitions.
-
-**Tests:** `src/data/stixTaxiiScenarios.test.ts` — every scenario's bundle is valid against the minimal STIX object shape the simulator supports; fan-out delivery correctly matches each subscriber's filter.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row.
-
-**Feasibility:** Medium.
-
----
-
 ### Explicitly Rejected from Group E
 
 - **IAM Patent Timeline (à la PQC Today's "Patents" section)** — research found no landmark OAuth/SAML/Kerberos patent *disputes* comparable to PQC's genuinely active, contentious patent landscape; OAuth's real patent story is deliberate *avoidance* (Open Web Foundation non-assert agreements), which is thin, single-fact content better suited to one Encyclopedia glossary entry than a dedicated section or page. **Skip the dedicated section; consider one Encyclopedia entry only.**

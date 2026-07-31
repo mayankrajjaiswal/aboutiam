@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder, ArrowLeftRight, Glasses, Siren, Search
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder, ArrowLeftRight, Glasses, Siren, Search, Share2, Gamepad2
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -273,6 +273,8 @@ const ecosystemItems: NavItem[] = [
   { name: 'Research & CVE Tracker', path: '/research', icon: ScanSearch, subGroup: 'Vendor & Threat Intel' },
   { name: 'Security Bulletins & Crisis Game', path: '/bulletins', icon: ShieldAlert, subGroup: 'Vendor & Threat Intel' },
   { name: 'Vulnerability Museum', path: '/wall-of-shame', icon: ShieldAlert, subGroup: 'Vendor & Threat Intel' },
+  { name: 'STIX/TAXII Identity-IOC Fan-Out', path: '/playground/stix-taxii-ioc', icon: Share2, subGroup: 'Vendor & Threat Intel' },
+  { name: 'Gaming & Esports Identity Lab', path: '/playground/gaming-identity', icon: Gamepad2, subGroup: 'Emerging Verticals' },
   { name: 'Developer Playbooks', path: '/cheat-sheets', icon: CheckSquare, subGroup: 'Reference & AI' },
   { name: 'AI Knowledge Assistant', path: '/assistant', icon: Bot, subGroup: 'Reference & AI' },
 ]

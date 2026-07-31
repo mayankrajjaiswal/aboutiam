@@ -215,6 +215,12 @@ CI (`ci.yml`) and `deploy.yml` run `npm run audit:check` instead of a bare `npm 
 
 To add a new entry: confirm the advisory genuinely doesn't apply to this app's actual usage (not just "it's inconvenient right now"), then add `{ ghsaId, package, reason, reviewBy }` to `ALLOWLIST`. Prefer fixing the real vulnerability (`npm audit fix`, or `npm audit fix --force` after checking the breaking change is safe) over allow-listing whenever a fix is actually available — the allow-list is for the specific case for a fix doesn't exist yet.
 
+### 📱 H. Mobile Bottom Tab Bar (`src/components/Layout/MobileBottomNav.tsx`)
+
+Mounted once in `App.tsx` alongside `Sidebar`/`Header` (`hidden` above the `lg` breakpoint via `lg:hidden`), so a new page needs zero per-page wiring for this to apply to it — active-tab highlighting is driven purely by `useLocation()` matching against 4 fixed destinations (Home, Learn, Playgrounds, Tools); a page outside those 4 just shows no active tab, which is expected. The 5th slot is Search (opens the shared `useCommandPaletteStore`, same modal as the header's Search button and `⌘K`) rather than a "More" menu — the existing hamburger-triggered `Sidebar isMobile` drawer already covers full navigation, so a second menu system would be redundant. `App.tsx`'s `<main>` carries `pb-20 lg:pb-12` specifically so page content doesn't render underneath the fixed bar on mobile; if a page adds its own fixed/sticky bottom UI, check it against this bar's height (`env(safe-area-inset-bottom)`-aware) rather than assuming the viewport bottom is unobstructed.
+
+The Search button's shared state lives in `src/store/commandPaletteStore.ts` (a small non-persisted Zustand store) rather than `Header.tsx`'s old local `useState` — `Header.tsx` was refactored to read/write the same store so the command palette has exactly one source of truth regardless of which UI surface opens it.
+
 ---
 
 ## 4. Developer Maintenance & Extension Playbook

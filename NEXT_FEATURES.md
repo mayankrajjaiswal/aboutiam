@@ -12,29 +12,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-## Group D — Navigation, UX & Onboarding
-
-### D6. Mobile Bottom Tab Bar
-
-**One-liner:** A fixed bottom navigation bar on mobile viewports for the 4-5 highest-traffic destinations (Home, Learn, Playgrounds, Tools, Search), keeping them within thumb reach without replacing the full sidebar (still reachable via a "More" entry).
-
-**Why unique:** With 100+ pages, the existing hamburger-triggered full sidebar is the only mobile navigation surface today — real reachability research for mobile recommends a persistent bottom bar specifically for a small, frequently-used core set, with everything else staying one tap away behind "More," rather than either a single giant list or nothing persistent at all.
-
-**Where it fits:** New component `src/components/MobileBottomNav.tsx`, rendered conditionally at the `App.tsx`/layout level below a Tailwind breakpoint, alongside (not replacing) the existing `Sidebar.tsx`. No new route.
-
-**Design:**
-- 5 fixed icon+label tabs: Home, Learn, Playgrounds, Tools, and a "More" tab that opens the existing mobile sidebar/hamburger menu (reuse that existing open/close state rather than building a second menu system) — swap "More" for direct Search access if Ctrl+K/the search icon is judged more valuable in the fixed slot; decide during implementation based on which is used more in the existing analytics-free judgment call (no telemetry exists to measure this, so default to Search in the fixed slot since it's the site's most power-user-valuable single action).
-- Active-tab highlighting driven by the current route via React Router's location, not manual state.
-- Respects safe-area insets (`env(safe-area-inset-bottom)`) for notched devices.
-
-**Tests:** `src/components/MobileBottomNav.test.tsx` — the tab matching the current route is visually marked active; tapping "More" opens the existing mobile menu rather than a new one.
-
-**Docs to update:** `README.md` — no new bullet needed (this is navigation chrome, not a content feature) but add one line to the existing tech-stack/mobile-support context if such a line exists; `GEMINI.md` — a short new note under §3 (Production Code Standards) about the mobile nav pattern, since future pages don't need to do anything for this to apply to them.
-
-**Feasibility:** Medium.
-
----
-
 ## Group E — New Unique IAM Content Domains
 
 ### E4. Cyber-Insurance Identity Readiness Calculator

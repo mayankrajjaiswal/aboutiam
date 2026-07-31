@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss, HelpCircle, Layers, Bell, Lightbulb } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
+import { useCommandPaletteStore } from '../../store/commandPaletteStore'
 import { useTourStore } from '../../store/tourStore'
 import { useCoachMarkStore } from '../../store/coachMarkStore'
 import { useWhatsNewStore } from '../../store/whatsNewStore'
@@ -49,7 +50,7 @@ export default function Header() {
   const pageMeta = getRouteMeta(location.pathname)
   const isHome = location.pathname === '/'
 
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const { isOpen: isSearchOpen, close: closeSearch, toggle: toggleSearch } = useCommandPaletteStore()
   const [isAirplaneOpen, setIsAirplaneOpen] = useState(false)
   const [isPersonalizeOpen, setIsPersonalizeOpen] = useState(false)
   const { isEnabled: isAirplaneEnabled } = useAirplaneModeStore()
@@ -62,12 +63,12 @@ export default function Header() {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()
-        setIsSearchOpen(prev => !prev)
+        toggleSearch()
       }
     }
     window.addEventListener('keydown', handleGlobalKeyDown)
     return () => window.removeEventListener('keydown', handleGlobalKeyDown)
-  }, [])
+  }, [toggleSearch])
 
   useEffect(() => {
     // location.pathname already carries a trailing slash for every real
@@ -142,7 +143,7 @@ export default function Header() {
       <div className="flex items-center gap-3">
         {/* Search / Command Console button */}
         <button
-          onClick={() => setIsSearchOpen(true)}
+          onClick={() => toggleSearch()}
           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary text-xs font-semibold transition-colors focus:outline-none cursor-pointer"
           title="Search / Command Console (⌘K)"
         >
@@ -248,7 +249,7 @@ export default function Header() {
       </div>
 
       {/* Global Search Command Palette overlay modal */}
-      <CommandPalette isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <CommandPalette isOpen={isSearchOpen} onClose={closeSearch} />
 
       {/* First-visit / replayable Guided Feature Tour overlay modal */}
       <GuidedTour />

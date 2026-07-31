@@ -9,6 +9,7 @@ import Sidebar from './components/Layout/Sidebar'
 import Header from './components/Layout/Header'
 import ScrollToTop from './components/Layout/ScrollToTop'
 import BreadcrumbNav from './components/Layout/BreadcrumbNav'
+import MobileBottomNav from './components/Layout/MobileBottomNav'
 
 // Core Pages
 const Home = lazy(() => import('./pages/Home'))
@@ -198,7 +199,7 @@ export default function App() {
           <Header />
 
           {/* Main Main Scroll Container */}
-          <main className="flex-grow pt-20 pb-12 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto transition-all">
+          <main className="flex-grow pt-20 pb-20 lg:pb-12 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto transition-all">
             <BreadcrumbNav />
             <Suspense fallback={<PageLoadingFallback />}>
               <Routes>
@@ -348,6 +349,9 @@ export default function App() {
             </Suspense>
           </main>
         </div>
+
+        {/* Fixed Mobile Bottom Tab Bar (below lg breakpoint only) */}
+        <MobileBottomNav />
       </div>
     </Router>
   )

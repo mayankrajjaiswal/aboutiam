@@ -207,25 +207,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### E8. Open Source IAM "Good First Issue" Pathways Guide
-
-**One-liner:** A static, hand-curated architecture primer and "where beginners typically start" guide for contributing to Keycloak, Ory (Kratos/Hydra), and Zitadel, with direct links to each repository's `good-first-issue` label search.
-
-**Why unique:** Turns AboutIAM from a pure-consumption learning site into a funnel toward real open-source participation — directly reinforcing the platform's own "making digital identity safer for everyone" mission statement (README §License & Open-Source) by pointing learners at real projects, not just teaching protocol theory.
-
-**Where it fits:** New page section, most naturally as a new tab or section on `Explore.tsx` (which already catalogs these exact projects) — add a "Contribute" callout per relevant `EXPLORE_PRODUCTS` entry rather than building a fully separate page.
-
-**Design:**
-- Extend relevant `ExploreProduct` entries (Keycloak, Ory Kratos/Hydra, Zitadel — all already in `exploreData.ts`) with an optional `contributionGuide` field: a short architecture primer, "where beginners typically start" notes, and a direct link to that repo's live `good-first-issue` search (an outbound link, not a scraped/mirrored live issue list, since a static site can't keep that in sync).
-
-**Tests:** Covered by the existing `searchService.test.ts`/`exploreData.test.ts` loop over `EXPLORE_PRODUCTS` (§4U) if a new required field is added — extend that test to check `contributionGuide` (where present) has a non-empty guide and a valid-looking URL.
-
-**Docs to update:** `README.md` — amend the IAM Landscape Directory bullet in §A in place; `GEMINI.md` §2 — amend the `/explore` row's description.
-
-**Feasibility:** Easy.
-
----
-
 ### E9. IAM RACI Builder
 
 **One-liner:** An interactive Responsible/Accountable/Consulted/Informed matrix builder for identity-program governance — pick from a curated list of common IAM activities (SSO onboarding, access recertification, PAM credential rotation, incident response, vendor risk review) and assign each a role from an org-chart-style role list, with built-in validation (every activity needs exactly one Accountable owner, no activity should have zero Responsible parties).

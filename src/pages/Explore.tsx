@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
-  Search, X, Copy, CheckCircle2, ExternalLink, Terminal, Layers, Check, Wand2
+  Search, X, Copy, CheckCircle2, ExternalLink, Terminal, Layers, Check, Wand2, GitFork
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { EXPLORE_PRODUCTS, EXPLORE_TYPES, type ExploreProduct } from '../data/exploreData'
@@ -300,6 +300,24 @@ export default function Explore() {
                 {activeProduct.integrationSnippet}
               </pre>
             </div>
+
+            {activeProduct.contributionGuide && (
+              <div className="space-y-2.5 p-4 rounded-xl bg-accent-glow/5 border border-accent-primary/20">
+                <span className="text-xs font-black text-text-primary uppercase tracking-wider flex items-center gap-1.5">
+                  <GitFork className="w-4 h-4 text-accent-primary" /> Contribute to {activeProduct.name}
+                </span>
+                <p className="text-xs text-text-secondary leading-relaxed">{activeProduct.contributionGuide.primer}</p>
+                <p className="text-xs text-text-secondary leading-relaxed"><strong className="text-text-primary">Where beginners typically start:</strong> {activeProduct.contributionGuide.whereToStart}</p>
+                <a
+                  href={activeProduct.contributionGuide.goodFirstIssueUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-primary hover:text-accent-hover"
+                >
+                  Browse "good first issue" tickets on GitHub <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            )}
           </div>
         </div>
       )}

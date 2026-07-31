@@ -15,6 +15,12 @@ export interface ExploreProduct {
   }
   tags: string[]
   integrationSnippet: string
+  /** Optional "where beginners typically start" contribution primer — outbound link only, not a mirrored live issue list. */
+  contributionGuide?: {
+    primer: string
+    whereToStart: string
+    goodFirstIssueUrl: string
+  }
 }
 
 export const EXPLORE_PRODUCTS: ExploreProduct[] = [
@@ -42,7 +48,12 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
         provider:
           keycloak:
-            issuer-uri: https://auth.company.com/realms/aboutiam`
+            issuer-uri: https://auth.company.com/realms/aboutiam`,
+    contributionGuide: {
+      primer: 'Keycloak is a large Java codebase (Quarkus-based since v18+) split into a core server, an Admin REST API, themes/UI (Admin Console + Account Console, both React), and dozens of protocol/storage extensions (LDAP, Kerberos, custom SPIs).',
+      whereToStart: "Newcomers typically start with the Admin/Account Console UI (React + PatternFly, a smaller surface than the Java core), documentation fixes, or a specific SPI extension rather than the authentication core — the project's own contributor docs explicitly steer first-time contributors toward these lower-risk areas.",
+      goodFirstIssueUrl: 'https://github.com/keycloak/keycloak/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22',
+    },
   },
   {
     id: 'authentik',
@@ -186,7 +197,12 @@ curl -s -X GET \\
 # Submit credentials to the returned action URL
 curl -s -X POST "$ACTION_URL" \\
   -H "Content-Type: application/json" \\
-  -d '{"method":"password","identifier":"user@aboutiam.com","password":"hunter2"}'`
+  -d '{"method":"password","identifier":"user@aboutiam.com","password":"hunter2"}'`,
+    contributionGuide: {
+      primer: 'Ory is a set of separate Go microservices (Kratos for identity/self-service flows, Hydra for the OAuth2/OIDC server, plus Keto for permissions and Oathkeeper as an identity-aware proxy) — each with its own repository, release cycle, and CONTRIBUTING.md.',
+      whereToStart: "Because each service is independently maintained, pick the specific repo matching the feature you want to touch (most beginners start with Kratos, since it has the largest surface area of self-service UI/flow logic) rather than trying to understand the whole Ory stack at once.",
+      goodFirstIssueUrl: 'https://github.com/ory/kratos/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22',
+    },
   },
   {
     id: 'zitadel',
@@ -203,7 +219,12 @@ curl -s -X POST "https://aboutiam.zitadel.cloud/oauth/v2/token" \\
   -H "Content-Type: application/x-www-form-urlencoded" \\
   -d "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer" \\
   -d "assertion=$SIGNED_JWT" \\
-  -d "scope=openid profile urn:zitadel:iam:org:project:id:zitadel:aud"`
+  -d "scope=openid profile urn:zitadel:iam:org:project:id:zitadel:aud"`,
+    contributionGuide: {
+      primer: 'Zitadel is a Go backend built on an event-sourcing (CQRS/ES) architecture, paired with an Angular console UI — every state change is an immutable event, which is a genuinely different mental model from a typical CRUD-backed IdP.',
+      whereToStart: "The project explicitly labels beginner-friendly issues, and the Angular console UI or documentation are lower-risk entry points than the event-sourced backend core, which requires understanding Zitadel's specific event/aggregate model first.",
+      goodFirstIssueUrl: 'https://github.com/zitadel/zitadel/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22',
+    },
   },
   {
     id: 'okta-workforce',

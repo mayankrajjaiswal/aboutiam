@@ -39,6 +39,7 @@ export const KNOWN_STORAGE_KEYS: string[] = [
   'aboutiam-academy-progress-touched',
   'aboutiam_labs_completed_touched',
   'aboutiam-start-here-progress',
+  'aboutiam-last-assessment',
 ]
 
 /** Dynamic per-item key prefixes — e.g. `aboutiam-feedback-<contentId>` (see src/lib/contentFeedback.ts). */

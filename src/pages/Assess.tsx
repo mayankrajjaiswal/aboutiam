@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { questions, computeScores, getMaturityTier, encodeAnswers, decodeAnswers } from '../lib/assess/scoring'
 import { mapScoreToGartnerLevel, estimatePeerPercentile, PEER_BENCHMARK_SOURCE_NOTE, GARTNER_LEVELS } from '../lib/assess/maturityBenchmark'
+import { saveLastAssessment } from '../lib/assess/assessHistory'
 import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
 
 function getSharedParam(): string | null {
@@ -30,6 +31,7 @@ export default function Assess() {
     if (activeStep < questions.length - 1) {
       setActiveStep(activeStep + 1)
     } else {
+      saveLastAssessment(answers)
       setShowResults(true)
     }
   }

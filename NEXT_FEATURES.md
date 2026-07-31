@@ -14,28 +14,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group E — New Unique IAM Content Domains
 
-### E5. Executive Command Center (upgraded from Board Report Generator)
-
-**One-liner:** A dedicated executive hub page organizing the site's existing GRC/program-management tools around four board-level questions — "What's at risk?" (Assess), "What's the deadline?" (Compliance Deadlines), "What will it cost?" (TCO Calculator), "Who owns it?" (the new E9 RACI Builder) — plus a "Generate Board Summary" one-page export using dollar-exposure framing, explicitly surfacing non-human-identity governance as a named 2026 boardroom gap.
-
-**Why unique / revision note:** This supersedes this document's original, thinner concept (a single export mode bolted onto `Assess.tsx`). Live-crawling `pqctoday.com`'s own "Command Center" showed a materially better version of the same idea: a standalone hub page that *reframes and links to* existing tools around the questions an executive actually asks, rather than just reformatting one tool's output. Every existing exec-adjacent artifact (Assess, RFP Generator, TCO Calculator, E4's Insurance Calculator) is technical-buyer-oriented; this is the first genuinely CISO/board-specific *destination* on the site.
-
-**Where it fits:** New route `/command-center`, page `CommandCenter.tsx`. Sidebar: a new top-level entry (not nested under `tools` or `ecosystem`, given its cross-cutting executive-audience purpose — consider a distinct sidebar treatment, e.g. near the top alongside `Home`/`Assess`). Uses the D12 Journey Breadcrumb component to link out to Assess, Compliance Deadlines, TCO Calculator, and (once built) the RACI Builder and Modernization Backlog Game.
-
-**Design:**
-- Four large "start here" cards, one per board-level question, each linking directly to the relevant existing page (`/assess`, `/standards?view=deadlines`, `/tools/iam-tco-calculator`, `/tools/raci-builder`) — this page adds no new data collection of its own for those four; it's a curated front door.
-- `src/lib/assess/boardSummary.ts` — a "Generate Board Summary" export reusing the existing Assess score/pillar breakdown, reformatted into a one-page narrative (dollar-exposure-style framing per current Gartner board-reporting guidance: risk reduction in relatable financial terms, not raw maturity-level jargon), explicitly calling out NHI/non-human-identity governance as a fixed addendum section regardless of the underlying GRC pillar structure, since it's a named 2026 gap worth surfacing even if no existing pillar maps to it directly.
-- Exportable as the same Markdown/print-to-PDF pattern already used by the Dynamic Portfolio Builder.
-- A "Density" toggle (inspired by the observed persona-driven density control) tied to the existing `preferenceStore.ts` depth mode (§4P) rather than inventing a second, separate density preference — reuse, don't duplicate.
-
-**Tests:** `src/lib/assess/boardSummary.test.ts` — a low-scoring input produces a summary that names the weakest pillar(s); output is well-formed regardless of score distribution (no divide-by-zero/undefined-pillar edge cases). `CommandCenter.test.tsx` — all four question cards link to real, currently-registered routes.
-
-**Docs to update:** `README.md` — new §A bullet for the Command Center hub, plus amend the GRC Maturity Wizard bullet in §D to mention it now feeds into the hub; `GEMINI.md` §2 — new row for `/command-center`.
-
-**Feasibility:** Medium — mostly composition/linking of existing and E9/E10's new tools, plus the board-summary export logic carried over from the original concept.
-
----
-
 ### E6. Gaming & Esports Identity Playground
 
 **One-liner:** Models account-linking across platforms, smurf/ban-evasion detection via device+behavioral fingerprinting, anti-cheat identity binding ("ban the person, not just the account"), and continuous KYC for real-money wagering platforms.

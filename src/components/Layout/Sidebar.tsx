@@ -217,6 +217,7 @@ function AccordionGroup({
 
 const coreItems = [
   { name: 'Overview Dashboard', path: '/', icon: Home },
+  { name: 'Executive Command Center', path: '/command-center', icon: Compass },
   { name: "Beginner's Primer", path: '/primer', icon: GraduationCap },
   { name: 'Learning Pathways', path: '/roadmap', icon: Map },
   { name: 'IAM Academy', path: '/learn', icon: BookOpen },

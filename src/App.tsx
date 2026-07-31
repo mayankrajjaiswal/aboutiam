@@ -103,6 +103,7 @@ const DeviceTrust = lazy(() => import('./pages/Playgrounds/DeviceTrust'))
 const PasskeyInternals = lazy(() => import('./pages/Playgrounds/PasskeyInternals'))
 const CommunityForums = lazy(() => import('./pages/CommunityForums'))
 const Assess = lazy(() => import('./pages/Assess'))
+const CommandCenter = lazy(() => import('./pages/CommandCenter'))
 const Explore = lazy(() => import('./pages/Explore'))
 const Assistant = lazy(() => import('./pages/Assistant'))
 const ScenarioBuilder = lazy(() => import('./pages/ScenarioBuilder'))
@@ -325,6 +326,7 @@ export default function App() {
               <Route path="/playground/spatial-identity-lab" element={<SpatialIdentityLab />} />
 
               <Route path="/assess" element={<Assess />} />
+              <Route path="/command-center" element={<CommandCenter />} />
               <Route path="/scenario-builder" element={<ScenarioBuilder />} />
               <Route path="/labs" element={<IdentityLabs />} />
               <Route path="/references" element={<ReferenceImplementations />} />

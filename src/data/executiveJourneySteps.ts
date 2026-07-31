@@ -14,6 +14,7 @@ export interface ExecutiveJourneyStep {
  * do not add a step whose path isn't a real, currently-registered route yet.
  */
 export const EXECUTIVE_JOURNEY_STEPS: ExecutiveJourneyStep[] = [
+  { label: 'Command Center', path: '/command-center' },
   { label: 'Assess', path: '/assess' },
   { label: 'Compliance Deadlines', path: '/standards?view=deadlines' },
   { label: 'Modernization Backlog', path: '/playground/modernization-backlog' },

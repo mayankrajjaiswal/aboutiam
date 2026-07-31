@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { 
+import {
   Terminal, ArrowRight, ShieldCheck, Play, Award
 } from 'lucide-react'
+import ShareScoreButton from '../../components/ShareScoreButton'
 
 type ChallengeType = 'jwt_none' | 'saml_ssw' | 'ldap_inject'
 
@@ -152,6 +153,14 @@ export default function IdentityCTFArena() {
               <Award className="w-6 h-6 animate-bounce" />
             </div>
           </div>
+
+          {solvedChallenges.length > 0 && (
+            <ShareScoreButton
+              moduleName="Identity CTF Arena"
+              score={`${score} / 300 PTS`}
+              date={new Date().toISOString().slice(0, 10)}
+            />
+          )}
 
           {/* Hacking levels card list */}
           <div className="bg-bg-card border border-border-subtle rounded-xl p-4 shadow-lg space-y-3">

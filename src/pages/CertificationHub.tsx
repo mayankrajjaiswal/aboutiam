@@ -4,6 +4,7 @@ import {
   Award, ArrowRight, Settings, List, Terminal, ChevronRight, ExternalLink
 } from 'lucide-react'
 import { CERTIFICATIONS, CERTIFICATION_CATEGORIES, type CertDifficulty } from '../data/certificationsData'
+import ShareScoreButton from '../components/ShareScoreButton'
 
 interface Flashcard {
   cert: string
@@ -442,12 +443,21 @@ export default function CertificationHub() {
                     </span>
                   </div>
 
-                  <button
-                    onClick={restartQuiz}
-                    className="bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold px-4 py-2 rounded-lg transition mx-auto"
-                  >
-                    Restart Quiz
-                  </button>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <button
+                      onClick={restartQuiz}
+                      className="bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold px-4 py-2 rounded-lg transition"
+                    >
+                      Restart Quiz
+                    </button>
+                  </div>
+
+                  <ShareScoreButton
+                    moduleName={`${cert.title} mock exam`}
+                    score={`${score} / ${cert.quiz.length}`}
+                    date={new Date().toISOString().slice(0, 10)}
+                    className="justify-center"
+                  />
                 </div>
               )}
             </div>

@@ -23,27 +23,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group F — Interactive Formats, Accessibility & Zero-Backend Growth
 
-### F6. Async GitHub-Based Opt-In Leaderboard (Manual-Paste Variant)
-
-**One-liner:** Users who complete the GRC Maturity Wizard, CTF Arena, or a cert mock exam can generate a portable share code (same pattern as the Daily Puzzle's result string) and manually paste it into a public GitHub Discussion thread as an informal, crowdsourced leaderboard.
-
-**Why unique:** Approximates a leaderboard mechanic without any AboutIAM-run backend or scheduled compute.
-
-**Gray-zone flag (must be disclosed in the shipped feature, not just this planning doc):** A fully-automated version of this idea — a GitHub Action that periodically aggregates posted issues/discussion comments into a rebuilt static JSON leaderboard — was explicitly considered and is **not** part of this recommendation, because it requires scheduled compute running against AboutIAM's own repository, which is a meaningfully different admission than "zero AboutIAM-run server" (it's zero-*runtime*-server, but not zero-compute-anywhere). **Only the manual-paste version is recommended here**; if an automated aggregator is wanted later, that should be its own explicit decision with the user, not something built by default under this feature's name.
-
-**Where it fits:** A small "Share your score" button on `Assess.tsx`'s results view, `IdentityCTFArena.tsx`'s scoreboard, and relevant `CertificationHub.tsx` mock-exam results, deep-linking to a pre-filled GitHub Discussion post (same `buildIssueUrl`-style pre-fill pattern already used by `ContentFeedback.tsx`, §4L). A "Browse the community leaderboard →" link points to the live Discussion thread on GitHub itself (not embedded/mirrored on AboutIAM, since a static site can't keep a live mirror in sync without exactly the compute question flagged above).
-
-**Design:**
-- Reuse the existing `contentFeedback.ts::buildIssueUrl`-style helper, generalized or duplicated as `buildDiscussionUrl`, pre-filling a structured post (score, module/challenge name, date) into a dedicated GitHub Discussions category.
-
-**Tests:** `src/lib/community/shareScoreUrl.test.ts` — the generated URL correctly encodes the score/module/date into the pre-filled post body.
-
-**Docs to update:** `README.md` — amend the relevant existing bullets (Assess, CTF Arena, Certification Hub) to mention the new share-to-community option, **including the gray-zone note** that this links out to GitHub Discussions rather than running any AboutIAM infrastructure; `GEMINI.md` §4L — add a note that this reuses the `ContentFeedback` pre-filled-URL pattern.
-
-**Feasibility:** Easy (manual-paste version only — do not build the Action-based automated aggregator without a separate explicit go-ahead).
-
----
-
 ### F7. GitHub Discussions Comments (giscus)
 
 **One-liner:** Adds threaded comments to Encyclopedia terms, Standards Explorer entries, and Security Bulletins via giscus, which stores comments as GitHub Discussions with no AboutIAM-run server involved.

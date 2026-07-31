@@ -7,6 +7,7 @@ import { questions, computeScores, getMaturityTier, encodeAnswers, decodeAnswers
 import { mapScoreToGartnerLevel, estimatePeerPercentile, PEER_BENCHMARK_SOURCE_NOTE, GARTNER_LEVELS } from '../lib/assess/maturityBenchmark'
 import { saveLastAssessment } from '../lib/assess/assessHistory'
 import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
+import ShareScoreButton from '../components/ShareScoreButton'
 
 function getSharedParam(): string | null {
   if (typeof window === 'undefined') return null
@@ -361,6 +362,13 @@ export default function Assess() {
                   <RefreshCw className="w-4 h-4" /> Restart Assessment
                 </button>
               </div>
+
+              <ShareScoreButton
+                moduleName="GRC Maturity Wizard"
+                score={`${percentage}% (${maturityTier.label})`}
+                date={new Date().toISOString().slice(0, 10)}
+                className="pt-2"
+              />
             </div>
           </div>
 

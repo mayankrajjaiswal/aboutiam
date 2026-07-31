@@ -498,6 +498,8 @@ import ContentFeedback from '../components/ContentFeedback'
 
 Currently wired into Encyclopedia term details (`term-<id>`) and Wall of Shame breach labs (`breach-<labId>`). Reuse the same id prefix already established for that content type (see §4K) so a single item's bookmark id and feedback id stay recognizably related.
 
+**Share Your Score (F6)** reuses this exact pre-filled-URL pattern for a different purpose: `src/lib/community/shareScoreUrl.ts::buildDiscussionUrl` (unit-tested in `shareScoreUrl.test.ts`) builds a pre-filled GitHub *Discussions* post (not an issue) in a `leaderboard` category, and `src/components/ShareScoreButton.tsx` wraps it into a "Share Your Score" button plus a "Browse the community leaderboard →" link straight to that GitHub Discussions category — currently wired into `Assess.tsx`'s results view, `IdentityCTFArena.tsx`'s scoreboard, and `CertificationHub.tsx`'s mock-exam completion screen. This is deliberately the manual-paste-only leaderboard: the visitor still clicks "Submit" on GitHub themselves, and no AboutIAM-run server or scheduled compute ever aggregates or rebuilds a leaderboard — the "leaderboard" is just the live Discussion thread on GitHub itself.
+
 ---
 
 ### 🏛️ M. Guided Feature Tour

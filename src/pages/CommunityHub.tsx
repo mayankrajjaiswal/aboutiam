@@ -570,6 +570,15 @@ export default function CommunityHub() {
               </div>
             )}
 
+            {/* Cross-link to the full local profile export/import on Home.tsx */}
+            <p className="text-[11px] text-text-muted px-1">
+              Want to back these up or move them to another browser?{' '}
+              <Link to="/#export-import-profile" className="text-accent-primary hover:text-accent-hover underline font-semibold">
+                Export your full AboutIAM profile
+              </Link>
+              {' '}from the Home page.
+            </p>
+
             {/* Challenge Selector */}
             <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
               <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border-subtle pb-2 flex items-center gap-1.5">

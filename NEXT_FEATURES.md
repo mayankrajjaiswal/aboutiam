@@ -14,30 +14,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group D — Navigation, UX & Onboarding
 
-### D1. Export/Import My AboutIAM Profile (Local JSON Backup)
-
-**One-liner:** A single button bundling every known localStorage key (Academy progress, playground completions, bookmarks, badges, personalization, spaced-repetition state, Daily Puzzle streak) into one timestamped `.json` download, with a matching "Import Profile" file-picker that restores it — no account, no configuration.
-
-**Why unique:** The site already has an opt-in Google Drive Backup, but that requires a Google account and `VITE_GOOGLE_CLIENT_ID` configuration. This is the zero-account complement — manual device-to-device transfer, pre-clear-cookies backup, or moving between browsers — inspired directly by the "Backup/Restore" pattern found on `pqctoday.com`.
-
-**Where it fits:** New shared component `src/components/ProfileExportImport.tsx`, surfaced on `Home.tsx` next to the existing Google Drive Backup card, and cross-linked from `CommunityHub.tsx`'s bookmarks panel. No new route.
-
-**Design:**
-- `src/lib/backup/profileBackup.ts` — a pure module that **explicitly enumerates every known localStorage key** used by the app's Zustand persist stores and feature-specific state (do not naively iterate `Object.keys(localStorage)`, since that also captures unrelated browser/extension keys and risks corrupting the export if a non-JSON value is present).
-- Export: serialize the enumerated key/value map plus a `schemaVersion` and `exportedAt` timestamp into one downloadable `.json` `Blob` (reuse the existing download-trigger pattern already used by several tools).
-- Import: file picker validates the `schemaVersion` is recognized, then writes each key back via `localStorage.setItem`, followed by a forced page reload so every Zustand store rehydrates cleanly from the restored values (simpler and more reliable than trying to hot-patch every store's in-memory state individually).
-- Clearly labeled "This does not sync automatically — use the Google Drive Backup card above for that" to avoid confusing the two mechanisms.
-
-**Data model:** No registry — `src/lib/backup/knownStorageKeys.ts` is the single source of truth for which keys are included, imported by both the export and import logic so they can never drift apart.
-
-**Tests:** `src/lib/backup/profileBackup.test.ts` — exporting then importing a mock state round-trips every known key exactly; an import with an unrecognized `schemaVersion` is rejected with a clear error rather than silently corrupting state; a malformed/non-JSON file produces a clear error, not a crash.
-
-**Docs to update:** `README.md` §A — new bullet placed directly after the existing Google Drive Backup bullet, explicitly contrasting the two; `GEMINI.md` §2 — note on the `Home.tsx` row.
-
-**Feasibility:** Easy.
-
----
-
 ### D2. "Continue Where You Left Off" Home Widget
 
 **One-liner:** A persistent dashboard card on `Home.tsx` surfacing the last 1-3 things the user touched — an in-progress Academy module, a half-finished playground, a bookmarked tool — with a one-click resume link.

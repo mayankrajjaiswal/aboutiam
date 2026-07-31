@@ -4,6 +4,7 @@ import GoogleDriveSync from '../components/GoogleDriveSync'
 import StudyPackDownload from '../components/StudyPackDownload'
 import DailyPuzzleWidget from '../components/DailyPuzzleWidget'
 import FactOfTheDay from '../components/FactOfTheDay'
+import ProfileExportImport from '../components/ProfileExportImport'
 
 export default function Home() {
   return (
@@ -466,9 +467,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Optional Google Drive backup/restore for locally-persisted progress, and an offline Markdown study pack */}
+      {/* Optional Google Drive backup/restore, the zero-account local profile export/import, and an offline Markdown study pack */}
       <div className="grid sm:grid-cols-2 gap-6">
         <GoogleDriveSync />
+        <ProfileExportImport />
         <StudyPackDownload />
       </div>
     </div>

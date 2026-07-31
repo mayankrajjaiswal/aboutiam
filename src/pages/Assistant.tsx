@@ -1,37 +1,16 @@
-import { useState, useRef, useEffect, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useMemo } from 'react'
 import {
-  Bot, Send, Terminal, Copy, Check, Sparkles,
-  MessageSquare, ShieldCheck,
-  LayoutDashboard, GitCompare, GraduationCap,
-  Wrench, Gamepad2, FlaskConical, BookOpen, Layers, Award,
-  HelpCircle, Lightbulb, Eye
+  Sparkles, Check,
+  MessageSquare, GitCompare, GraduationCap, HelpCircle, Lightbulb, Eye
 } from 'lucide-react'
+import KnowledgeChatPanel, { ResourceCard } from '../components/KnowledgeChatPanel'
 
 // Import Knowledge Graph Data
 import {
-  KNOWLEDGE_GRAPH,
   COMPARISONS,
   LEARNING_TRACKS,
   INTERVIEW_QUESTIONS
 } from '../data/aiKnowledgeGraph'
-import type { ResourceLink } from '../data/aiKnowledgeGraph'
-import type { WebllmConnector, WebllmProgress } from '../lib/ai/webllmConnector'
-
-interface Message {
-  sender: 'user' | 'assistant'
-  text: string
-  code?: string
-  codeLang?: string
-  resources?: ResourceLink[]
-  source?: 'local-ai'
-}
-
-// Phase 2 C4 spike: opt-in, never-auto-loaded local LLM (see GEMINI.md §Z-spike
-// and docs/webllm-spike-findings.md). `webllmConnector` is dynamically
-// imported only after the user explicitly clicks "Download & Enable" below,
-// so `@mlc-ai/web-llm` never lands in this page's eagerly-loaded chunk.
-type LocalAiStatus = 'off' | 'loading' | 'ready' | 'error'
 
 type TabType = 'chat' | 'compare' | 'learn' | 'interview'
 
@@ -70,67 +49,8 @@ function buildAssistantJsonLd() {
   }
 }
 
-// Helper component for Resource Link Cards
-const ResourceCard = ({ resource }: { resource: ResourceLink }) => {
-  const getIcon = (type: string) => {
-    switch (type) {
-      case 'tool': return <Wrench className="w-4 h-4 text-blue-500" />
-      case 'playground': return <Gamepad2 className="w-4 h-4 text-purple-500" />
-      case 'lab': return <FlaskConical className="w-4 h-4 text-green-500" />
-      case 'encyclopedia': return <BookOpen className="w-4 h-4 text-orange-500" />
-      case 'architecture': return <Layers className="w-4 h-4 text-teal-500" />
-      case 'certification': return <Award className="w-4 h-4 text-yellow-500" />
-      default: return <ShieldCheck className="w-4 h-4 text-gray-500" />
-    }
-  }
-
-  return (
-    <Link 
-      to={resource.path} 
-      className="flex items-start gap-3 p-3 rounded-xl bg-bg-sidebar border border-border-subtle hover:bg-bg-nested hover:border-accent-primary/50 transition-all group"
-    >
-      <div className="p-2 rounded-lg bg-bg-nested border border-border-subtle group-hover:bg-bg-sidebar">
-        {getIcon(resource.type)}
-      </div>
-      <div>
-        <h4 className="text-xs font-bold text-text-primary flex items-center gap-1.5">
-          {resource.title}
-          <span className="text-[9px] uppercase tracking-wider text-text-muted font-semibold bg-bg-nested px-1.5 py-0.5 rounded">
-            {resource.type}
-          </span>
-        </h4>
-        {resource.desc && (
-          <p className="text-[11px] text-text-secondary mt-1">{resource.desc}</p>
-        )}
-      </div>
-    </Link>
-  )
-}
-
 export default function Assistant() {
   const [activeTab, setActiveTab] = useState<TabType>('chat')
-
-  // --- CHAT STATE ---
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      sender: 'assistant',
-      text: "Hello! I am your **AI Knowledge Assistant 2.0**. I am fully integrated into the AboutIAM platform. You can ask me to explain identity protocols, and I will automatically fetch the relevant tools, playgrounds, and architectures for you. What would you like to learn about today?",
-      resources: [
-        { title: 'OAuth Visualizer', path: '/playground/oauth', type: 'playground', desc: 'Explore OAuth 2.0 visually' },
-        { title: 'Passkey Internals', path: '/playground/passkey-internals', type: 'playground', desc: 'Learn how WebAuthn works' }
-      ]
-    }
-  ])
-  const [input, setInput] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
-  const [isCopied, setIsCopied] = useState<number | null>(null)
-  const chatEndRef = useRef<HTMLDivElement | null>(null)
-
-  // --- LOCAL AI SPIKE STATE (C4) ---
-  const [localAiStatus, setLocalAiStatus] = useState<LocalAiStatus>('off')
-  const [localAiProgress, setLocalAiProgress] = useState<WebllmProgress | null>(null)
-  const [localAiError, setLocalAiError] = useState<string | null>(null)
-  const connectorRef = useRef<WebllmConnector | null>(null)
 
   // --- COMPARE STATE ---
   const [activeComparisonId, setActiveComparisonId] = useState<string>('oauth_vs_oidc')
@@ -142,13 +62,6 @@ export default function Assistant() {
   // --- INTERVIEW PREP STATE ---
   const [interviewDomain, setInterviewDomain] = useState<string>('All')
   const [revealedAnswers, setRevealedAnswers] = useState<Set<string>>(new Set())
-
-  // --- EFFECTS ---
-  useEffect(() => {
-    if (activeTab === 'chat') {
-      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [messages, isTyping, activeTab])
 
   // Deep-link support: ?tab=compare&compare=<id> | ?tab=learn&level=<lvl>&goal=<goal> | ?tab=interview&q=<id>
   useEffect(() => {
@@ -182,12 +95,6 @@ export default function Assistant() {
   }, [])
 
   // --- HANDLERS ---
-  const copyToClipboard = (text: string, idx: number) => {
-    navigator.clipboard.writeText(text)
-    setIsCopied(idx)
-    setTimeout(() => setIsCopied(null), 1500)
-  }
-
   const toggleAnswer = (id: string) => {
     setRevealedAnswers(prev => {
       const next = new Set(prev)
@@ -199,166 +106,6 @@ export default function Assistant() {
       return next
     })
   }
-
-  // Generate dynamic resources based on text
-  const extractResources = (text: string): ResourceLink[] => {
-    // Normalize both the input and multi-word keys (e.g. "zero_trust") to spaces
-    // so a natural-language query like "explain zero trust" still matches.
-    const textLower = text.toLowerCase()
-    let foundResources: ResourceLink[] = []
-
-    Object.keys(KNOWLEDGE_GRAPH).forEach(key => {
-      const normalizedKey = key.replace(/_/g, ' ')
-      if (textLower.includes(key) || textLower.includes(normalizedKey)) {
-        foundResources = [...foundResources, ...KNOWLEDGE_GRAPH[key]]
-      }
-    })
-
-    // Deduplicate by title
-    const unique = foundResources.filter((v, i, a) => a.findIndex(t => (t.title === v.title)) === i)
-    return unique.slice(0, 4) // Max 4 recommendations
-  }
-
-  const getSimulatedResponse = (query: string): Message => {
-    const q = query.toLowerCase()
-    const resources = extractResources(query)
-
-    if (q.includes('s3') || q.includes('aws')) {
-      return {
-        sender: 'assistant',
-        text: `Here is a production-ready, least-privilege **AWS IAM S3 Read-Only JSON Policy**. This configuration explicitly isolates read access to a designated bucket, satisfying security audit guidelines.`,
-        codeLang: 'json',
-        code: `{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "ListBucketContents",
-      "Effect": "Allow",
-      "Action": ["s3:ListBucket"],
-      "Resource": "arn:aws:s3:::aboutiam-data"
-    }
-  ]
-}`,
-        resources
-      }
-    }
-
-    if (q.includes('rego') || q.includes('opa')) {
-      return {
-        sender: 'assistant',
-        text: `Here is a secure **Open Policy Agent (OPA) Rego Policy** that evaluates Role-Based Access Control (RBAC) and matching workspace conditions.`,
-        codeLang: 'rego',
-        code: `package authz
-default allow = false
-allow { input.user.role == "admin" }`,
-        resources
-      }
-    }
-
-    if (q.includes('fido2') || q.includes('passkey') || q.includes('webauthn')) {
-      return {
-        sender: 'assistant',
-        text: `Here is the JavaScript client-side blueprint to trigger a **WebAuthn Passkey Registration Challenge** natively in modern browsers.`,
-        codeLang: 'javascript',
-        code: `const credential = await navigator.credentials.create({
-  publicKey: {
-    challenge: new Uint8Array([1, 2, 3, 4]),
-    rp: { name: "AboutIAM", id: "aboutiam.com" },
-    user: { id: new Uint8Array([1]), name: "user", displayName: "User" },
-    pubKeyCredParams: [{ alg: -7, type: "public-key" }]
-  }
-});`,
-        resources
-      }
-    }
-
-    if (q.includes('oauth') || q.includes('oidc')) {
-       return {
-         sender: 'assistant',
-         text: `**OAuth 2.0** is an authorization framework allowing third-party applications to obtain limited access to an HTTP service. **OpenID Connect (OIDC)** adds an identity layer on top of OAuth 2.0 to authenticate users.\n\nI have attached some interactive playgrounds and tools below for you to explore these flows!`,
-         resources
-       }
-    }
-
-    return {
-      sender: 'assistant',
-      text: `I have analyzed your query regarding **"${query}"**. Based on our identity framework, I recommend reviewing the contextual resources attached below to dive deeper into this topic.`,
-      resources
-    }
-  }
-
-  const handleSendMessage = (textToSend: string) => {
-    if (!textToSend.trim()) return
-
-    const userMsg: Message = { sender: 'user', text: textToSend }
-    setMessages(prev => [...prev, userMsg])
-    setInput('')
-    setIsTyping(true)
-
-    if (localAiStatus === 'ready' && connectorRef.current) {
-      const connector = connectorRef.current
-      let streamed = ''
-      setMessages(prev => [...prev, { sender: 'assistant', text: '', source: 'local-ai' }])
-      connector
-        .generate(textToSend, (token) => {
-          streamed += token
-          setMessages(prev => {
-            const next = [...prev]
-            next[next.length - 1] = { sender: 'assistant', text: streamed, source: 'local-ai' }
-            return next
-          })
-        })
-        .catch((err) => {
-          const message = err instanceof Error ? err.message : 'Local generation failed.'
-          setMessages(prev => {
-            const next = [...prev]
-            next[next.length - 1] = { sender: 'assistant', text: `⚠️ ${message}`, source: 'local-ai' }
-            return next
-          })
-        })
-        .finally(() => setIsTyping(false))
-      return
-    }
-
-    setTimeout(() => {
-      const response = getSimulatedResponse(textToSend)
-      setMessages(prev => [...prev, response])
-      setIsTyping(false)
-    }, 1200)
-  }
-
-  const handleEnableLocalAi = async () => {
-    setLocalAiStatus('loading')
-    setLocalAiError(null)
-    setLocalAiProgress(null)
-    try {
-      const { createWebllmConnector, detectWebGpuSupport } = await import('../lib/ai/webllmConnector')
-      if (!detectWebGpuSupport()) {
-        setLocalAiError('WebGPU is not available in this browser. The WASM-only fallback path is not yet implemented in this spike.')
-        setLocalAiStatus('error')
-        return
-      }
-      const connector = createWebllmConnector()
-      connectorRef.current = connector
-      await connector.load((progress) => setLocalAiProgress(progress))
-      setLocalAiStatus('ready')
-    } catch (err) {
-      setLocalAiError(err instanceof Error ? err.message : 'Failed to load the local model.')
-      setLocalAiStatus('error')
-    }
-  }
-
-  const handleDisableLocalAi = () => {
-    connectorRef.current?.dispose()
-    connectorRef.current = null
-    setLocalAiStatus('off')
-    setLocalAiProgress(null)
-    setLocalAiError(null)
-  }
-
-  useEffect(() => {
-    return () => connectorRef.current?.dispose()
-  }, [])
 
   // --- RENDER HELPERS ---
   const activeComparison = useMemo(() => {
@@ -424,192 +171,7 @@ allow { input.user.role == "admin" }`,
       <div className="flex-grow min-h-0 relative">
         
         {/* TAB 1: KNOWLEDGE CHAT */}
-        {activeTab === 'chat' && (
-          <div className="h-full flex flex-col lg:flex-row gap-6">
-            {/* Chat Area */}
-            <div className="flex-grow flex flex-col rounded-2xl bg-bg-card border border-border-subtle shadow-sm overflow-hidden relative">
-              <div className="absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.01)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none"></div>
-              
-              <div className="flex-grow overflow-y-auto p-5 space-y-6 scroll-smooth z-10">
-                {messages.map((m, idx) => {
-                  const isAI = m.sender === 'assistant'
-                  return (
-                    <div key={idx} className={`flex gap-4 items-start ${isAI ? 'justify-start' : 'justify-end'}`}>
-                      {isAI && (
-                        <div className="w-9 h-9 rounded-xl bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/15 shrink-0 shadow-sm">
-                          <Bot className="w-5 h-5" />
-                        </div>
-                      )}
-                      <div className={`space-y-4 max-w-[85%] text-sm leading-relaxed p-4 rounded-2xl border ${
-                        isAI
-                          ? m.source === 'local-ai'
-                            ? 'bg-bg-sidebar/50 border-purple-400/60 ring-1 ring-purple-400/30 text-text-primary'
-                            : 'bg-bg-sidebar/50 border-border-subtle text-text-primary'
-                          : 'bg-accent-primary border-accent-primary text-white shadow-md'
-                      }`}>
-                        <span className={`text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${isAI ? (m.source === 'local-ai' ? 'text-purple-400' : 'text-accent-primary') : 'text-white/70'}`}>
-                          {isAI ? (m.source === 'local-ai' ? <><FlaskConical className="w-3 h-3" /> Local AI (Experimental)</> : 'AboutIAM AI Architect') : 'Your Query'}
-                        </span>
-                        <p className="whitespace-pre-line">{m.text || (isAI && m.source === 'local-ai' ? '…' : '')}</p>
-                        
-                        {m.code && (
-                          <div className="space-y-2 mt-4 font-mono relative">
-                            <div className="flex items-center justify-between text-[10px] uppercase font-bold text-text-secondary pb-1 border-b border-border-subtle/30">
-                              <span className="flex items-center gap-1.5"><Terminal className="w-3.5 h-3.5" /> {m.codeLang}</span>
-                              <button onClick={() => copyToClipboard(m.code || '', idx)} className="inline-flex items-center gap-1 hover:text-text-primary">
-                                {isCopied === idx ? <Check className="w-3 h-3 text-status-success" /> : <Copy className="w-3 h-3" />}
-                                {isCopied === idx ? 'Copied' : 'Copy'}
-                              </button>
-                            </div>
-                            <pre className="p-3.5 rounded-xl bg-bg-nested/80 border border-border-subtle text-xs text-text-primary overflow-x-auto">
-                              {m.code}
-                            </pre>
-                          </div>
-                        )}
-
-                        {/* Inline Resources for Mobile (Hidden on Desktop, shown via flex-col order) */}
-                        {isAI && m.resources && m.resources.length > 0 && (
-                          <div className="lg:hidden mt-4 space-y-2 border-t border-border-subtle pt-3">
-                            <span className="text-[10px] uppercase font-bold text-text-muted">Recommended Resources</span>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {m.resources.map((res, i) => <ResourceCard key={i} resource={res} />)}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )
-                })}
-                {isTyping && (
-                  <div className="flex gap-4 items-start justify-start animate-pulse">
-                    <div className="w-9 h-9 rounded-xl bg-bg-sidebar border border-border-subtle flex items-center justify-center shrink-0">
-                      <Bot className="w-5 h-5 text-text-muted" />
-                    </div>
-                    <div className="p-4 rounded-2xl bg-bg-sidebar/30 border border-border-subtle/50 text-xs text-text-muted font-bold uppercase flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 bg-accent-primary rounded-full animate-bounce"></span>
-                      <span className="w-1.5 h-1.5 bg-accent-primary rounded-full animate-bounce delay-100"></span>
-                      <span className="w-1.5 h-1.5 bg-accent-primary rounded-full animate-bounce delay-200"></span>
-                      Analyzing Platform Context
-                    </div>
-                  </div>
-                )}
-                <div ref={chatEndRef} />
-              </div>
-
-              {/* C4 Spike: Opt-in Local AI toggle */}
-              <div className="px-4 pt-3 border-t border-border-subtle bg-bg-sidebar/40 z-10 shrink-0">
-                <details className="group" open={localAiStatus !== 'off'}>
-                  <summary className="cursor-pointer text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5 select-none">
-                    <FlaskConical className="w-3.5 h-3.5" /> Experimental: Enable Local AI (Spike)
-                  </summary>
-                  <div className="mt-2 pb-3 text-xs text-text-secondary space-y-2">
-                    {localAiStatus === 'off' && (
-                      <>
-                        <p>
-                          Downloads a small open-weight language model (~200MB) and runs it fully
-                          client-side in a Web Worker — nothing leaves your browser. Requires WebGPU.
-                          This is an early technical spike, not the finished feature: quality and
-                          speed are unpolished.
-                        </p>
-                        <button
-                          onClick={handleEnableLocalAi}
-                          className="px-3 py-1.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-[11px] font-bold transition-colors"
-                        >
-                          Download &amp; Enable
-                        </button>
-                      </>
-                    )}
-                    {localAiStatus === 'loading' && (
-                      <p className="animate-pulse">
-                        Loading model{localAiProgress ? `: ${localAiProgress.text} (${localAiProgress.percent}%)` : '…'}
-                      </p>
-                    )}
-                    {localAiStatus === 'error' && (
-                      <>
-                        <p className="text-status-error">{localAiError}</p>
-                        <button
-                          onClick={handleDisableLocalAi}
-                          className="px-3 py-1.5 rounded-lg border border-border-subtle hover:bg-bg-nested text-text-secondary text-[11px] font-bold transition-colors"
-                        >
-                          Reset
-                        </button>
-                      </>
-                    )}
-                    {localAiStatus === 'ready' && (
-                      <>
-                        <p className="text-status-success">
-                          Local model loaded. New messages are now answered by the on-device model
-                          (see the purple badge).
-                        </p>
-                        <button
-                          onClick={handleDisableLocalAi}
-                          className="px-3 py-1.5 rounded-lg border border-border-subtle hover:bg-bg-nested text-text-secondary text-[11px] font-bold transition-colors"
-                        >
-                          Disable
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </details>
-              </div>
-
-              {/* Chat Input */}
-              <div className="p-4 border-t border-border-subtle bg-bg-card z-10 shrink-0">
-                <div className="flex gap-3">
-                  <input 
-                    type="text" 
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(input)}
-                    disabled={isTyping}
-                    className="flex-grow p-3 rounded-xl bg-bg-sidebar border border-border-subtle text-sm text-text-primary focus:outline-none focus:border-accent-primary" 
-                    placeholder="Ask about OAuth, JWT, Zero Trust, Passkeys..." 
-                  />
-                  <button 
-                    onClick={() => handleSendMessage(input)}
-                    disabled={isTyping || !input.trim()}
-                    className="p-3 rounded-xl bg-accent-primary hover:bg-accent-hover text-white transition-all disabled:opacity-50"
-                  >
-                    <Send className="w-5 h-5" />
-                  </button>
-                </div>
-                <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-hide pb-1">
-                  {['Explain OAuth vs SAML', 'How do Passkeys work?', 'Write an OPA Rego policy'].map((p, i) => (
-                     <button
-                       key={i}
-                       onClick={() => handleSendMessage(p)}
-                       disabled={isTyping}
-                       className="px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary text-[11px] font-semibold whitespace-nowrap"
-                     >
-                       {p}
-                     </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop Context Sidebar */}
-            <div className="hidden lg:flex w-80 flex-col gap-4 shrink-0">
-              <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm sticky top-0">
-                <div className="flex items-center gap-2 mb-4 text-sm font-bold text-text-primary border-b border-border-subtle pb-3">
-                  <LayoutDashboard className="w-4 h-4 text-accent-primary" />
-                  Active Context Resources
-                </div>
-                <div className="space-y-3">
-                  {messages.length > 0 && messages[messages.length - 1].resources ? (
-                    messages[messages.length - 1].resources!.map((res, i) => (
-                      <ResourceCard key={i} resource={res} />
-                    ))
-                  ) : (
-                    <div className="text-xs text-text-muted text-center py-8">
-                      Ask a question to dynamically load related tools and playgrounds here.
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {activeTab === 'chat' && <KnowledgeChatPanel showSidebar className="h-full" />}
 
         {/* TAB 2: COMPARISON ENGINE */}
         {activeTab === 'compare' && (

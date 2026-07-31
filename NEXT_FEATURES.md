@@ -56,27 +56,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### D10. Persistent Floating "Ask AI" Launcher
-
-**One-liner:** A small, persistent floating action button (bottom-right, dismissible/collapsible) that opens the existing AI Knowledge Assistant's Knowledge Chat from *any* page on the site, instead of requiring a navigation to `/assistant` first.
-
-**Why unique:** Observed directly on `pqctoday.com`'s live site (a persistent "Ask the PQC Assistant" launcher present on every page, including deep pages like its Command Center and Report views). AboutIAM's AI Knowledge Assistant is currently a full destination page — a user mid-task on, say, the FAPI 2.0 Playground has to leave the page entirely to ask a question, losing their place.
-
-**Where it fits:** New component `src/components/FloatingAssistantLauncher.tsx`, mounted once at the root layout level (alongside `CommandPalette`/`GuidedTour`, §4M's "mount once, available everywhere" pattern) rather than only inside `Assistant.tsx`. No new route.
-
-**Design:**
-- A small floating button, collapsed by default to avoid obscuring content on already-dense pages (canvas-based playgrounds especially); expands into a lightweight chat panel reusing the existing Knowledge Chat tab's logic from `Assistant.tsx` (extract the chat-input/response-rendering logic into a shared component both the full page and the floating launcher can mount, rather than duplicating it).
-- Preserves conversation context only for the current page session (no new persistence requirement beyond what the existing Assistant already does).
-- Respects the existing Airplane Mode/offline-simulator conventions — if a future WebLLM upgrade (an already-active item in `NEXT_FEATURES.md`, C4) is enabled, the floating launcher surfaces the same mode-indicator badge that distinguishes local-AI from rule-based responses.
-
-**Tests:** `src/components/FloatingAssistantLauncher.test.tsx` — renders collapsed by default; expanding shows the same chat interface `Assistant.tsx`'s Knowledge Chat tab renders, from the shared extracted component (a regression guard against the two ever drifting into different behavior).
-
-**Docs to update:** `README.md` §A — amend the AI Knowledge Assistant 2.0 bullet to mention the new site-wide floating launcher; `GEMINI.md` §2 — amend the `/assistant` row's description.
-
-**Feasibility:** Medium — the main work is safely extracting the chat logic into a component reusable both standalone and floating, not the floating-button chrome itself.
-
----
-
 ## Group E — New Unique IAM Content Domains
 
 ### E4. Cyber-Insurance Identity Readiness Calculator

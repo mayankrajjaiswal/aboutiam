@@ -10,6 +10,7 @@ import { getRouteMeta } from '../../routeMeta'
 import CommandPalette from '../Search/CommandPalette'
 import GuidedTour from '../GuidedTour'
 import ShortcutsOverlay from '../ShortcutsOverlay'
+import FloatingAssistantLauncher from '../FloatingAssistantLauncher'
 import { useChordedShortcuts } from '../../lib/navigation/useChordedShortcuts'
 import DisclaimerModal from '../DisclaimerModal'
 import WhatsNewModal from '../WhatsNewModal'
@@ -260,6 +261,9 @@ export default function Header() {
 
       {/* Returning-visitor "What's New" changelog overlay modal */}
       <WhatsNewModal />
+
+      {/* Site-wide persistent floating "Ask AI" launcher (D10) */}
+      <FloatingAssistantLauncher />
     </header>
   )
 }

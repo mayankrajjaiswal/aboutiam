@@ -121,6 +121,7 @@ const AgentIdentityLab = lazy(() => import('./pages/Playgrounds/AgentIdentityLab
 const NhiSprawlLab = lazy(() => import('./pages/Playgrounds/NhiSprawlLab'))
 const PasskeyRolloutStrategist = lazy(() => import('./pages/Playgrounds/PasskeyRolloutStrategist'))
 const ModernizationBacklogGame = lazy(() => import('./pages/Playgrounds/ModernizationBacklogGame'))
+const IncidentCommanderSim = lazy(() => import('./pages/Playgrounds/IncidentCommanderSim'))
 const BuildYourIdp = lazy(() => import('./pages/Playgrounds/BuildYourIdp'))
 const OpenId4VcWallet = lazy(() => import('./pages/Playgrounds/OpenId4VcWallet'))
 const Fapi2Lab = lazy(() => import('./pages/Playgrounds/Fapi2Lab'))
@@ -258,6 +259,7 @@ export default function App() {
               <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
               <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />
               <Route path="/playground/modernization-backlog" element={<ModernizationBacklogGame />} />
+              <Route path="/playground/incident-commander" element={<IncidentCommanderSim />} />
               <Route path="/playground/build-your-idp" element={<BuildYourIdp />} />
               <Route path="/playground/openid4vc-wallet" element={<OpenId4VcWallet />} />
               <Route path="/playground/fapi2" element={<Fapi2Lab />} />

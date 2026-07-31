@@ -317,26 +317,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group F — Interactive Formats, Accessibility & Zero-Backend Growth
 
-### F1. Branching "Incident Commander" Narrative Simulator
-
-**One-liner:** A choose-your-own-adventure decision-tree module where the user plays incident commander during a live breach (e.g. a Golden SAML forgery or MFA push-bombing attack), making timed branching decisions that lead to different outcomes and a post-mortem score.
-
-**Why unique:** A genuinely different content format from the existing score-based Crisis Response Console/CTF Arena — this is narrative-branching prose with consequence trees, not a simulator UI with toggles/inputs. Pure static JSON + a state machine, with zero backend concerns at all (unlike several Group F ideas below, this one has no gray-zone caveat whatsoever).
-
-**Where it fits:** New playground at `/playground/incident-commander`, component `IncidentCommanderSim.tsx` in `src/pages/Playgrounds/`, built on the shared Playground SDK. Sidebar: `ecosystem` group, cross-linked from `SecurityBulletins.tsx` (reuses bulletin incidents as source scenarios, same reuse discipline already established for the Tabletop Exercise Generator).
-
-**Design:**
-- `src/data/incidentCommanderScenarios.ts` — 2-3 branching-tree scenarios built from existing `BULLETINS` incidents, each node offering 2-3 timed decisions that branch to different next-nodes and eventually terminate in one of several distinct outcomes (contained-fast / contained-slow / breach-escalated / compliance-failure), each with a short post-mortem explanation.
-- Reuses `usePlayground`/`TraceTerminal` from the SDK for scoring and the decision trace log.
-
-**Tests:** `src/data/incidentCommanderScenarios.test.ts` — every scenario's decision tree is fully connected (no dead-end nodes missing a next-step or terminal outcome) and every path terminates within a bounded number of decisions.
-
-**Docs to update:** `README.md` §B new bullet; `GEMINI.md` §2 new row; amend the Security Bulletins bullet in §A to mention this as another consumer of `BULLETINS` (alongside the Tabletop Exercise Generator).
-
-**Feasibility:** Easy.
-
----
-
 ### F3. Offline "IAM Field Guide" PDF Export
 
 **One-liner:** A one-click, client-side PDF export compiling the Encyclopedia, Cheat Sheets, and Standards reference content into a genuinely offline, printable field guide, using jsPDF's native text/table APIs rather than screenshotting the DOM.

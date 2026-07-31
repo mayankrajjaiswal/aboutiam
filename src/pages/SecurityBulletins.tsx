@@ -5,6 +5,7 @@ import {
   Settings, AlertTriangle, List, Check
 } from 'lucide-react'
 import { BULLETINS, BULLETIN_CATEGORIES, CONTROL_TITLES, type Bulletin, type BulletinDifficulty } from '../data/bulletinsData'
+import { INCIDENT_COMMANDER_SCENARIOS } from '../data/incidentCommanderScenarios'
 import BookmarkButton from '../components/BookmarkButton'
 
 const DIFFICULTIES: (BulletinDifficulty | 'All')[] = ['All', 'Beginner', 'Intermediate', 'Advanced']
@@ -211,6 +212,16 @@ export default function SecurityBulletins() {
               ))}
             </div>
           </div>
+
+          {INCIDENT_COMMANDER_SCENARIOS.some((s) => s.bulletinId === bulletin.id) && (
+            <Link
+              to="/playground/incident-commander"
+              className="flex items-center justify-between gap-2 p-4 rounded-xl border border-accent-primary/25 bg-accent-glow text-accent-primary hover:bg-accent-primary/10 transition-colors text-xs font-bold"
+            >
+              <span>Play this incident as a branching decision sim →</span>
+              <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+            </Link>
+          )}
 
         </div>
 

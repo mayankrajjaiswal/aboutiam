@@ -22,6 +22,24 @@ describe('PersonalizationSelector', () => {
     expect(usePreferenceStore.getState().roleTrack).toBe('architect')
   })
 
+  it('toggles readingMode via the Reading Mode switch', () => {
+    renderWithProviders(<PersonalizationSelector isOpen onClose={() => {}} />)
+    const toggle = screen.getByRole('switch', { name: /reading mode/i })
+    fireEvent.click(toggle)
+    expect(usePreferenceStore.getState().readingMode).toBe(true)
+    fireEvent.click(toggle)
+    expect(usePreferenceStore.getState().readingMode).toBe(false)
+  })
+
+  it('toggles colorblindSafePalette via the Colorblind-Safe Palette switch', () => {
+    renderWithProviders(<PersonalizationSelector isOpen onClose={() => {}} />)
+    const toggle = screen.getByRole('switch', { name: /colorblind-safe palette/i })
+    fireEvent.click(toggle)
+    expect(usePreferenceStore.getState().colorblindSafePalette).toBe(true)
+    fireEvent.click(toggle)
+    expect(usePreferenceStore.getState().colorblindSafePalette).toBe(false)
+  })
+
   it('calls onClose on an outside click', () => {
     const onClose = vi.fn()
     renderWithProviders(

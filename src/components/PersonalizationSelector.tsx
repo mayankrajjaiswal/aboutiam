@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { Lightbulb, ShieldCheck, Layers, Briefcase } from 'lucide-react'
+import { Lightbulb, ShieldCheck, Layers, Briefcase, BookOpen, Eye } from 'lucide-react'
 import { usePreferenceStore, type DepthMode, type RoleTrackId } from '../store/preferenceStore'
 
 interface PersonalizationSelectorProps {
@@ -27,6 +27,10 @@ export default function PersonalizationSelector({ isOpen, onClose }: Personaliza
   const setDepthMode = usePreferenceStore((s) => s.setDepthMode)
   const roleTrack = usePreferenceStore((s) => s.roleTrack)
   const setRoleTrack = usePreferenceStore((s) => s.setRoleTrack)
+  const readingMode = usePreferenceStore((s) => s.readingMode)
+  const setReadingMode = usePreferenceStore((s) => s.setReadingMode)
+  const colorblindSafePalette = usePreferenceStore((s) => s.colorblindSafePalette)
+  const setColorblindSafePalette = usePreferenceStore((s) => s.setColorblindSafePalette)
 
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -96,6 +100,46 @@ export default function PersonalizationSelector({ isOpen, onClose }: Personaliza
         </select>
         <p className="text-[9px] text-text-muted leading-normal pt-1">
           Surfaces a "Recommended for you" shortcut on the Academy and Career Center.
+        </p>
+      </div>
+
+      <div className="space-y-2.5 pt-3 border-t border-border-subtle">
+        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Accessibility</span>
+
+        <label className="flex items-center justify-between gap-2 cursor-pointer">
+          <span className="flex items-center gap-1.5 text-xs text-text-secondary">
+            <BookOpen className="w-3.5 h-3.5" /> Reading Mode
+          </span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={readingMode}
+            onClick={() => setReadingMode(!readingMode)}
+            className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer ${readingMode ? 'bg-accent-primary' : 'bg-bg-nested border border-border-subtle'}`}
+          >
+            <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${readingMode ? 'translate-x-4' : 'translate-x-0'}`} />
+          </button>
+        </label>
+        <p className="text-[9px] text-text-muted leading-normal">
+          Adjusts letter/word spacing and background warmth per British Dyslexia Association guidance.
+        </p>
+
+        <label className="flex items-center justify-between gap-2 cursor-pointer pt-1">
+          <span className="flex items-center gap-1.5 text-xs text-text-secondary">
+            <Eye className="w-3.5 h-3.5" /> Colorblind-Safe Palette
+          </span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={colorblindSafePalette}
+            onClick={() => setColorblindSafePalette(!colorblindSafePalette)}
+            className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer ${colorblindSafePalette ? 'bg-accent-primary' : 'bg-bg-nested border border-border-subtle'}`}
+          >
+            <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${colorblindSafePalette ? 'translate-x-4' : 'translate-x-0'}`} />
+          </button>
+        </label>
+        <p className="text-[9px] text-text-muted leading-normal">
+          Swaps pass/fail/risk-tier status colors for a deuteranopia/protanopia-safe set.
         </p>
       </div>
     </div>

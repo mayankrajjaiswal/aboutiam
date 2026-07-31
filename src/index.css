@@ -44,6 +44,31 @@
   --color-status-info: #38bdf8;      /* sky-400 */
 }
 
+/* Colorblind-Safe Palette (F2) — Okabe-Ito colorblind-safe set, swapped in via
+   usePreferenceStore's colorblindSafePalette toggle (adds/removes this class on
+   <html>). Blue/vermillion/yellow remain distinguishable under deuteranopia and
+   protanopia, unlike the default green/amber/red status tokens above. */
+.colorblind-safe {
+  --color-status-success: #0072b2;   /* blue */
+  --color-status-warning: #e69f00;   /* amber-orange */
+  --color-status-danger: #d55e00;    /* vermillion */
+}
+
+/* Reading Mode (F2) — spacing-adjusted, warm-background profile per British
+   Dyslexia Association guidance, toggled via usePreferenceStore's readingMode.
+   A pure CSS-variable/spacing swap layered on the existing theme-token system —
+   no font-file download, so it never adds to the bundle. */
+.reading-mode {
+  letter-spacing: 0.03em;
+  word-spacing: 0.14em;
+  line-height: 1.7;
+}
+.reading-mode:not(.dark) {
+  --color-bg-base: #faf3e0;
+  --color-bg-card: #fffbf0;
+  --color-bg-nested: #fdf6e3;
+}
+
 @theme {
   /* Binding Tailwind v4 Custom Properties to CSS Variables */
   --color-bg-base: var(--color-bg-base);

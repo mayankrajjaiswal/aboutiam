@@ -538,6 +538,8 @@ No UI changes needed — `getUpcomingDeadlines()`/`getPastDeadlines()`/`getJuris
 
 To make a new tool page depth-aware, render it through `ToolPageShell`/`BeginnerExpertExplainer` as usual (§4E) — no extra wiring needed, since that shared component already reads the store. To key new content off `roleTrack`, follow the `Learn.tsx` pattern: a small local id-to-recommendation map plus a dismiss-free banner, not a new store field.
 
+The same store also holds two accessibility toggles, applied as classes on `<html>` (same `document.documentElement.classList` mechanism `themeStore.ts` uses for `dark`/`light`, generalized into `applyAccessibilityClass()`): `readingMode` (`.reading-mode` — spacing/background CSS-variable overrides in `src/index.css`, no font-file download) and `colorblindSafePalette` (`.colorblind-safe` — swaps `--color-status-success/warning/danger` to an Okabe-Ito blue/amber/vermillion set). Both are re-applied once on mount via `initializeAccessibilityPreferences()`, called from `App.tsx` alongside `initializeTheme()` — a persisted boolean alone doesn't touch the DOM without that call.
+
 ---
 
 ### 🏛️ Q. How to Add a New Living Standard (`/standards`)

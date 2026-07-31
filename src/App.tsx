@@ -2,6 +2,7 @@ import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { RefreshCw } from 'lucide-react'
 import { useThemeStore } from './store/themeStore'
+import { usePreferenceStore } from './store/preferenceStore'
 
 // Layout Elements
 import Sidebar from './components/Layout/Sidebar'
@@ -165,6 +166,7 @@ function PageLoadingFallback() {
 
 export default function App() {
   const { initializeTheme } = useThemeStore()
+  const initializeAccessibilityPreferences = usePreferenceStore((s) => s.initializeAccessibilityPreferences)
 
   useEffect(() => {
     const cleanup = initializeTheme()
@@ -172,6 +174,10 @@ export default function App() {
       if (typeof cleanup === 'function') cleanup()
     }
   }, [initializeTheme])
+
+  useEffect(() => {
+    initializeAccessibilityPreferences()
+  }, [initializeAccessibilityPreferences])
 
   return (
     <Router>

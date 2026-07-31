@@ -398,26 +398,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### F2. Dyslexia-Friendly Font + Colorblind-Safe Palette Toggles
-
-**One-liner:** Extends the Header's Personalize control with a "Reading Mode" (spacing-adjusted font and warm background per British Dyslexia Association guidance) and a separate colorblind-safe accent-color palette toggle, addressing the site's heavy reliance on colored pass/fail/risk status chips across its many trace logs.
-
-**Why unique:** Genuinely novel relative to the already-shipped Read-Aloud feature — that's an audio accommodation; this is a visual/typographic one, and it targets a real, currently-unaddressed accessibility gap (colored status signaling with no colorblind-safe alternative anywhere on the site today).
-
-**Where it fits:** Extends `src/store/preferenceStore.ts` (§4P) with two new persisted preferences and their corresponding CSS variable overrides in `src/index.css` (§3A's existing theme-token pattern). Surfaced in the existing `PersonalizationSelector.tsx`. No new route.
-
-**Design:**
-- "Reading Mode" toggle swaps body-text CSS variables to a spacing-adjusted profile (`letter-spacing`, `word-spacing`, warm off-white background) — a pure CSS-variable swap layered on the existing theme-token system, not a font-file download by default (avoid bundling a full OpenDyslexic webfont unless later user feedback specifically asks for it, to keep this a zero-bundle-cost toggle).
-- "Colorblind-Safe Palette" toggle swaps the site's status-chip color tokens (pass/fail/risk-tier greens/reds/ambers) to a deuteranopia/protanopia-safe set, and audits that critical pass/fail states are never conveyed by color alone once this exists (add an icon/text label alongside color wherever a trace log currently relies purely on green/red, as a follow-up sweep once the toggle itself ships).
-
-**Tests:** `src/store/preferenceStore.test.ts` — both new preferences persist and rehydrate correctly (same pattern as existing `depthMode`/`roleTrack` tests).
-
-**Docs to update:** `README.md` §A — amend the Unified Personalization bullet in place; `GEMINI.md` §4P — amend to describe the two new preferences alongside the existing depth/role-track ones.
-
-**Feasibility:** Easy.
-
----
-
 ### F3. Offline "IAM Field Guide" PDF Export
 
 **One-liner:** A one-click, client-side PDF export compiling the Encyclopedia, Cheat Sheets, and Standards reference content into a genuinely offline, printable field guide, using jsPDF's native text/table APIs rather than screenshotting the DOM.

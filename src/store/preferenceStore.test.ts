@@ -3,7 +3,7 @@ import { usePreferenceStore } from './preferenceStore'
 
 describe('usePreferenceStore (Zustand Personalization Engine)', () => {
   beforeEach(() => {
-    usePreferenceStore.setState({ depthMode: 'both', roleTrack: null })
+    usePreferenceStore.setState({ depthMode: 'both', roleTrack: null, readingMode: false, colorblindSafePalette: false })
 
     vi.stubGlobal('localStorage', {
       getItem: vi.fn(),
@@ -16,6 +16,33 @@ describe('usePreferenceStore (Zustand Personalization Engine)', () => {
     const state = usePreferenceStore.getState()
     expect(state.depthMode).toBe('both')
     expect(state.roleTrack).toBeNull()
+  })
+
+  it('should default readingMode and colorblindSafePalette to false', () => {
+    const state = usePreferenceStore.getState()
+    expect(state.readingMode).toBe(false)
+    expect(state.colorblindSafePalette).toBe(false)
+  })
+
+  it('should update readingMode via setReadingMode, and rehydrate correctly', () => {
+    usePreferenceStore.getState().setReadingMode(true)
+    expect(usePreferenceStore.getState().readingMode).toBe(true)
+
+    usePreferenceStore.getState().setReadingMode(false)
+    expect(usePreferenceStore.getState().readingMode).toBe(false)
+  })
+
+  it('should update colorblindSafePalette via setColorblindSafePalette, and rehydrate correctly', () => {
+    usePreferenceStore.getState().setColorblindSafePalette(true)
+    expect(usePreferenceStore.getState().colorblindSafePalette).toBe(true)
+
+    usePreferenceStore.getState().setColorblindSafePalette(false)
+    expect(usePreferenceStore.getState().colorblindSafePalette).toBe(false)
+  })
+
+  it('initializeAccessibilityPreferences does not throw when document is unavailable (SSR-safety)', () => {
+    usePreferenceStore.getState().setReadingMode(true)
+    expect(() => usePreferenceStore.getState().initializeAccessibilityPreferences()).not.toThrow()
   })
 
   it('should update depthMode via setDepthMode', () => {

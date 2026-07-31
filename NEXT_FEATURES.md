@@ -55,27 +55,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### D5. Contextual Coach Marks
-
-**One-liner:** Small, dismissible, first-visit-to-*this-specific-feature* tooltips for complex tools (e.g. the Attack-Path Graph, Role Mining Workbench), distinct from and complementary to the existing global 5-step Guided Tour.
-
-**Why unique:** The Guided Tour orients a new visitor to the *site's* five main sections once; it says nothing about how to use any one complicated interactive widget once you actually arrive. UX research is explicit that tours over ~5 steps see completion collapse, while behavior-triggered, single-feature tooltips outperform time/visit-based global tours for teaching a specific interaction.
-
-**Where it fits:** New shared component `src/components/CoachMark.tsx` plus a small hook `useCoachMark(featureId: string)`, first wired into the most complex existing widgets (Attack-Path Graph, Role Mining Workbench, and any Phase 2/3 graph/canvas builder as they ship). No new route.
-
-**Design:**
-- `useCoachMark` reads/writes a `Set<string>` of "seen" feature ids in `localStorage` (same lightweight pattern as `tourStore.ts`'s `hasSeenTour` boolean, generalized to per-feature ids instead of one global flag).
-- `CoachMark` renders a single small, positioned tooltip (not a modal) with a one-line hint and a dismiss action; never re-shows once dismissed for that `featureId`.
-- A "Replay all coach marks" option lives in the same settings surface as the existing "Replay tour" button, for anyone who wants to reset and see them again.
-
-**Tests:** `src/components/CoachMark.test.tsx` (or a hook test) — a coach mark renders on first render for an unseen `featureId` and does not render on a subsequent render after being marked seen.
-
-**Docs to update:** `README.md` §A — amend the existing Guided Feature Tour bullet to mention the complementary per-feature coach marks; `GEMINI.md` §4M — add a short note distinguishing the two mechanisms (global tour vs. per-feature coach marks) so a future contributor picks the right one.
-
-**Feasibility:** Easy.
-
----
-
 ### D6. Mobile Bottom Tab Bar
 
 **One-liner:** A fixed bottom navigation bar on mobile viewports for the 4-5 highest-traffic destinations (Home, Learn, Playgrounds, Tools, Search), keeping them within thumb reach without replacing the full sidebar (still reachable via a "More" entry).

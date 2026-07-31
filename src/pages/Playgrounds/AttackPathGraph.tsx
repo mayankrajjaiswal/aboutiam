@@ -5,6 +5,7 @@ import { PlaygroundShell } from '../../lib/sdk/components/PlaygroundShell'
 import { TraceTerminal } from '../../lib/sdk/components/TraceTerminal'
 import { ATTACK_PATH_SCENARIOS, type GraphNodeType } from '../../data/attackPathScenarios'
 import { computeForceLayout, findShortestPath } from '../../lib/graph/forcePath'
+import CoachMark from '../../components/CoachMark'
 
 const GRAPH_WIDTH = 720
 const GRAPH_HEIGHT = 460
@@ -220,7 +221,11 @@ export default function AttackPathGraph() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border-subtle bg-bg-nested overflow-x-auto">
+        <div className="relative rounded-2xl border border-border-subtle bg-bg-nested overflow-x-auto">
+          <CoachMark
+            featureId="attack-path-graph"
+            message="Click a start node, then click a connected node to extend the trace — follow directed edges (MemberOf, AdminTo, HasSession, CanRDP, Owns) toward the red target node."
+          />
           <svg
             viewBox={`0 0 ${GRAPH_WIDTH} ${GRAPH_HEIGHT}`}
             className="w-full min-w-[560px]"

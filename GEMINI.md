@@ -489,6 +489,8 @@ Currently wired into Encyclopedia term details (`term-<id>`) and Wall of Shame b
 
 To add a new step: append a `TourStep` object (`title`, `description`, `icon`, optional `link`/`linkLabel`) to the `STEPS` array — the progress dots, step counter, and Back/Next/Skip controls all derive from `STEPS.length` automatically.
 
+**Distinct from per-feature Coach Marks** (`src/components/CoachMark.tsx` + `src/lib/useCoachMark.ts` + `src/store/coachMarkStore.ts`): the Guided Tour orients a new visitor to the *site's* five main sections once; a Coach Mark teaches how to use one specific complicated widget the first time a visitor lands on it (currently wired into `AttackPathGraph.tsx` and `RoleMiningWorkbench.tsx`). Each has its own seen-tracking (`hasSeenTour` boolean vs. a per-`featureId` set) and its own Header replay icon — use the Tour for a new top-level section, a Coach Mark for a new complex interactive widget.
+
 ---
 
 ### 🏛️ N. First-Visit Disclaimer Modal

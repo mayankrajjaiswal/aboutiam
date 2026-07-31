@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss, HelpCircle, Layers, Bell } from 'lucide-react'
+import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss, HelpCircle, Layers, Bell, Lightbulb } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
 import { useTourStore } from '../../store/tourStore'
+import { useCoachMarkStore } from '../../store/coachMarkStore'
 import { useWhatsNewStore } from '../../store/whatsNewStore'
 import { getRouteMeta } from '../../routeMeta'
 import CommandPalette from '../Search/CommandPalette'
@@ -51,6 +52,7 @@ export default function Header() {
   const { isEnabled: isAirplaneEnabled } = useAirplaneModeStore()
   const openTour = useTourStore((s) => s.openTour)
   const openWhatsNew = useWhatsNewStore((s) => s.openWhatsNew)
+  const resetCoachMarks = useCoachMarkStore((s) => s.resetAll)
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -194,6 +196,16 @@ export default function Header() {
           aria-label="Replay the guided feature tour"
         >
           <HelpCircle className="w-4 h-4" />
+        </button>
+
+        {/* Replay all per-feature Coach Marks (distinct from the global Guided Tour above) */}
+        <button
+          onClick={resetCoachMarks}
+          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
+          title="Replay all feature coach marks (the small tips on complex tools)"
+          aria-label="Replay all feature coach marks"
+        >
+          <Lightbulb className="w-4 h-4" />
         </button>
 
         {/* What's New: recent site updates */}

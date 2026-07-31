@@ -36,7 +36,7 @@ The AboutIAM platform houses a fully integrated identity workspace, organized in
 
 ### 🚀 A. Core Platform & Reference Centers
 * **First-Visit Disclaimer:** A one-time welcome modal summarizing the 3 Core Principles and the educational-use notice for the attack-technique labs, shown once per browser before the Guided Feature Tour.
-* **Guided Feature Tour:** A 5-step onboarding walkthrough (Academy → Playgrounds → Tools → Assess → Global Search) that auto-opens once per browser on first visit, and can be replayed anytime from the Header's tour icon.
+* **Guided Feature Tour:** A 5-step onboarding walkthrough (Academy → Playgrounds → Tools → Assess → Global Search) that auto-opens once per browser on first visit, and can be replayed anytime from the Header's tour icon. Complemented by per-feature **Coach Marks** — small, dismissible, first-visit-to-*this-specific-widget* tooltips on complex tools (currently the Attack-Path Graph and Role Mining Workbench) that never re-show once dismissed, replayable en masse from a second Header icon.
 * **"What's New" Changelog Modal:** A dismissible changelog surfacing recently-added playgrounds/tools/architectures to *returning* visitors (gated behind a version string in `localStorage`, distinct from the first-visit Disclaimer/Tour sequence above), replayable anytime from the Header's bell icon.
 * **Bookmarks ("Save for Later"):** A persistent, cross-session bookmark toggle on Security Tools, Playgrounds, and Encyclopedia terms. Saved items surface in a dedicated panel on the Community Hub.
 * **Content Feedback (Endorse/Flag):** A lightweight 👍/🚩 widget on Encyclopedia terms and Wall of Shame breach labs that deep-links straight to a pre-filled GitHub issue — no backend, community-sourced accuracy signal.

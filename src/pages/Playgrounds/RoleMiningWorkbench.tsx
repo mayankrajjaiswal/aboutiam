@@ -5,6 +5,7 @@ import { PlaygroundShell } from '../../lib/sdk/components/PlaygroundShell'
 import { TraceTerminal } from '../../lib/sdk/components/TraceTerminal'
 import { ROLE_MINING_DATASET, ALL_ENTITLEMENTS } from '../../data/roleMiningDataset'
 import { proposeRoleCandidates, computeOrphanEntitlements, type RoleCandidate } from '../../lib/analytics/jaccardClustering'
+import CoachMark from '../../components/CoachMark'
 
 const SIMILARITY_THRESHOLD = 0.6
 
@@ -91,7 +92,11 @@ export default function RoleMiningWorkbench() {
       }}
       sidebarContent={<TraceTerminal logs={logs} />}
     >
-      <div className="space-y-6">
+      <div className="relative space-y-6">
+        <CoachMark
+          featureId="role-mining-workbench"
+          message="Each card below is a candidate role discovered by clustering users with overlapping entitlements. Accept a good candidate, reject a noisy one — watch the orphan-entitlement count drop as real role structure emerges."
+        />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="p-3 rounded-xl bg-bg-nested border border-border-subtle text-xs">
             <div className="text-text-muted flex items-center gap-1"><Users className="w-3 h-3" /> Users</div>

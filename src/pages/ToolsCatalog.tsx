@@ -1,12 +1,23 @@
+import { useState } from 'react'
 import { Wrench } from 'lucide-react'
 import PrivacyNotice from '../components/Tools/PrivacyNotice'
 import ToolCard from '../components/Tools/ToolCard'
+import TaskFilterRow from '../components/TaskFilterRow'
 import { getToolsByCategory } from '../data/toolsRegistry'
+import type { TaskTag } from '../data/taskTags'
 
 export default function ToolsCatalog() {
+  const [taskFilter, setTaskFilter] = useState<TaskTag | null>(null)
   const categories = getToolsByCategory()
   const liveCount = categories.reduce((sum, c) => sum + c.tools.filter((t) => t.status === 'live').length, 0)
   const totalCount = categories.reduce((sum, c) => sum + c.tools.length, 0)
+
+  const visibleCategories = categories
+    .map(({ category, tools }) => ({
+      category,
+      tools: taskFilter ? tools.filter((t) => t.taskTags?.includes(taskFilter)) : tools,
+    }))
+    .filter(({ tools }) => tools.length > 0)
 
   return (
     <div className="space-y-10 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,7 +35,13 @@ export default function ToolsCatalog() {
 
       <PrivacyNotice />
 
-      {categories.map(({ category, tools }) => (
+      <TaskFilterRow selected={taskFilter} onSelect={setTaskFilter} />
+
+      {visibleCategories.length === 0 && (
+        <p className="text-sm text-text-muted text-center py-8">No tools are tagged for this task yet — try "All" instead.</p>
+      )}
+
+      {visibleCategories.map(({ category, tools }) => (
         <div key={category} className="space-y-4">
           <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
             {category}

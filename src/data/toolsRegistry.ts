@@ -10,6 +10,7 @@ import {
   Layers, Fingerprint, Wallet, ClipboardCheck, KeyRound, Combine, FileJson2,
   PackageSearch, Scale, Presentation, AtomIcon,
 } from 'lucide-react'
+import type { TaskTag } from './taskTags'
 
 export type ToolCategory =
   | 'Tokens & Assertions'
@@ -38,11 +39,14 @@ export interface ToolMeta {
   expert: string
   faqs: ToolFaq[]
   relatedLinks?: { label: string; href: string }[]
+  /** Optional "I want to…" task filter tags (see src/data/taskTags.ts). Additive — untagged entries simply don't appear under any task filter. */
+  taskTags?: TaskTag[]
 }
 
 export const TOOLS: ToolMeta[] = [
   {
     slug: 'jwt-decoder',
+    taskTags: ['decode'],
     title: 'JWT Decoder — Inspect & Verify Tokens Online',
     description: 'Paste any JSON Web Token to instantly decode its header, payload, and signature, check expiry, and flag insecure algorithms — 100% client-side, nothing is uploaded.',
     category: 'Tokens & Assertions',
@@ -61,6 +65,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'jwt-generator',
+    taskTags: ['generate'],
     title: 'JWT Generator — Build & Sign Tokens (HS256/RS256)',
     description: 'Create and cryptographically sign JSON Web Tokens with custom claims using HS256, HS384, HS512, or RS256 — computed locally with the Web Crypto API.',
     category: 'Tokens & Assertions',
@@ -78,6 +83,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'base64-encoder-decoder',
+    taskTags: ['decode'],
     title: 'Base64 & Base64URL Encoder / Decoder',
     description: 'Encode or decode text, JSON, and files to Base64 or URL-safe Base64 (used by JWTs) instantly in your browser — no data ever leaves your device.',
     category: 'Hashing, Encoding & Secrets',
@@ -95,6 +101,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'sha256-hash-generator',
+    taskTags: ['generate'],
     title: 'SHA-256 & Hash Generator — Text and File Checksums',
     description: 'Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes for text or files directly in your browser using the Web Crypto API — no uploads, ever.',
     category: 'Hashing, Encoding & Secrets',
@@ -112,6 +119,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'hmac-generator',
+    taskTags: ['generate'],
     title: 'HMAC Generator & Verifier (SHA-256/SHA-1/SHA-512)',
     description: 'Compute and verify HMAC signatures with a shared secret key using SHA-1, SHA-256, or SHA-512 — the same primitive that signs your JWTs, run locally.',
     category: 'Hashing, Encoding & Secrets',
@@ -129,6 +137,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'uuid-generator',
+    taskTags: ['generate'],
     title: 'UUID & ULID Generator (v4, v7, Bulk)',
     description: 'Generate cryptographically random UUIDv4, time-sortable UUIDv7, or ULID identifiers in bulk, with one-click copy — 100% client-side randomness.',
     category: 'Hashing, Encoding & Secrets',
@@ -145,6 +154,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'password-generator',
+    taskTags: ['generate'],
     title: 'Password Generator & Entropy Strength Checker',
     description: 'Generate strong random passwords or passphrases with custom rules, and see the exact entropy bits and estimated crack time — computed locally.',
     category: 'Hashing, Encoding & Secrets',
@@ -161,6 +171,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'oauth-pkce-generator',
+    taskTags: ['generate'],
     title: 'OAuth PKCE Code Generator (code_verifier / code_challenge)',
     description: 'Generate an RFC 7636-compliant PKCE code_verifier and S256 code_challenge, and build a full OAuth 2.0 authorization URL — no backend required.',
     category: 'Auth & Directory Builders',
@@ -178,6 +189,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'totp-generator',
+    taskTags: ['generate'],
     title: 'TOTP Generator & Verifier (RFC 6238 Authenticator Codes)',
     description: 'Generate live, time-based one-time passwords (TOTP) from any Base32 secret and verify 6-digit codes — the same algorithm behind Google Authenticator.',
     category: 'Auth & Directory Builders',
@@ -194,6 +206,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'ldap-filter-builder',
+    taskTags: ['validate-policy'],
     title: 'LDAP Filter Builder — Visual RFC 4515 Query Composer',
     description: 'Compose valid LDAP search filters visually with AND/OR/NOT groups, then copy the exact RFC 4515 filter string — no directory connection needed.',
     category: 'Auth & Directory Builders',
@@ -210,6 +223,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'scim-payload-validator',
+    taskTags: ['validate-policy'],
     title: 'SCIM Payload Validator & Builder (RFC 7643/7644)',
     description: 'Validate or scaffold SCIM 2.0 User and Group JSON payloads against the core schema, with inline errors for missing or malformed attributes.',
     category: 'Auth & Directory Builders',
@@ -225,6 +239,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'basic-auth-decoder',
+    taskTags: ['decode'],
     title: 'Basic & Bearer Auth Header Decoder',
     description: 'Decode HTTP Basic Authentication headers to reveal the username/password, or inspect Bearer tokens — a quick, private, client-side debugging utility.',
     category: 'PKI & Certificates',
@@ -241,6 +256,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'bcrypt-generator',
+    taskTags: ['generate'],
     title: 'bcrypt Hash Generator & Verifier Online',
     description: 'Hash passwords with bcrypt at a custom cost factor, or verify a password against an existing bcrypt hash — computed entirely client-side, in pure JavaScript.',
     category: 'Hashing, Encoding & Secrets',
@@ -258,6 +274,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'jwk-pem-converter',
+    taskTags: ['decode'],
     title: 'JWK to PEM Converter (and back) + Thumbprint',
     description: 'Convert RSA/EC JSON Web Keys (JWK) to PEM format and back, and compute the RFC 7638 JWK thumbprint — all cryptography runs in your browser.',
     category: 'PKI & Certificates',
@@ -273,6 +290,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'x509-certificate-decoder',
+    taskTags: ['decode'],
     title: 'X.509 Certificate Decoder — Parse PEM Certs & CSRs',
     description: 'Decode X.509 certificates and PKCS#10 CSRs to view subject, issuer, validity dates, SANs, key usage, and fingerprints — parsed locally, never uploaded.',
     category: 'PKI & Certificates',
@@ -290,6 +308,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'saml-decoder',
+    taskTags: ['decode'],
     title: 'SAML Decoder — Inspect SAMLRequest/Response & Metadata',
     description: 'Decode Base64/deflate-encoded SAMLRequest and SAMLResponse parameters, or pretty-print SP/IdP metadata XML — no server round-trip, fully client-side.',
     category: 'Tokens & Assertions',
@@ -306,6 +325,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'saml-metadata-builder',
+    taskTags: ['generate'],
     title: 'SAML Metadata Builder — Generate SP & IdP Metadata XML',
     description: 'Visually configure compliant SAML 2.0 Service Provider (SP) or Identity Provider (IdP) XML metadata configurations, endpoints, certificates, and export completed files.',
     category: 'Auth & Directory Builders',
@@ -340,6 +360,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'csr-generator',
+    taskTags: ['generate'],
     title: 'X.509 CSR Generator — Compile PKCS#10 Requests Online',
     description: 'Visually construct secure X.509 Certificate Signing Requests (CSR) with Subject DN attributes and SAN fields, generate browser-native private/public keys, and inspect their ASN.1 DER-parsed structure.',
     category: 'PKI & Certificates',
@@ -357,6 +378,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'sd-jwt-decoder',
+    taskTags: ['decode'],
     title: 'SD-JWT Decoder — Selective Disclosure JWT Inspector',
     description: 'Decode Selective Disclosure JWTs (SD-JWT), reveal individual disclosures, and verify each digest binding against the issuer-signed JWT — entirely in-browser.',
     category: 'Tokens & Assertions',
@@ -373,6 +395,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'webauthn-decoder',
+    taskTags: ['decode'],
     title: 'WebAuthn / Passkey Assertion & Attestation Decoder',
     description: 'Decode clientDataJSON, authenticatorData, and CBOR attestationObject from a WebAuthn credential to inspect flags, counters, and public keys.',
     category: 'Emerging & Decentralized Identity',
@@ -389,6 +412,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'did-key-generator',
+    taskTags: ['generate'],
     title: 'DID Generator — Create a did:key Identifier',
     description: 'Generate an Ed25519 keypair entirely in your browser and derive its did:key decentralized identifier and DID document — no wallet, no blockchain.',
     category: 'Emerging & Decentralized Identity',
@@ -422,6 +446,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'jwks-inspector',
+    taskTags: ['decode'],
     title: 'JWKS JSON Web Key Set Inspector',
     description: 'Parse, inspect, and validate public JSON Web Key Sets (JWKS) representing cryptographic signing keys used for JWT verification.',
     category: 'Tokens & Assertions',
@@ -438,6 +463,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'policy-evaluator',
+    taskTags: ['validate-policy'],
     title: 'ABAC & RBAC Client-Side Policy Evaluator',
     description: 'An interactive sandbox to evaluate custom JSON-based access policies against simulated user, device, and resource contexts.',
     category: 'Auth & Directory Builders',
@@ -454,6 +480,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'passphrase-entropy',
+    taskTags: ['generate'],
     title: 'Diceware Passphrase & Entropy Strength Calculator',
     description: 'Compare standard character-shuffled passwords against word-based dictionary passphrases to calculate mathematical entropy bits and offline GPU cracking times.',
     category: 'Hashing, Encoding & Secrets',
@@ -470,6 +497,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'oidc-discovery',
+    taskTags: ['validate-policy', 'check-compliance'],
     title: 'OIDC Discovery Document Auditor',
     description: 'Parse, visualize, and audit modern Identity Provider metadata profiles containing standard OIDC endpoint registries.',
     category: 'Auth & Directory Builders',
@@ -520,6 +548,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'key-ring',
+    taskTags: ['generate'],
     title: 'Hardware Key Ring & HSM Emulator',
     description: 'Generate, store, and execute asymmetric and symmetric cryptographic keys locally inside your browser\'s secure sandbox — emulating a corporate Hardware Security Module (HSM).',
     category: 'Hashing, Encoding & Secrets',
@@ -536,6 +565,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'conformance-checker',
+    taskTags: ['validate-policy', 'check-compliance'],
     title: 'Standards Conformance Checker — OIDC Discovery & SAML Metadata',
     description: 'Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules — 100% client-side.',
     category: 'Auth & Directory Builders',
@@ -556,6 +586,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'pbkdf2-generator',
+    taskTags: ['generate'],
     title: 'PBKDF2 Key Derivation & Hash Verifier',
     description: 'Derive a key from a password using PBKDF2 with a configurable salt, iteration count, and hash function, and verify a password against a stored derived hash — all via the Web Crypto API.',
     category: 'Hashing, Encoding & Secrets',
@@ -591,6 +622,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'did-document-validator',
+    taskTags: ['validate-policy'],
     title: 'DID Document Validator & Resolver Preview',
     description: 'Paste a Decentralized Identifier (DID) Document JSON and validate it against the W3C DID Core structural requirements, with a pretty-printed, field-by-field resolved preview.',
     category: 'Emerging & Decentralized Identity',
@@ -608,6 +640,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'identity-sbom-analyzer',
+    taskTags: ['check-compliance'],
     title: 'Identity SBOM Analyzer — Auth-Adjacent Dependency Risk Report',
     description: 'Paste a package.json (or a plain comma/newline-separated dependency list) to get an auth-relevant dependency risk report, cross-referenced against known JWT/SAML library CVEs, plus a downloadable "Identity SBOM" JSON export.',
     category: 'Supply Chain & Governance',
@@ -677,6 +710,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'tabletop-exercise-generator',
+    taskTags: ['simulate-attack'],
     title: 'Tabletop Exercise Generator — Identity Incident Facilitator Script',
     description: 'Answer a short questionnaire to generate a printable, facilitator-ready tabletop exercise script — objectives, timed injects, discussion prompts, and a scoring rubric — drawn directly from the Security Bulletins archive.',
     category: 'Program & Vendor Management',
@@ -694,6 +728,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     slug: 'pqc-readiness-auditor',
+    taskTags: ['check-compliance'],
     title: 'PQC Readiness Auditor — Post-Quantum Crypto-Agility Checklist',
     description: 'Paste a PEM certificate chain, a JWKS JSON blob, or a TLS cipher-suite list to flag quantum-vulnerable algorithms (RSA, ECDSA, EdDSA, AES-128), estimate hybrid post-quantum handshake size growth, and get a prioritized migration checklist.',
     category: 'PKI & Certificates',

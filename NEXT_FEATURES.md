@@ -98,27 +98,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### D11. Task-Based "I Want To…" Filter for Tools & Playground Catalogs
-
-**One-liner:** Adds a task-oriented filter row ("Decode a token," "Generate a credential," "Simulate an attack," "Validate a policy," "Build a diagram," "Check compliance") above the existing category/difficulty filters on `ToolsCatalog.tsx` and `PlaygroundCatalog.tsx`, letting a visitor filter by *what they're trying to do* rather than only by protocol/category.
-
-**Why unique:** Directly observed on `pqctoday.com`'s Playground catalog (an "I want to…" row — Sign/verify, Encrypt/wrap, Key exchange, Generate keys, etc. — sitting above its category sidebar) as a second, orthogonal filtering axis. AboutIAM's 39 tools and 40+ playgrounds are currently filterable only by category and difficulty; a task-based axis is a meaningfully different (and for a new visitor, often more intuitive) way to find the right page, especially once several more Phase 2/3 tools land in already-large categories.
-
-**Where it fits:** Extends `ToolsCatalog.tsx` and `PlaygroundCatalog.tsx` directly. No new route.
-
-**Design:**
-- Add an optional `taskTags: string[]` field to `ToolMeta` (`toolsRegistry.ts`) and to whatever metadata structure backs `PlaygroundCatalog.tsx`'s entries — additive, so existing entries without it simply don't appear under any task filter until tagged (avoid a mass one-time retagging blocking this feature's ship; tag the most-used/most-recent entries first, backfill the rest incrementally).
-- A small fixed set of task categories (curated, not per-entry free text, so the filter row stays a manageable fixed width) — e.g. `decode`, `generate`, `simulate-attack`, `validate-policy`, `build-diagram`, `check-compliance`.
-- Task filter and category/difficulty filters compose (AND, not OR) — same multi-filter interaction model already used elsewhere on the site (Standards Explorer, Case Studies, etc.).
-
-**Tests:** Extend the existing `toolsRegistry.test.ts`/catalog component tests — every entry with a `taskTags` value uses only values from the fixed task-category list (guards against a typo silently creating an orphan filter bucket with zero matches).
-
-**Docs to update:** `GEMINI.md` §4E — add a note that a new tool's registry entry may optionally include `taskTags`; `README.md` — no new bullet needed (this is catalog UX, not a new content feature), but amend the Security Tools §C intro line if it currently describes the filtering model.
-
-**Feasibility:** Easy-Medium.
-
----
-
 ## Group E — New Unique IAM Content Domains
 
 ### E1. IAM Hall of Fame — Standard-Bearers Profile Gallery

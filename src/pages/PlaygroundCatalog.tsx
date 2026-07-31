@@ -1,8 +1,13 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
+import TaskFilterRow from '../components/TaskFilterRow'
+import { PLAYGROUND_TASK_TAGS } from '../data/playgroundTaskTags'
+import type { TaskTag } from '../data/taskTags'
 
 export default function PlaygroundCatalog() {
+  const [taskFilter, setTaskFilter] = useState<TaskTag | null>(null)
   const playgrounds = [
     {
       title: "OAuth 2.0 & OIDC Flow Visualizer",
@@ -441,6 +446,10 @@ export default function PlaygroundCatalog() {
     }
   ]
 
+  const visiblePlaygrounds = taskFilter
+    ? playgrounds.filter((pg) => PLAYGROUND_TASK_TAGS[pg.link]?.includes(taskFilter))
+    : playgrounds
+
   return (
     <div className="space-y-10 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="space-y-3 max-w-3xl">
@@ -455,8 +464,14 @@ export default function PlaygroundCatalog() {
         </p>
       </div>
 
+      <TaskFilterRow selected={taskFilter} onSelect={setTaskFilter} />
+
+      {visiblePlaygrounds.length === 0 && (
+        <p className="text-sm text-text-muted text-center py-8">No playgrounds are tagged for this task yet — try "All" instead.</p>
+      )}
+
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {playgrounds.map((pg, i) => (
+        {visiblePlaygrounds.map((pg, i) => (
           <div key={i} className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">

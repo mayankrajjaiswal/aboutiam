@@ -100,26 +100,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group E — New Unique IAM Content Domains
 
-### E1. IAM Hall of Fame — Standard-Bearers Profile Gallery
-
-**One-liner:** Short biographical profiles of the people behind foundational IAM specs — OAuth's Blaine Cook/Chris Messina/Eran Hammer/Dick Hardt, SAML/OASIS SSTC's Eve Maler/Scott Cantor/Prateek Mishra, Kerberos's MIT Project Athena team (Steve Miller/Clifford Neuman/Jennifer Steiner), and the WebAuthn/FIDO2 spec editors (Dirk Balfanz, Michael B. Jones, J.C. Jones).
-
-**Why unique:** Nothing on the site personalizes standards history with the people behind them — `IdentityTimeline.tsx` covers eras/protocols and `StandardsExplorer.tsx` covers specs, neither covers the humans who wrote them, a genuinely different and highly shareable angle.
-
-**Where it fits:** New tab on `IdentityTimeline.tsx` (`?tab=hall-of-fame`) rather than a standalone route, since it's naturally a companion to the historical narrative already there. Cross-linked from relevant `StandardsExplorer.tsx` entries' `relatedResources`.
-
-**Design:**
-- `src/data/iamHallOfFame.ts` — profile objects (`name, contribution, standard, year, bio, sourceLinks`) sourced from public, citable material (Wikipedia, OASIS/IETF/W3C credits, oauth.net history) — no invented biographical claims.
-- Each profile cross-links to its relevant Standards Explorer entry via a shared id convention.
-
-**Tests:** `src/data/iamHallOfFame.test.ts` — every profile's `standard` reference resolves to a real `STANDARDS` entry id; every profile has at least one `sourceLinks` citation.
-
-**Docs to update:** `README.md` — amend the Interactive Identity Timeline bullet in §A in place; `GEMINI.md` §2 — amend the `/timeline` row's description.
-
-**Feasibility:** Easy.
-
----
-
 ### E2. Passwordless/FIDO Certification Explainer
 
 **One-liner:** A static reference explaining FIDO Alliance's certification programs (Authenticator L1/L1+/L2/L2+, Biometric Component/PAD certification, identity-verification certification) and what each level actually guarantees, plus a periodically-refreshed snapshot of notable certified product categories.

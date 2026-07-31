@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  History, ShieldAlert, ShieldCheck, Lock, Fingerprint, 
-  Terminal, Shield, Globe, Cpu, Play, RotateCcw, AlertTriangle, FileText, 
-  Fingerprint as BioIcon, RefreshCw, Sparkles
+import {
+  History, ShieldAlert, ShieldCheck, Lock, Fingerprint,
+  Terminal, Shield, Globe, Cpu, Play, RotateCcw, AlertTriangle, FileText,
+  Fingerprint as BioIcon, RefreshCw, Sparkles, Award, ExternalLink
 } from 'lucide-react'
+import { IAM_HALL_OF_FAME } from '../data/iamHallOfFame'
 
 // Define the Era structure
 interface Era {
@@ -76,7 +77,17 @@ const ERAS: Era[] = [
 ]
 
 export default function IdentityTimeline() {
+  const [pageView, setPageView] = useState<'timeline' | 'hall-of-fame'>('timeline')
   const [selectedEra, setSelectedEra] = useState<number>(1)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('tab') === 'hall-of-fame') {
+        setTimeout(() => setPageView('hall-of-fame'), 0)
+      }
+    }
+  }, [])
 
   // Era 1 (CTSS) State
   const [ctssPassword, setCtssPassword] = useState('security_ctss_1961')
@@ -393,9 +404,62 @@ export default function IdentityTimeline() {
         <p className="text-xs text-text-muted">
           Want to get hands-on with the protocols this timeline only narrates? Try the <Link to="/playground/legacy-federation" className="text-accent-primary font-semibold hover:text-accent-hover">Legacy & Academic Federation Playground</Link> for RADIUS, TACACS+, and Shibboleth/eduGAIN.
         </p>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => setPageView('timeline')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'timeline' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+          >
+            <History className="w-3.5 h-3.5" /> Timeline
+          </button>
+          <button
+            onClick={() => setPageView('hall-of-fame')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'hall-of-fame' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+          >
+            <Award className="w-3.5 h-3.5" /> Hall of Fame
+          </button>
+        </div>
       </div>
 
-      {/* Main Split-Pane Layout */}
+      {pageView === 'hall-of-fame' ? (
+        <div className="space-y-6">
+          <p className="text-sm text-text-secondary max-w-3xl">
+            The people behind the specifications — short, source-cited profiles of the engineers and editors who wrote the standards this timeline narrates.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {IAM_HALL_OF_FAME.map((profile) => (
+              <div key={profile.id} className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="text-base font-black text-text-primary">{profile.name}</h3>
+                  <span className="text-[9px] font-bold text-text-muted uppercase tracking-wider bg-bg-nested px-2 py-0.5 rounded-full border border-border-subtle shrink-0">{profile.year}</span>
+                </div>
+                <p className="text-xs font-semibold text-accent-primary leading-relaxed">{profile.contribution}</p>
+                <p className="text-xs text-text-secondary leading-relaxed">{profile.bio}</p>
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border-subtle/60">
+                  <Link
+                    to={`/standards?standard=${profile.standard}`}
+                    className="text-[10px] font-bold text-accent-primary hover:text-accent-hover"
+                  >
+                    View the standard →
+                  </Link>
+                  {profile.sourceLinks.map((link) => (
+                    <a
+                      key={link}
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[10px] text-text-muted hover:text-text-primary"
+                    >
+                      Source <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+      /* Main Split-Pane Layout */
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* LEFT PANE: The Timeline Path (lg:col-span-4) */}
@@ -1122,6 +1186,7 @@ export default function IdentityTimeline() {
         </div>
 
       </div>
+      )}
     </div>
   )
 }

@@ -432,6 +432,8 @@ To make a new page discoverable this way: add the effect above, then add a match
 
 The one exception is `/assess`'s shareable report link, which uses a synchronous `useState` lazy initializer instead of an effect (see `Assess.tsx` and `src/lib/assess/scoring.ts`) — because the whole results view, not just an active tab, needs to be seeded before first paint, a `useEffect` would cause a visible flash of the empty wizard first.
 
+The Command Palette's empty-query state (`CommandPalette.tsx`) shows Recent Queries (`useSearchHistory.ts`, capped at 5, most-recent-first, de-duplicated) above a hand-curated **Popular** shortlist (`src/data/curatedPopularSearches.ts`) — the honest zero-backend substitute for live trending search. Refresh the Popular list periodically (e.g. quarterly); every entry's link is covered by `curatedPopularSearches.test.ts` against `ROUTE_META`/`ARCHITECTURES`/`ENCYCLOPEDIA_TERMS`.
+
 ---
 
 ### 🏛️ J. How to Add a New Achievement Rule

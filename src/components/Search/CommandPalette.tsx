@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Search, Terminal, ShieldAlert, History, Sparkles, 
-  Wrench, Book, Flame, CornerDownLeft, Command, X
+import {
+  Search, Terminal, ShieldAlert, History, Sparkles,
+  Wrench, Book, Flame, CornerDownLeft, Command, X, TrendingUp
 } from 'lucide-react'
 import { getSearchIndex } from '../../lib/search/searchService'
 import type { SearchItem } from '../../lib/search/searchService'
 import { useSearchHistoryStore } from '../../lib/search/useSearchHistory'
 import { useThemeStore } from '../../store/themeStore'
 import { useAirplaneModeStore } from '../../store/airplaneModeStore'
+import { CURATED_POPULAR_SEARCHES } from '../../data/curatedPopularSearches'
 
 interface CommandPaletteProps {
   isOpen: boolean
@@ -27,6 +28,7 @@ interface CommandPaletteItem {
   isCommand?: boolean
   isHistory?: boolean
   isStarter?: boolean
+  isPopular?: boolean
   isAction?: 'theme' | 'reset' | 'redirect' | 'airplane'
   icon?: React.ComponentType<{ className?: string }>
 }
@@ -141,6 +143,12 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
       // Recent query tags
       recentQueries.forEach((q, idx) => {
         items.push({ id: `history-${idx}`, title: q, isHistory: true })
+      })
+
+      // Hand-curated "Popular" shortlist — the honest, zero-backend substitute for
+      // live trending search (see src/data/curatedPopularSearches.ts)
+      CURATED_POPULAR_SEARCHES.forEach((p) => {
+        items.push({ id: p.id, title: p.label, link: p.link, isPopular: true, icon: TrendingUp })
       })
 
       // Recommended starter links
@@ -395,6 +403,34 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                       </div>
                     )}
 
+                    {/* Popular Searches — hand-curated, not live/trending (zero-backend static site) */}
+                    <div className="space-y-1.5">
+                      <span className="text-[9px] text-text-muted font-bold uppercase tracking-wider px-2.5 flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3" /> Popular
+                      </span>
+                      <div className="flex flex-wrap gap-2 px-2">
+                        {flatSelectableItems
+                          .filter(item => item.isPopular)
+                          .map((item, idx) => {
+                            const flatIdx = recentQueries.length + idx
+                            return (
+                              <button
+                                key={item.id}
+                                ref={el => { itemRefs.current[flatIdx] = el }}
+                                onClick={() => handleSelectItem(item)}
+                                className={`px-3 py-1.5 rounded-lg border text-xs font-bold transition-all flex items-center gap-1.5 ${
+                                  selectedIndex === flatIdx
+                                    ? 'bg-accent-glow border-accent-primary text-accent-primary scale-105'
+                                    : 'bg-bg-nested/20 border-border-subtle text-text-secondary hover:border-accent-primary/20'
+                                }`}
+                              >
+                                <TrendingUp className="w-3 h-3" /> <span>{item.title}</span>
+                              </button>
+                            )
+                          })}
+                      </div>
+                    </div>
+
                     {/* Starter Launchers */}
                     <div className="space-y-2">
                       <span className="text-[9px] text-text-muted font-bold uppercase tracking-wider block px-2.5">
@@ -404,7 +440,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                         {flatSelectableItems
                           .filter(item => item.isStarter)
                           .map((item, idx) => {
-                            const flatIdx = recentQueries.length + idx
+                            const flatIdx = recentQueries.length + CURATED_POPULAR_SEARCHES.length + idx
                             const IconComp = item.icon || Sparkles
                             return (
                               <button

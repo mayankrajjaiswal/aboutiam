@@ -97,27 +97,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### D7. Command Palette: Recent + Curated Popular Searches
-
-**One-liner:** Extends the existing Ctrl+K command palette with a localStorage-persisted "Recent searches" bucket (last 5-8 queries, clearable) shown on empty-query focus, plus a small hand-curated "Popular" list — since true cross-user trending search isn't possible client-side without a backend, a hand-maintained list is the honest zero-backend substitute.
-
-**Why unique:** The palette today only reacts to typed input; showing something useful *before* a user types anything (their own recent history, plus a maintainer-curated "commonly searched" shortlist) is a well-established pattern in Linear/Raycast/VS Code-style palettes that AboutIAM's doesn't yet have.
-
-**Where it fits:** Extends `src/components/Search/CommandPalette.tsx` and `src/lib/search/searchService.ts` directly. No new route.
-
-**Design:**
-- `src/lib/search/recentSearches.ts` — a small localStorage-backed ring buffer (max 8 entries, most-recent-first, de-duplicated) written to on every successful search-result click, read on palette open.
-- `src/data/curatedPopularSearches.ts` — a small static array of `{ label, link }` the maintainer updates periodically (e.g. quarterly, alongside other registry refresh cadences like the Wallet/mDL tracker) — explicitly labeled "Popular" not "Trending," since it's not live data.
-- On palette open with an empty query, render Recent above Popular, both above the default full-index browse view already shown today.
-
-**Tests:** `src/lib/search/recentSearches.test.ts` — the ring buffer caps at 8, de-duplicates, and most-recent-first ordering is correct; `curatedPopularSearches.test.ts` — every entry's `link` resolves to a real route/deep-link.
-
-**Docs to update:** `README.md` §A — amend the existing Global Search/Command Palette bullet in place; `GEMINI.md` §4I — add a one-line note that a curated "Popular" list exists and should be refreshed periodically.
-
-**Feasibility:** Easy.
-
----
-
 ### D8. Sidebar Two-Tier Grouping + "Jump To" Filter
 
 **One-liner:** Converts the now-large flat sidebar groups (`ecosystem`, `architecture`, etc. — each now dozens of items after Phase 1/2) into collapsible sub-groups with a small in-sidebar filter input, directly resolving the deferred note at the bottom of the currently-active `NEXT_FEATURES.md`'s own "Final Wrap-Up" section.

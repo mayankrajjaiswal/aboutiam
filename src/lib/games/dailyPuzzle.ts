@@ -1,6 +1,5 @@
 import { DAILY_PUZZLE_BANK, type DailyPuzzle } from '../../data/dailyPuzzleBank'
-
-const MS_PER_DAY = 86400000
+import { dateSeededIndex } from '../dateSeed'
 
 /**
  * Deterministic date-seeded puzzle selection — every visitor on the same UTC
@@ -10,9 +9,7 @@ const MS_PER_DAY = 86400000
  * a module that may run during static generation.
  */
 export function getDailyPuzzle(dateString: string, bank: DailyPuzzle[] = DAILY_PUZZLE_BANK): DailyPuzzle {
-  const daysSinceEpoch = Math.floor(new Date(`${dateString}T00:00:00Z`).getTime() / MS_PER_DAY)
-  const index = ((daysSinceEpoch % bank.length) + bank.length) % bank.length
-  return bank[index]
+  return bank[dateSeededIndex(dateString, bank.length)]
 }
 
 /** Wordle-style emoji result grid: one block per attempt, padded to maxAttempts with unused slots. */

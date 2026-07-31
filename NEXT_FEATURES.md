@@ -35,27 +35,6 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ---
 
-### D8. Sidebar Two-Tier Grouping + "Jump To" Filter
-
-**One-liner:** Converts the now-large flat sidebar groups (`ecosystem`, `architecture`, etc. — each now dozens of items after Phase 1/2) into collapsible sub-groups with a small in-sidebar filter input, directly resolving the deferred note at the bottom of the currently-active `NEXT_FEATURES.md`'s own "Final Wrap-Up" section.
-
-**Why unique:** Not new content — pure information-architecture hardening that becomes increasingly necessary as more Phase 2/3 playgrounds/tools land in the same few sidebar buckets; documentation-navigation research consistently favors progressive-disclosure nested trees over one long scrollable list once a section passes roughly 15-20 items, which several existing groups already have or will soon exceed.
-
-**Where it fits:** Modifies `src/components/Sidebar.tsx` and whatever data structure currently defines its groups (check for a `sidebarConfig`-style module before assuming one needs to be created). No new route.
-
-**Design:**
-- Introduce an optional `subGroup` field on each sidebar entry's config (e.g. within `architecture`: "Protocols," "Zero Trust & PAM," "Industry Verticals," "Cloud & Workload Identity") — additive, so entries without a `subGroup` simply render under an "Other" bucket rather than requiring a mass one-time reclassification of every existing entry before this can ship.
-- A small filter input at the top of the sidebar (separate from the full Ctrl+K command palette — this is for quickly narrowing the *currently open* group, not a global search) that shows/hides entries by substring match as the user types.
-- Collapsed/expanded state per sub-group persisted in `localStorage` so a user's preferred layout survives navigation.
-
-**Tests:** `src/components/Sidebar.test.tsx` — filtering by a substring hides non-matching entries and keeps matching ones visible across sub-groups; an entry without an assigned `subGroup` still renders (under "Other"), so nothing silently disappears during the transition.
-
-**Docs to update:** `GEMINI.md` §4D — add a note that a new page's Sidebar entry should include a `subGroup` where a natural one exists; `README.md` — no bullet needed (navigation chrome, not a feature).
-
-**Feasibility:** Medium.
-
----
-
 ## Group E — New Unique IAM Content Domains
 
 ### E4. Cyber-Insurance Identity Readiness Calculator

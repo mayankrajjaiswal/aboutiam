@@ -9,6 +9,7 @@ import { getUpcomingDeadlines, getPastDeadlines, getJurisdictions } from '../dat
 import { STANDARDS } from '../data/standardsData'
 import { WALLET_ADOPTION_TRACKER, type MdlStatus } from '../data/walletAdoptionTracker'
 import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
+import GiscusComments from '../components/GiscusComments'
 
 const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const
 
@@ -522,6 +523,12 @@ export default function StandardsExplorer() {
                     </Link>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {activeStandard && (
+              <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm shrink-0">
+                <GiscusComments term={`standard-${activeStandard.id}`} />
               </div>
             )}
 

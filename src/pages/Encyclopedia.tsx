@@ -6,6 +6,7 @@ import BookmarkButton from '../components/BookmarkButton'
 import ContentFeedback from '../components/ContentFeedback'
 import ReadAloudButton from '../components/ReadAloudButton'
 import RelatedContentRail from '../components/RelatedContentRail'
+import GiscusComments from '../components/GiscusComments'
 
 export interface Term {
   id: string
@@ -219,6 +220,8 @@ export default function Encyclopedia() {
               </div>
 
               <RelatedContentRail nodeId={`term:${selectedTerm.id}`} />
+
+              <GiscusComments term={`term-${selectedTerm.id}`} />
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center text-center p-12 border border-dashed border-border-subtle rounded-2xl bg-bg-card/50">

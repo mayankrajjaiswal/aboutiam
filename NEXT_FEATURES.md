@@ -23,43 +23,10 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group F — Interactive Formats, Accessibility & Zero-Backend Growth
 
-### F7. GitHub Discussions Comments (giscus)
-
-**One-liner:** Adds threaded comments to Encyclopedia terms, Standards Explorer entries, and Security Bulletins via giscus, which stores comments as GitHub Discussions with no AboutIAM-run server involved.
-
-**Gray-zone flag (values decision, not just a technical one — surface this explicitly to the user before building, do not just implement it):** This is architecturally consistent with the already-accepted Google Drive Backup precedent (the browser talks directly to a third party — GitHub, in this case — with no AboutIAM server ever in the loop, exactly as README §29 already describes for Drive sync). However, unlike Drive sync, this is **user-facing and visible to every visitor**, requires commenters to have a GitHub account (a real access barrier some visitors won't clear), and makes AboutIAM's comment sections dependent on GitHub's uptime/ToS in a way that's more consequential than an optional personal backup feature. **Recommend confirming with the user that this level of third-party dependency for a core, visible feature (not an opt-in personal utility like Drive Backup) is acceptable before implementing** — this plan documents it as researched and ready, not as a decided/approved build.
-
-**Where it fits:** If approved, a shared `src/components/GiscusComments.tsx` wrapper around the giscus embed script, wired into `Encyclopedia.tsx` term detail views, `StandardsExplorer.tsx` entries, and `SecurityBulletins.tsx` entries — following the same "opt-in, clearly disclosed, inert until configured" pattern already established for Google Drive Backup (giscus requires its own GitHub App installation/repo configuration, analogous to `VITE_GOOGLE_CLIENT_ID`).
-
-**Tests:** Minimal — mostly a third-party embed; a smoke test confirming the wrapper renders its container div and doesn't crash when the giscus script fails to load (network-blocked environments, CI, etc.) is the main thing worth testing.
-
-**Docs to update:** If built: `README.md` new bullet with the same privacy-disclosure rigor as the Google Drive Backup bullet; a new `.env.example` entry for the giscus repo/category configuration, following the existing `VITE_GOOGLE_CLIENT_ID` pattern exactly.
-
-**Feasibility:** Easy technically — **pending an explicit product decision from the user first**, since it's the first *visible, default-facing* feature (not an opt-in personal utility) that depends on a third-party service.
-
----
-
-### F8. Newsletter/Community Links (RSS-to-Email + Existing Channels)
-
-**One-liner:** Points the already-shipped `/rss.xml` at a free RSS-to-email bridge (e.g. Buttondown's free tier) so visitors can subscribe to new tools/CVEs/architectures by email, paired with a static GitHub Sponsors button and a Discord/Slack community link.
-
-**Gray-zone flag:** Same category as F7 — relies on a free third-party service (an RSS-to-email provider) rather than AboutIAM running any mail infrastructure, which is consistent with the site's zero-backend ethos but is worth a one-line disclosure on whichever page hosts the signup link, same transparency standard as everywhere else third-party services are used.
-
-**Where it fits:** A small "Stay Updated" section, likely on `Contributors.tsx` (which already hosts contact/community-adjacent content) or the Header's existing RSS button area — a link out to the chosen RSS-to-email provider's subscribe page, plus static GitHub Sponsors and Discord/Slack links if the maintainer wants to set those up (this plan does not assume those community channels already exist — confirm with the user before adding dead links for channels that don't exist yet).
-
-**Design:** Purely a set of outbound links and a short explanatory paragraph — no new component logic beyond a static content block.
-
-**Tests:** None needed beyond the existing page-smoke-test coverage (§4AA) that already asserts every page renders without crashing.
-
-**Docs to update:** `README.md` §A — new bullet describing the update channels available, with the gray-zone disclosure; `GEMINI.md` — a one-line note near the RSS Feed Engine description (§H) pointing to the new email-subscribe option.
-
-**Feasibility:** Easy — confirm actual community channel URLs (Discord/Slack/Sponsors) exist or are wanted before implementation, since this plan can't invent them.
-
----
-
 ### Explicitly Rejected from Group F
 
 - **Service-Worker "real inbound webhook/SCIM callback receiver"** (accepting live traffic from an external, real SCIM client or OAuth app pointed at a locally-generated URL) — as literally described, this structurally requires a backend: a Service Worker can only intercept requests originating from pages under its own registered scope/origin, it cannot receive traffic an external server sends to a public URL without something else forwarding that traffic in, which is real server infrastructure. **Skip entirely as described.** The legitimately client-side-only version of this idea is exactly what the existing `SCIMLab.tsx` already does (simulate the receiver side with mock data) — no new feature needed here, just confirmation that the existing lab already covers the honest version of this idea.
+- **F8. Newsletter/Community Links (RSS-to-Email + Existing Channels)** — declined by the user when explicitly asked: no real RSS-to-email provider, GitHub Sponsors, or Discord/Slack channel exists for this project yet, and the user chose not to invent placeholder/dead links. **Skip entirely; revisit only if the maintainer sets up one of these real channels and wants it linked.**
 
 ---
 
@@ -99,5 +66,5 @@ Phase 3 has no shipped items yet — suggested order, weighted toward cheapest/h
 - Re-verify `routeRegistrySync.test.ts` and `searchService.test.ts` both pass for every new route/registry/tab added in this phase.
 - Cross-check that no Phase 3 route/tool/tab slug collided with an existing one across `NEXT_FEATURES.md`'s remaining Phase 1/2 items as those ship concurrently.
 - Sweep every new page/component for the mobile-overflow issues called out in `GEMINI.md` §4E step 5 — especially D6's bottom nav and D8's sidebar changes, which touch mobile layout directly.
-- Before F7/F8 ship, confirm with the user: (a) whether visible, default-facing third-party dependencies are acceptable for a platform whose core pitch is "Zero Backend, Complete Privacy," and (b) whether real Discord/Slack/Sponsors channels exist to link to.
+- F7/F8 go/no-go resolved: F7 (giscus) approved and shipped; F8 (newsletter/community links) declined since no real channels exist yet — see "Explicitly Rejected from Group F".
 - Re-run the accessibility hardening sweep (`NEXT_FEATURES.md`'s B11) against any new interactive components this phase adds (D3's wizard, D6's bottom nav, D8's sidebar filter) — they're exactly the kind of new interactive surface that sweep exists to catch.

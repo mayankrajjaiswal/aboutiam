@@ -7,6 +7,7 @@ import {
 import { BULLETINS, BULLETIN_CATEGORIES, CONTROL_TITLES, type Bulletin, type BulletinDifficulty } from '../data/bulletinsData'
 import { INCIDENT_COMMANDER_SCENARIOS } from '../data/incidentCommanderScenarios'
 import BookmarkButton from '../components/BookmarkButton'
+import GiscusComments from '../components/GiscusComments'
 
 const DIFFICULTIES: (BulletinDifficulty | 'All')[] = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
@@ -383,6 +384,10 @@ export default function SecurityBulletins() {
             <pre className="text-xs font-mono bg-bg-base border border-border-subtle p-4 rounded-xl text-text-primary overflow-x-auto select-all leading-relaxed shadow-inner max-h-40">
               {bulletin.remediationSnippet}
             </pre>
+          </div>
+
+          <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-lg">
+            <GiscusComments term={`bulletin-${bulletin.id}`} />
           </div>
 
         </div>

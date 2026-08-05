@@ -18,19 +18,23 @@ export default defineConfig({
       reporter: ['text', 'html'],
       include: ['src/**/*.{ts,tsx}'],
       exclude: ['src/**/*.test.{ts,tsx}', 'src/test/**', 'src/main.tsx', 'src/vite-env.d.ts'],
-      // Deliberately modest: set to what the suite already clears after the
-      // initial component/page-smoke pass, so this only prevents backsliding
-      // rather than demanding a big-bang rewrite of untested pages.
-      // Measured after the initial component/page-smoke pass: statements
-      // 45.6%, branches 38.1%, functions 33.0%, lines 48.4%. Set a couple
-      // points below each so normal fluctuation doesn't fail CI, while still
-      // catching a real regression (e.g. deleting tests, or adding a large
-      // untested module).
+      // Deliberately a regression floor, not an aspirational target: getting
+      // this app to 95% would mean deep interaction tests (not just
+      // render-smoke) across ~150 interactive pages/playgrounds — a
+      // multi-session undertaking, not something to fake by loosening what
+      // "covered" means. Re-measured after adding tests for the last batch of
+      // zero-coverage shared components (Header, App, BreadcrumbNav,
+      // ScrollToTop, AirplaneSelector, breadcrumbs.ts): statements 60.5%,
+      // branches 52.0%, functions 50.0%, lines 63.1%. Set a few points below
+      // each so normal fluctuation doesn't fail CI, while still catching a
+      // real regression (e.g. deleting tests, or adding a large untested
+      // module). Ratchet these up incrementally as coverage improves — don't
+      // lower them to make a failing build pass.
       thresholds: {
-        statements: 43,
-        branches: 36,
-        functions: 31,
-        lines: 46,
+        statements: 57,
+        branches: 49,
+        functions: 47,
+        lines: 60,
       },
     },
     projects: [

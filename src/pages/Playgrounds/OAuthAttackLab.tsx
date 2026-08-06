@@ -285,7 +285,8 @@ export default function OAuthAttackLab() {
               {/* --- SCENARIO 1: PKCE BOARD --- */}
               {scenario === 'pkce_bypass' && (
                 <div className="space-y-6">
-                  <div className="relative border border-border-subtle bg-bg-base rounded-xl p-4 grid grid-cols-3 gap-4 items-center">
+                  <div className="relative border border-border-subtle bg-bg-base rounded-xl p-4 overflow-x-auto">
+                    <div className="grid grid-cols-3 gap-4 items-center min-w-105">
                     <div className="text-center">
                       <div className="bg-accent-glow text-accent-primary border border-accent-primary/20 p-2.5 rounded-lg text-xs font-bold">
                         Client SPA
@@ -308,10 +309,11 @@ export default function OAuthAttackLab() {
                       </div>
                       <span className="text-[9px] text-status-danger block mt-1">Intercepts Code URI</span>
                     </div>
+                    </div>
                   </div>
 
                   {/* Interactive step trigger buttons */}
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button 
                       onClick={runPkceStep1} 
                       disabled={simStep !== 0}
@@ -356,9 +358,9 @@ export default function OAuthAttackLab() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-3">
-                    <button 
-                      onClick={runRedirectStep1} 
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button
+                      onClick={runRedirectStep1}
                       disabled={simStep !== 0}
                       className={`py-2 px-3 rounded-lg text-xs font-bold border transition text-center ${simStep === 0 ? 'bg-status-danger hover:bg-status-danger/95 text-white border-status-danger/40' : 'bg-bg-nested text-text-muted border-border-subtle cursor-not-allowed'}`}
                     >

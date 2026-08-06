@@ -214,7 +214,7 @@ export default function CsrGenerator() {
             </div>
 
             {/* Locality, State, Country */}
-            <div className="grid grid-cols-3 gap-2 border-t border-border-subtle/50 pt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 border-t border-border-subtle/50 pt-4">
               <div className="space-y-1.5">
                 <label className="text-[10px] text-text-muted font-bold block uppercase" htmlFor="l-input">Locality (L)</label>
                 <input

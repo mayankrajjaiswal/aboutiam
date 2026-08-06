@@ -11,7 +11,7 @@ export default function FloatingAssistantLauncher() {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="fixed bottom-5 right-5 z-40 flex items-center justify-center w-14 h-14 rounded-full bg-accent-primary hover:bg-accent-hover text-white shadow-lg transition-transform hover:scale-105 focus:outline-none"
+        className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-4 sm:right-5 lg:bottom-5 z-40 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-accent-primary hover:bg-accent-hover text-white shadow-lg transition-transform hover:scale-105 focus:outline-none"
         title={isOpen ? 'Close Ask AI' : 'Ask AI'}
         aria-label={isOpen ? 'Close Ask AI assistant' : 'Open Ask AI assistant'}
         aria-expanded={isOpen}
@@ -23,7 +23,7 @@ export default function FloatingAssistantLauncher() {
         <div
           role="dialog"
           aria-label="Ask AI Knowledge Assistant"
-          className="fixed bottom-24 right-5 z-40 w-[min(24rem,calc(100vw-2.5rem))] h-[min(32rem,calc(100vh-8rem))] rounded-2xl border border-border-subtle bg-bg-card shadow-2xl flex flex-col overflow-hidden"
+          className="fixed bottom-[calc(9.75rem+env(safe-area-inset-bottom))] right-3 sm:right-5 lg:bottom-24 z-40 w-[min(24rem,calc(100vw-1.5rem))] h-[min(32rem,calc(100vh-13rem))] lg:h-[min(32rem,calc(100vh-8rem))] rounded-2xl border border-border-subtle bg-bg-card shadow-2xl flex flex-col overflow-hidden"
         >
           <div className="shrink-0 flex items-center justify-between gap-2 px-4 py-3 border-b border-border-subtle bg-bg-sidebar/40">
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-primary uppercase tracking-wider">

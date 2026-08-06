@@ -261,7 +261,7 @@ export default function Explore() {
             {/* Protocol Support Checklist Matrix */}
             <div className="space-y-2">
               <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Detailed Protocol Support Matrix</span>
-              <div className="grid grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                 {Object.entries(activeProduct.protocols).map(([proto, supported]) => (
                   <div
                     key={proto}

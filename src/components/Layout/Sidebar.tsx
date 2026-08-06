@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Fingerprint, ClipboardList, KeyRound, Wallet, GitBranch, Puzzle, ShoppingCart, Folder, ArrowLeftRight, Glasses, Siren, Search, Share2, Gamepad2
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Puzzle, Search
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -243,38 +243,15 @@ const architectureItems: NavItem[] = [
   { name: 'Identity Case Studies', path: '/case-studies', icon: BookOpen, subGroup: 'Design & Assessment' },
   { name: 'Architecture Center', path: '/architecture', icon: Network, subGroup: 'Design & Assessment' },
   { name: 'Knowledge Graph', path: '/knowledge-graph', icon: Waypoints, subGroup: 'Design & Assessment' },
-  { name: 'Modernization Backlog Game', path: '/playground/modernization-backlog', icon: ClipboardList, subGroup: 'Zero Trust & PAM Labs' },
-  { name: 'Build-Your-Own-IdP Sandbox', path: '/playground/build-your-idp', icon: KeyRound, subGroup: 'Zero Trust & PAM Labs' },
-  { name: 'FAPI 2.0 / Open Banking Lab', path: '/playground/fapi2', icon: ShieldAlert, subGroup: 'Zero Trust & PAM Labs' },
-  { name: 'CAEP Event Storm Visualizer', path: '/playground/caep-event-storm', icon: Waypoints, subGroup: 'Zero Trust & PAM Labs' },
-  { name: 'Attack-Path Graph Visualizer', path: '/playground/attack-path-graph', icon: GitBranch, subGroup: 'Zero Trust & PAM Labs' },
-  { name: 'Incident Commander', path: '/playground/incident-commander', icon: Siren, subGroup: 'Zero Trust & PAM Labs' },
-  { name: 'AD/LDAP OU & Schema Designer', path: '/playground/ldap-schema-designer', icon: Folder, subGroup: 'Infrastructure & Emerging' },
-  { name: 'Identity Fabric Builder', path: '/playground/identity-fabric', icon: Waypoints, subGroup: 'Infrastructure & Emerging' },
-  { name: 'OT/ICS Identity Simulator', path: '/playground/ot-ics-identity', icon: Cpu, subGroup: 'Infrastructure & Emerging' },
-  { name: 'CIEM Explorer', path: '/playground/ciem-explorer', icon: GitBranch, subGroup: 'Infrastructure & Emerging' },
-  { name: 'Legacy & Academic Federation Lab', path: '/playground/legacy-federation', icon: History, subGroup: 'Infrastructure & Emerging' },
-  { name: 'Avatar & Spatial Identity Lab', path: '/playground/spatial-identity-lab', icon: Glasses, subGroup: 'Infrastructure & Emerging' },
 ]
 
 const ecosystemItems: NavItem[] = [
-  { name: 'Agentic Identity Lab', path: '/playground/agent-identity', icon: Bot, subGroup: 'Non-Human & Governance' },
-  { name: 'NHI Sprawl Cleanup Game', path: '/playground/nhi-sprawl', icon: ScanSearch, subGroup: 'Non-Human & Governance' },
-  { name: 'Role Mining Workbench', path: '/playground/role-mining', icon: Users, subGroup: 'Non-Human & Governance' },
-  { name: 'Access Request Cart', path: '/playground/access-request-cart', icon: ShoppingCart, subGroup: 'Non-Human & Governance' },
-  { name: 'HR-to-IdP Attribute Mapper', path: '/playground/hr-attribute-mapper', icon: ArrowLeftRight, subGroup: 'Non-Human & Governance' },
-  { name: 'Passkey Rollout Strategist', path: '/playground/passkey-rollout-strategist', icon: Fingerprint, subGroup: 'Passwordless & Wallets' },
-  { name: 'OpenID4VC Wallet Studio', path: '/playground/openid4vc-wallet', icon: Wallet, subGroup: 'Passwordless & Wallets' },
-  { name: 'Trust Registry Explorer', path: '/playground/trust-registry', icon: Building, subGroup: 'Passwordless & Wallets' },
-  { name: 'Liveness & Injection Attack Lab', path: '/playground/liveness-injection', icon: ScanSearch, subGroup: 'Passwordless & Wallets' },
   { name: 'Vendor Knowledge Center', path: '/vendor', icon: Building, subGroup: 'Vendor & Threat Intel' },
   { name: 'IAM Landscape Directory', path: '/explore', icon: Compass, subGroup: 'Vendor & Threat Intel' },
   { name: 'Certification Hub', path: '/certifications', icon: Award, subGroup: 'Vendor & Threat Intel' },
   { name: 'Research & CVE Tracker', path: '/research', icon: ScanSearch, subGroup: 'Vendor & Threat Intel' },
   { name: 'Security Bulletins & Crisis Game', path: '/bulletins', icon: ShieldAlert, subGroup: 'Vendor & Threat Intel' },
   { name: 'Vulnerability Museum', path: '/wall-of-shame', icon: ShieldAlert, subGroup: 'Vendor & Threat Intel' },
-  { name: 'STIX/TAXII Identity-IOC Fan-Out', path: '/playground/stix-taxii-ioc', icon: Share2, subGroup: 'Vendor & Threat Intel' },
-  { name: 'Gaming & Esports Identity Lab', path: '/playground/gaming-identity', icon: Gamepad2, subGroup: 'Emerging Verticals' },
   { name: 'Developer Playbooks', path: '/cheat-sheets', icon: CheckSquare, subGroup: 'Reference & AI' },
   { name: 'AI Knowledge Assistant', path: '/assistant', icon: Bot, subGroup: 'Reference & AI' },
 ]

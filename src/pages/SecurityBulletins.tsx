@@ -286,7 +286,7 @@ export default function SecurityBulletins() {
               </div>
 
               {/* Step Triggers */}
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   onClick={runResponseStep1}
                   disabled={crisisStep !== 0}

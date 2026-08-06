@@ -346,10 +346,10 @@ export default function AgentIdentityLab() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex border-b border-border-subtle">
+        <div className="flex overflow-x-auto border-b border-border-subtle">
           <button
             onClick={() => setActiveTab('chain')}
-            className={`py-2 px-4 font-bold text-xs border-b-2 transition-all -mb-px flex items-center gap-1.5 ${
+            className={`py-2 px-4 font-bold text-xs border-b-2 transition-all -mb-px flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'chain'
                 ? 'border-accent-primary text-accent-primary'
                 : 'border-transparent text-text-muted hover:text-text-primary'
@@ -360,7 +360,7 @@ export default function AgentIdentityLab() {
           </button>
           <button
             onClick={() => setActiveTab('token_inspect')}
-            className={`py-2 px-4 font-bold text-xs border-b-2 transition-all -mb-px flex items-center gap-1.5 ${
+            className={`py-2 px-4 font-bold text-xs border-b-2 transition-all -mb-px flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'token_inspect'
                 ? 'border-accent-primary text-accent-primary'
                 : 'border-transparent text-text-muted hover:text-text-primary'

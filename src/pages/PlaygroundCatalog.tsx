@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses, Siren, Share2, Gamepad2 } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 import TaskFilterRow from '../components/TaskFilterRow'
 import { PLAYGROUND_TASK_TAGS } from '../data/playgroundTaskTags'
@@ -443,6 +443,27 @@ export default function PlaygroundCatalog() {
       link: "/playground/hr-attribute-mapper",
       badge: "Active (Standard)",
       enterpriseProducts: "Workday, SAP SuccessFactors, Microsoft Entra Connect"
+    },
+    {
+      title: "Incident Commander",
+      desc: "Play incident commander during a live identity breach. Make timed branching decisions built from real AboutIAM Security Bulletins incidents — every path terminates in a scored outcome with a real-world post-mortem.",
+      icon: Siren,
+      link: "/playground/incident-commander",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "STIX/TAXII Identity-IOC Fan-Out Simulator",
+      desc: "Assemble a STIX 2.1 object bundle for an identity-relevant indicator of compromise, publish it to a mock TAXII 2.1 collection, and watch subscriber organizations receive — or correctly not receive — it based on their own subscription filters.",
+      icon: Share2,
+      link: "/playground/stix-taxii-ioc",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Gaming & Esports Identity Lab",
+      desc: "Model three identity challenges unique to gaming and esports: cross-platform account linking with ban propagation, smurf/ban-evasion detection via device and behavioral signals, and continuous (not one-time) KYC for real-money wagering platforms.",
+      icon: Gamepad2,
+      link: "/playground/gaming-identity",
+      badge: "Active (Advanced)",
     }
   ]
 

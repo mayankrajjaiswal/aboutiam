@@ -494,6 +494,7 @@ export default function CommunityHub() {
               </div>
 
               <div className="rounded-xl border border-border-subtle/60 overflow-hidden bg-bg-nested">
+                <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-sans">
                   <thead className="bg-bg-sidebar border-b border-border-subtle font-black uppercase text-[9px] text-text-muted">
                     <tr>
@@ -540,6 +541,7 @@ export default function CommunityHub() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
 

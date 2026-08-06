@@ -483,7 +483,7 @@ user_code=ABCD-WXYZ&status=approved`,
         </div>
 
         {/* Visual Map & Interactive Steps Workspace */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="lg:col-span-3 space-y-6 min-w-0">
           {/* Node Interaction Diagram */}
           <div className="p-8 rounded-xl bg-bg-card border border-border-subtle relative overflow-hidden shadow-sm">
             {/* Background Grid Pattern */}
@@ -495,7 +495,8 @@ user_code=ABCD-WXYZ&status=approved`,
               <span>Back-Channel (Trusted Secure POSTs)</span>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 items-center justify-center min-h-[160px] relative z-10">
+            <div className="overflow-x-auto">
+            <div className="grid grid-cols-3 gap-4 items-center justify-center min-h-[160px] min-w-105 relative z-10">
               {/* Node 1: Client SPA */}
               <div className={`flex flex-col items-center gap-3 p-4 rounded-xl border transition-all ${
                 currentStepData.sender === 'client' || currentStepData.receiver === 'client'
@@ -568,6 +569,7 @@ user_code=ABCD-WXYZ&status=approved`,
                   <p className="text-[10px] text-text-muted font-mono">auth.aboutiam.com</p>
                 </div>
               </div>
+            </div>
             </div>
 
             {/* Stepper Controllers */}

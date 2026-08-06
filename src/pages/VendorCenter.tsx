@@ -214,7 +214,7 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
       />
       {/* Dynamic Alert Banner */}
       {notificationMsg && (
-        <div className="fixed bottom-6 right-6 z-50 bg-accent-glow border border-accent-primary p-4 rounded-xl shadow-lg max-w-sm animate-bounce flex items-start gap-2.5">
+        <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] right-4 lg:bottom-6 lg:right-6 z-50 bg-accent-glow border border-accent-primary p-4 rounded-xl shadow-lg max-w-[calc(100vw-2rem)] sm:max-w-sm animate-bounce flex items-start gap-2.5">
           <CheckCircle2 className="w-5 h-5 text-accent-primary shrink-0 mt-0.5" />
           <p className="text-xs font-bold text-text-primary leading-normal">{notificationMsg}</p>
         </div>

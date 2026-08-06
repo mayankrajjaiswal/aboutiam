@@ -114,7 +114,7 @@ export default function IdentityFabricBuilder() {
           <p className="text-[11px] text-text-secondary">{scenario.description}</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
           <button type="button" onClick={() => handleNodeClick('app')} className={nodeClass('app')}>
             <Building2 className="w-8 h-8 text-accent-primary" />
             <span className="text-xs font-bold text-text-primary">{scenario.appName}</span>

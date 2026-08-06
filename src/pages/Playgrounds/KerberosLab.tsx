@@ -243,8 +243,9 @@ export default function KerberosLab() {
               </div>
 
               {/* Visual Architecture Map */}
-              <div className="grid grid-cols-3 gap-4 items-center justify-center p-6 relative border border-border-subtle bg-bg-base rounded-xl mb-6">
-                
+              <div className="relative border border-border-subtle bg-bg-base rounded-xl mb-6 overflow-x-auto">
+              <div className="grid grid-cols-3 gap-4 items-center justify-center p-6 min-w-105">
+
                 {/* Entity 1: Client workstation */}
                 <div className="text-center flex flex-col items-center">
                   <div className={`p-4 rounded-xl border transition ${step >= 0 ? 'bg-accent-glow border-accent-primary shadow' : 'bg-bg-nested border-border-subtle'}`}>
@@ -281,9 +282,10 @@ export default function KerberosLab() {
                 </div>
 
               </div>
+              </div>
 
               {/* Interactive buttons */}
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button 
                   onClick={runAsRequest}
                   disabled={step !== 0}

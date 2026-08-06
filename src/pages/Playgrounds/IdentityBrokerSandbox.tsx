@@ -221,8 +221,9 @@ export default function IdentityBrokerSandbox() {
             </span>
 
             {/* Visual Broker Nodes */}
-            <div className="grid grid-cols-3 gap-6 items-center justify-around py-8 text-center font-bold text-xs relative z-10">
-              
+            <div className="overflow-x-auto">
+            <div className="grid grid-cols-3 gap-6 items-center justify-around py-8 text-center font-bold text-xs relative z-10 min-w-105">
+
               {/* Node 1: IdP */}
               <div className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition-all duration-300 ${
                 brokerStep === 1 
@@ -256,6 +257,7 @@ export default function IdentityBrokerSandbox() {
                 <p className="text-xs font-black text-text-primary">{activeSp === 'saas_app' ? 'SaaS Portal' : activeSp.toUpperCase()}</p>
               </div>
 
+            </div>
             </div>
 
             {/* Vector connectors overlay */}

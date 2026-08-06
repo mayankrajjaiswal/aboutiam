@@ -103,6 +103,7 @@ export default function AccessCertificationLab() {
       )}
 
       <div className="rounded-xl bg-bg-card border border-border-subtle shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead className="bg-bg-sidebar text-text-muted uppercase text-[9px] font-bold">
             <tr>
@@ -138,6 +139,7 @@ export default function AccessCertificationLab() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       <div className="p-5 rounded-xl bg-black border border-zinc-800 font-mono text-[10px]">

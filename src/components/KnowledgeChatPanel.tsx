@@ -75,7 +75,7 @@ export default function KnowledgeChatPanel({ showSidebar = false, className = ''
 
   return (
     <div className={`h-full flex flex-col lg:flex-row gap-6 ${className}`}>
-      <div className="flex-grow flex flex-col rounded-2xl bg-bg-card border border-border-subtle shadow-sm overflow-hidden relative min-h-0">
+      <div className="@container flex-grow flex flex-col rounded-2xl bg-bg-card border border-border-subtle shadow-sm overflow-hidden relative min-h-0">
         <div className="absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.01)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none"></div>
 
         <div className="flex-grow overflow-y-auto p-5 space-y-6 scroll-smooth z-10">
@@ -139,7 +139,7 @@ export default function KnowledgeChatPanel({ showSidebar = false, className = ''
                   {isAI && m.resources && m.resources.length > 0 && (
                     <div className={`${showSidebar ? 'lg:hidden' : ''} mt-4 space-y-2 border-t border-border-subtle pt-3`}>
                       <span className="text-[10px] uppercase font-bold text-text-muted">Recommended Resources</span>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 @sm:grid-cols-2 gap-2">
                         {m.resources.map((res, i) => (
                           <ResourceCard key={i} resource={res} />
                         ))}

@@ -10,9 +10,9 @@ describe('Sidebar', () => {
 
   it('renders a sub-group header for a large group split into sub-groups', () => {
     renderWithProviders(<Sidebar />)
-    fireEvent.click(screen.getByText(/Architecture & GRC/))
-    expect(screen.getByText('Design & Assessment')).toBeInTheDocument()
-    expect(screen.getByText('Zero Trust & PAM Labs')).toBeInTheDocument()
+    fireEvent.click(screen.getByText(/Enterprise Ecosystem/))
+    expect(screen.getByText('Vendor & Threat Intel')).toBeInTheDocument()
+    expect(screen.getByText('Reference & AI')).toBeInTheDocument()
   })
 
   it('renders a flat list with no sub-group header for a small group', () => {
@@ -31,9 +31,9 @@ describe('Sidebar', () => {
 
   it('filtering by a substring hides non-matching entries and keeps matching ones visible across sub-groups', () => {
     renderWithProviders(<Sidebar />)
-    fireEvent.change(screen.getByLabelText('Filter sidebar navigation'), { target: { value: 'attack-path' } })
+    fireEvent.change(screen.getByLabelText('Filter sidebar navigation'), { target: { value: 'bulletin' } })
 
-    expect(screen.getByText('Attack-Path Graph Visualizer')).toBeInTheDocument()
+    expect(screen.getByText('Security Bulletins & Crisis Game')).toBeInTheDocument()
     expect(screen.queryByText('Overview Dashboard')).not.toBeInTheDocument()
     expect(screen.queryByText('Security Utilities')).not.toBeInTheDocument()
   })
@@ -52,11 +52,11 @@ describe('Sidebar', () => {
 
   it('a sub-group toggle collapses its own items independently of the others', () => {
     renderWithProviders(<Sidebar />)
-    fireEvent.click(screen.getByText(/Architecture & GRC/))
-    expect(screen.getByText('Identity Scenario Builder')).toBeInTheDocument()
+    fireEvent.click(screen.getByText(/Enterprise Ecosystem/))
+    expect(screen.getByText('Vendor Knowledge Center')).toBeInTheDocument()
 
-    fireEvent.click(screen.getByText('Design & Assessment'))
-    expect(screen.queryByText('Identity Scenario Builder')).not.toBeInTheDocument()
-    expect(screen.getByText('Modernization Backlog Game')).toBeInTheDocument()
+    fireEvent.click(screen.getByText('Vendor & Threat Intel'))
+    expect(screen.queryByText('Vendor Knowledge Center')).not.toBeInTheDocument()
+    expect(screen.getByText('Developer Playbooks')).toBeInTheDocument()
   })
 })

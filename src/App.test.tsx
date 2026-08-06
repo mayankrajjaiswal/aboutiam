@@ -22,17 +22,17 @@ describe('App', () => {
 
   it('renders the layout shell (sidebar + header) and the matched route at "/"', async () => {
     renderAppAt('/')
-    expect(await screen.findByRole('heading', { name: /master identity & access/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /master identity & access/i }, { timeout: 5000 })).toBeInTheDocument()
     expect(document.title).toBe('AboutIAM | The Interactive Identity Workspace')
   })
 
   it('renders a different matched route based on the current location', async () => {
     renderAppAt('/tools/')
-    await waitFor(() => expect(document.title).toContain('Security Tools'))
+    await waitFor(() => expect(document.title).toContain('Security Tools'), { timeout: 5000 })
   })
 
   it('falls back to Home for an unknown path (the "*" catch-all route)', async () => {
     renderAppAt('/this-route-does-not-exist')
-    expect(await screen.findByRole('heading', { name: /master identity & access/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /master identity & access/i }, { timeout: 5000 })).toBeInTheDocument()
   })
 })

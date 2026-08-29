@@ -127,6 +127,17 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
 
   const items: SearchItem[] = []
 
+  // Add Patent Timeline tab search result
+  items.push({
+    id: 'patent-timeline-tab',
+    title: 'IAM Patent Timeline & Legal History Guide',
+    fullName: 'Operational Reference & Timeline',
+    description: 'Step through an interactive reference timeline of legal disputes, RSA patents, Samba AD antitrust, and Open Web Foundation royalty-free covenants.',
+    category: '📁 Interactive Labs & Simulators',
+    link: '/timeline?tab=patents',
+    keywords: ['patent', 'patents', 'timeline', 'legal history', 'open web foundation', 'non-assert', 'royalty free', 'samba antitrust', 'rsa patent']
+  })
+
   // 1. Add Simulators
   SIMULATORS_LIST.forEach(s => {
     items.push({

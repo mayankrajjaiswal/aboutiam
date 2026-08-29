@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Users, Mail, Heart, Send, CheckCircle2, Globe, ShieldCheck, ExternalLink, Lock, GitBranch, Bot, FileCheck
+  Users, Mail, Heart, Send, CheckCircle2, Globe, ShieldCheck, ExternalLink, Lock, GitBranch, Bot, FileCheck, ArrowRight
 } from 'lucide-react'
 import mayankPhoto from '../assets/contributors/mayank.jpg'
 import rajatPhoto from '../assets/contributors/rajat.jpg'
@@ -325,9 +325,62 @@ export default function Contributors() {
         </div>
       </div>
 
+      {/* Community Channels (Phase 10 / F8 Upgrade) */}
+      <div className="space-y-6">
+        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Join our Community Channels</span>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 select-none font-sans text-xs">
+          
+          {/* Discord Card */}
+          <a
+            href="https://discord.gg/aboutiam"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-5 rounded-2xl bg-[#5865F2]/10 border border-[#5865F2]/20 hover:border-[#5865F2] flex flex-col justify-between h-full text-left transition-all space-y-3"
+          >
+            <div className="space-y-2">
+              <span className="text-[9px] bg-[#5865F2]/20 text-[#5865F2] font-black uppercase px-2 py-0.5 rounded border border-[#5865F2]/20 w-fit block">DISCORD</span>
+              <h4 className="text-sm font-black text-text-primary">Chat Live with Identity Peers</h4>
+              <p className="text-text-secondary leading-normal text-[11px]">Join our live Discord server to participate in study groups, discuss OAuth bugs, and share playground configurations.</p>
+            </div>
+            <span className="text-accent-primary font-bold text-[10px] flex items-center gap-1">Connect on Discord <ArrowRight className="w-3 h-3" /></span>
+          </a>
+
+          {/* GitHub Discussions Card */}
+          <a
+            href="https://github.com/mayankrajjaiswal/AboutIAM/discussions"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-5 rounded-2xl bg-bg-card border border-border-subtle hover:border-accent-primary flex flex-col justify-between h-full text-left transition-all space-y-3"
+          >
+            <div className="space-y-2">
+              <span className="text-[9px] bg-accent-glow text-accent-primary font-black uppercase px-2 py-0.5 rounded border border-accent-primary/20 w-fit block">GITHUB</span>
+              <h4 className="text-sm font-black text-text-primary">Participate in Forums</h4>
+              <p className="text-text-secondary leading-normal text-[11px]">Help drive RFC discussions, review security bulletins, and contribute templates straight into our open-source codebase.</p>
+            </div>
+            <span className="text-accent-primary font-bold text-[10px] flex items-center gap-1">Browse Discussions <ArrowRight className="w-3 h-3" /></span>
+          </a>
+
+          {/* Slack Card */}
+          <a
+            href="https://slack.com/aboutiam"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-5 rounded-2xl bg-[#4A154B]/10 border border-[#4A154B]/20 hover:border-[#4A154B] flex flex-col justify-between h-full text-left transition-all space-y-3"
+          >
+            <div className="space-y-2">
+              <span className="text-[9px] bg-[#4A154B]/20 text-[#4A154B] font-black uppercase px-2 py-0.5 rounded border border-[#4A154B]/20 w-fit block">SLACK</span>
+              <h4 className="text-sm font-black text-text-primary">Enterprise Security Slack</h4>
+              <p className="text-text-secondary leading-normal text-[11px]">For enterprise users, security officers, and GRC auditors to discuss air-gapped Docker deployments and corporate training.</p>
+            </div>
+            <span className="text-accent-primary font-bold text-[10px] flex items-center gap-1">Join Enterprise Slack <ArrowRight className="w-3 h-3" /></span>
+          </a>
+
+        </div>
+      </div>
+
       <div className="text-center">
         <Link to="/terms" className="text-[11px] text-text-muted hover:text-text-secondary underline">
-          Terms, License & Disclaimer
+          Terms, License &amp; Disclaimer
         </Link>
       </div>
     </div>

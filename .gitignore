@@ -21,6 +21,8 @@ coverage
 
 # Playwright MCP scratch output
 .playwright-mcp
+playwright-report/
+test-results/
 
 # Editor directories and files
 .vscode/*

@@ -19,6 +19,7 @@ import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
 import { usePreferenceStore } from '../store/preferenceStore'
 import { getLastAssessment } from '../lib/assess/assessHistory'
 import { buildBoardSummary, buildBoardSummaryMarkdown } from '../lib/assess/boardSummary'
+import { prefetchRoute } from '../lib/prefetch'
 
 interface QuestionCard {
   question: string
@@ -204,6 +205,7 @@ export default function CommandCenter() {
           <Link
             key={card.path}
             to={card.path}
+            onMouseEnter={() => prefetchRoute(card.path)}
             className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow space-y-3 group"
           >
             <card.icon className="w-6 h-6 text-accent-primary" />

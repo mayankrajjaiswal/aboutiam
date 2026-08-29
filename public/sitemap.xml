@@ -392,6 +392,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/playground/device-code-flow/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/playground/jit-provisioning/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/playground/phantom-token/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/playground/stix-taxii-ioc/</loc>
     <lastmod>2026-08-29</lastmod>
     <changefreq>monthly</changefreq>
@@ -567,6 +585,24 @@
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/print-poster/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/oauth-risk-analyzer/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/csp-builder/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/x509-to-jwks-converter/</loc>
     <lastmod>2026-08-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

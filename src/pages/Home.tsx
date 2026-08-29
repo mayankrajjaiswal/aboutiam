@@ -8,6 +8,7 @@ import FactOfTheDay from '../components/FactOfTheDay'
 import ProfileExportImport from '../components/ProfileExportImport'
 import ContinueLearningCard from '../components/ContinueLearningCard'
 import StartHereWizard from '../components/StartHereWizard'
+import { prefetchRoute } from '../lib/prefetch'
 
 export default function Home() {
   const [isStartHereOpen, setIsStartHereOpen] = useState(false)
@@ -52,6 +53,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <Link
             to="/playground"
+            onMouseEnter={() => prefetchRoute('/playground')}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-accent-primary hover:bg-accent-hover text-white font-medium transition-colors shadow-lg shadow-accent-primary/20"
           >
             Enter Playgrounds <ArrowRight className="w-4 h-4" />

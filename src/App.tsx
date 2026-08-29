@@ -71,6 +71,9 @@ const CertificateVerifier = lazy(() => import('./pages/Tools/CertificateVerifier
 const PqcReadinessAuditor = lazy(() => import('./pages/Tools/PqcReadinessAuditor'))
 const CyberInsuranceReadiness = lazy(() => import('./pages/Tools/CyberInsuranceReadiness'))
 const PrintablePoster = lazy(() => import('./pages/Tools/PrintablePoster'))
+const OauthRiskAnalyzer = lazy(() => import('./pages/Tools/OauthRiskAnalyzer'))
+const CspBuilder = lazy(() => import('./pages/Tools/CspBuilder'))
+const X509ToJwksConverter = lazy(() => import('./pages/Tools/X509ToJwksConverter'))
 const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
 const HrAttributeMapper = lazy(() => import('./pages/Playgrounds/HrAttributeMapper'))
 const IdentityFabricBuilder = lazy(() => import('./pages/Playgrounds/IdentityFabricBuilder'))
@@ -135,6 +138,9 @@ const IncidentCommanderSim = lazy(() => import('./pages/Playgrounds/IncidentComm
 const BuildYourIdp = lazy(() => import('./pages/Playgrounds/BuildYourIdp'))
 const OpenId4VcWallet = lazy(() => import('./pages/Playgrounds/OpenId4VcWallet'))
 const Fapi2Lab = lazy(() => import('./pages/Playgrounds/Fapi2Lab'))
+const DeviceCodeFlowLab = lazy(() => import('./pages/Playgrounds/DeviceCodeFlowLab'))
+const JitProvisioningLab = lazy(() => import('./pages/Playgrounds/JitProvisioningLab'))
+const PhantomTokenLab = lazy(() => import('./pages/Playgrounds/PhantomTokenLab'))
 const CaepEventStorm = lazy(() => import('./pages/Playgrounds/CaepEventStorm'))
 const AttackPathGraph = lazy(() => import('./pages/Playgrounds/AttackPathGraph'))
 const AIThreatLab = lazy(() => import('./pages/Playgrounds/AIThreatLab'))
@@ -279,6 +285,12 @@ export default function App() {
               <Route path="/tools/pqc-readiness-auditor" element={<PqcReadinessAuditor />} />
               <Route path="/tools/cyber-insurance-readiness" element={<CyberInsuranceReadiness />} />
               <Route path="/tools/print-poster" element={<PrintablePoster />} />
+              <Route path="/tools/oauth-risk-analyzer" element={<OauthRiskAnalyzer />} />
+              <Route path="/tools/csp-builder" element={<CspBuilder />} />
+              <Route path="/tools/x509-to-jwks-converter" element={<X509ToJwksConverter />} />
+              <Route path="/playground/device-code-flow" element={<DeviceCodeFlowLab />} />
+              <Route path="/playground/jit-provisioning" element={<JitProvisioningLab />} />
+              <Route path="/playground/phantom-token" element={<PhantomTokenLab />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />
               <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
               <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />

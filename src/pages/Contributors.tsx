@@ -151,6 +151,8 @@ export default function Contributors() {
                     alt={person.name}
                     width={80}
                     height={80}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                 ) : (

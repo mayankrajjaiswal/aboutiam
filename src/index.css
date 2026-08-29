@@ -182,3 +182,9 @@ body, header, aside, main, div, button, input, select, textarea, h1, h2, h3, h4,
   color: #f87171 !important; /* red-400 */
   font-weight: 600;
 }
+
+/* Elite Performance Helpers */
+.content-vis-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
+}

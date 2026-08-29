@@ -5,8 +5,32 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 29 Aug 2026 18:59:04 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 19:42:46 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
+      <link>https://www.aboutiam.com/tools/oauth-risk-analyzer</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/oauth-risk-analyzer</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Paste a complex OAuth 2.0 or OIDC authorization URL to parse its parameters, decode scopes, and instantly flag security risks like missing PKCE or deprecated implicit flows.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Identity-Grade CSP (Content-Security-Policy) Builder]]></title>
+      <link>https://www.aboutiam.com/tools/csp-builder</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/csp-builder</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Visually construct a hardened Content-Security-Policy header. Select your authentication providers (Auth0, Okta) to automatically generate the strict directive rules required for secure redirects and iframes.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: X.509 Certificate to JWKS Converter]]></title>
+      <link>https://www.aboutiam.com/tools/x509-to-jwks-converter</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/x509-to-jwks-converter</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Convert legacy PEM X.509 certificates directly into modern JSON Web Key Sets (JWKS) arrays for OIDC migrations, extracting public modulus and exponent client-side.]]></description>
+      <category>Security Tool</category>
+    </item>
     <item>
       <title><![CDATA[New Security Tool: JWT Decoder — Inspect & Verify Tokens Online]]></title>
       <link>https://www.aboutiam.com/tools/jwt-decoder</link>

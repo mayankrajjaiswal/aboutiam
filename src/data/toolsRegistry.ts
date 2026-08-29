@@ -45,6 +45,59 @@ export interface ToolMeta {
 
 export const TOOLS: ToolMeta[] = [
   {
+    slug: 'oauth-risk-analyzer',
+    taskTags: ['check-compliance', 'generate'],
+    title: 'OAuth 2.0 Authorization URL Parser & Risk Analyzer',
+    description: 'Paste a complex OAuth 2.0 or OIDC authorization URL to parse its parameters, decode scopes, and instantly flag security risks like missing PKCE or deprecated implicit flows.',
+    category: 'Auth & Directory Builders',
+    icon: ShieldCheck,
+    phase: 2,
+    status: 'live',
+    keywords: ['oauth url parser', 'oauth debugger', 'pkce check', 'oidc analyzer'],
+    analogy: 'Think of this tool as an airport security scanner for your login links. It X-rays the URL to ensure it has the right tickets (PKCE) and isn\'t carrying banned items (token response types).',
+    expert: 'Parses the query string against RFC 6749 and RFC 7636. Flags response_type=token (Implicit flow, deprecated by OAuth 2.1 BCP) and missing code_challenge/state parameters critical for CSRF and authorization code injection defense.',
+    faqs: [
+      { q: 'Why is response_type=token dangerous?', a: 'It exposes the access token directly in the browser fragment (URI hash), making it vulnerable to XSS, open redirects, and browser history leaks.' },
+      { q: 'Does this tool make any network requests?', a: 'No, it purely parses the URL string you paste using native URL APIs client-side.' }
+    ],
+    relatedLinks: [{ label: 'OAuth 2.0 Flow Visualizer →', href: '/playground/oauth' }]
+  },
+  {
+    slug: 'csp-builder',
+    taskTags: ['generate', 'check-compliance'],
+    title: 'Identity-Grade CSP (Content-Security-Policy) Builder',
+    description: 'Visually construct a hardened Content-Security-Policy header. Select your authentication providers (Auth0, Okta) to automatically generate the strict directive rules required for secure redirects and iframes.',
+    category: 'Supply Chain & Governance',
+    icon: ShieldCheck,
+    phase: 2,
+    status: 'live',
+    keywords: ['csp generator', 'content security policy builder', 'csp header', 'auth0 csp'],
+    analogy: 'A CSP is a bouncer\'s guest list for your website. This tool helps you write exactly who is allowed in (scripts, images, login redirects) so no malicious party-crashers (XSS) can execute unauthorized code.',
+    expert: 'Generates a strict Level 3 CSP (CSP3) header string. Emphasizes strict-dynamic and nonce-based architectures while allowing the specific connect-src and frame-src domains required by modern identity providers.',
+    faqs: [
+      { q: 'Why do I need frame-ancestors for identity?', a: 'If your application embeds login widgets or uses silent SSO iframes, you must explicitly whitelist the IdP domain to prevent clickjacking.' },
+      { q: 'Is a meta tag or HTTP header better for CSP?', a: 'HTTP headers are always preferred. Meta tags cannot restrict frame-ancestors, report-uri, or sandbox directives.' }
+    ]
+  },
+  {
+    slug: 'x509-to-jwks-converter',
+    taskTags: ['generate'],
+    title: 'X.509 Certificate to JWKS Converter',
+    description: 'Convert legacy PEM X.509 certificates directly into modern JSON Web Key Sets (JWKS) arrays for OIDC migrations, extracting public modulus and exponent client-side.',
+    category: 'PKI & Certificates',
+    icon: FileCode,
+    phase: 2,
+    status: 'live',
+    keywords: ['pem to jwk', 'x509 to jwks', 'certificate converter', 'oidc migration'],
+    analogy: 'This is a translation dictionary between old-school identity and modern APIs. It takes a heavy, physical wax-seal stamp (X.509) and translates it into a digital blueprint (JWKS) that modern apps understand.',
+    expert: 'Parses the ASN.1 DER structure of an X.509 certificate to extract the RSA/EC public key, encodes the modulus (n) and exponent (e) to Base64URL, and generates an RFC 7517 compliant JWK format. Executes 100% client-side via subtle crypto and ASN.1 decoders.',
+    faqs: [
+      { q: 'Why migrate from X.509 to JWKS?', a: 'Modern protocols like OpenID Connect (OIDC) exclusively use JWKS endpoints to distribute public signing keys for JWT verification, moving away from heavy XML metadata.' },
+      { q: 'Does this send my certificate to a server?', a: 'No. The ASN.1 parsing and Base64URL encoding happen entirely within your browser.' }
+    ],
+    relatedLinks: [{ label: 'JWKS JSON Web Key Set Inspector →', href: '/tools/jwks-inspector' }]
+  },
+  {
     slug: 'jwt-decoder',
     taskTags: ['decode'],
     title: 'JWT Decoder — Inspect & Verify Tokens Online',

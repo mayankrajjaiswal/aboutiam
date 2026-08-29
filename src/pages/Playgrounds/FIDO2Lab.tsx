@@ -106,7 +106,6 @@ export default function FIDO2Lab() {
   useEffect(() => {
     if (realCred?.authDataHex) {
       let i = 0
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTimeout(() => setDisplayedHex(''), 0)
       const hexInterval = setInterval(() => {
         setDisplayedHex(realCred.authDataHex.slice(0, i))

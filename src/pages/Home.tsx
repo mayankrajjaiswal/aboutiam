@@ -502,16 +502,11 @@ export default function Home() {
           </p>
         </div>
         <form
-          action="https://api.follow.it/subscribe"
+          action="https://api.follow.it/subscription-form/bDNTNU81T1MrZ0g3OWJheVRZS3pWOC9oalpVWXlYSGNVVTRGc3JFQTdQcTFWOTl1WWIvN3RNYk1NcVFXWGljUUhJNHNXTnBUYmdCeVZoaDgxbm9tUWs5N3B0bEEwbEg5ZVROQXhIT0JYQUFSNUZ2S2gxVEh0R3NpLzR3NmdFSit8YllyU1I0SUtkSUdjOHFha3FuK3BvNmc4RlNORk8za0ViYXc5UWszcXdzQT0=/8"
           method="post"
           target="_blank"
           className="flex gap-2 w-full md:max-w-md"
         >
-          <input 
-            type="hidden" 
-            name="url" 
-            value="https://www.aboutiam.com/rss.xml" 
-          />
           <input 
             type="email" 
             name="email"

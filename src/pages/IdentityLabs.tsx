@@ -834,30 +834,60 @@ export default function IdentityLabs() {
             </div>
 
             {/* AUTOMATED AUDIT VULNERABILITY TERMINAL FEED */}
-            <div className="border border-slate-800 bg-slate-950 rounded-2xl overflow-hidden shadow-2xl flex-1 flex flex-col justify-between min-h-[350px]">
+            <div className={`border bg-slate-950 rounded-2xl overflow-hidden shadow-2xl flex-1 flex flex-col justify-between min-h-[350px] transition-all duration-300 ${
+              isAttacking
+                ? 'border-accent-primary/50 shadow-accent-primary/10 animate-pulse-slow'
+                : attackCompleted && !attackSuccess
+                  ? 'border-status-danger/50 shadow-status-danger/10'
+                  : attackCompleted && attackSuccess
+                    ? 'border-emerald-500/50 shadow-emerald-500/10'
+                    : 'border-slate-800'
+            }`}>
               <div>
-                <div className="flex items-center justify-between bg-[#0b0f19] px-4 py-2 border-b border-slate-800">
-                  <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400">
-                    <Terminal className="w-3.5 h-3.5 text-accent-primary animate-pulse" /> security_audit_scanner.sh
+                <div className="flex items-center justify-between bg-[#0b0f19] px-4 py-2 border-b border-slate-800/80 select-none">
+                  <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">
+                    <Terminal className={`w-3.5 h-3.5 ${isAttacking ? 'text-accent-primary animate-bounce' : 'text-slate-500'}`} /> security_audit_scanner.sh
                   </div>
-                  <div className="text-[9px] text-slate-500 font-mono">Status: Connected</div>
+                  <div className="flex items-center gap-2">
+                    {attackCompleted && !attackSuccess && (
+                      <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-status-danger/10 text-status-danger border border-status-danger/25 animate-pulse">
+                        🚨 VULNERABILITY EXPOSED
+                      </span>
+                    )}
+                    {attackCompleted && attackSuccess && (
+                      <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/25">
+                        ✔ AUDIT COMPLIANT
+                      </span>
+                    )}
+                    <div className="text-[9px] text-slate-500 font-mono">Status: Connected</div>
+                  </div>
                 </div>
 
                 {/* Live Console stream */}
-                <div className="p-4 overflow-y-auto max-h-[300px] text-[11px] font-mono text-slate-300 space-y-2 text-left custom-scrollbar leading-relaxed select-text">
+                <div className="p-4 overflow-y-auto max-h-[300px] text-[11px] font-mono space-y-2 text-left custom-scrollbar leading-relaxed select-text">
                   {terminalFeed.length === 0 ? (
                     <div className="text-slate-500 italic select-none">Terminal console stream idle. Adjust config patches above and click "Execute Automated Pen-Test Audit" to watch simulated exploit attempts.</div>
                   ) : (
                     terminalFeed.map((log, idx) => {
-                      let color = 'text-slate-300'
-                      if (log.startsWith('✓')) color = 'text-status-success font-black'
-                      else if (log.startsWith('💥') || log.startsWith('❌')) color = 'text-status-danger font-black'
-                      else if (log.startsWith('🛡️') || log.startsWith('🎉')) color = 'text-accent-secondary font-black border-y border-slate-900 py-1 block mt-1'
-                      else if (log.startsWith('⚡')) color = 'text-accent-primary font-black block mt-2'
-
+                      const renderStyledLog = (logText: string) => {
+                        if (logText.includes('💥') || logText.includes('❌') || logText.includes('FAILURE') || logText.includes('FAILED')) {
+                          return <span className="terminal-keyword-danger">{logText}</span>
+                        }
+                        if (logText.includes('✓') || logText.includes('🎉') || logText.includes('SUCCESS') || logText.includes('COMPLIANT')) {
+                          return <span className="terminal-keyword-success">{logText}</span>
+                        }
+                        if (logText.includes('⚡') || logText.includes('ATTACK MODULE')) {
+                          return <span className="terminal-keyword-warning">{logText}</span>
+                        }
+                        if (logText.includes('🛡️') || logText.includes('🔍') || logText.includes('INITIALIZING')) {
+                          return <span className="terminal-keyword-info">{logText}</span>
+                        }
+                        return <span className="text-slate-300 font-medium">{logText}</span>
+                      }
+                      
                       return (
-                        <div key={idx} className={color}>
-                          {log}
+                        <div key={idx} className="leading-relaxed">
+                          {renderStyledLog(log)}
                         </div>
                       )
                     })

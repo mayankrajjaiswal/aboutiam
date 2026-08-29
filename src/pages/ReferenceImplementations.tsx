@@ -178,29 +178,61 @@ export default function ReferenceImplementations() {
             </div>
 
             {/* CORE INTERACTIVE SOURCE FILE CODE VIEWER */}
-            <div className="border border-slate-800 rounded-2xl overflow-hidden shadow-2xl bg-slate-950">
-              <div className="flex items-center justify-between bg-[#0b0f19] px-4 py-3 border-b border-slate-800">
-                <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400">
-                  <Terminal className="w-4 h-4 text-accent-primary animate-pulse" /> {activeProject.codeFile}
+            <div className="border border-slate-800 rounded-2xl overflow-hidden shadow-2xl bg-[#070a13] flex flex-col md:flex-row min-h-[450px]">
+              
+              {/* Fake IDE Sidebar (Directory Tree) */}
+              <div className="w-full md:w-56 bg-[#0a0e1a] border-r border-slate-800 flex flex-col shrink-0">
+                <div className="px-3 py-2 border-b border-slate-800/80 text-[9px] font-black tracking-widest text-slate-500 uppercase flex items-center gap-1.5 select-none">
+                  <Terminal className="w-3.5 h-3.5" /> Explorer
                 </div>
-                <button
-                  onClick={() => copyToClipboard(activeProject.code)}
-                  className="text-[10px] bg-slate-900/60 hover:bg-slate-900 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition cursor-pointer flex items-center gap-1 focus:outline-none"
-                >
-                  {copiedCode ? <Check className="w-3.5 h-3.5 text-status-success" /> : <Clipboard className="w-3.5 h-3.5" />}
-                  {copiedCode ? 'Copied!' : 'Copy Source'}
-                </button>
+                <div className="p-3 text-[10px] font-mono text-slate-400 overflow-y-auto custom-scrollbar select-none leading-loose">
+                  <div className="text-slate-300 font-bold mb-1 px-2 py-0.5 rounded bg-slate-800/50">
+                    📂 {activeProject.title.substring(0, 15).replace(/\s+/g, '_').toLowerCase()}
+                  </div>
+                  {/* Extract file tree lines from folderStructure */}
+                  {activeProject.folderStructure.split('\n').filter(Boolean).map((line, i) => {
+                    const isMainFile = line.includes(activeProject.codeFile)
+                    return (
+                      <div key={i} className={`flex items-center gap-1.5 whitespace-pre px-2 py-0.5 rounded transition ${isMainFile ? 'text-accent-primary bg-accent-glow font-bold border border-accent-primary/20' : 'hover:bg-slate-800/40 hover:text-slate-200 cursor-pointer'}`}>
+                        {line}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
-              <pre 
-                className="p-5 overflow-x-auto text-[11px] font-mono text-slate-300 whitespace-pre max-h-[380px] custom-scrollbar text-left leading-relaxed"
-                data-llm-role="reference-code"
-                data-llm-title={activeProject.title}
-                data-llm-tech={activeProject.tech}
-                data-llm-rfc={activeProject.rfc}
-                data-llm-level={activeProject.level}
-              >
-                <code>{activeProject.code}</code>
-              </pre>
+
+              {/* Fake IDE Editor Pane */}
+              <div className="flex-1 flex flex-col min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-[#0b0f19] px-1 border-b border-slate-800 select-none overflow-x-auto">
+                  <div className="flex items-end">
+                    <div className="flex items-center gap-2 text-[11px] font-mono text-accent-primary bg-[#070a13] border-r border-l border-slate-800 px-4 py-2.5 font-bold shadow-[0_-2px_0_0_#3b82f6_inset]">
+                      {activeProject.codeFile}
+                    </div>
+                    <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500 px-4 py-2 hover:bg-slate-800/40 cursor-pointer transition">
+                      README.md
+                    </div>
+                  </div>
+                  <div className="px-2 py-1.5 sm:py-0">
+                    <button
+                      onClick={() => copyToClipboard(activeProject.code)}
+                      className="text-[10px] bg-accent-primary/10 hover:bg-accent-primary/20 text-accent-primary px-3 py-1.5 rounded border border-accent-primary/30 transition cursor-pointer flex items-center gap-1.5 font-bold"
+                    >
+                      {copiedCode ? <Check className="w-3.5 h-3.5" /> : <Clipboard className="w-3.5 h-3.5" />}
+                      {copiedCode ? 'Copied to Clipboard!' : 'Copy Code'}
+                    </button>
+                  </div>
+                </div>
+                <pre 
+                  className="p-5 overflow-auto text-[11px] font-mono text-slate-300 whitespace-pre flex-1 custom-scrollbar text-left leading-relaxed select-text"
+                  data-llm-role="reference-code"
+                  data-llm-title={activeProject.title}
+                  data-llm-tech={activeProject.tech}
+                  data-llm-rfc={activeProject.rfc}
+                  data-llm-level={activeProject.level}
+                >
+                  <code>{activeProject.code}</code>
+                </pre>
+              </div>
             </div>
 
             {/* SECURITY HARDENING AUDIT CHECKLIST */}

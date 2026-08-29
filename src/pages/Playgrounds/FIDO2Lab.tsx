@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Fingerprint, Terminal, Copy, Info, Cpu, CheckCircle2, ShieldCheck, ShieldAlert
@@ -20,11 +20,37 @@ export default function FIDO2Lab() {
   const [realCred, setRealCred] = useState<RealCredentialDetails | null>(null)
   const [realHandshakeError, setRealHandshakeError] = useState<string | null>(null)
   const [realHandshakeActive, setRealHandshakeActive] = useState(false)
+  const [displayedHex, setDisplayedHex] = useState('')
+  
+  // Interactive Simulation State
+  const [isHoldingSensor, setIsHoldingSensor] = useState(false)
+  const [sensorProgress, setSensorProgress] = useState(0)
+  const [isSimulatingHardware, setIsSimulatingHardware] = useState(false)
 
-  const handleTriggerRealWebAuthn = async () => {
-    setRealHandshakeActive(true)
+  // Simulation handlers
+  const handleStartHold = () => {
+    setIsHoldingSensor(true)
+  }
+
+  const handleEndHold = () => {
+    setIsHoldingSensor(false)
+    if (sensorProgress < 100 && !isSimulatingHardware) {
+      setSensorProgress(0)
+    }
+  }
+
+  const triggerSimulation = () => {
+    setIsSimulatingHardware(true)
     setRealCred(null)
     setRealHandshakeError(null)
+    setSensorProgress(0)
+  }
+
+  // Actually run the native API after successful simulation hold
+  const handleTriggerRealWebAuthn = async () => {
+    setRealHandshakeActive(true)
+    setIsSimulatingHardware(false)
+    setSensorProgress(0)
 
     try {
       const challenge = new Uint8Array(32)
@@ -74,6 +100,47 @@ export default function FIDO2Lab() {
     } finally {
       setRealHandshakeActive(false)
     }
+  }
+
+  // Hex Typewriter Effect
+  useEffect(() => {
+    if (realCred?.authDataHex) {
+      let i = 0
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTimeout(() => setDisplayedHex(''), 0)
+      const hexInterval = setInterval(() => {
+        setDisplayedHex(realCred.authDataHex.slice(0, i))
+        i++
+        if (i > realCred.authDataHex.length) clearInterval(hexInterval)
+      }, 15)
+      return () => clearInterval(hexInterval)
+    }
+  }, [realCred?.authDataHex])
+  if (typeof window !== 'undefined') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      let timer: ReturnType<typeof setInterval>
+      if (isHoldingSensor && sensorProgress < 100) {
+        timer = setInterval(() => {
+          setSensorProgress(prev => {
+            if (prev >= 100) {
+              clearInterval(timer)
+              // We hit 100%, trigger the real webauthn flow after a short delay
+              setTimeout(() => {
+                handleTriggerRealWebAuthn()
+              }, 300)
+              return 100
+            }
+            return prev + 5
+          })
+        }, 50)
+      } else if (!isHoldingSensor && !isSimulatingHardware) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setTimeout(() => setSensorProgress(0), 0)
+      }
+      return () => clearInterval(timer)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isHoldingSensor, sensorProgress, isSimulatingHardware])
   }
 
   const steps = [
@@ -176,24 +243,52 @@ Device security chip (TPM / Secure Enclave) generates a brand new asymmetric key
               Test your device's actual hardware security chip (TPM / Secure Enclave)! Click below to trigger a real, browser-native WebAuthn passkey registration ceremony.
             </p>
 
-            {realHandshakeActive ? (
+            {isSimulatingHardware ? (
               <div className="flex flex-col items-center justify-center p-6 border border-accent-primary/20 bg-accent-glow/5 rounded-lg space-y-4 hover-cyber-glow">
-                <div className="relative flex items-center justify-center">
-                  <div className="absolute inset-0 bg-accent-primary/20 rounded-full animate-ping scale-150"></div>
-                  <div className="absolute inset-0 bg-accent-primary/30 rounded-full animate-pulse scale-110"></div>
-                  <div className="relative w-16 h-16 rounded-full bg-accent-glow border-2 border-accent-primary flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.6)] z-10">
-                    <Fingerprint className="w-8 h-8 text-accent-primary" />
-                  </div>
+                <div className="relative flex items-center justify-center select-none"
+                     onMouseDown={handleStartHold}
+                     onMouseUp={handleEndHold}
+                     onMouseLeave={handleEndHold}
+                     onTouchStart={handleStartHold}
+                     onTouchEnd={handleEndHold}
+                >
+                  {/* Outer glowing rings */}
+                  <div className={`absolute inset-0 rounded-full transition-all duration-300 ${isHoldingSensor ? 'bg-accent-primary/40 animate-ping scale-150' : 'bg-accent-primary/10 scale-125'}`}></div>
+                  
+                  {/* Progress Ring */}
+                  <svg className="absolute w-24 h-24 transform -rotate-90 pointer-events-none">
+                    <circle cx="48" cy="48" r="44" fill="none" className="stroke-accent-primary/20" strokeWidth="4" />
+                    <circle 
+                      cx="48" cy="48" r="44" fill="none" 
+                      className="stroke-accent-primary transition-all duration-75" 
+                      strokeWidth="4" strokeDasharray={2 * Math.PI * 44} 
+                      strokeDashoffset={2 * Math.PI * 44 * (1 - sensorProgress / 100)} 
+                      strokeLinecap="round" 
+                    />
+                  </svg>
+
+                  <button 
+                    className={`relative w-16 h-16 rounded-full border-2 transition-all flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.6)] cursor-pointer focus:outline-none ${isHoldingSensor ? 'bg-accent-primary border-white text-white scale-95' : 'bg-accent-glow border-accent-primary text-accent-primary'}`}
+                  >
+                    <Fingerprint className="w-8 h-8" />
+                  </button>
                 </div>
                 <div className="text-center space-y-1">
-                  <span className="text-xs font-bold text-accent-primary uppercase tracking-wider block animate-pulse">Awaiting Biometric Scan...</span>
-                  <span className="text-[10px] text-text-muted">Touch your YubiKey or FaceID/TouchID sensor to prove presence (UP flag).</span>
+                  <span className="text-xs font-bold text-accent-primary uppercase tracking-wider block animate-pulse">Touch & Hold Biometric Sensor</span>
+                  <span className="text-[10px] text-text-muted">Proving local user presence before generating hardware keys.</span>
+                </div>
+              </div>
+            ) : realHandshakeActive ? (
+              <div className="flex flex-col items-center justify-center p-6 border border-status-warning/20 bg-status-warning/5 rounded-lg space-y-4 hover-cyber-glow">
+                <div className="text-center space-y-1">
+                  <span className="text-xs font-bold text-status-warning uppercase tracking-wider block animate-pulse">Native Browser Prompt Active...</span>
+                  <span className="text-[10px] text-text-muted">Complete the prompt in your browser/OS UI (Windows Hello, FaceID, YubiKey).</span>
                 </div>
               </div>
             ) : (
               <button
                 type="button"
-                onClick={handleTriggerRealWebAuthn}
+                onClick={triggerSimulation}
                 className="w-full py-2.5 bg-accent-primary hover:bg-accent-hover text-white font-black rounded-lg text-xs transition shadow flex items-center justify-center gap-1.5 hover-cyber-glow"
               >
                 🔑 Trigger Live WebAuthn Ceremony
@@ -227,8 +322,8 @@ Device security chip (TPM / Secure Enclave) generates a brand new asymmetric key
 
                 <div className="space-y-1 text-[10px] text-text-secondary">
                   <p className="font-bold">Binary Attestation Object (Hex Slices):</p>
-                  <p className="bg-bg-nested p-1.5 rounded border border-border-subtle/50 break-all text-[9px]">
-                    {realCred.authDataHex}
+                  <p className="bg-bg-nested p-1.5 rounded border border-border-subtle/50 break-all text-[9px] min-h-[40px]">
+                    {displayedHex}
                   </p>
                 </div>
               </div>

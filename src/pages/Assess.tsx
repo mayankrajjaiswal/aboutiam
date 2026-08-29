@@ -240,34 +240,83 @@ export default function Assess() {
         </text>
       </g>
 
-      <!-- CENTER SECTION: Pillar-By-Pillar Maturity Graph -->
+      <!-- CENTER SECTION: Pillar-By-Pillar Maturity Graph & Spider Radar -->
       <g transform="translate(640, 200)">
         <rect width="600" height="710" rx="20" fill="url(#cardBg)" stroke="#1e293b" stroke-width="1.5" />
         <text x="40" y="60" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="2">PILLAR DIMENSION MATURITY GAUGE</text>
 
+        <!-- Spider Radar Chart Background Grids -->
+        <g transform="translate(200, 310) scale(1.1)">
+          ${[1, 2, 3, 4, 5].map(level => {
+            const r = (level / 5) * 80;
+            const pts = questions.map((_, i) => {
+              const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+              return `${100 + r * Math.cos(angle)},${100 + r * Math.sin(angle)}`;
+            }).join(' ');
+            return `<polygon points="${pts}" fill="none" stroke="${level === 5 ? '#334155' : '#1e293b'}" stroke-width="1" />`;
+          }).join('')}
+          
+          <!-- Axis Lines -->
+          ${questions.map((_, i) => {
+            const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+            return `<line x1="100" y1="100" x2="${100 + 80 * Math.cos(angle)}" y2="${100 + 80 * Math.sin(angle)}" stroke="#1e293b" stroke-width="1" stroke-dasharray="2,2" />`;
+          }).join('')}
+
+          <!-- Dynamic Score Polygon -->
+          <polygon
+            points="${questions.map((_, i) => {
+              const score = answers[i] || 1;
+              const r = (score / 5) * 80;
+              const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+              return `${100 + r * Math.cos(angle)},${100 + r * Math.sin(angle)}`;
+            }).join(' ')}"
+            fill="rgba(59,130,246,0.2)"
+            stroke="#3b82f6"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+          
+          <!-- Radar Data Points -->
+          ${questions.map((_, i) => {
+            const score = answers[i] || 1;
+            const r = (score / 5) * 80;
+            const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+            const x = 100 + r * Math.cos(angle);
+            const y = 100 + r * Math.sin(angle);
+            return `<circle cx="${x}" cy="${y}" r="3.5" fill="#3b82f6" stroke="#0d1222" stroke-width="1" />`;
+          }).join('')}
+          
+          <!-- Radar Labels -->
+          ${questions.map((_, i) => {
+            const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+            const x = 100 + 96 * Math.cos(angle);
+            const y = 100 + 96 * Math.sin(angle);
+            let anchor = "middle";
+            if (x < 90) anchor = "end";
+            if (x > 110) anchor = "start";
+            return `<text x="${x}" y="${y}" fill="#94a3b8" font-size="7" font-weight="900" text-anchor="${anchor}" dominant-baseline="middle">P${i+1}</text>`;
+          }).join('')}
+        </g>
+
         <!-- Bars Rendering Grid -->
         ${questions.map((q, i) => {
           const val = answers[i] || 1
-          const barHeight = (val / 5) * 380
-          const yPos = 560 - barHeight
+          const barHeight = (val / 5) * 120
+          const yPos = 650 - barHeight
           const xPos = 65 + (i * 105)
           const dimLabel = q.dimension.length > 14 ? q.dimension.substring(0, 11) + '...' : q.dimension
           return `
             <!-- Background track -->
-            <rect x="${xPos}" y="180" width="48" height="380" rx="8" fill="#070a13" stroke="#1e293b" stroke-width="1" />
+            <rect x="${xPos}" y="530" width="48" height="120" rx="4" fill="#070a13" stroke="#1e293b" stroke-width="1" />
             <!-- Active value -->
-            <rect x="${xPos}" y="${yPos}" width="48" height="${barHeight}" rx="8" fill="url(#primaryGlow)" />
+            <rect x="${xPos}" y="${yPos}" width="48" height="${barHeight}" rx="4" fill="url(#primaryGlow)" />
             <!-- Floating Text Value -->
-            <text x="${xPos + 24}" y="${yPos - 15}" fill="#f8fafc" font-size="16" font-weight="900" text-anchor="middle">${val.toFixed(1)}</text>
+            <text x="${xPos + 24}" y="${yPos - 12}" fill="#f8fafc" font-size="14" font-weight="900" text-anchor="middle">${val.toFixed(1)}</text>
             <!-- X-Axis Labels -->
-            <text x="${xPos + 24}" y="595" fill="#f8fafc" font-size="12" font-weight="bold" text-anchor="middle">${escapeXml(dimLabel)}</text>
-            <text x="${xPos + 24}" y="618" fill="#64748b" font-size="10" font-weight="700" text-anchor="middle">Dim ${i + 1}</text>
+            <text x="${xPos + 24}" y="675" fill="#f8fafc" font-size="11" font-weight="bold" text-anchor="middle">${escapeXml(dimLabel)}</text>
+            <text x="${xPos + 24}" y="692" fill="#64748b" font-size="10" font-weight="700" text-anchor="middle">Dim ${i + 1}</text>
           `
         }).join('')}
-
-        <!-- Peer Average Line Marker -->
-        <line x1="40" y1="370" x2="560" y2="370" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4" />
-        <text x="550" y="360" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="end">PEER MEDIAN (2.5)</text>
       </g>
 
       <!-- RIGHT COLUMN: Strategic Remediation Plan -->
@@ -571,16 +620,16 @@ export default function Assess() {
             </div>
           </div>
 
-          {/* Column Chart & Remediations Matrix */}
-          <div className="grid md:grid-cols-5 gap-8">
-            {/* Bar Chart Visualization (3 columns) */}
-            <div className="md:col-span-3 p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-6">
+          {/* Visual Charts & Remediations Matrix */}
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Bar Chart Visualization */}
+            <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-6">
               <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
-                <LineChart className="w-4 h-4 text-accent-primary" /> Maturity Dimensions Bar Chart
+                <LineChart className="w-4 h-4 text-accent-primary" /> Maturity Dimensions
               </h4>
 
               {/* Dynamic SVG Columns */}
-              <div className="relative w-full h-[220px] flex items-end justify-around pt-6 px-4">
+              <div className="relative w-full h-[220px] flex items-end justify-around pt-6 px-2">
                 {/* Horizontal Baseline Guideline */}
                 <div className="absolute left-0 right-0 bottom-8 border-b border-border-subtle/50 border-dashed"></div>
 
@@ -588,7 +637,7 @@ export default function Assess() {
                   const score = answers[i] || 1
                   const height = (score / 5) * 140
                   return (
-                    <div key={i} className="flex flex-col items-center gap-2 group w-14 relative z-10">
+                    <div key={i} className="flex flex-col items-center gap-2 group w-12 relative z-10 hover-cyber-glow cursor-default">
                       {/* Floating tooltip score */}
                       <span className="text-[11px] font-extrabold text-text-primary bg-bg-sidebar border border-border-subtle px-2 py-0.5 rounded shadow-sm opacity-100 transition-opacity">
                         {score}.0
@@ -596,17 +645,17 @@ export default function Assess() {
                       {/* Interactive Pillar bar */}
                       <div 
                         style={{ height: `${height}px` }}
-                        className={`w-10 rounded-t-md transition-all duration-1000 ${
-                          score === 1 && 'bg-status-danger/60 border border-status-danger/80'
+                        className={`w-8 rounded-t-md transition-all duration-1000 ${
+                          score === 1 && 'bg-status-danger/60 border border-status-danger/80 shadow-[0_0_10px_rgba(248,113,113,0.3)]'
                         } ${
-                          score === 3 && 'bg-status-warning/60 border border-status-warning/80'
+                          score === 3 && 'bg-status-warning/60 border border-status-warning/80 shadow-[0_0_10px_rgba(251,191,36,0.3)]'
                         } ${
-                          score === 5 && 'bg-status-success/60 border border-status-success/80'
+                          score === 5 && 'bg-status-success/60 border border-status-success/80 shadow-[0_0_10px_rgba(52,211,153,0.3)]'
                         }`}
                       ></div>
                       {/* Short Label */}
                       <span className="text-[9px] font-bold text-text-muted uppercase text-center tracking-wider truncate w-full" title={q.dimension}>
-                        Pillar {i+1}
+                        P{i+1}
                       </span>
                     </div>
                   )
@@ -614,17 +663,114 @@ export default function Assess() {
               </div>
 
               {/* Legend */}
-              <div className="flex justify-center gap-6 text-[10px] font-bold uppercase tracking-wider text-text-muted pt-2 border-t border-border-subtle/30">
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-status-danger/60"></span> Ad-hoc (1.0)</span>
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-status-warning/60"></span> Defined (3.0)</span>
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded bg-status-success/60"></span> Optimized (5.0)</span>
+              <div className="flex justify-center gap-4 text-[9px] font-bold uppercase tracking-wider text-text-muted pt-2 border-t border-border-subtle/30">
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-status-danger/60"></span> Ad-hoc</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-status-warning/60"></span> Defined</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-status-success/60"></span> Optimized</span>
               </div>
             </div>
 
-            {/* Custom Remediation List (2 columns) */}
-            <div className="md:col-span-2 p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+            {/* Spider Radar Chart */}
+            <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-6 flex flex-col justify-between hover-cyber-glow transition-all">
               <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
-                <ShieldCheck className="w-4.5 h-4.5 text-accent-secondary" /> Mapped Remediation Steps
+                <ShieldCheck className="w-4 h-4 text-accent-primary" /> Posture Radar Graph
+              </h4>
+              
+              <div className="relative w-full aspect-square flex items-center justify-center -mt-2">
+                <svg viewBox="0 0 200 200" className="w-full h-full max-w-[240px] drop-shadow-lg">
+                  {/* Web Background Grids */}
+                  {[1, 2, 3, 4, 5].map((level) => {
+                    const r = (level / 5) * 80;
+                    const points = questions.map((_, i) => {
+                      const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+                      return `${100 + r * Math.cos(angle)},${100 + r * Math.sin(angle)}`;
+                    }).join(' ');
+                    return (
+                      <polygon 
+                        key={`grid-${level}`} 
+                        points={points} 
+                        fill="none" 
+                        className={`stroke-border-subtle/50 ${level === 5 ? 'stroke-border-subtle' : ''}`}
+                        strokeWidth="1" 
+                      />
+                    );
+                  })}
+                  
+                  {/* Axis Lines */}
+                  {questions.map((_, i) => {
+                    const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+                    return (
+                      <line
+                        key={`axis-${i}`}
+                        x1="100" y1="100"
+                        x2={100 + 80 * Math.cos(angle)}
+                        y2={100 + 80 * Math.sin(angle)}
+                        className="stroke-border-subtle/50"
+                        strokeWidth="1"
+                        strokeDasharray="2,2"
+                      />
+                    );
+                  })}
+
+                  {/* Dynamic Score Polygon */}
+                  <polygon
+                    points={questions.map((_, i) => {
+                      const score = answers[i] || 1;
+                      const r = (score / 5) * 80;
+                      const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+                      return `${100 + r * Math.cos(angle)},${100 + r * Math.sin(angle)}`;
+                    }).join(' ')}
+                    className="fill-accent-primary/20 stroke-accent-primary animate-pulse-slow"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  
+                  {/* Data Points */}
+                  {questions.map((_, i) => {
+                    const score = answers[i] || 1;
+                    const r = (score / 5) * 80;
+                    const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+                    const x = 100 + r * Math.cos(angle);
+                    const y = 100 + r * Math.sin(angle);
+                    return (
+                      <circle key={`pt-${i}`} cx={x} cy={y} r="3" className="fill-accent-primary stroke-bg-card stroke-2" />
+                    )
+                  })}
+                  
+                  {/* Labels */}
+                  {questions.map((_, i) => {
+                    const angle = (Math.PI * 2 * i) / questions.length - Math.PI / 2;
+                    // Push labels out further
+                    const x = 100 + 94 * Math.cos(angle);
+                    const y = 100 + 94 * Math.sin(angle);
+                    
+                    // Anchor alignment
+                    let anchor: "middle" | "start" | "end" = "middle";
+                    if (x < 90) anchor = "end";
+                    if (x > 110) anchor = "start";
+                    
+                    return (
+                      <text 
+                        key={`label-${i}`} 
+                        x={x} y={y} 
+                        fill="currentColor" 
+                        className="text-[7px] font-black uppercase tracking-wider fill-text-secondary"
+                        textAnchor={anchor}
+                        dominantBaseline="middle"
+                      >
+                        P{i+1}
+                      </text>
+                    );
+                  })}
+                </svg>
+              </div>
+              <p className="text-[10px] text-text-muted text-center pt-2">Multi-dimensional attack surface area</p>
+            </div>
+
+            {/* Custom Remediation List */}
+            <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+              <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
+                <Clipboard className="w-4.5 h-4.5 text-accent-secondary" /> Mapped Remediation Steps
               </h4>
               <div className="space-y-4 max-h-[250px] overflow-y-auto pr-1">
                 {questions.map((q, i) => {

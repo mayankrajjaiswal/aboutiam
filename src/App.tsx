@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { RefreshCw } from 'lucide-react'
 import { useThemeStore } from './store/themeStore'
 import { usePreferenceStore } from './store/preferenceStore'
+import { useLayoutStore } from './store/layoutStore'
 
 // Layout Elements
 import Sidebar from './components/Layout/Sidebar'
@@ -183,6 +184,7 @@ function PageLoadingFallback() {
 export default function App() {
   const { initializeTheme } = useThemeStore()
   const initializeAccessibilityPreferences = usePreferenceStore((s) => s.initializeAccessibilityPreferences)
+  const isDesktopSidebarCollapsed = useLayoutStore((s) => s.isDesktopSidebarCollapsed)
 
   useEffect(() => {
     const cleanup = initializeTheme()
@@ -206,7 +208,7 @@ export default function App() {
         <Sidebar isMobile={true} />
 
         {/* Core Main Panel */}
-        <div className="flex-grow min-w-0 min-h-screen lg:pl-64 flex flex-col relative">
+        <div className={`flex-grow min-w-0 min-h-screen flex flex-col relative transition-[padding] duration-300 ${isDesktopSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
           {/* Top Fixed Floating Header */}
           <Header />
 

@@ -502,7 +502,7 @@ export default function Home() {
           </p>
         </div>
         <form
-          action="https://follow.it/subscribe"
+          action="https://api.follow.it/subscribe"
           method="post"
           target="_blank"
           className="flex gap-2 w-full md:max-w-md"

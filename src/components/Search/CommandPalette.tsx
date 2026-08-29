@@ -5,12 +5,20 @@ import {
   Search, Terminal, ShieldAlert, History, Sparkles,
   Wrench, Book, Flame, CornerDownLeft, Command, X, TrendingUp
 } from 'lucide-react'
-import { getSearchIndex } from '../../lib/search/searchService'
-import type { SearchItem } from '../../lib/search/searchService'
 import { useSearchHistoryStore } from '../../lib/search/useSearchHistory'
 import { useThemeStore } from '../../store/themeStore'
 import { useAirplaneModeStore } from '../../store/airplaneModeStore'
 import { CURATED_POPULAR_SEARCHES } from '../../data/curatedPopularSearches'
+
+interface SearchItem {
+  id: string
+  title: string
+  fullName?: string
+  description?: string
+  category: string
+  link: string
+  keywords?: string[]
+}
 
 interface CommandPaletteProps {
   isOpen: boolean
@@ -47,6 +55,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
   const [query, setQuery] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [results, setResults] = useState<CommandPaletteItem[]>([])
+  const [isSearchIndexLoading, setIsSearchIndexLoading] = useState(false)
   
   const navigate = useNavigate()
   const { theme, setTheme } = useThemeStore()
@@ -76,7 +85,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
     }
   }, [isOpen])
 
-  // MiniSearch index search implementation
+  // MiniSearch index search implementation (Lazy-Loaded)
   useEffect(() => {
     if (!isOpen) return
     
@@ -85,32 +94,46 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
       setTimeout(() => {
         setResults([])
         setSelectedIndex(0)
+        setIsSearchIndexLoading(false)
       }, 0)
       return
     }
 
     let isCancelled = false
-    const searchIndex = getSearchIndex()
+    setTimeout(() => {
+      setIsSearchIndexLoading(true)
+    }, 0)
 
-    const searchResults = searchIndex.search(trimmed)
-    
-    if (!isCancelled) {
-      // Map and type-assert matched items
-      const mapped = searchResults.map(r => ({
-        id: r.id,
-        title: r.title as string,
-        fullName: r.fullName as string | undefined,
-        description: r.description as string,
-        category: r.category as string,
-        link: r.link as string,
-        keywords: (r.keywords || []) as string[]
-      })) as SearchItem[]
-      
-      setTimeout(() => {
-        setResults(mapped)
-        setSelectedIndex(0)
-      }, 0)
-    }
+    // Load search service lazily on demand
+    import('../../lib/search/searchService')
+      .then((searchModule) => {
+        if (isCancelled) return
+        const searchIndex = searchModule.getSearchIndex()
+        const searchResults = searchIndex.search(trimmed)
+
+        if (!isCancelled) {
+          // Map and type-assert matched items
+          const mapped = searchResults.map(r => ({
+            id: r.id,
+            title: r.title as string,
+            fullName: r.fullName as string | undefined,
+            description: r.description as string,
+            category: r.category as string,
+            link: r.link as string,
+            keywords: (r.keywords || []) as string[]
+          })) as SearchItem[]
+
+          setResults(mapped)
+          setSelectedIndex(0)
+          setIsSearchIndexLoading(false)
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to load search index:', err)
+        if (!isCancelled) {
+          setIsSearchIndexLoading(false)
+        }
+      })
 
     return () => {
       isCancelled = true
@@ -303,10 +326,14 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                   className="w-full bg-transparent border-none text-text-primary text-sm focus:outline-none focus:ring-0 placeholder-text-muted font-sans"
                 />
                 
-                {query && (
+                {isSearchIndexLoading && (
+                  <div className="w-4 h-4 rounded-full border-2 border-accent-primary/20 border-t-accent-primary animate-spin shrink-0"></div>
+                )}
+
+                {query && !isSearchIndexLoading && (
                   <button 
                     onClick={() => setQuery('')}
-                    className="p-1 rounded-md hover:bg-bg-nested text-text-muted hover:text-text-primary transition-colors"
+                    className="p-1 rounded-md hover:bg-bg-nested text-text-muted hover:text-text-primary transition-colors animate-fadeIn"
                   >
                     <X className="w-4 h-4" />
                   </button>

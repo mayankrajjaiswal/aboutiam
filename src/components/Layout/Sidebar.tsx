@@ -50,6 +50,25 @@ interface AccordionGroupProps {
   filterQuery: string
 }
 
+const PREFETCH_MAP: Record<string, () => Promise<unknown>> = {
+  '/learn': () => import('../../pages/Learn'),
+  '/playground': () => import('../../pages/PlaygroundCatalog'),
+  '/tools': () => import('../../pages/ToolsCatalog'),
+  '/architecture': () => import('../../pages/ArchitectureCenter'),
+  '/knowledge-graph': () => import('../../pages/KnowledgeGraph'),
+  '/daily-puzzle': () => import('../../pages/DailyPuzzle'),
+  '/vendor': () => import('../../pages/VendorCenter'),
+  '/research': () => import('../../pages/ResearchCenter'),
+  '/patterns': () => import('../../pages/DesignPatternLibrary'),
+  '/certifications': () => import('../../pages/CertificationHub'),
+  '/bulletins': () => import('../../pages/SecurityBulletins'),
+  '/career-center': () => import('../../pages/InterviewCareerCenter'),
+  '/assess': () => import('../../pages/Assess'),
+  '/command-center': () => import('../../pages/CommandCenter'),
+  '/scenario-builder': () => import('../../pages/ScenarioBuilder'),
+  '/labs': () => import('../../pages/IdentityLabs'),
+}
+
 function SubGroupSection({
   groupKey,
   subGroupName,
@@ -101,6 +120,12 @@ function SubGroupSection({
                 key={item.name}
                 to={item.path}
                 onClick={handleLinkClick}
+                onMouseEnter={() => {
+                  const preloader = PREFETCH_MAP[item.path]
+                  if (preloader) {
+                    preloader().catch(() => {})
+                  }
+                }}
                 title={collapsed ? item.name : undefined}
                 aria-label={item.name}
                 className={`flex items-center gap-2.5 py-2 mx-2 rounded-lg text-[13px] font-bold transition-all group ${
@@ -190,6 +215,12 @@ function AccordionGroup({
                     key={item.name}
                     to={item.path}
                     onClick={handleLinkClick}
+                    onMouseEnter={() => {
+                      const preloader = PREFETCH_MAP[item.path]
+                      if (preloader) {
+                        preloader().catch(() => {})
+                      }
+                    }}
                     title={collapsed ? item.name : undefined}
                     aria-label={item.name}
                     className={`flex items-center gap-2.5 py-2 mx-2 rounded-lg text-[13px] font-bold transition-all group ${

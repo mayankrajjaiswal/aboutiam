@@ -74,6 +74,8 @@ const PrintablePoster = lazy(() => import('./pages/Tools/PrintablePoster'))
 const OauthRiskAnalyzer = lazy(() => import('./pages/Tools/OauthRiskAnalyzer'))
 const CspBuilder = lazy(() => import('./pages/Tools/CspBuilder'))
 const X509ToJwksConverter = lazy(() => import('./pages/Tools/X509ToJwksConverter'))
+const SamlMetadataAuditor = lazy(() => import('./pages/Tools/SamlMetadataAuditor'))
+const DpopLab = lazy(() => import('./pages/Playgrounds/DpopLab'))
 const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
 const HrAttributeMapper = lazy(() => import('./pages/Playgrounds/HrAttributeMapper'))
 const IdentityFabricBuilder = lazy(() => import('./pages/Playgrounds/IdentityFabricBuilder'))
@@ -221,7 +223,7 @@ export default function App() {
           {!isZenMode && <Header />}
 
           {/* Main Main Scroll Container */}
-          <main className={`flex-grow pb-20 lg:pb-12 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto transition-all ${isZenMode ? 'pt-4' : 'pt-20'}`}>
+          <main className={`flex-grow pb-20 lg:pb-12 px-4 sm:px-6 lg:px-8 w-full mx-auto transition-all duration-500 ${isZenMode ? 'pt-4 max-w-[96vw]' : 'pt-20 max-w-7xl'}`}>
             {!isZenMode && <BreadcrumbNav />}
             <Suspense fallback={<PageLoadingFallback />}>
               <Routes>

@@ -80,6 +80,23 @@ export const TOOLS: ToolMeta[] = [
     ]
   },
   {
+    slug: 'saml-metadata-auditor',
+    taskTags: ['validate-policy', 'check-compliance'],
+    title: 'SAML 2.0 Metadata Schema Auditor',
+    description: 'Parse SAML metadata XML configurations, decode embedded X.509 certificates, and flag critical security risks such as weak SHA-1 signatures or plaintext HTTP bindings.',
+    category: 'Auth & Directory Builders',
+    icon: FileCode,
+    phase: 2,
+    status: 'live',
+    keywords: ['saml metadata', 'saml auditor', 'metadata xml', 'x509', 'idp metadata'],
+    analogy: 'Imagine a building inspector checking the blueprints of a new bank. This tool reads the SAML "blueprint" (XML) to ensure the vault doors (encryption) and ID scanners (signatures) meet modern security codes.',
+    expert: 'Extracts EntityDescriptor structures, validates IDPSSODescriptor / SPSSODescriptor bindings, and scans for deprecated digest algorithms (http://www.w3.org/2000/09/xmldsig#rsa-sha1) inside KeyDescriptors.',
+    faqs: [
+      { q: 'Why is SHA-1 flagged as a risk?', a: 'SHA-1 is cryptographically broken and vulnerable to collision attacks, allowing attackers to potentially forge SAML assertions.' },
+    ],
+    relatedLinks: [{ label: 'SAML Assertion Workbench →', href: '/playground/saml' }]
+  },
+  {
     slug: 'x509-to-jwks-converter',
     taskTags: ['generate'],
     title: 'X.509 Certificate to JWKS Converter',

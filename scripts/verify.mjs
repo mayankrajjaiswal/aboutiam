@@ -31,6 +31,7 @@ function main() {
   console.log(`${colors.bold}${colors.cyan}====================================================${colors.reset}`);
 
   const stages = [
+    { name: 'Security Vulnerability Auditing', cmd: 'npm run audit:check' },
     { name: 'TypeScript Compilation Checks', cmd: 'npx tsc -b' },
     { name: 'ESLint Code Quality Audits', cmd: 'npm run lint' },
     { name: 'Vitest Unit Testing Suite', cmd: 'npx vitest run' },

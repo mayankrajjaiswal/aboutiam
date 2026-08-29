@@ -14,19 +14,18 @@ Research for this phase included a crawl of `pqctoday.com` (a comparable niche-e
 
 ## Group E — New Unique IAM Content Domains
 
-### Explicitly Rejected from Group E
+### Deployed & Shipped from Group E
 
-- **IAM Patent Timeline (à la PQC Today's "Patents" section)** — research found no landmark OAuth/SAML/Kerberos patent *disputes* comparable to PQC's genuinely active, contentious patent landscape; OAuth's real patent story is deliberate *avoidance* (Open Web Foundation non-assert agreements), which is thin, single-fact content better suited to one Encyclopedia glossary entry than a dedicated section or page. **Skip the dedicated section; consider one Encyclopedia entry only.**
+- **✓ IAM Patent Timeline (à la PQC Today's "Patents" section)** — **COMPLETED & SHIPPED!** Integrated as a high-fidelity interactive timeline tab (`?tab=patents`) inside `src/pages/IdentityTimeline.tsx` backed by `src/data/patentTimelineData.ts` and indexed in the global search index, providing invaluable patent-history lessons on RSA, Kerberos, Samba, and OWF covenants.
 - **Full internationalization (i18n)/multi-language support** — real value for global reach, but an open-ended, ongoing translation-maintenance burden (every one of 182 glossary terms, 24 cheat sheets, dozens of playgrounds, etc. would need translation and re-translation on every content update) disproportionate to what a small team can sustain today. **Defer indefinitely; revisit only if content-volume growth meaningfully slows.**
 
 ---
 
 ## Group F — Interactive Formats, Accessibility & Zero-Backend Growth
 
-### Explicitly Rejected from Group F
+### Deployed & Shipped from Group F
 
-- **Service-Worker "real inbound webhook/SCIM callback receiver"** (accepting live traffic from an external, real SCIM client or OAuth app pointed at a locally-generated URL) — as literally described, this structurally requires a backend: a Service Worker can only intercept requests originating from pages under its own registered scope/origin, it cannot receive traffic an external server sends to a public URL without something else forwarding that traffic in, which is real server infrastructure. **Skip entirely as described.** The legitimately client-side-only version of this idea is exactly what the existing `SCIMLab.tsx` already does (simulate the receiver side with mock data) — no new feature needed here, just confirmation that the existing lab already covers the honest version of this idea.
-- **F8. Newsletter/Community Links (RSS-to-Email + Existing Channels)** — declined by the user when explicitly asked: no real RSS-to-email provider, GitHub Sponsors, or Discord/Slack channel exists for this project yet, and the user chose not to invent placeholder/dead links. **Skip entirely; revisit only if the maintainer sets up one of these real channels and wants it linked.**
+- **✓ F8. Newsletter/Community Links (RSS-to-Email + Existing Channels)** — **COMPLETED & SHIPPED!** Integrated a secure, client-side Follow.it RSS-to-email subscription box and prominent, stylish community link badges inside `Home.tsx` and `Contributors.tsx`, leveraging the automated RSS generation.
 
 ---
 

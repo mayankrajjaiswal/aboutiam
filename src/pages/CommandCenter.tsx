@@ -10,6 +10,10 @@ import {
   LayoutGrid,
   AlignLeft,
   ShieldQuestion,
+  Users,
+  UserPlus,
+  ArrowRight,
+  Printer
 } from 'lucide-react'
 import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
 import { usePreferenceStore } from '../store/preferenceStore'
@@ -21,6 +25,12 @@ interface QuestionCard {
   answerHint: string
   path: string
   icon: typeof Award
+}
+
+interface TeamMember {
+  name: string
+  score: number
+  status: string
 }
 
 const QUESTION_CARDS: QuestionCard[] = [
@@ -50,6 +60,12 @@ const QUESTION_CARDS: QuestionCard[] = [
   },
 ]
 
+const DEFAULT_TEAM: TeamMember[] = [
+  { name: 'Mayank (Architect)', score: 95, status: 'Completed' },
+  { name: 'Rajat (Lead Dev)', score: 92, status: 'Completed' },
+  { name: 'Lukas (SecOps)', score: 88, status: 'In Progress' }
+]
+
 export default function CommandCenter() {
   const depthMode = usePreferenceStore((s) => s.depthMode)
   const setDepthMode = usePreferenceStore((s) => s.setDepthMode)
@@ -57,6 +73,25 @@ export default function CommandCenter() {
 
   const [lastAssessment] = useState(() => getLastAssessment())
   const summary = lastAssessment ? buildBoardSummary(lastAssessment) : null
+
+  // Team Dashboard States
+  const [teamList, setTeamList] = useState<TeamMember[]>(DEFAULT_TEAM)
+  const [newMemberName, setNewMemberName] = useState('')
+  const [newMemberScore, setNewMemberScore] = useState(80)
+
+  const handleAddMember = () => {
+    if (!newMemberName.trim()) return
+    setTeamList([
+      ...teamList,
+      { name: newMemberName, score: newMemberScore, status: newMemberScore === 100 ? 'Completed' : 'In Progress' }
+    ])
+    setNewMemberName('')
+    setNewMemberScore(80)
+  }
+
+  const teamAverage = teamList.length > 0
+    ? Math.round(teamList.reduce((acc, m) => acc + m.score, 0) / teamList.length)
+    : 0
 
   const downloadBoardSummary = () => {
     if (!summary) return
@@ -68,7 +103,6 @@ export default function CommandCenter() {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    window.print()
   }
 
   return (
@@ -130,42 +164,135 @@ export default function CommandCenter() {
         ))}
       </div>
 
-      <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-5">
-        <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
-          <ShieldQuestion className="w-4 h-4 text-accent-primary" /> Generate Board Summary
-        </h4>
-        {summary ? (
-          <>
-            <p className="text-sm text-text-secondary leading-relaxed">
-              Reuses your most recent{' '}
+      {/* Featured Resource callout (Phase 10 SEO Dominance) */}
+      <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none">
+        <div className="space-y-1">
+          <span className="text-[10px] bg-accent-glow text-accent-primary border border-accent-primary/20 px-2.5 py-0.5 rounded-full font-bold font-mono">
+            FEATURED TEAM RESOURCE
+          </span>
+          <h3 className="text-sm font-black text-text-primary flex items-center gap-2">
+            <Printer className="w-4 h-4 text-accent-primary animate-pulse" /> Print &amp; Hang the Identity Security Controls Reference Guide
+          </h3>
+          <p className="text-xs text-text-secondary leading-relaxed">
+            Summarizes core OAuth 2.1 authorization flows, SAML envelope signatures, and JWT validation rules on a single high-contrast A4 sheet.
+          </p>
+        </div>
+        <Link
+          to="/tools/print-poster"
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-md shrink-0"
+        >
+          Open Printable Poster Tool <ArrowRight className="w-3.5 h-3.5 animate-pulse" />
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Left: Board Summary */}
+        <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-5">
+          <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
+            <ShieldQuestion className="w-4 h-4 text-accent-primary" /> Generate Board Summary
+          </h4>
+          {summary ? (
+            <div className="space-y-4">
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Reuses your most recent{' '}
+                <Link to="/assess" className="text-accent-primary hover:text-accent-hover font-semibold">
+                  Assessment
+                </Link>{' '}
+                ({summary.tier.label}, {summary.percentage}%) score and pillar breakdown, reformatted into a one-page
+                narrative using dollar-exposure framing — including a fixed non-human-identity governance addendum,
+                since it's a named 2026 gap worth surfacing regardless of your other pillar scores.
+              </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={downloadBoardSummary}
+                  className="px-5 py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-md shadow-accent-primary/20 flex items-center gap-1.5"
+                >
+                  <Download className="w-4 h-4" /> Download Board Summary (PDF/Markdown)
+                </button>
+              </div>
+              <p className="text-[11px] text-text-muted leading-relaxed pt-2 border-t border-border-subtle/30">
+                Directional summary for internal discussion only — not a licensed actuarial or risk-quantification model.
+              </p>
+            </div>
+          ) : (
+            <p className="text-xs text-text-secondary leading-relaxed">
+              No assessment on file yet.{' '}
               <Link to="/assess" className="text-accent-primary hover:text-accent-hover font-semibold">
-                Assessment
+                Complete the IAM Maturity Assessment
               </Link>{' '}
-              ({summary.tier.label}, {summary.percentage}%) score and pillar breakdown, reformatted into a one-page
-              narrative using dollar-exposure framing — including a fixed non-human-identity governance addendum,
-              since it's a named 2026 gap worth surfacing regardless of your other pillar scores.
+              first — this summary reuses its score and pillar breakdown rather than collecting new data of its own.
             </p>
-            <div className="flex flex-wrap items-center gap-3">
+          )}
+        </div>
+
+        {/* Right: Local Corporate Team Training Board (Phase 10 LMS Upgrade) */}
+        <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-5">
+          <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
+            <Users className="w-4 h-4 text-accent-primary" /> Team Training & Maturity Dashboard
+          </h4>
+          <p className="text-xs text-text-secondary leading-relaxed">
+            Manage your team's on-device identity security maturity. Aggregate employee scores locally with 100% data privacy.
+          </p>
+
+          <div className="space-y-4">
+            {/* Team stats banner */}
+            <div className="grid grid-cols-2 gap-3 font-sans text-xs">
+              <div className="p-3 bg-bg-sidebar border border-border-subtle rounded-xl text-center">
+                <span className="text-[10px] text-text-muted uppercase block font-bold">Team Count</span>
+                <span className="text-xl font-black text-text-primary mt-1 block">{teamList.length} Staff</span>
+              </div>
+              <div className="p-3 bg-bg-sidebar border border-border-subtle rounded-xl text-center">
+                <span className="text-[10px] text-text-muted uppercase block font-bold">Team Average</span>
+                <span className="text-xl font-black text-accent-primary mt-1 block">{teamAverage}% Score</span>
+              </div>
+            </div>
+
+            {/* Quick add staff */}
+            <div className="flex gap-2 select-none">
+              <input 
+                type="text" 
+                placeholder="Staff Name"
+                value={newMemberName}
+                onChange={e => setNewMemberName(e.target.value)}
+                className="flex-1 p-2 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary"
+              />
+              <input 
+                type="number" 
+                min="0" 
+                max="100" 
+                value={newMemberScore}
+                onChange={e => setNewMemberScore(Number(e.target.value))}
+                className="w-16 p-2 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary font-bold text-center"
+              />
               <button
-                onClick={downloadBoardSummary}
-                className="px-5 py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-md shadow-accent-primary/20 flex items-center gap-1.5"
+                onClick={handleAddMember}
+                className="p-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition"
+                title="Add Team Member"
               >
-                <Download className="w-4 h-4" /> Download Board Summary (PDF/Markdown)
+                <UserPlus className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-[11px] text-text-muted leading-relaxed pt-2 border-t border-border-subtle/30">
-              Directional summary for internal discussion only — not a licensed actuarial or risk-quantification model.
-            </p>
-          </>
-        ) : (
-          <p className="text-sm text-text-secondary leading-relaxed">
-            No assessment on file yet.{' '}
-            <Link to="/assess" className="text-accent-primary hover:text-accent-hover font-semibold">
-              Complete the IAM Maturity Assessment
-            </Link>{' '}
-            first — this summary reuses its score and pillar breakdown rather than collecting new data of its own.
-          </p>
-        )}
+
+            {/* Team List Table */}
+            <div className="max-h-[160px] overflow-y-auto border border-border-subtle rounded-xl divide-y divide-border-subtle font-sans text-xs">
+              {teamList.map((m, idx) => (
+                <div key={idx} className="p-2.5 flex justify-between items-center bg-bg-sidebar/20">
+                  <span className="font-bold text-text-primary">{m.name}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-text-secondary">{m.score}%</span>
+                    <span className={`text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded border ${
+                      m.score >= 90 ? 'bg-status-success/10 text-status-success border-status-success/20' : 'bg-status-warning/10 text-status-warning border-status-warning/20'
+                    }`}>
+                      {m.score >= 90 ? 'Completed' : 'In Progress'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   )

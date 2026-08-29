@@ -489,6 +489,44 @@ export default function Home() {
         <ProfileExportImport />
         <StudyPackDownload />
       </div>
+
+      {/* Follow.it RSS-to-Email Newsletter Box (Phase 10 / F8 Upgrade) */}
+      <section className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 select-none">
+        <div className="space-y-1">
+          <span className="text-[10px] bg-accent-glow text-accent-primary border border-accent-primary/20 px-2.5 py-0.5 rounded-full font-bold font-mono">
+            UPDATES SUBSCRIPTION
+          </span>
+          <h3 className="text-sm font-black text-text-primary">Subscribe to Identity Security Advisories &amp; Updates</h3>
+          <p className="text-xs text-text-secondary leading-relaxed">
+            Get automated email notifications whenever we publish new tools, CVE research patches, or bulletins (delivered securely via Follow.it RSS).
+          </p>
+        </div>
+        <form
+          action="https://follow.it/subscribe"
+          method="post"
+          target="_blank"
+          className="flex gap-2 w-full md:max-w-md"
+        >
+          <input 
+            type="hidden" 
+            name="url" 
+            value="https://www.aboutiam.com/rss.xml" 
+          />
+          <input 
+            type="email" 
+            name="email"
+            required
+            placeholder="Enter your email"
+            className="flex-grow p-2.5 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary font-semibold"
+          />
+          <button
+            type="submit"
+            className="px-4 py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-md shrink-0"
+          >
+            Subscribe
+          </button>
+        </form>
+      </section>
     </div>
   )
 }

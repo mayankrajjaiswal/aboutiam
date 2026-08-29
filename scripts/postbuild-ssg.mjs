@@ -106,6 +106,7 @@ const ROUTES = [
   { path: '/tools/certificate-verifier', title: 'Completion Certificate Verifier — Check a Signed AboutIAM Certificate', description: 'Paste or upload a signed AboutIAM completion certificate to verify its ECDSA P-256 signature locally via SubtleCrypto.verify().' },
   { path: '/tools/pqc-readiness-auditor', title: 'PQC Readiness Auditor — Post-Quantum Crypto-Agility Checklist', description: 'Paste a PEM certificate chain, JWKS JSON, or TLS cipher-suite list to flag quantum-vulnerable algorithms, estimate hybrid post-quantum handshake size growth, and get a prioritized migration checklist.' },
   { path: '/tools/cyber-insurance-readiness', title: 'Cyber-Insurance Identity Readiness Calculator', description: 'Score your identity posture against the controls cyber insurers explicitly underwrite against for a directional premium-impact estimate, gap checklist, and real MFA-related coverage-denial case studies.' },
+  { path: '/tools/print-poster', title: 'Printable Identity Security Poster — High-Fidelity A4 Quick Reference', description: 'Renders a beautiful, high-fidelity, printable SVG Cheat Sheet Poster. Perfect for office walls or dev workspaces—summarizes key OAuth, SAML, and JWT guidelines on a single high-contrast sheet.' },
   { path: '/playground/ldap-schema-designer', title: 'AD/LDAP OU & Schema Designer', description: 'Build an Organizational Unit tree from scratch, apply GPOs that cascade through inheritance (or block it), and export the constructed schema as valid LDIF.' },
   { path: '/playground/hr-attribute-mapper', title: 'HR-to-IdP Attribute Mapper', description: 'Click-to-connect mock HR fields (Workday/SAP-style) to AD/Entra/SCIM attributes, apply concat/regex/lookup-table transformations, and watch a live preview and conflict warnings update in real time.' },
   { path: '/playground/identity-fabric', title: 'Identity Fabric / Orchestration Flow Builder', description: 'Wire a legacy protocol-only app to a modern protocol-only IdP through an orchestration node, and watch the trace log narrate each protocol-translation step for IdP migration and cross-IdP policy consistency scenarios.' },
@@ -135,6 +136,12 @@ const ROUTES = [
   { path: '/playground/risk-engine', title: 'Risk-Based Authentication Playground — Adaptive MFA Simulator', description: 'Combine impossible-travel, device-reputation, and behavior-anomaly signals into a composite risk score that drives allow, step-up, or block.' },
   { path: '/playground/pam-vaulting', title: 'PAM Vaulting Playground — Just-in-Time Elevation Simulator', description: 'Check out a vaulted credential, request time-boxed JIT elevation with approval, and watch session recording and auto-rotation on check-in.' },
   { path: '/playground/hybrid-ad-sync', title: 'Hybrid Identity Sync Playground — PHS vs PTA vs Federation', description: 'Toggle between Password Hash Sync, Pass-Through Authentication, and AD FS Federation to see how each handles the same on-prem login.' },
+  { path: '/playground/pqc-handshake', title: 'Post-Quantum Cryptography Handshake Simulator', description: 'Step through classical vs. hybrid vs. pure post-quantum handshakes. Analyze key exchange sizes, signature overheads, and network packet fragmentation thresholds under FIPS 203/204 lattice cryptography.' },
+  { path: '/playground/passkey-policy', title: 'Advanced Passkey Policy & Attestation Workbench', description: 'Act as a Relying Party (RP) Security Admin configuring enterprise-grade FIDO2 / WebAuthn registration parameters. Enforce FIPS-restricted AAGUIDs, direct packed attestation anchors, and resident key storage rules.' },
+  { path: '/playground/workload-identity', title: 'Workload Identity Federation & OIDC Visualizer', description: 'Ditch long-lived static API secrets. Secure your automated build pipelines (GitHub Actions, GitLab CI) using federated OIDC token handshakes with Cloud Providers.' },
+  { path: '/playground/cloud-policy-evaluator', title: 'Multi-Cloud Overlapping IAM Policy Evaluator', description: 'Step inside the heart of an enterprise Policy Evaluation Engine. Visualize and evaluate how Organization SCP boundaries, identity-based IAM permissions, and Resource policies combine to govern access.' },
+  { path: '/playground/federated-vp', title: 'Dynamic Trust Framework & Verifiable Presentation Playground', description: 'Explore the architecture of eIDAS 2.0 and the European Digital Identity (EUDI) Wallet. Selectively disclose claims, verify cryptographic SD-JWT signatures, and audit issuers against cross-border trust registries.' },
+  { path: '/playground/autonomous-agent', title: 'Autonomous Security Agent Simulation Playground', description: 'Deploy autonomous Red Team and Blue Team AI security agents in simulated token-hijacking and redirect-hijacking arenas. Watch security enforcers dynamically adapt, detect anomalies, and apply cryptographic defenses.' },
   { path: '/career-center', title: 'IAM Interview Prep & Career Center — 6 Role Tracks', description: 'Role-based interview preparation from Fresher to Principal, with MCQs, incident scenarios, system design audits, and resume guidance.' },
   { path: '/scenario-builder', title: 'Identity Scenario Builder — Custom Architecture Generator', description: "Describe your organization's footprint and get an instant, vendor-neutral secure identity architecture blueprint." },
   { path: '/labs', title: 'Interactive Identity Labs — Hands-On IAM Pen-Test Academy', description: 'Solve real OAuth, JWT, SAML, and SCIM security vulnerabilities in a browser-native penetration-testing sandbox.' },
@@ -171,13 +178,155 @@ function getOgImage(path) {
   return `${SITE_URL}/og-image.png`
 }
 
+const TOOL_FAQS = {
+  '/tools/jwt-decoder': [
+    { q: 'Is my JWT sent to any server?', a: 'No, decoding is performed entirely locally inside your browser using JavaScript. No tokens ever leave your machine.' },
+    { q: 'What happens if a token has "alg: none"?', a: 'This tool flags "alg: none" as a critical security vulnerability, indicating that signature verification can be easily bypassed.' }
+  ],
+  '/tools/totp-generator': [
+    { q: 'How are TOTP codes computed?', a: 'TOTP codes are generated from a Base32 secret using the HMAC-SHA1 algorithm according to RFC 6238.' },
+    { q: 'Can this tool verify codes?', a: 'Yes, you can input a generated code to verify its mathematical alignment with the secret in real-time.' }
+  ]
+}
+
+function generateJsonLd(route) {
+  const canonicalUrl = `${SITE_URL}${route.path}/`
+  const graphList = []
+
+  // Base Organization
+  graphList.push({
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    "name": "AboutIAM",
+    "url": SITE_URL,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${SITE_URL}/pwa-512.png`
+    }
+  })
+
+  // 1. BreadcrumbList Schema
+  const pathSegments = route.path.split('/').filter(Boolean)
+  if (pathSegments.length > 0) {
+    const breadcrumbItems = [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": `${SITE_URL}/`
+      }
+    ]
+    let runningPath = ''
+    pathSegments.forEach((segment, idx) => {
+      runningPath += `/${segment}`
+      const isLast = idx === pathSegments.length - 1
+      let name = segment.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+      if (isLast) {
+        name = route.title.split('—')[0].split('|')[0].trim()
+      }
+      breadcrumbItems.push({
+        "@type": "ListItem",
+        "position": idx + 2,
+        "name": name,
+        "item": `${SITE_URL}${runningPath}/`
+      })
+    })
+    graphList.push({
+      "@type": "BreadcrumbList",
+      "@id": `${canonicalUrl}#breadcrumb`,
+      "itemListElement": breadcrumbItems
+    })
+  }
+
+  // 1.1 FAQ Page Schema
+  const faqs = TOOL_FAQS[route.path]
+  if (faqs && faqs.length > 0) {
+    graphList.push({
+      "@type": "FAQPage",
+      "@id": `${canonicalUrl}#faq`,
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": f.a
+        }
+      }))
+    })
+  }
+
+  // 2. Specific Page Schemas
+  if (route.path.startsWith('/tools/')) {
+    graphList.push({
+      "@type": "SoftwareApplication",
+      "@id": `${canonicalUrl}#software`,
+      "name": route.title.split('—')[0].split('|')[0].trim(),
+      "operatingSystem": "All",
+      "applicationCategory": "SecurityApplication",
+      "browserRequirements": "Requires HTML5, WebCrypto API",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      },
+      "description": route.description,
+      "publisher": { "@id": `${SITE_URL}/#organization` }
+    })
+  } else if (route.path.startsWith('/learn') || route.path.startsWith('/primer')) {
+    graphList.push({
+      "@type": "Course",
+      "@id": `${canonicalUrl}#course`,
+      "name": route.title.split('—')[0].split('|')[0].trim(),
+      "description": route.description,
+      "provider": { "@id": `${SITE_URL}/#organization` }
+    })
+  } else if (route.path.startsWith('/standards/') || route.path.startsWith('/research') || route.path.startsWith('/bulletins')) {
+    graphList.push({
+      "@type": "TechArticle",
+      "@id": `${canonicalUrl}#article`,
+      "headline": route.title.split('—')[0].split('|')[0].trim(),
+      "description": route.description,
+      "author": { "@id": `${SITE_URL}/#organization` },
+      "publisher": { "@id": `${SITE_URL}/#organization` },
+      "url": canonicalUrl
+    })
+  }
+
+  const finalSchema = {
+    "@context": "https://schema.org",
+    "@graph": graphList
+  }
+
+  return `<script type="application/ld+json">${JSON.stringify(finalSchema)}</script>`
+}
+
 function renderPage(template, route) {
   const title = `${route.title} | AboutIAM`
   const description = escapeHtml(route.description)
   const canonicalUrl = `${SITE_URL}${route.path}/`
   const ogImage = getOgImage(route.path)
+  const dynamicJsonLd = generateJsonLd(route)
+
+  const connectSrcTargets = ["'self'"]
+  if (process.env.VITE_GISCUS_REPO) {
+    connectSrcTargets.push('https://giscus.app', 'https://api.github.com')
+  }
+  if (process.env.VITE_GOOGLE_CLIENT_ID) {
+    connectSrcTargets.push('https://www.googleapis.com')
+  }
+  const connectSrc = connectSrcTargets.join(' ')
+  const cspMeta = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; style-src 'self' 'unsafe-inline' https://giscus.app; img-src 'self' data: https:; font-src 'self' data:; connect-src ${connectSrc}; base-uri 'self'; form-action 'self'" />`
+
+  const hreflangs = `
+  <link rel="alternate" hreflang="en" href="${canonicalUrl}" />
+  <link rel="alternate" hreflang="es" href="${SITE_URL}/es${route.path}/" />
+  <link rel="alternate" hreflang="fr" href="${SITE_URL}/fr${route.path}/" />
+  <link rel="alternate" hreflang="de" href="${SITE_URL}/de${route.path}/" />
+  <link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />
+  `.trim()
 
   let html = template
+  html = html.replace(/<meta http-equiv="Content-Security-Policy" content="[^"]*"\s*\/?>/, cspMeta)
   html = replaceTag(html, /<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
   html = replaceTag(html, /<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${description}" />`)
   html = replaceTag(html, /<link rel="canonical" href="[^"]*"\s*\/?>/, `<link rel="canonical" href="${canonicalUrl}" />`)
@@ -188,6 +337,11 @@ function renderPage(template, route) {
   html = replaceTag(html, /<meta name="twitter:title" content="[^"]*"\s*\/?>/, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
   html = replaceTag(html, /<meta name="twitter:description" content="[^"]*"\s*\/?>/, `<meta name="twitter:description" content="${description}" />`)
   html = replaceTag(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/, `<meta name="twitter:image" content="${ogImage}" />`)
+  
+  if (dynamicJsonLd) {
+    html = html.replace('</head>', `${hreflangs}\n${dynamicJsonLd}\n</head>`)
+  }
+  
   return html
 }
 

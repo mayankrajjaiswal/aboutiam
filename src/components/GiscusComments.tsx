@@ -31,13 +31,15 @@ export default function GiscusComments({ term }: GiscusCommentsProps) {
     script.src = 'https://giscus.app/client.js'
     script.async = true
     script.crossOrigin = 'anonymous'
+    script.integrity = 'sha384-UwLZGbJGvkTzz0719+xEzUm/idqwzs0yZN8aB9Se5vUXHbyRyDWw9yqZTIsOsJ7x'
     script.setAttribute('data-repo', config.repo)
     script.setAttribute('data-repo-id', config.repoId)
     script.setAttribute('data-category', config.category)
     script.setAttribute('data-category-id', config.categoryId)
     script.setAttribute('data-mapping', 'specific')
     script.setAttribute('data-term', term)
-    script.setAttribute('data-strict', '0')
+    script.setAttribute('data-strict', '1')
+    script.setAttribute('data-reactions-enabled', '1')
     script.setAttribute('data-reactions-enabled', '1')
     script.setAttribute('data-emit-metadata', '0')
     script.setAttribute('data-input-position', 'top')

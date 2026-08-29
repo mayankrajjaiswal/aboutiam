@@ -7,6 +7,7 @@ import {
   Fingerprint as BioIcon, RefreshCw, Sparkles, Award, ExternalLink
 } from 'lucide-react'
 import { IAM_HALL_OF_FAME } from '../data/iamHallOfFame'
+import { PATENT_MILESTONES } from '../data/patentTimelineData'
 
 // Define the Era structure
 interface Era {
@@ -77,7 +78,7 @@ const ERAS: Era[] = [
 ]
 
 export default function IdentityTimeline() {
-  const [pageView, setPageView] = useState<'timeline' | 'hall-of-fame'>('timeline')
+  const [pageView, setPageView] = useState<'timeline' | 'hall-of-fame' | 'patents'>('timeline')
   const [selectedEra, setSelectedEra] = useState<number>(1)
 
   useEffect(() => {
@@ -85,6 +86,8 @@ export default function IdentityTimeline() {
       const params = new URLSearchParams(window.location.search)
       if (params.get('tab') === 'hall-of-fame') {
         setTimeout(() => setPageView('hall-of-fame'), 0)
+      } else if (params.get('tab') === 'patents') {
+        setTimeout(() => setPageView('patents'), 0)
       }
     }
   }, [])
@@ -418,6 +421,12 @@ export default function IdentityTimeline() {
           >
             <Award className="w-3.5 h-3.5" /> Hall of Fame
           </button>
+          <button
+            onClick={() => setPageView('patents')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'patents' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+          >
+            <FileText className="w-3.5 h-3.5" /> Patent Timeline
+          </button>
         </div>
       </div>
 
@@ -453,6 +462,47 @@ export default function IdentityTimeline() {
                       Source <ExternalLink className="w-2.5 h-2.5" />
                     </a>
                   ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : pageView === 'patents' ? (
+        <div className="space-y-6">
+          <p className="text-sm text-text-secondary max-w-3xl">
+            Identity property chronicles — an interactive reference timeline of intellectual property battles, key patent expirations, and royalty-free covenants that made the open web secure by construction.
+          </p>
+          <div className="relative pl-6 border-l-2 border-border-subtle/80 space-y-8 max-w-3xl">
+            {PATENT_MILESTONES.map((milestone) => (
+              <div key={milestone.id} className="relative group text-left animate-in fade-in duration-300">
+                {/* Visual Circle Node */}
+                <div className="absolute -left-[30px] top-1.5 w-4 h-4 rounded-full border border-accent-primary bg-bg-card flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent-primary animate-pulse" />
+                </div>
+                
+                <div className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <span className="text-[10px] font-bold text-accent-primary uppercase tracking-widest bg-accent-glow px-2.5 py-0.5 rounded-full border border-accent-primary/10">
+                        {milestone.year} • {milestone.disputeType}
+                      </span>
+                      <h3 className="text-base font-black text-text-primary mt-2">
+                        {milestone.title}
+                      </h3>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-text-muted bg-bg-nested px-2.5 py-1 rounded-lg border border-border-subtle">
+                      {milestone.legalStandard}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-text-secondary leading-relaxed font-sans">
+                    {milestone.description}
+                  </p>
+
+                  <div className="pt-2 border-t border-border-subtle/50 text-xs text-text-secondary leading-relaxed">
+                    <span className="font-bold text-accent-primary block mb-0.5">Historical Impact:</span>
+                    {milestone.impact}
+                  </div>
                 </div>
               </div>
             ))}

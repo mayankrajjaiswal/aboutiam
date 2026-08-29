@@ -22,7 +22,11 @@ export default function ContinueLearningCard() {
   // directly to re-derive the list when a bookmark is added/removed elsewhere on the site.
   const bookmarks = useBookmarksStore((s) => s.bookmarks)
   const items = useMemo(
-    () => rankContinueLearningItems({ academyTouched: getAcademyTouchedMap(), labsTouched: getLabsTouchedMap(), bookmarks }, 3),
+    () => rankContinueLearningItems({ 
+      academyTouched: getAcademyTouchedMap(), 
+      labsTouched: getLabsTouchedMap(), 
+      bookmarks: bookmarks.map(b => ({ id: b.id, title: b.title, link: b.link, addedAt: b.addedAt })) 
+    }, 3),
     [bookmarks]
   )
 

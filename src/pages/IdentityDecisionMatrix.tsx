@@ -102,7 +102,7 @@ export default function IdentityDecisionMatrix() {
       federation = 'Multi-Tenant Federated SSO'
       standards.push('RFC 7644 (SCIM 2.0 User Provisioning)', 'SAML 2.0 Metadata')
       implChecklist.push('Publish standard OIDC Discovery endpoints and JWKS signing keys.')
-      securityChecklist.push('Inforce strict, tenant-isolated cryptographic signing keys.')
+      securityChecklist.push('Enforce strict, tenant-isolated cryptographic signing keys.')
       aboutiamResources.push(
         { title: 'SCIM Provisioning Lab', path: '/playground/scim', type: 'playground' },
         { title: 'SCIM Payload Validator Tool', path: '/tools/scim-payload-validator', type: 'tool' }

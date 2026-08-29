@@ -69,6 +69,7 @@ const RiskRegisterBuilder = lazy(() => import('./pages/Tools/RiskRegisterBuilder
 const CertificateVerifier = lazy(() => import('./pages/Tools/CertificateVerifier'))
 const PqcReadinessAuditor = lazy(() => import('./pages/Tools/PqcReadinessAuditor'))
 const CyberInsuranceReadiness = lazy(() => import('./pages/Tools/CyberInsuranceReadiness'))
+const PrintablePoster = lazy(() => import('./pages/Tools/PrintablePoster'))
 const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
 const HrAttributeMapper = lazy(() => import('./pages/Playgrounds/HrAttributeMapper'))
 const IdentityFabricBuilder = lazy(() => import('./pages/Playgrounds/IdentityFabricBuilder'))
@@ -157,6 +158,12 @@ const AccessRequestCart = lazy(() => import('./pages/Playgrounds/AccessRequestCa
 const RiskEngine = lazy(() => import('./pages/Playgrounds/RiskEngine'))
 const PamVaultingLab = lazy(() => import('./pages/Playgrounds/PamVaultingLab'))
 const HybridAdSyncLab = lazy(() => import('./pages/Playgrounds/HybridAdSyncLab'))
+const PqcHandshakeLab = lazy(() => import('./pages/Playgrounds/PqcHandshakeLab'))
+const PasskeyPolicyLab = lazy(() => import('./pages/Playgrounds/PasskeyPolicyLab'))
+const WorkloadIdentityFederation = lazy(() => import('./pages/Playgrounds/WorkloadIdentityFederation'))
+const CloudPolicyEvaluator = lazy(() => import('./pages/Playgrounds/CloudPolicyEvaluator'))
+const FederatedVpPlayground = lazy(() => import('./pages/Playgrounds/FederatedVpPlayground'))
+const AutonomousAgentLab = lazy(() => import('./pages/Playgrounds/AutonomousAgentLab'))
 const CaseStudyCenter = lazy(() => import('./pages/CaseStudyCenter'))
 const IdentityDecisionMatrix = lazy(() => import('./pages/IdentityDecisionMatrix'))
 const ThreatModelingStudio = lazy(() => import('./pages/ThreatModelingStudio'))
@@ -267,6 +274,7 @@ export default function App() {
               <Route path="/tools/certificate-verifier" element={<CertificateVerifier />} />
               <Route path="/tools/pqc-readiness-auditor" element={<PqcReadinessAuditor />} />
               <Route path="/tools/cyber-insurance-readiness" element={<CyberInsuranceReadiness />} />
+              <Route path="/tools/print-poster" element={<PrintablePoster />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />
               <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
               <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />
@@ -330,6 +338,12 @@ export default function App() {
               <Route path="/playground/ciem-explorer" element={<CiemExplorer />} />
               <Route path="/playground/legacy-federation" element={<LegacyFederationLab />} />
               <Route path="/playground/spatial-identity-lab" element={<SpatialIdentityLab />} />
+              <Route path="/playground/pqc-handshake" element={<PqcHandshakeLab />} />
+              <Route path="/playground/passkey-policy" element={<PasskeyPolicyLab />} />
+              <Route path="/playground/workload-identity" element={<WorkloadIdentityFederation />} />
+              <Route path="/playground/cloud-policy-evaluator" element={<CloudPolicyEvaluator />} />
+              <Route path="/playground/federated-vp" element={<FederatedVpPlayground />} />
+              <Route path="/playground/autonomous-agent" element={<AutonomousAgentLab />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

@@ -820,6 +820,24 @@ export const TOOLS: ToolMeta[] = [
     ],
     relatedLinks: [{ label: 'Generate your own signed certificate in the Career Center →', href: '/career-center' }],
   },
+  {
+    slug: 'print-poster',
+    taskTags: ['check-compliance'],
+    title: 'Printable Identity Security Poster — High-Fidelity A4 Quick Reference',
+    description: 'Renders a beautiful, high-fidelity, printable SVG Cheat Sheet Poster. Perfect for office walls or dev workspaces—summarizes key OAuth, SAML, and JWT guidelines on a single high-contrast sheet.',
+    category: 'Supply Chain & Governance',
+    icon: Presentation,
+    phase: 3,
+    status: 'live',
+    keywords: ['printable poster', 'security reference guide', 'identity cheat sheet poster', 'oauth saml jwt poster'],
+    analogy: 'Think of this like a visual field-guide poster — instead of searching through multiple pages on screen, you can print this high-contrast sheet and pin it in your physical dev workspace for instant reference.',
+    expert: 'A pure SVG vector renderer structured for sharp printing on standard A4 paper. Incorporates verified architectural schemas and standard guidelines, styled cleanly for maximum physical accessibility.',
+    faqs: [
+      { q: 'Does this fit on standard A4 or Letter paper?', a: 'Yes — the CSS print-styles are optimized to scale the SVG perfectly onto standard single sheets without page truncation.' },
+      { q: 'Can I print this in color or black and white?', a: 'The SVG uses high-contrast vector outlines designed to stand out beautifully in both full-color and high-contrast monochrome printing.' }
+    ],
+    relatedLinks: [{ label: 'Explore the full Cheat Sheet Playbooks →', href: '/cheat-sheets' }]
+  }
 ]
 
 export function getToolBySlug(slug: string): ToolMeta | undefined {

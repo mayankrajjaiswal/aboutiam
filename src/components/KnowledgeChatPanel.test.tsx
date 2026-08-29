@@ -43,7 +43,7 @@ describe('KnowledgeChatPanel', () => {
 
   it('exposes the opt-in local AI toggle collapsed by default', () => {
     renderWithProviders(<KnowledgeChatPanel />)
-    expect(screen.getByText(/Experimental: Enable Local AI/)).toBeInTheDocument()
+    expect(screen.getByText(/Privacy-First Local AI Copilot/)).toBeInTheDocument()
     expect(screen.getByText(/Download & Enable/)).toBeInTheDocument()
   })
 })

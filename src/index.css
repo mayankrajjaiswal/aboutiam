@@ -116,3 +116,24 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent-primary);
 }
+
+/* High Contrast Terminal Support (Phase 2 Upgrade) */
+.terminal-high-contrast {
+  --terminal-bg: #030712;
+  --terminal-text: #f9fafb;
+  --terminal-info: #38bdf8;
+  --terminal-success: #34d399;
+  --terminal-warning: #fbbf24;
+  --terminal-danger: #f87171;
+}
+
+/* Accessibility: Preferences for Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

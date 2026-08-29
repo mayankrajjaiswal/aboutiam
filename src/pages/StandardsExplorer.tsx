@@ -391,7 +391,13 @@ export default function StandardsExplorer() {
           <div className="lg:col-span-3 space-y-6 overflow-y-auto">
             
             {/* Header Title Card */}
-            <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex items-center justify-between">
+            <div 
+              className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex items-center justify-between"
+              data-llm-role="identity-standard"
+              data-llm-title={activeStandard?.title}
+              data-llm-spec={activeStandard?.fullname}
+              data-llm-rfcs={activeStandard?.rfcs.join(' ')}
+            >
               <div className="space-y-1">
                 <span className="text-[9px] bg-accent-glow text-accent-primary border border-accent-primary/20 px-2.5 py-0.5 rounded-full font-bold font-mono uppercase">
                   IDENTITY STANDARD DECONSTRUCTION

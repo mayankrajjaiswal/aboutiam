@@ -191,7 +191,14 @@ export default function ReferenceImplementations() {
                   {copiedCode ? 'Copied!' : 'Copy Source'}
                 </button>
               </div>
-              <pre className="p-5 overflow-x-auto text-[11px] font-mono text-slate-300 whitespace-pre max-h-[380px] custom-scrollbar text-left leading-relaxed">
+              <pre 
+                className="p-5 overflow-x-auto text-[11px] font-mono text-slate-300 whitespace-pre max-h-[380px] custom-scrollbar text-left leading-relaxed"
+                data-llm-role="reference-code"
+                data-llm-title={activeProject.title}
+                data-llm-tech={activeProject.tech}
+                data-llm-rfc={activeProject.rfc}
+                data-llm-level={activeProject.level}
+              >
                 <code>{activeProject.code}</code>
               </pre>
             </div>

@@ -33,4 +33,10 @@ export const PLAYGROUND_TASK_TAGS: Record<string, TaskTag[]> = {
   '/playground/role-mining': ['build-diagram'],
   '/playground/identity-fabric': ['build-diagram'],
   '/playground/credential-stuffing': ['simulate-attack'],
+  '/playground/pqc-handshake': ['validate-policy'],
+  '/playground/passkey-policy': ['validate-policy'],
+  '/playground/workload-identity': ['validate-policy'],
+  '/playground/cloud-policy-evaluator': ['validate-policy'],
+  '/playground/federated-vp': ['validate-policy'],
+  '/playground/autonomous-agent': ['validate-policy'],
 }

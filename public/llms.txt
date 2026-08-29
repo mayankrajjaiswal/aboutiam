@@ -74,6 +74,12 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Risk-Based Authentication Playground — Adaptive MFA Simulator](https://www.aboutiam.com/playground/risk-engine/): Combine impossible-travel, device-reputation, and behavior-anomaly signals into a composite risk score that drives allow, step-up, or block.
 - [PAM Vaulting Playground — Just-in-Time Elevation Simulator](https://www.aboutiam.com/playground/pam-vaulting/): Check out a vaulted credential, request time-boxed JIT elevation with approval, and watch session recording and auto-rotation on check-in.
 - [Hybrid Identity Sync Playground — PHS vs PTA vs Federation](https://www.aboutiam.com/playground/hybrid-ad-sync/): Toggle between Password Hash Sync, Pass-Through Authentication, and AD FS Federation to see how each handles the same on-prem login.
+- [Post-Quantum Cryptography Handshake Simulator](https://www.aboutiam.com/playground/pqc-handshake/): Step through classical vs. hybrid vs. pure post-quantum handshakes. Analyze key exchange sizes, signature overheads, and network packet fragmentation thresholds under FIPS 203/204 lattice cryptography.
+- [Advanced Passkey Policy & Attestation Workbench](https://www.aboutiam.com/playground/passkey-policy/): Act as a Relying Party (RP) Security Admin configuring enterprise-grade FIDO2 / WebAuthn registration parameters. Enforce FIPS-restricted AAGUIDs, direct packed attestation anchors, and resident key storage rules.
+- [Workload Identity Federation & OIDC Visualizer](https://www.aboutiam.com/playground/workload-identity/): Ditch long-lived static API secrets. Secure your automated build pipelines (GitHub Actions, GitLab CI) using federated OIDC token handshakes with Cloud Providers.
+- [Multi-Cloud Overlapping IAM Policy Evaluator](https://www.aboutiam.com/playground/cloud-policy-evaluator/): Step inside the heart of an enterprise Policy Evaluation Engine. Visualize and evaluate how Organization SCP boundaries, identity-based IAM permissions, and Resource policies combine to govern access.
+- [Dynamic Trust Framework & Verifiable Presentation Playground](https://www.aboutiam.com/playground/federated-vp/): Explore the architecture of eIDAS 2.0 and the European Digital Identity (EUDI) Wallet. Selectively disclose claims, verify cryptographic SD-JWT signatures, and audit issuers against cross-border trust registries.
+- [Autonomous Security Agent Simulation Playground](https://www.aboutiam.com/playground/autonomous-agent/): Deploy autonomous Red Team and Blue Team AI security agents in simulated token-hijacking and redirect-hijacking arenas. Watch security enforcers dynamically adapt, detect anomalies, and apply cryptographic defenses.
 
 ## Security Tools
 
@@ -122,6 +128,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Completion Certificate Verifier — Check a Signed AboutIAM Certificate](https://www.aboutiam.com/tools/certificate-verifier/): Paste or upload a signed AboutIAM completion certificate to verify its ECDSA P-256 signature locally via SubtleCrypto.verify().
 - [PQC Readiness Auditor — Post-Quantum Crypto-Agility Checklist](https://www.aboutiam.com/tools/pqc-readiness-auditor/): Paste a PEM certificate chain, JWKS JSON, or TLS cipher-suite list to flag quantum-vulnerable algorithms, estimate hybrid post-quantum handshake size growth, and get a prioritized migration checklist.
 - [Cyber-Insurance Identity Readiness Calculator](https://www.aboutiam.com/tools/cyber-insurance-readiness/): Score your identity posture against the controls cyber insurers explicitly underwrite against for a directional premium-impact estimate, gap checklist, and real MFA-related coverage-denial case studies.
+- [Printable Identity Security Poster — High-Fidelity A4 Quick Reference](https://www.aboutiam.com/tools/print-poster/): Renders a beautiful, high-fidelity, printable SVG Cheat Sheet Poster. Perfect for office walls or dev workspaces—summarizes key OAuth, SAML, and JWT guidelines on a single high-contrast sheet.
 
 ## Advanced Ecosystem & Governance
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   Award, Download, LineChart, ShieldCheck,
-  RefreshCw, Clipboard, ArrowRight, Check, Link2
+  RefreshCw, Clipboard, ArrowRight, Check, Link2, FileText
 } from 'lucide-react'
 import { questions, computeScores, getMaturityTier, encodeAnswers, decodeAnswers } from '../lib/assess/scoring'
 import { mapScoreToGartnerLevel, estimatePeerPercentile, PEER_BENCHMARK_SOURCE_NOTE, GARTNER_LEVELS } from '../lib/assess/maturityBenchmark'
@@ -22,6 +22,7 @@ export default function Assess() {
   const [showResults, setShowResults] = useState(!!sharedAnswers)
   const [isDownloaded, setIsDownloaded] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
+  const [isArticleDownloaded, setIsArticleDownloaded] = useState(false)
   const isSharedReport = !!sharedAnswers
 
   const handleSelectOption = (score: number) => {
@@ -30,6 +31,7 @@ export default function Assess() {
 
   const nextStep = () => {
     if (activeStep < questions.length - 1) {
+      setInActive(true) // prevent closing progress state
       setActiveStep(activeStep + 1)
     } else {
       saveLastAssessment(answers)
@@ -61,6 +63,59 @@ export default function Assess() {
     navigator.clipboard.writeText(url)
     setIsCopied(true)
     setTimeout(() => setIsCopied(false), 2000)
+  }
+
+  const downloadMarkdownCaseStudy = () => {
+    const lines = [
+      '---',
+      'title: "Corporate GRC Identity Security Maturity Audit Case Study"',
+      'published: true',
+      'tags: "security, cybersecurity, devsecops, iam, compliance"',
+      'canonical_url: "https://www.aboutiam.com/assess"',
+      '---',
+      '',
+      '# Corporate Identity GRC Maturity Case Study Report',
+      '',
+      'Our security engineering and architecture teams conducted an exhaustive Identity Governance, Risk & Compliance (GRC) maturity self-assessment on the [AboutIAM platform](https://www.aboutiam.com/assess). Here are our verified results, gaps, and strategic mitigation plans.',
+      '',
+      '## 📊 Executive Maturity Summary',
+      `- **Maturity Score:** **${percentage}%**`,
+      `- **Average Maturity Tier:** **${averageScore} / 5.0**`,
+      `- **Assessed Rating:** **${maturityTier.label}**`,
+      '',
+      '### Assessment Focus Areas:',
+      'Our maturity has been calculated across five major corporate identity dimensions:',
+    ]
+
+    questions.forEach((q, idx) => {
+      const scoreVal = answers[idx] ?? 0
+      const tierLabel = scoreVal === 1 ? 'Tier 1 (Tactical / Siloed)' : scoreVal === 3 ? 'Tier 2 (Standardized)' : 'Tier 3 (Optimized / Governed)'
+      lines.push(`- **${q.dimension}:** ${tierLabel}`)
+    })
+
+    lines.push(
+      '',
+      '## 🔍 GRC Posture Ruling & Strategy',
+      `> *"${maturityTier.desc}"*`,
+      '',
+      '## 🛠️ Strategic Remediation Plan',
+      '1. **Deploy Zero-Backend Identity Guardrails:** Establish centralized on-device audit and validation policies.',
+      '2. **Leverage Modern Attestation Controls:** Integrate hardware-bound cryptographic passkeys to eliminate credential theft loops.',
+      '3. **Continuous Access Audits:** Perform quarterly RACI matrix and risk-register reviews inside our central Executive Command Center.',
+      '',
+      '---',
+      '*Generated autonomously via the [AboutIAM GRC Maturity Center](https://www.aboutiam.com/assess) — Zero-Backend Identity Security Playground.*'
+    )
+
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = 'aboutiam_grc_case_study.md'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    setIsArticleDownloaded(true)
+    setTimeout(() => setIsArticleDownloaded(false), 2000)
   }
 
   // Generate downloadable SVG roadmap dynamically
@@ -354,6 +409,13 @@ export default function Assess() {
                 >
                   {isCopied ? <Check className="w-4 h-4 text-status-success" /> : <Link2 className="w-4 h-4" />}
                   {isCopied ? 'Link Copied!' : 'Copy Shareable Link'}
+                </button>
+                <button
+                  onClick={downloadMarkdownCaseStudy}
+                  className="px-4 py-2.5 rounded-lg border border-border-subtle hover:bg-bg-sidebar text-text-primary text-xs font-bold transition-colors flex items-center gap-1.5"
+                >
+                  {isArticleDownloaded ? <Check className="w-4 h-4 text-status-success" /> : <FileText className="w-4 h-4 text-accent-primary" />}
+                  {isArticleDownloaded ? 'Case Study Generated!' : 'Publish Case Study (Dev.to)'}
                 </button>
                 <button
                   onClick={startAssessment}

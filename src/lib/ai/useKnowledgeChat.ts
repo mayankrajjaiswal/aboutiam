@@ -156,9 +156,17 @@ export function useKnowledgeChat() {
     if (localAiStatus === 'ready' && connectorRef.current) {
       const connector = connectorRef.current
       let streamed = ''
+      
+      // Local RAG contextual augmentation (Phase 10 upgrade!)
+      const matchedResources = extractResources(textToSend)
+      let augmentedPrompt = textToSend
+      if (matchedResources.length > 0) {
+        augmentedPrompt = `Context: User is asking about: [${matchedResources.map(r => r.title).join(', ')}]. Related tools: [${matchedResources.map(r => r.path).join(', ')}]. Use this background context to formulate a highly accurate security expert answer: ${textToSend}`
+      }
+
       setMessages((prev) => [...prev, { sender: 'assistant', text: '', source: 'local-ai' }])
       connector
-        .generate(textToSend, (token) => {
+        .generate(augmentedPrompt, (token) => {
           streamed += token
           setMessages((prev) => {
             const next = [...prev]
@@ -185,7 +193,7 @@ export function useKnowledgeChat() {
     }, 1200)
   }
 
-  const handleEnableLocalAi = async () => {
+  const handleEnableLocalAi = async (modelId?: string) => {
     setLocalAiStatus('loading')
     setLocalAiError(null)
     setLocalAiProgress(null)
@@ -196,7 +204,7 @@ export function useKnowledgeChat() {
         setLocalAiStatus('error')
         return
       }
-      const connector = createWebllmConnector()
+      const connector = createWebllmConnector(modelId)
       connectorRef.current = connector
       await connector.load((progress) => setLocalAiProgress(progress))
       setLocalAiStatus('ready')

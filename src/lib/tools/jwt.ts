@@ -87,6 +87,9 @@ export async function exportPublicKeyPem(publicKey: CryptoKey): Promise<string> 
 }
 
 export async function signJwtRsa(header: object, payload: object, privateKey: CryptoKey): Promise<string> {
+  if (privateKey.type !== 'private' || privateKey.algorithm.name !== 'RSASSA-PKCS1-v1_5') {
+    throw new Error('Invalid key type: Expected private RSASSA-PKCS1-v1_5 key.')
+  }
   const headerB64 = base64UrlEncode(JSON.stringify(header))
   const payloadB64 = base64UrlEncode(JSON.stringify(payload))
   const signingInput = `${headerB64}.${payloadB64}`
@@ -95,6 +98,9 @@ export async function signJwtRsa(header: object, payload: object, privateKey: Cr
 }
 
 export async function verifyJwtRsa(token: string, publicKey: CryptoKey): Promise<boolean> {
+  if (publicKey.type !== 'public' || publicKey.algorithm.name !== 'RSASSA-PKCS1-v1_5') {
+    throw new Error('Invalid key type: Expected public RSASSA-PKCS1-v1_5 key.')
+  }
   const decoded = decodeJwt(token)
   if (decoded.header?.alg !== 'RS256') return false
   const signingInput = `${decoded.headerRaw}.${decoded.payloadRaw}`

@@ -121,7 +121,7 @@ export default function SCIMLab() {
     setActiveLog(newLog)
   }
 
-  // --- ACTIONS TRIGERRED FROM IDP DIRECTORY ---
+  // --- ACTIONS TRIGGERED FROM IDP DIRECTORY ---
 
   // Add User Operation
   const triggerAddUser = (given: string, family: string, uname: string, email: string) => {
@@ -878,7 +878,7 @@ export default function SCIMLab() {
             <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-850">
               <span className="font-bold text-blue-300 block mb-1">Interview Prep Q: What is the benefit of PATCH over PUT in SCIM?</span>
               <p className="text-slate-400 leading-normal">
-                `PUT` updates the entire resource, requiring the full object representation to be sent. If a group has 50,000 users, adding 1 member via `PUT` requires transferring all 50,000 IDs, leading to immense performance and race-condition issues. `PATCH` allows fine-grained incremental changes—specifically targetting and appending just the single member block.
+                `PUT` updates the entire resource, requiring the full object representation to be sent. If a group has 50,000 users, adding 1 member via `PUT` requires transferring all 50,000 IDs, leading to immense performance and race-condition issues. `PATCH` allows fine-grained incremental changes—specifically targeting and appending just the single member block.
               </p>
             </div>
 

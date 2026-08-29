@@ -434,7 +434,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                     {/* Starter Launchers */}
                     <div className="space-y-2">
                       <span className="text-[9px] text-text-muted font-bold uppercase tracking-wider block px-2.5">
-                        💡 Recomended Starter Launchers
+                        💡 Recommended Starter Launchers
                       </span>
                       <div className="space-y-1.5">
                         {flatSelectableItems

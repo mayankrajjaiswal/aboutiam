@@ -102,15 +102,24 @@ export default function CertificateVerifier() {
                 </p>
               )}
               {verdict === 'valid' && (
-                <div className="pt-2 select-none">
-                  <a
-                    href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent('AboutIAM Certified Identity Specialist')}&organizationName=${encodeURIComponent('AboutIAM')}&certUrl=${encodeURIComponent('https://www.aboutiam.com/tools/certificate-verifier')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0a66c2] hover:bg-[#004182] text-white text-[11px] font-bold transition-all shadow-sm"
-                  >
-                    Add to LinkedIn Profile 🚀
-                  </a>
+                <div className="pt-2 flex flex-col gap-3 select-none">
+                  <div className="flex gap-2">
+                    <a
+                      href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent('AboutIAM Certified Identity Specialist')}&organizationName=${encodeURIComponent('AboutIAM')}&certUrl=${encodeURIComponent('https://www.aboutiam.com/tools/certificate-verifier')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0a66c2] hover:bg-[#004182] text-white text-[11px] font-bold transition-all shadow-sm"
+                    >
+                      Add to LinkedIn Profile 🚀
+                    </a>
+                  </div>
+                  
+                  <div className="pt-3 border-t border-border-subtle/30">
+                    <span className="text-[9px] font-bold text-text-muted uppercase block mb-1">Copy GitHub Profile README Badge</span>
+                    <pre className="p-2.5 rounded-lg bg-slate-950/80 border border-border-subtle/50 text-[10px] font-mono text-teal-300 overflow-auto select-all cursor-copy">
+                      {`[![AboutIAM Certified](https://img.shields.io/badge/AboutIAM-Certified_Specialist-blue?logo=auth0)](https://www.aboutiam.com/tools/certificate-verifier)`}
+                    </pre>
+                  </div>
                 </div>
               )}
             </div>

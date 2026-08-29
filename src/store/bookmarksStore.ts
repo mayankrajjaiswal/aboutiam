@@ -11,9 +11,9 @@ export interface BookmarkedItem {
 }
 
 interface BookmarksState {
-  bookmarks: BookmarkedItem[]
-  isBookmarked: (id: string) => boolean
-  toggleBookmark: (item: BookmarkedItem) => void
+  readonly bookmarks: readonly BookmarkedItem[]
+  readonly isBookmarked: (id: string) => boolean
+  readonly toggleBookmark: (item: BookmarkedItem) => void
 }
 
 export const useBookmarksStore = create<BookmarksState>()(

@@ -106,6 +106,7 @@ const ROUTES = [
   { path: '/tools/certificate-verifier', title: 'Completion Certificate Verifier — Check a Signed AboutIAM Certificate', description: 'Paste or upload a signed AboutIAM completion certificate to verify its ECDSA P-256 signature locally via SubtleCrypto.verify().' },
   { path: '/tools/pqc-readiness-auditor', title: 'PQC Readiness Auditor — Post-Quantum Crypto-Agility Checklist', description: 'Paste a PEM certificate chain, JWKS JSON, or TLS cipher-suite list to flag quantum-vulnerable algorithms, estimate hybrid post-quantum handshake size growth, and get a prioritized migration checklist.' },
   { path: '/tools/cyber-insurance-readiness', title: 'Cyber-Insurance Identity Readiness Calculator', description: 'Score your identity posture against the controls cyber insurers explicitly underwrite against for a directional premium-impact estimate, gap checklist, and real MFA-related coverage-denial case studies.' },
+  { path: '/tools/print-poster', title: 'Printable Identity Security Poster — High-Fidelity A4 Quick Reference', description: 'Renders a beautiful, high-fidelity, printable SVG Cheat Sheet Poster. Perfect for office walls or dev workspaces—summarizes key OAuth, SAML, and JWT guidelines on a single high-contrast sheet.' },
   { path: '/playground/ldap-schema-designer', title: 'AD/LDAP OU & Schema Designer', description: 'Build an Organizational Unit tree from scratch, apply GPOs that cascade through inheritance (or block it), and export the constructed schema as valid LDIF.' },
   { path: '/playground/hr-attribute-mapper', title: 'HR-to-IdP Attribute Mapper', description: 'Click-to-connect mock HR fields (Workday/SAP-style) to AD/Entra/SCIM attributes, apply concat/regex/lookup-table transformations, and watch a live preview and conflict warnings update in real time.' },
   { path: '/playground/identity-fabric', title: 'Identity Fabric / Orchestration Flow Builder', description: 'Wire a legacy protocol-only app to a modern protocol-only IdP through an orchestration node, and watch the trace log narrate each protocol-translation step for IdP migration and cross-IdP policy consistency scenarios.' },
@@ -190,7 +191,19 @@ const TOOL_FAQS = {
 
 function generateJsonLd(route) {
   const canonicalUrl = `${SITE_URL}${route.path}/`
-  const graphs = []
+  const graphList = []
+
+  // Base Organization
+  graphList.push({
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    "name": "AboutIAM",
+    "url": SITE_URL,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${SITE_URL}/pwa-512.png`
+    }
+  })
 
   // 1. BreadcrumbList Schema
   const pathSegments = route.path.split('/').filter(Boolean)
@@ -218,19 +231,19 @@ function generateJsonLd(route) {
         "item": `${SITE_URL}${runningPath}/`
       })
     })
-    graphs.push({
-      "@context": "https://schema.org",
+    graphList.push({
       "@type": "BreadcrumbList",
+      "@id": `${canonicalUrl}#breadcrumb`,
       "itemListElement": breadcrumbItems
     })
   }
 
-  // 1.1 FAQ Page Schema (Phase 7 Upgrades)
+  // 1.1 FAQ Page Schema
   const faqs = TOOL_FAQS[route.path]
   if (faqs && faqs.length > 0) {
-    graphs.push({
-      "@context": "https://schema.org",
+    graphList.push({
       "@type": "FAQPage",
+      "@id": `${canonicalUrl}#faq`,
       "mainEntity": faqs.map(f => ({
         "@type": "Question",
         "name": f.q,
@@ -244,9 +257,9 @@ function generateJsonLd(route) {
 
   // 2. Specific Page Schemas
   if (route.path.startsWith('/tools/')) {
-    graphs.push({
-      "@context": "https://schema.org",
+    graphList.push({
       "@type": "SoftwareApplication",
+      "@id": `${canonicalUrl}#software`,
       "name": route.title.split('—')[0].split('|')[0].trim(),
       "operatingSystem": "All",
       "applicationCategory": "SecurityApplication",
@@ -256,44 +269,35 @@ function generateJsonLd(route) {
         "price": "0.00",
         "priceCurrency": "USD"
       },
-      "description": route.description
+      "description": route.description,
+      "publisher": { "@id": `${SITE_URL}/#organization` }
     })
   } else if (route.path.startsWith('/learn') || route.path.startsWith('/primer')) {
-    graphs.push({
-      "@context": "https://schema.org",
+    graphList.push({
       "@type": "Course",
+      "@id": `${canonicalUrl}#course`,
       "name": route.title.split('—')[0].split('|')[0].trim(),
       "description": route.description,
-      "provider": {
-        "@type": "Organization",
-        "name": "AboutIAM",
-        "sameAs": SITE_URL
-      }
+      "provider": { "@id": `${SITE_URL}/#organization` }
     })
   } else if (route.path.startsWith('/standards/') || route.path.startsWith('/research') || route.path.startsWith('/bulletins')) {
-    graphs.push({
-      "@context": "https://schema.org",
+    graphList.push({
       "@type": "TechArticle",
+      "@id": `${canonicalUrl}#article`,
       "headline": route.title.split('—')[0].split('|')[0].trim(),
       "description": route.description,
-      "author": {
-        "@type": "Organization",
-        "name": "AboutIAM"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "AboutIAM",
-        "logo": {
-          "@type": "ImageObject",
-          "url": `${SITE_URL}/pwa-512.png`
-        }
-      },
+      "author": { "@id": `${SITE_URL}/#organization` },
+      "publisher": { "@id": `${SITE_URL}/#organization` },
       "url": canonicalUrl
     })
   }
 
-  if (graphs.length === 0) return ''
-  return graphs.map(g => `<script type="application/ld+json">${JSON.stringify(g)}</script>`).join('\n')
+  const finalSchema = {
+    "@context": "https://schema.org",
+    "@graph": graphList
+  }
+
+  return `<script type="application/ld+json">${JSON.stringify(finalSchema)}</script>`
 }
 
 function renderPage(template, route) {
@@ -313,6 +317,14 @@ function renderPage(template, route) {
   const connectSrc = connectSrcTargets.join(' ')
   const cspMeta = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; style-src 'self' 'unsafe-inline' https://giscus.app; img-src 'self' data: https:; font-src 'self' data:; connect-src ${connectSrc}; base-uri 'self'; form-action 'self'" />`
 
+  const hreflangs = `
+  <link rel="alternate" hreflang="en" href="${canonicalUrl}" />
+  <link rel="alternate" hreflang="es" href="${SITE_URL}/es${route.path}/" />
+  <link rel="alternate" hreflang="fr" href="${SITE_URL}/fr${route.path}/" />
+  <link rel="alternate" hreflang="de" href="${SITE_URL}/de${route.path}/" />
+  <link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />
+  `.trim()
+
   let html = template
   html = html.replace(/<meta http-equiv="Content-Security-Policy" content="[^"]*"\s*\/?>/, cspMeta)
   html = replaceTag(html, /<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
@@ -327,7 +339,7 @@ function renderPage(template, route) {
   html = replaceTag(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/, `<meta name="twitter:image" content="${ogImage}" />`)
   
   if (dynamicJsonLd) {
-    html = html.replace('</head>', `${dynamicJsonLd}\n</head>`)
+    html = html.replace('</head>', `${hreflangs}\n${dynamicJsonLd}\n</head>`)
   }
   
   return html

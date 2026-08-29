@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 29 Aug 2026 09:35:25 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 10:24:29 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: JWT Decoder — Inspect & Verify Tokens Online]]></title>
@@ -357,6 +357,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/certificate-verifier</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Paste or upload a signed AboutIAM completion certificate to verify its ECDSA P-256 signature locally via SubtleCrypto.verify() — confirms the certificate's contents match its own signature, not a substitute for third-party professional certification.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Printable Identity Security Poster — High-Fidelity A4 Quick Reference]]></title>
+      <link>https://www.aboutiam.com/tools/print-poster</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/print-poster</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Renders a beautiful, high-fidelity, printable SVG Cheat Sheet Poster. Perfect for office walls or dev workspaces—summarizes key OAuth, SAML, and JWT guidelines on a single high-contrast sheet.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

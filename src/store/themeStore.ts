@@ -3,11 +3,10 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import { createTelemetryStorage } from '../lib/utils/zustandTelemetry'
 
 export type ThemeType = 'light' | 'dark' | 'system'
-
 interface ThemeState {
-  theme: ThemeType
-  setTheme: (theme: ThemeType) => void
-  initializeTheme: () => (() => void) | void
+  readonly theme: ThemeType
+  readonly setTheme: (theme: ThemeType) => void
+  readonly initializeTheme: () => (() => void) | void
 }
 
 const applyTheme = (theme: ThemeType) => {

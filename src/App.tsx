@@ -69,6 +69,7 @@ const RiskRegisterBuilder = lazy(() => import('./pages/Tools/RiskRegisterBuilder
 const CertificateVerifier = lazy(() => import('./pages/Tools/CertificateVerifier'))
 const PqcReadinessAuditor = lazy(() => import('./pages/Tools/PqcReadinessAuditor'))
 const CyberInsuranceReadiness = lazy(() => import('./pages/Tools/CyberInsuranceReadiness'))
+const PrintablePoster = lazy(() => import('./pages/Tools/PrintablePoster'))
 const LdapSchemaDesigner = lazy(() => import('./pages/Playgrounds/LdapSchemaDesigner'))
 const HrAttributeMapper = lazy(() => import('./pages/Playgrounds/HrAttributeMapper'))
 const IdentityFabricBuilder = lazy(() => import('./pages/Playgrounds/IdentityFabricBuilder'))
@@ -273,6 +274,7 @@ export default function App() {
               <Route path="/tools/certificate-verifier" element={<CertificateVerifier />} />
               <Route path="/tools/pqc-readiness-auditor" element={<PqcReadinessAuditor />} />
               <Route path="/tools/cyber-insurance-readiness" element={<CyberInsuranceReadiness />} />
+              <Route path="/tools/print-poster" element={<PrintablePoster />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />
               <Route path="/playground/nhi-sprawl" element={<NhiSprawlLab />} />
               <Route path="/playground/passkey-rollout-strategist" element={<PasskeyRolloutStrategist />} />

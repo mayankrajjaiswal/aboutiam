@@ -271,11 +271,25 @@ export default function SecurityBulletins() {
           </div>
 
           {/* Interactive Incident Response Simulator */}
-          <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-lg min-h-[350px] flex flex-col justify-between">
+          <div className={`bg-bg-card border p-5 min-h-[350px] flex flex-col justify-between rounded-xl transition-all duration-300 ${
+            crisisStep > 0
+              ? (bulletin.severity === 'Critical'
+                ? 'border-status-danger/50 shadow-xl shadow-status-danger/5 animate-pulse-slow'
+                : 'border-status-warning/50 shadow-xl shadow-status-warning/5 animate-pulse-slow')
+              : 'border-border-subtle shadow-lg'
+          }`}>
             <div>
-              <div className="flex justify-between items-center mb-4 border-b border-border-subtle pb-2">
+              <div className="flex justify-between items-center mb-4 border-b border-border-subtle pb-2 select-none">
                 <span className="text-sm font-bold text-text-primary flex items-center gap-1.5">
-                  <Terminal className="w-4 h-4 text-accent-primary" /> Incident Response Crisis Simulator
+                  <Terminal className={`w-4 h-4 ${crisisStep > 0 ? (bulletin.severity === 'Critical' ? 'text-status-danger animate-bounce' : 'text-status-warning animate-bounce') : 'text-accent-primary'}`} /> 
+                  <span>Incident Response Crisis Simulator</span>
+                  {crisisStep > 0 && (
+                    <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border animate-pulse ${
+                      bulletin.severity === 'Critical' ? 'bg-status-danger/10 text-status-danger border-status-danger/25' : 'bg-status-warning/10 text-status-warning border-status-warning/25'
+                    }`}>
+                      🚨 SOC WAR-ROOM ACTIVE
+                    </span>
+                  )}
                 </span>
                 <button
                   onClick={resetSimulator}
@@ -352,18 +366,35 @@ export default function SecurityBulletins() {
             </div>
 
             {/* Trace logs terminal */}
-            <div className="border border-border-subtle bg-bg-nested rounded-lg p-3 font-mono text-xs text-text-primary h-36 overflow-y-auto mt-4 leading-normal">
-              <div className="flex items-center gap-1.5 border-b border-border-subtle/50 pb-1.5 mb-1.5 text-[10px] text-text-muted font-bold uppercase tracking-wider">
+            <div className="border border-border-subtle bg-bg-nested rounded-lg p-3 font-mono text-xs text-text-primary h-36 overflow-y-auto mt-4 leading-normal select-text">
+              <div className="flex items-center gap-1.5 border-b border-border-subtle/50 pb-1.5 mb-1.5 text-[10px] text-text-muted font-bold uppercase tracking-wider select-none">
                 <Terminal className="w-3.5 h-3.5" /> Incident Response Console Outputs
               </div>
               {simulatorLogs.length === 0 ? (
                 <span className="text-text-muted italic select-none">Console ready. Trigger an incident response step to begin active containment audits.</span>
               ) : (
-                simulatorLogs.map((log, idx) => (
-                  <div key={idx} className="leading-relaxed text-text-secondary">
-                    {log}
-                  </div>
-                ))
+                simulatorLogs.map((log, idx) => {
+                  const renderStyledLog = (logText: string) => {
+                    if (logText.includes('[SIEM Alert]') || logText.includes('[ERROR]') || logText.includes('❌') || logText.includes('Failed')) {
+                      return <span className="terminal-keyword-danger">{logText}</span>
+                    }
+                    if (logText.includes('[ACTION]') || logText.includes('✓') || logText.includes('Successful') || logText.includes('Concluded')) {
+                      return <span className="terminal-keyword-success">{logText}</span>
+                    }
+                    if (logText.includes('🔍') || logText.includes('Analyzing') || logText.includes('Evaluating') || logText.includes('Remediation:')) {
+                      return <span className="terminal-keyword-warning">{logText}</span>
+                    }
+                    if (logText.includes('[INFO]') || logText.includes('[Incident Detail]')) {
+                      return <span className="terminal-keyword-info">{logText}</span>
+                    }
+                    return <span className="text-text-secondary">{logText}</span>
+                  }
+                  return (
+                    <div key={idx} className="leading-relaxed font-semibold">
+                      {renderStyledLog(log)}
+                    </div>
+                  )
+                })
               )}
             </div>
           </div>

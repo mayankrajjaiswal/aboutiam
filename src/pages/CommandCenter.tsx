@@ -148,12 +148,63 @@ export default function CommandCenter() {
         </button>
       </div>
 
+      {/* Interactive Executive Journey Map Connector */}
+      <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-4">
+        <h4 className="text-xs font-black text-text-muted uppercase tracking-wider flex items-center gap-1.5">
+          <Award className="w-4 h-4 text-accent-primary" /> Active Executive Journey Roadmap
+        </h4>
+        <p className="text-xs text-text-secondary">
+          Track your corporate IAM governance alignment. Complete each step sequentially to activate the sovereign GRC posture framework.
+        </p>
+        <div className="relative pt-4 pb-2">
+          {/* Background Connecting Line */}
+          <div className="absolute top-1/2 left-0 right-0 h-1 bg-border-subtle/50 -translate-y-1/2 rounded-full pointer-events-none"></div>
+          {/* Active Glowing Progress Connector */}
+          <div 
+            style={{ width: lastAssessment ? '100%' : '25%' }}
+            className="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-accent-primary to-accent-secondary -translate-y-1/2 rounded-full pointer-events-none transition-all duration-1000 shadow-lg shadow-accent-primary/20"
+          ></div>
+
+          {/* Stepper Timeline Points */}
+          <div className="relative flex justify-between items-center z-10 select-none">
+            {[
+              { label: '1. Maturity Audit', path: '/assess', isDone: true, desc: 'Audit core posture' },
+              { label: '2. Deadlines', path: '/standards?view=deadlines', isDone: !!lastAssessment, desc: 'Track regulation dates' },
+              { label: '3. TCO Calculation', path: '/tools/iam-tco-calculator', isDone: !!lastAssessment, desc: 'Assess build vs buy' },
+              { label: '4. RACI Matrix', path: '/tools/raci-builder', isDone: !!lastAssessment, desc: 'Assign program roles' },
+            ].map((step, idx) => (
+              <Link 
+                key={step.path}
+                to={step.path} 
+                className="flex flex-col items-center text-center space-y-2 group focus:outline-none"
+              >
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs border transition-all duration-300 ${
+                  step.isDone 
+                    ? 'bg-accent-glow border-accent-primary text-accent-primary shadow shadow-accent-primary/10 scale-110 group-hover:scale-115' 
+                    : 'bg-bg-sidebar border-border-subtle text-text-muted group-hover:text-text-primary'
+                }`}>
+                  {step.isDone ? '✓' : idx + 1}
+                </div>
+                <div className="space-y-0.5">
+                  <span className={`text-[10px] font-black uppercase tracking-wider block transition-colors ${step.isDone ? 'text-text-primary' : 'text-text-muted'}`}>
+                    {step.label}
+                  </span>
+                  <span className="hidden sm:block text-[9px] text-text-muted font-medium max-w-[120px] mx-auto leading-tight">
+                    {step.desc}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className={`grid gap-6 ${isCompact ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-2'}`}>
         {QUESTION_CARDS.map((card) => (
           <Link
             key={card.path}
             to={card.path}
-            className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm hover:border-accent-primary/40 transition-colors space-y-3 group"
+            className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow space-y-3 group"
           >
             <card.icon className="w-6 h-6 text-accent-primary" />
             <h3 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">

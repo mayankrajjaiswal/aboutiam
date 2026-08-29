@@ -290,7 +290,9 @@ export default function App() {
               <Route path="/tools/oauth-risk-analyzer" element={<OauthRiskAnalyzer />} />
               <Route path="/tools/csp-builder" element={<CspBuilder />} />
               <Route path="/tools/x509-to-jwks-converter" element={<X509ToJwksConverter />} />
+              <Route path="/tools/saml-metadata-auditor" element={<SamlMetadataAuditor />} />
               <Route path="/playground/device-code-flow" element={<DeviceCodeFlowLab />} />
+              <Route path="/playground/dpop" element={<DpopLab />} />
               <Route path="/playground/jit-provisioning" element={<JitProvisioningLab />} />
               <Route path="/playground/phantom-token" element={<PhantomTokenLab />} />
               <Route path="/playground/agent-identity" element={<AgentIdentityLab />} />

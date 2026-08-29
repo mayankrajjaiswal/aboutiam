@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 29 Aug 2026 20:13:12 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 20:38:20 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -21,6 +21,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/csp-builder</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Visually construct a hardened Content-Security-Policy header. Select your authentication providers (Auth0, Okta) to automatically generate the strict directive rules required for secure redirects and iframes.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: SAML 2.0 Metadata Schema Auditor]]></title>
+      <link>https://www.aboutiam.com/tools/saml-metadata-auditor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/saml-metadata-auditor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Parse SAML metadata XML configurations, decode embedded X.509 certificates, and flag critical security risks such as weak SHA-1 signatures or plaintext HTTP bindings.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

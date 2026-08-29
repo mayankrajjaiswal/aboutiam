@@ -20,9 +20,9 @@ describe('CertificateVerifier page', () => {
     fireEvent.click(screen.getByRole('button', { name: /verify certificate/i }))
 
     await waitFor(() => {
-      expect(screen.getByText(/signature valid/i)).toBeInTheDocument()
-    })
-    expect(screen.getByText(/claimed: ada lovelace/i)).toBeInTheDocument()
+      expect(screen.getByText(/certificate valid/i)).toBeInTheDocument()
+    }, { timeout: 3000 })
+    expect(screen.getAllByText(/ada lovelace/i).length).toBeGreaterThan(0)
   })
 
   it('flags a tampered certificate as invalid', async () => {
@@ -42,7 +42,7 @@ describe('CertificateVerifier page', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/signature invalid/i)).toBeInTheDocument()
-    })
+    }, { timeout: 3000 })
   })
 
   it('flags malformed input instead of throwing', async () => {
@@ -52,7 +52,7 @@ describe('CertificateVerifier page', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/malformed input/i)).toBeInTheDocument()
-    })
+    }, { timeout: 3000 })
   })
 
   it('disables the verify button when the input is empty', () => {

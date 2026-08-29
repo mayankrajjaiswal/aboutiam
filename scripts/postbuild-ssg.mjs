@@ -135,6 +135,12 @@ const ROUTES = [
   { path: '/playground/risk-engine', title: 'Risk-Based Authentication Playground — Adaptive MFA Simulator', description: 'Combine impossible-travel, device-reputation, and behavior-anomaly signals into a composite risk score that drives allow, step-up, or block.' },
   { path: '/playground/pam-vaulting', title: 'PAM Vaulting Playground — Just-in-Time Elevation Simulator', description: 'Check out a vaulted credential, request time-boxed JIT elevation with approval, and watch session recording and auto-rotation on check-in.' },
   { path: '/playground/hybrid-ad-sync', title: 'Hybrid Identity Sync Playground — PHS vs PTA vs Federation', description: 'Toggle between Password Hash Sync, Pass-Through Authentication, and AD FS Federation to see how each handles the same on-prem login.' },
+  { path: '/playground/pqc-handshake', title: 'Post-Quantum Cryptography Handshake Simulator', description: 'Step through classical vs. hybrid vs. pure post-quantum handshakes. Analyze key exchange sizes, signature overheads, and network packet fragmentation thresholds under FIPS 203/204 lattice cryptography.' },
+  { path: '/playground/passkey-policy', title: 'Advanced Passkey Policy & Attestation Workbench', description: 'Act as a Relying Party (RP) Security Admin configuring enterprise-grade FIDO2 / WebAuthn registration parameters. Enforce FIPS-restricted AAGUIDs, direct packed attestation anchors, and resident key storage rules.' },
+  { path: '/playground/workload-identity', title: 'Workload Identity Federation & OIDC Visualizer', description: 'Ditch long-lived static API secrets. Secure your automated build pipelines (GitHub Actions, GitLab CI) using federated OIDC token handshakes with Cloud Providers.' },
+  { path: '/playground/cloud-policy-evaluator', title: 'Multi-Cloud Overlapping IAM Policy Evaluator', description: 'Step inside the heart of an enterprise Policy Evaluation Engine. Visualize and evaluate how Organization SCP boundaries, identity-based IAM permissions, and Resource policies combine to govern access.' },
+  { path: '/playground/federated-vp', title: 'Dynamic Trust Framework & Verifiable Presentation Playground', description: 'Explore the architecture of eIDAS 2.0 and the European Digital Identity (EUDI) Wallet. Selectively disclose claims, verify cryptographic SD-JWT signatures, and audit issuers against cross-border trust registries.' },
+  { path: '/playground/autonomous-agent', title: 'Autonomous Security Agent Simulation Playground', description: 'Deploy autonomous Red Team and Blue Team AI security agents in simulated token-hijacking and redirect-hijacking arenas. Watch security enforcers dynamically adapt, detect anomalies, and apply cryptographic defenses.' },
   { path: '/career-center', title: 'IAM Interview Prep & Career Center — 6 Role Tracks', description: 'Role-based interview preparation from Fresher to Principal, with MCQs, incident scenarios, system design audits, and resume guidance.' },
   { path: '/scenario-builder', title: 'Identity Scenario Builder — Custom Architecture Generator', description: "Describe your organization's footprint and get an instant, vendor-neutral secure identity architecture blueprint." },
   { path: '/labs', title: 'Interactive Identity Labs — Hands-On IAM Pen-Test Academy', description: 'Solve real OAuth, JWT, SAML, and SCIM security vulnerabilities in a browser-native penetration-testing sandbox.' },
@@ -171,13 +177,144 @@ function getOgImage(path) {
   return `${SITE_URL}/og-image.png`
 }
 
+const TOOL_FAQS = {
+  '/tools/jwt-decoder': [
+    { q: 'Is my JWT sent to any server?', a: 'No, decoding is performed entirely locally inside your browser using JavaScript. No tokens ever leave your machine.' },
+    { q: 'What happens if a token has "alg: none"?', a: 'This tool flags "alg: none" as a critical security vulnerability, indicating that signature verification can be easily bypassed.' }
+  ],
+  '/tools/totp-generator': [
+    { q: 'How are TOTP codes computed?', a: 'TOTP codes are generated from a Base32 secret using the HMAC-SHA1 algorithm according to RFC 6238.' },
+    { q: 'Can this tool verify codes?', a: 'Yes, you can input a generated code to verify its mathematical alignment with the secret in real-time.' }
+  ]
+}
+
+function generateJsonLd(route) {
+  const canonicalUrl = `${SITE_URL}${route.path}/`
+  const graphs = []
+
+  // 1. BreadcrumbList Schema
+  const pathSegments = route.path.split('/').filter(Boolean)
+  if (pathSegments.length > 0) {
+    const breadcrumbItems = [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": `${SITE_URL}/`
+      }
+    ]
+    let runningPath = ''
+    pathSegments.forEach((segment, idx) => {
+      runningPath += `/${segment}`
+      const isLast = idx === pathSegments.length - 1
+      let name = segment.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+      if (isLast) {
+        name = route.title.split('—')[0].split('|')[0].trim()
+      }
+      breadcrumbItems.push({
+        "@type": "ListItem",
+        "position": idx + 2,
+        "name": name,
+        "item": `${SITE_URL}${runningPath}/`
+      })
+    })
+    graphs.push({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbItems
+    })
+  }
+
+  // 1.1 FAQ Page Schema (Phase 7 Upgrades)
+  const faqs = TOOL_FAQS[route.path]
+  if (faqs && faqs.length > 0) {
+    graphs.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": f.a
+        }
+      }))
+    })
+  }
+
+  // 2. Specific Page Schemas
+  if (route.path.startsWith('/tools/')) {
+    graphs.push({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": route.title.split('—')[0].split('|')[0].trim(),
+      "operatingSystem": "All",
+      "applicationCategory": "SecurityApplication",
+      "browserRequirements": "Requires HTML5, WebCrypto API",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      },
+      "description": route.description
+    })
+  } else if (route.path.startsWith('/learn') || route.path.startsWith('/primer')) {
+    graphs.push({
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": route.title.split('—')[0].split('|')[0].trim(),
+      "description": route.description,
+      "provider": {
+        "@type": "Organization",
+        "name": "AboutIAM",
+        "sameAs": SITE_URL
+      }
+    })
+  } else if (route.path.startsWith('/standards/') || route.path.startsWith('/research') || route.path.startsWith('/bulletins')) {
+    graphs.push({
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": route.title.split('—')[0].split('|')[0].trim(),
+      "description": route.description,
+      "author": {
+        "@type": "Organization",
+        "name": "AboutIAM"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "AboutIAM",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${SITE_URL}/pwa-512.png`
+        }
+      },
+      "url": canonicalUrl
+    })
+  }
+
+  if (graphs.length === 0) return ''
+  return graphs.map(g => `<script type="application/ld+json">${JSON.stringify(g)}</script>`).join('\n')
+}
+
 function renderPage(template, route) {
   const title = `${route.title} | AboutIAM`
   const description = escapeHtml(route.description)
   const canonicalUrl = `${SITE_URL}${route.path}/`
   const ogImage = getOgImage(route.path)
+  const dynamicJsonLd = generateJsonLd(route)
+
+  const connectSrcTargets = ["'self'"]
+  if (process.env.VITE_GISCUS_REPO) {
+    connectSrcTargets.push('https://giscus.app', 'https://api.github.com')
+  }
+  if (process.env.VITE_GOOGLE_CLIENT_ID) {
+    connectSrcTargets.push('https://www.googleapis.com')
+  }
+  const connectSrc = connectSrcTargets.join(' ')
+  const cspMeta = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; style-src 'self' 'unsafe-inline' https://giscus.app; img-src 'self' data: https:; font-src 'self' data:; connect-src ${connectSrc}; base-uri 'self'; form-action 'self'" />`
 
   let html = template
+  html = html.replace(/<meta http-equiv="Content-Security-Policy" content="[^"]*"\s*\/?>/, cspMeta)
   html = replaceTag(html, /<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
   html = replaceTag(html, /<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${description}" />`)
   html = replaceTag(html, /<link rel="canonical" href="[^"]*"\s*\/?>/, `<link rel="canonical" href="${canonicalUrl}" />`)
@@ -188,6 +325,11 @@ function renderPage(template, route) {
   html = replaceTag(html, /<meta name="twitter:title" content="[^"]*"\s*\/?>/, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
   html = replaceTag(html, /<meta name="twitter:description" content="[^"]*"\s*\/?>/, `<meta name="twitter:description" content="${description}" />`)
   html = replaceTag(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/, `<meta name="twitter:image" content="${ogImage}" />`)
+  
+  if (dynamicJsonLd) {
+    html = html.replace('</head>', `${dynamicJsonLd}\n</head>`)
+  }
+  
   return html
 }
 

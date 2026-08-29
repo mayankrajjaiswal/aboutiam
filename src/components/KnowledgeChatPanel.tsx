@@ -1,17 +1,16 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Bot,
   Check,
   Copy,
-  FlaskConical,
   LayoutDashboard,
   Send,
   Terminal,
 } from 'lucide-react'
 import { useKnowledgeChat } from '../lib/ai/useKnowledgeChat'
 import type { ResourceLink } from '../data/aiKnowledgeGraph'
-import { Wrench, Gamepad2, BookOpen, Layers, Award, ShieldCheck } from 'lucide-react'
+import { Wrench, Gamepad2, BookOpen, Layers, Award, ShieldCheck, FlaskConical } from 'lucide-react'
 
 const QUICK_PROMPTS = ['Explain OAuth vs SAML', 'How do Passkeys work?', 'Write an OPA Rego policy']
 
@@ -57,6 +56,8 @@ export interface KnowledgeChatPanelProps {
  * FloatingAssistantLauncher — both mount this so their behavior can never drift apart.
  */
 export default function KnowledgeChatPanel({ showSidebar = false, className = '' }: KnowledgeChatPanelProps) {
+  const [selectedModel, setSelectedModel] = useState('SmolLM2-360M-Instruct-q4f16_1-MLC')
+
   const {
     messages,
     input,
@@ -105,7 +106,7 @@ export default function KnowledgeChatPanel({ showSidebar = false, className = ''
                     {isAI ? (
                       m.source === 'local-ai' ? (
                         <>
-                          <FlaskConical className="w-3 h-3" /> Local AI (Experimental)
+                          <ShieldCheck className="w-3 h-3" /> Privacy-First Local AI
                         </>
                       ) : (
                         'AboutIAM AI Architect'
@@ -169,22 +170,33 @@ export default function KnowledgeChatPanel({ showSidebar = false, className = ''
         <div className="px-4 pt-3 border-t border-border-subtle bg-bg-sidebar/40 z-10 shrink-0">
           <details className="group" open={localAiStatus !== 'off'}>
             <summary className="cursor-pointer text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5 select-none">
-              <FlaskConical className="w-3.5 h-3.5" /> Experimental: Enable Local AI (Spike)
+              <ShieldCheck className="w-3.5 h-3.5 text-accent-primary animate-pulse" /> Privacy-First Local AI Copilot (100% Offline)
             </summary>
             <div className="mt-2 pb-3 text-xs text-text-secondary space-y-2">
               {localAiStatus === 'off' && (
                 <>
                   <p>
-                    Downloads a small open-weight language model (~200MB) and runs it fully client-side in a
-                    Web Worker — nothing leaves your browser. Requires WebGPU. This is an early technical
-                    spike, not the finished feature: quality and speed are unpolished.
+                    Download and run a secure open-weight language model (~200MB) fully client-side inside a
+                    Web Worker. Requires a WebGPU-enabled browser. Your prompts are processed 100% on-device
+                    — no servers, no telemetry, complete data privacy.
                   </p>
-                  <button
-                    onClick={handleEnableLocalAi}
-                    className="px-3 py-1.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-[11px] font-bold transition-colors"
-                  >
-                    Download &amp; Enable
-                  </button>
+                  <div className="flex items-center gap-2 pt-1 select-none">
+                    <select
+                      value={selectedModel}
+                      onChange={e => setSelectedModel(e.target.value)}
+                      className="p-1.5 rounded bg-bg-card border border-border-subtle text-[11px] text-text-primary outline-none font-bold cursor-pointer"
+                    >
+                      <option value="SmolLM2-135M-Instruct-q4f16_1-MLC">SmolLM2-135M (Speed / 135M)</option>
+                      <option value="SmolLM2-360M-Instruct-q4f16_1-MLC">SmolLM2-360M (Default / 360M)</option>
+                      <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen2.5-0.5B (Quality / 500M)</option>
+                    </select>
+                    <button
+                      onClick={() => handleEnableLocalAi(selectedModel)}
+                      className="px-3.5 py-1.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-[11px] font-bold transition-colors shrink-0"
+                    >
+                      Download &amp; Enable
+                    </button>
+                  </div>
                 </>
               )}
               {localAiStatus === 'loading' && (

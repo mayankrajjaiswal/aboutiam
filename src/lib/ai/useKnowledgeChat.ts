@@ -185,7 +185,7 @@ export function useKnowledgeChat() {
     }, 1200)
   }
 
-  const handleEnableLocalAi = async () => {
+  const handleEnableLocalAi = async (modelId?: string) => {
     setLocalAiStatus('loading')
     setLocalAiError(null)
     setLocalAiProgress(null)
@@ -196,7 +196,7 @@ export function useKnowledgeChat() {
         setLocalAiStatus('error')
         return
       }
-      const connector = createWebllmConnector()
+      const connector = createWebllmConnector(modelId)
       connectorRef.current = connector
       await connector.load((progress) => setLocalAiProgress(progress))
       setLocalAiStatus('ready')

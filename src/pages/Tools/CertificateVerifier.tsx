@@ -4,6 +4,7 @@ import ToolPageShell from '../../components/Tools/ToolPageShell'
 import BeginnerExpertExplainer from '../../components/Tools/BeginnerExpertExplainer'
 import { getToolBySlug } from '../../data/toolsRegistry'
 import { verifyCertificate, type SignedCertificate } from '../../lib/career/certificateSigner'
+import { isSignedCertificate } from '../../lib/utils/jsonGuard'
 
 const tool = getToolBySlug('certificate-verifier')!
 
@@ -15,11 +16,11 @@ export default function CertificateVerifier() {
   const [parsedPayload, setParsedPayload] = useState<SignedCertificate['payload'] | null>(null)
 
   const handleVerify = async () => {
-    let signed: SignedCertificate
+    let signed: unknown
     try {
       signed = JSON.parse(input)
-      if (!signed || typeof signed !== 'object' || !signed.payload || !signed.signature || !signed.publicKeyJwk) {
-        throw new Error('Missing required fields')
+      if (!isSignedCertificate(signed)) {
+        throw new Error('Malformed schema')
       }
     } catch {
       setVerdict('malformed')
@@ -99,6 +100,18 @@ export default function CertificateVerifier() {
                   {parsedPayload.totalModuleCount} modules and {parsedPayload.completedLabCount} labs, issued{' '}
                   {parsedPayload.issuedOn}.
                 </p>
+              )}
+              {verdict === 'valid' && (
+                <div className="pt-2 select-none">
+                  <a
+                    href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent('AboutIAM Certified Identity Specialist')}&organizationName=${encodeURIComponent('AboutIAM')}&certUrl=${encodeURIComponent('https://www.aboutiam.com/tools/certificate-verifier')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0a66c2] hover:bg-[#004182] text-white text-[11px] font-bold transition-all shadow-sm"
+                  >
+                    Add to LinkedIn Profile 🚀
+                  </a>
+                </div>
               )}
             </div>
           </div>

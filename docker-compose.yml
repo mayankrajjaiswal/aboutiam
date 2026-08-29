@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  aboutiam:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aboutiam/workspace:latest
+    container_name: aboutiam_workspace
+    ports:
+      - '8080:80'
+    restart: always
+    environment:
+      - NODE_ENV=production

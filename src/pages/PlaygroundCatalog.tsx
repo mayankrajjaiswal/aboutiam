@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses, Siren, Share2, Gamepad2 } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses, Siren, Share2, Gamepad2, Layers, Smartphone, Zap } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 import TaskFilterRow from '../components/TaskFilterRow'
 import { PLAYGROUND_TASK_TAGS } from '../data/playgroundTaskTags'
@@ -463,6 +463,48 @@ export default function PlaygroundCatalog() {
       desc: "Model three identity challenges unique to gaming and esports: cross-platform account linking with ban propagation, smurf/ban-evasion detection via device and behavioral signals, and continuous (not one-time) KYC for real-money wagering platforms.",
       icon: Gamepad2,
       link: "/playground/gaming-identity",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Post-Quantum Cryptography Handshake Simulator",
+      desc: "Step through classical vs. hybrid vs. pure post-quantum handshakes. Analyze key exchange sizes, signature overheads, and network packet fragmentation thresholds under FIPS 203/204 lattice cryptography.",
+      icon: Cpu,
+      link: "/playground/pqc-handshake",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Advanced Passkey Policy & Attestation Workbench",
+      desc: "Act as a Relying Party (RP) Security Admin configuring enterprise-grade FIDO2 / WebAuthn registration parameters. Enforce FIPS-restricted AAGUIDs, direct packed attestation anchors, and resident key storage rules.",
+      icon: KeySquare,
+      link: "/playground/passkey-policy",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Workload Identity Federation & OIDC Visualizer",
+      desc: "Ditch long-lived static API secrets. Secure your automated build pipelines (GitHub Actions, GitLab CI) using federated OIDC token handshakes with Cloud Providers.",
+      icon: GitBranch,
+      link: "/playground/workload-identity",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Multi-Cloud Overlapping IAM Policy Evaluator",
+      desc: "Step inside the heart of an enterprise Policy Evaluation Engine. Visualize and evaluate how Organization SCP boundaries, identity-based IAM permissions, and Resource policies combine to govern access.",
+      icon: Layers,
+      link: "/playground/cloud-policy-evaluator",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Dynamic Trust Framework & Verifiable Presentation Playground",
+      desc: "Explore the architecture of eIDAS 2.0 and the European Digital Identity (EUDI) Wallet. Selectively disclose claims, verify cryptographic SD-JWT signatures, and audit issuers against cross-border trust registries.",
+      icon: Smartphone,
+      link: "/playground/federated-vp",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "Autonomous Security Agent Simulation Playground",
+      desc: "Deploy autonomous Red Team and Blue Team AI security agents in simulated token-hijacking and redirect-hijacking arenas. Watch security enforcers dynamically adapt, detect anomalies, and apply cryptographic defenses.",
+      icon: Zap,
+      link: "/playground/autonomous-agent",
       badge: "Active (Advanced)",
     }
   ]

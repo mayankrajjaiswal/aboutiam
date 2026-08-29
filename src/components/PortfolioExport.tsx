@@ -178,7 +178,7 @@ export default function PortfolioExport() {
       )}
 
       <div className="p-3.5 rounded-lg bg-bg-sidebar border border-border-subtle/50 space-y-2">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="w-5 h-5 text-accent-secondary shrink-0" />
             <div>
@@ -186,12 +186,22 @@ export default function PortfolioExport() {
               <p className="text-[10px] text-text-secondary">A Web Crypto-signed JSON certificate you can check with the Certificate Verifier tool.</p>
             </div>
           </div>
-          <button
-            onClick={downloadCertificate}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-accent-secondary/30 text-accent-secondary hover:bg-accent-glow/40 text-[11px] font-bold transition-all shrink-0"
-          >
-            <Download className="w-3.5 h-3.5" /> Certificate
-          </button>
+          <div className="flex gap-2 shrink-0 select-none">
+            <a
+              href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent('AboutIAM Certified Identity Specialist')}&organizationName=${encodeURIComponent('AboutIAM')}&certUrl=${encodeURIComponent('https://www.aboutiam.com/tools/certificate-verifier')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0a66c2] hover:bg-[#004182] text-white text-[11px] font-bold transition-all"
+            >
+              Add to LinkedIn 🚀
+            </a>
+            <button
+              onClick={downloadCertificate}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-accent-secondary/30 text-accent-secondary hover:bg-accent-glow/40 text-[11px] font-bold transition-all"
+            >
+              <Download className="w-3.5 h-3.5" /> Certificate
+            </button>
+          </div>
         </div>
         <p className="text-[10px] text-text-muted leading-relaxed">
           This confirms the certificate's contents haven't been altered since AboutIAM generated it in your browser

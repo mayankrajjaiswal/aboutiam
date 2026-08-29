@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Award, Lightbulb, RotateCcw, Shield, HelpCircle, Radar } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { PacketCaptureOverlay } from './PacketCaptureOverlay'
 import type { PacketFrame } from '../usePacketCapture'
 
@@ -106,7 +107,13 @@ export function PlaygroundShell({
         {/* Left Interactive Playground Canvas */}
         <div className="lg:col-span-2 space-y-6">
           <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm">
-            {children}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+            >
+              {children}
+            </motion.div>
           </div>
         </div>
 

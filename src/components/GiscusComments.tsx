@@ -31,6 +31,7 @@ export default function GiscusComments({ term }: GiscusCommentsProps) {
     script.src = 'https://giscus.app/client.js'
     script.async = true
     script.crossOrigin = 'anonymous'
+    script.integrity = 'sha384-UwLZGbJGvkTzz0719+xEzUm/idqwzs0yZN8aB9Se5vUXHbyRyDWw9yqZTIsOsJ7x'
     script.setAttribute('data-repo', config.repo)
     script.setAttribute('data-repo-id', config.repoId)
     script.setAttribute('data-category', config.category)

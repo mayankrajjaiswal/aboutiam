@@ -25,14 +25,11 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Lint
-        run: npm run lint
-
       - name: Audit dependencies for vulnerabilities
         run: npm run audit:check
 
-      - name: Run Tests
-        run: npm run test
+      - name: Verify Codebase (Pre-flight checks)
+        run: npm run verify
 
       - name: Run Tests with Coverage
         run: npm run test:coverage

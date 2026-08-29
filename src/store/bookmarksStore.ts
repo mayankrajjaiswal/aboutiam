@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { createTelemetryStorage } from '../lib/utils/zustandTelemetry'
 
 export interface BookmarkedItem {
   id: string
@@ -29,7 +30,7 @@ export const useBookmarksStore = create<BookmarksState>()(
     }),
     {
       name: 'aboutiam-bookmarks',
-      storage: typeof window !== 'undefined' ? createJSONStorage(() => window.localStorage) : undefined,
+      storage: typeof window !== 'undefined' ? createJSONStorage(() => createTelemetryStorage('bookmarksStore', window.localStorage)) : undefined,
     }
   )
 )

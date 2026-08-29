@@ -157,6 +157,12 @@ const AccessRequestCart = lazy(() => import('./pages/Playgrounds/AccessRequestCa
 const RiskEngine = lazy(() => import('./pages/Playgrounds/RiskEngine'))
 const PamVaultingLab = lazy(() => import('./pages/Playgrounds/PamVaultingLab'))
 const HybridAdSyncLab = lazy(() => import('./pages/Playgrounds/HybridAdSyncLab'))
+const PqcHandshakeLab = lazy(() => import('./pages/Playgrounds/PqcHandshakeLab'))
+const PasskeyPolicyLab = lazy(() => import('./pages/Playgrounds/PasskeyPolicyLab'))
+const WorkloadIdentityFederation = lazy(() => import('./pages/Playgrounds/WorkloadIdentityFederation'))
+const CloudPolicyEvaluator = lazy(() => import('./pages/Playgrounds/CloudPolicyEvaluator'))
+const FederatedVpPlayground = lazy(() => import('./pages/Playgrounds/FederatedVpPlayground'))
+const AutonomousAgentLab = lazy(() => import('./pages/Playgrounds/AutonomousAgentLab'))
 const CaseStudyCenter = lazy(() => import('./pages/CaseStudyCenter'))
 const IdentityDecisionMatrix = lazy(() => import('./pages/IdentityDecisionMatrix'))
 const ThreatModelingStudio = lazy(() => import('./pages/ThreatModelingStudio'))
@@ -330,6 +336,12 @@ export default function App() {
               <Route path="/playground/ciem-explorer" element={<CiemExplorer />} />
               <Route path="/playground/legacy-federation" element={<LegacyFederationLab />} />
               <Route path="/playground/spatial-identity-lab" element={<SpatialIdentityLab />} />
+              <Route path="/playground/pqc-handshake" element={<PqcHandshakeLab />} />
+              <Route path="/playground/passkey-policy" element={<PasskeyPolicyLab />} />
+              <Route path="/playground/workload-identity" element={<WorkloadIdentityFederation />} />
+              <Route path="/playground/cloud-policy-evaluator" element={<CloudPolicyEvaluator />} />
+              <Route path="/playground/federated-vp" element={<FederatedVpPlayground />} />
+              <Route path="/playground/autonomous-agent" element={<AutonomousAgentLab />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

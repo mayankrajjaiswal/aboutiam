@@ -1,6 +1,4 @@
 import { execSync } from 'child_process'
-import chalk from 'chalk' // Note: check if chalk is available, if not, standard ANSI codes work fine.
-// We can use native ANSI color codes to remain dependency-free!
 
 const colors = {
   reset: '\x1b[0m',

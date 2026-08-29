@@ -386,6 +386,18 @@ export default function SecurityBulletins() {
             </pre>
           </div>
 
+          <div className="bg-bg-sidebar border border-border-subtle rounded-xl p-4 text-xs text-text-secondary select-none text-left">
+            💡 <span className="font-bold">Enjoyed this post-mortem analysis?</span> Never miss out on future identity security alerts and bulletins by{' '}
+            <a
+              href="https://follow.it/aboutiam-identity-and-access-management-academy?leanpub"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent-primary hover:text-accent-hover font-black underline"
+            >
+              following our feed
+            </a>!
+          </div>
+
           <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-lg">
             <GiscusComments term={`bulletin-${bulletin.id}`} />
           </div>

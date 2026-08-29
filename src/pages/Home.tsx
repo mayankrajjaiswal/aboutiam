@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart } from 'lucide-react'
+import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart, CheckCircle2 } from 'lucide-react'
 import GoogleDriveSync from '../components/GoogleDriveSync'
 import StudyPackDownload from '../components/StudyPackDownload'
 import DailyPuzzleWidget from '../components/DailyPuzzleWidget'
@@ -11,6 +11,7 @@ import StartHereWizard from '../components/StartHereWizard'
 
 export default function Home() {
   const [isStartHereOpen, setIsStartHereOpen] = useState(false)
+  const [isSubscribed, setIsSubscribed] = useState(false)
 
   return (
     <div className="space-y-16 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -501,26 +502,40 @@ export default function Home() {
             Get automated email notifications whenever we publish new tools, CVE research patches, or bulletins (delivered securely via Follow.it RSS).
           </p>
         </div>
-        <form
-          action="https://api.follow.it/subscription-form/bDNTNU81T1MrZ0g3OWJheVRZS3pWOC9oalpVWXlYSGNVVTRGc3JFQTdQcTFWOTl1WWIvN3RNYk1NcVFXWGljUUhJNHNXTnBUYmdCeVZoaDgxbm9tUWs5N3B0bEEwbEg5ZVROQXhIT0JYQUFSNUZ2S2gxVEh0R3NpLzR3NmdFSit8YllyU1I0SUtkSUdjOHFha3FuK3BvNmc4RlNORk8za0ViYXc5UWszcXdzQT0=/8"
-          method="post"
-          target="_blank"
-          className="flex gap-2 w-full md:max-w-md"
-        >
-          <input 
-            type="email" 
-            name="email"
-            required
-            placeholder="Enter your email"
-            className="flex-grow p-2.5 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary font-semibold"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-md shrink-0"
+
+        {isSubscribed ? (
+          <div className="p-4 rounded-xl bg-status-success/10 border border-status-success/20 text-status-success flex items-center gap-3 animate-in fade-in zoom-in duration-300 w-full md:max-w-md text-xs font-bold">
+            <CheckCircle2 className="w-5 h-5 shrink-0 animate-bounce" />
+            <div className="text-left">
+              <p className="font-black text-text-primary">Subscription Sent!</p>
+              <p className="text-[11px] text-text-secondary leading-relaxed mt-0.5">Please check your email inbox to confirm your opt-in subscription!</p>
+            </div>
+          </div>
+        ) : (
+          <form
+            action="https://api.follow.it/subscription-form/bDNTNU81T1MrZ0g3OWJheVRZS3pWOC9oalpVWXlYSGNVVTRGc3JFQTdQcTFWOTl1WWIvN3RNYk1NcVFXWGljUUhJNHNXTnBUYmdCeVZoaDgxbm9tUWs5N3B0bEEwbEg5ZVROQXhIT0JYQUFSNUZ2S2gxVEh0R3NpLzR3NmdFSit8YllyU1I0SUtkSUdjOHFha3FuK3BvNmc4RlNORk8za0ViYXc5UWszcXdzQT0=/8"
+            method="post"
+            target="followit_hidden_iframe"
+            onSubmit={() => setIsSubscribed(true)}
+            className="flex gap-2 w-full md:max-w-md"
           >
-            Subscribe
-          </button>
-        </form>
+            <input 
+              type="email" 
+              name="email"
+              required
+              placeholder="Enter your email"
+              className="flex-grow p-2.5 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary font-semibold"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-md shrink-0"
+            >
+              Subscribe
+            </button>
+          </form>
+        )}
+        {/* Hidden target iframe to capture the post redirection seamlessly and prevent page navigation */}
+        <iframe name="followit_hidden_iframe" style={{ display: 'none' }}></iframe>
       </section>
     </div>
   )

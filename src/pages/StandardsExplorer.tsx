@@ -226,8 +226,9 @@ export default function StandardsExplorer() {
             <ShieldAlert className="w-4 h-4 text-status-warning shrink-0 mt-0.5" />
             <span>Consumer mDL/wallet rollout status shifts quickly as states launch pilots. Always re-verify against each entry's official source link — this is a directional snapshot, refreshed quarterly, not a live feed.</span>
           </div>
-          <div className="rounded-2xl border border-border-subtle bg-bg-card overflow-x-auto">
-            <table className="w-full text-xs">
+          <div className="relative group/scroll">
+            <div className="rounded-2xl border border-border-subtle bg-bg-card overflow-x-auto">
+              <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-border-subtle text-left text-[10px] font-black text-text-muted uppercase tracking-wider">
                   <th className="p-3">State</th>
@@ -270,7 +271,11 @@ export default function StandardsExplorer() {
               </tbody>
             </table>
           </div>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none bg-accent-primary text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md tracking-wider flex items-center gap-1 opacity-100 group-hover/scroll:opacity-0 transition-opacity duration-300 select-none animate-pulse-slow">
+            Swipe ↔
+          </div>
         </div>
+      </div>
       ) : !activeStandardId ? (
         <div className="space-y-6">
 

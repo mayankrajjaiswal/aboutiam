@@ -360,79 +360,84 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
                     Select at least 2 vendors from the list on the left to see a comparison.
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs border-collapse">
-                      <thead>
-                        <tr>
-                          <th className="p-3 text-[10px] font-black text-text-muted uppercase tracking-wider border-b border-border-subtle w-40">Attribute</th>
-                          {compareSelection.map((key) => (
-                            <th key={key} className="p-3 border-b border-b-border-subtle border-l border-l-border-subtle/50 min-w-55">
-                              <div className="flex items-center justify-between gap-2">
-                                <span className="font-black text-text-primary text-sm flex items-center gap-1.5">
-                                  <span>{VENDOR_CATALOG[key].logo || '🏢'}</span>
-                                  {VENDOR_CATALOG[key].fullName.split(' (')[0].split(' by ')[0]}
-                                </span>
-                                <button
-                                  onClick={() => toggleCompareVendor(key)}
-                                  className="text-[9px] text-status-danger hover:underline font-bold shrink-0"
-                                  title="Remove from comparison"
-                                >
-                                  Remove
-                                </button>
-                              </div>
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Category</td>
-                          {compareSelection.map((key) => (
-                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].category}</td>
-                          ))}
-                        </tr>
-                        <tr>
-                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Licensing Model</td>
-                          {compareSelection.map((key) => (
-                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].licensingModel}</td>
-                          ))}
-                        </tr>
-                        <tr>
-                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Key Strengths</td>
-                          {compareSelection.map((key) => (
-                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top">
-                              <ul className="space-y-1 list-disc list-inside text-text-secondary">
-                                {VENDOR_CATALOG[key].strengths.slice(0, 4).map((s, i) => <li key={i} className="marker:text-status-success">{s}</li>)}
-                              </ul>
-                            </td>
-                          ))}
-                        </tr>
-                        <tr>
-                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Engineering Tradeoffs</td>
-                          {compareSelection.map((key) => (
-                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top">
-                              <ul className="space-y-1 list-disc list-inside text-text-secondary">
-                                {VENDOR_CATALOG[key].limitations.slice(0, 4).map((s, i) => <li key={i} className="marker:text-status-danger">{s}</li>)}
-                              </ul>
-                            </td>
-                          ))}
-                        </tr>
-                        <tr>
-                          <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Certifications</td>
-                          {compareSelection.map((key) => (
-                            <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].certifications.length} available</td>
-                          ))}
-                        </tr>
-                        <tr>
-                          <td className="p-3 font-bold text-text-secondary align-top">Target Industries</td>
-                          {compareSelection.map((key) => (
-                            <td key={key} className="p-3 border-l border-border-subtle/30 align-top text-text-secondary">
-                              {VENDOR_CATALOG[key].targetIndustries?.join(', ') || '—'}
-                            </td>
-                          ))}
-                        </tr>
-                      </tbody>
-                    </table>
+                  <div className="relative group/scroll border border-border-subtle rounded-xl bg-bg-card">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr>
+                            <th className="p-3 text-[10px] font-black text-text-muted uppercase tracking-wider border-b border-border-subtle w-40">Attribute</th>
+                            {compareSelection.map((key) => (
+                              <th key={key} className="p-3 border-b border-b-border-subtle border-l border-l-border-subtle/50 min-w-55">
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="font-black text-text-primary text-sm flex items-center gap-1.5">
+                                    <span>{VENDOR_CATALOG[key].logo || '🏢'}</span>
+                                    {VENDOR_CATALOG[key].fullName.split(' (')[0].split(' by ')[0]}
+                                  </span>
+                                  <button
+                                    onClick={() => toggleCompareVendor(key)}
+                                    className="text-[9px] text-status-danger hover:underline font-bold shrink-0"
+                                    title="Remove from comparison"
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Category</td>
+                            {compareSelection.map((key) => (
+                              <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].category}</td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Licensing Model</td>
+                            {compareSelection.map((key) => (
+                              <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].licensingModel}</td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Key Strengths</td>
+                            {compareSelection.map((key) => (
+                              <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top">
+                                <ul className="space-y-1 list-disc list-inside text-text-secondary">
+                                  {VENDOR_CATALOG[key].strengths.slice(0, 4).map((s, i) => <li key={i} className="marker:text-status-success">{s}</li>)}
+                                </ul>
+                              </td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Engineering Tradeoffs</td>
+                            {compareSelection.map((key) => (
+                              <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top">
+                                <ul className="space-y-1 list-disc list-inside text-text-secondary">
+                                  {VENDOR_CATALOG[key].limitations.slice(0, 4).map((s, i) => <li key={i} className="marker:text-status-danger">{s}</li>)}
+                                </ul>
+                              </td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td className="p-3 font-bold text-text-secondary border-b border-border-subtle/50 align-top">Certifications</td>
+                            {compareSelection.map((key) => (
+                              <td key={key} className="p-3 border-b border-b-border-subtle/50 border-l border-l-border-subtle/30 align-top text-text-secondary">{VENDOR_CATALOG[key].certifications.length} available</td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td className="p-3 font-bold text-text-secondary align-top">Target Industries</td>
+                            {compareSelection.map((key) => (
+                              <td key={key} className="p-3 border-l border-border-subtle/30 align-top text-text-secondary">
+                                {VENDOR_CATALOG[key].targetIndustries?.join(', ') || '—'}
+                              </td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none bg-accent-primary text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-md tracking-wider flex items-center gap-1 opacity-100 group-hover/scroll:opacity-0 transition-opacity duration-300 select-none animate-pulse-slow">
+                      Swipe ↔
+                    </div>
                   </div>
                 )}
               </div>

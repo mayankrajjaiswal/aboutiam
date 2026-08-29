@@ -3,6 +3,7 @@ import {
   BookOpen, CheckCircle2, ChevronDown, ChevronUp, HelpCircle,
   Info, AwardIcon, Sparkles, LayoutGrid, RotateCcw, Briefcase
 } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { usePreferenceStore, type RoleTrackId } from '../store/preferenceStore'
 import { ACADEMY_TRACKS, type Track } from '../data/academyTracks'
 import { touchAcademyModule } from '../lib/home/lastTouched'
@@ -253,10 +254,12 @@ export default function Learn() {
             <span className="text-accent-primary">{globalStats.completed} / {globalStats.total} Done</span>
           </div>
           <div className="relative w-full h-2.5 bg-bg-sidebar rounded-full overflow-hidden border border-border-subtle/50">
-            <div 
-              style={{ width: `${globalStats.pct}%` }}
-              className="h-full bg-gradient-to-r from-accent-primary to-accent-secondary rounded-full transition-all duration-700"
-            ></div>
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: `${globalStats.pct}%` }}
+              transition={{ type: "spring", stiffness: 80, damping: 12 }}
+              className="h-full bg-gradient-to-r from-accent-primary to-accent-secondary rounded-full"
+            />
           </div>
           <div className="flex justify-between items-center text-[10px] font-bold text-text-muted uppercase">
             <span>Progress: {globalStats.pct}%</span>

@@ -185,6 +185,8 @@ export default function App() {
   const { initializeTheme } = useThemeStore()
   const initializeAccessibilityPreferences = usePreferenceStore((s) => s.initializeAccessibilityPreferences)
   const isDesktopSidebarCollapsed = useLayoutStore((s) => s.isDesktopSidebarCollapsed)
+  const isZenMode = useLayoutStore((s) => s.isZenMode)
+  const toggleZenMode = useLayoutStore((s) => s.toggleZenMode)
 
   useEffect(() => {
     const cleanup = initializeTheme()
@@ -202,19 +204,19 @@ export default function App() {
       <ScrollToTop />
       <div className="min-h-screen bg-bg-base text-text-primary flex transition-all">
         {/* Persistent Desktop Sidebar */}
-        <Sidebar />
+        {!isZenMode && <Sidebar />}
 
         {/* Sliding Responsive Mobile Sidebar Drawer */}
-        <Sidebar isMobile={true} />
+        {!isZenMode && <Sidebar isMobile={true} />}
 
         {/* Core Main Panel */}
-        <div className={`flex-grow min-w-0 min-h-screen flex flex-col relative transition-[padding] duration-300 ${isDesktopSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
+        <div className={`flex-grow min-w-0 min-h-screen flex flex-col relative transition-[padding] duration-300 ${isZenMode ? 'pl-0 lg:pl-0' : isDesktopSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
           {/* Top Fixed Floating Header */}
-          <Header />
+          {!isZenMode && <Header />}
 
           {/* Main Main Scroll Container */}
-          <main className="flex-grow pt-20 pb-20 lg:pb-12 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto transition-all">
-            <BreadcrumbNav />
+          <main className={`flex-grow pb-20 lg:pb-12 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto transition-all ${isZenMode ? 'pt-4' : 'pt-20'}`}>
+            {!isZenMode && <BreadcrumbNav />}
             <Suspense fallback={<PageLoadingFallback />}>
               <Routes>
               <Route path="/" element={<Home />} />
@@ -377,7 +379,20 @@ export default function App() {
         </div>
 
         {/* Fixed Mobile Bottom Tab Bar (below lg breakpoint only) */}
-        <MobileBottomNav />
+        {!isZenMode && <MobileBottomNav />}
+
+        {/* Floating Exit Zen Mode Button */}
+        {isZenMode && (
+          <button
+            onClick={toggleZenMode}
+            className="fixed bottom-6 right-6 z-50 bg-bg-card hover:bg-bg-sidebar border border-border-subtle p-3.5 rounded-full shadow-2xl flex items-center gap-2 hover-cyber-glow transition-all animate-bounce"
+            title="Exit Zen Presentation Mode"
+          >
+            <span className="text-xs font-black text-accent-primary uppercase tracking-wider flex items-center gap-1.5 px-1.5">
+              🖥️ Exit Presentation Mode
+            </span>
+          </button>
+        )}
       </div>
     </Router>
   )

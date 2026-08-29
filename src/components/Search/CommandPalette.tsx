@@ -278,7 +278,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-md"
+            className="fixed inset-0 bg-slate-950/75 backdrop-blur-lg"
           />
 
           <div className="flex min-h-screen items-start justify-center p-4 pt-[12vh]">
@@ -289,7 +289,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
               onKeyDown={handleKeyDown}
-              className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-border-subtle bg-bg-card shadow-2xl flex flex-col max-h-[75vh]"
+              className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-accent-primary/25 bg-bg-card shadow-2xl shadow-accent-primary/5 flex flex-col max-h-[75vh] hover-cyber-glow"
             >
               {/* Terminal search inputs */}
               <div className="flex items-center gap-3 border-b border-border-subtle bg-bg-nested/40 px-4 py-3.5">

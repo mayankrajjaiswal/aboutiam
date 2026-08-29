@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss, HelpCircle, Layers, Bell, Lightbulb } from 'lucide-react'
+import { Menu, Sun, Moon, Laptop, PanelLeftClose, PanelLeftOpen, Search, Plane, Rss, HelpCircle, Layers, Bell, Lightbulb, Presentation } from 'lucide-react'
 import { useThemeStore } from '../../store/themeStore'
 import { useLayoutStore } from '../../store/layoutStore'
 import { useCommandPaletteStore } from '../../store/commandPaletteStore'
@@ -45,7 +45,7 @@ function buildBreadcrumbJsonLd(pathname: string, pageTitle: string) {
 export default function Header() {
   const location = useLocation()
   const { theme, setTheme } = useThemeStore()
-  const { toggleMobileSidebar, isDesktopSidebarCollapsed, toggleDesktopSidebarCollapsed } = useLayoutStore()
+  const { toggleMobileSidebar, isDesktopSidebarCollapsed, toggleDesktopSidebarCollapsed, toggleZenMode } = useLayoutStore()
 
   const pageMeta = getRouteMeta(location.pathname)
   const isHome = location.pathname === '/'
@@ -191,6 +191,16 @@ export default function Header() {
         >
           {renderThemeIcon()}
           <span className="hidden sm:inline">{getThemeLabel()}</span>
+        </button>
+
+        {/* Zen Mode / Presentation Mode Toggle */}
+        <button
+          onClick={toggleZenMode}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary text-xs font-semibold transition-colors focus:outline-none cursor-pointer hover-cyber-glow"
+          title="Enter Zen Presentation Mode (Full Screen with hidden Sidebar & Header)"
+        >
+          <Presentation className="w-4 h-4 text-accent-primary animate-pulse-slow" />
+          <span className="hidden md:inline">Zen Mode</span>
         </button>
 
         {/* Replay Guided Tour */}

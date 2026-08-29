@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CheckSquare, ShieldCheck } from 'lucide-react'
+import { motion } from 'framer-motion'
 import BookmarkButton from '../components/BookmarkButton'
 import ContentFeedback from '../components/ContentFeedback'
 import { CHEAT_SHEETS, SHEET_CATEGORIES, type SheetDifficulty } from '../data/cheatSheetsData'
@@ -139,15 +140,17 @@ export default function CheatSheets() {
                 <div className="relative w-12 h-12 flex items-center justify-center">
                   <svg className="absolute inset-0 w-full h-full transform -rotate-90">
                     <circle cx="24" cy="24" r="20" fill="none" className="stroke-border-subtle" strokeWidth="4" />
-                    <circle
+                    <motion.circle
                       cx="24"
                       cy="24"
                       r="20"
                       fill="none"
-                      className="stroke-status-success transition-all duration-1000"
+                      className="stroke-status-success"
                       strokeWidth="4"
                       strokeDasharray={2 * Math.PI * 20}
-                      strokeDashoffset={2 * Math.PI * 20 * (1 - pct / 100)}
+                      initial={{ strokeDashoffset: 2 * Math.PI * 20 }}
+                      animate={{ strokeDashoffset: 2 * Math.PI * 20 * (1 - pct / 100) }}
+                      transition={{ type: "spring", stiffness: 80, damping: 12 }}
                       strokeLinecap="round"
                     />
                   </svg>

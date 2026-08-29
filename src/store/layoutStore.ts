@@ -7,6 +7,9 @@ interface LayoutState {
   toggleMobileSidebar: () => void
   isDesktopSidebarCollapsed: boolean
   toggleDesktopSidebarCollapsed: () => void
+  isZenMode: boolean
+  setZenMode: (isZen: boolean) => void
+  toggleZenMode: () => void
 }
 
 export const useLayoutStore = create<LayoutState>()(
@@ -17,6 +20,9 @@ export const useLayoutStore = create<LayoutState>()(
       toggleMobileSidebar: () => set((state) => ({ isMobileSidebarOpen: !state.isMobileSidebarOpen })),
       isDesktopSidebarCollapsed: false,
       toggleDesktopSidebarCollapsed: () => set((state) => ({ isDesktopSidebarCollapsed: !state.isDesktopSidebarCollapsed })),
+      isZenMode: false,
+      setZenMode: (isZen) => set({ isZenMode: isZen }),
+      toggleZenMode: () => set((state) => ({ isZenMode: !state.isZenMode })),
     }),
     {
       name: 'aboutiam-sidebar-collapsed',

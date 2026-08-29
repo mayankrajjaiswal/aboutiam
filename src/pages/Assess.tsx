@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   Award, Download, LineChart, ShieldCheck,
-  RefreshCw, Clipboard, ArrowRight, Check, Link2, FileText
+  RefreshCw, Clipboard, ArrowRight, Check, Link2, FileText, Presentation
 } from 'lucide-react'
 import { questions, computeScores, getMaturityTier, encodeAnswers, decodeAnswers } from '../lib/assess/scoring'
 import { mapScoreToGartnerLevel, estimatePeerPercentile, PEER_BENCHMARK_SOURCE_NOTE, GARTNER_LEVELS } from '../lib/assess/maturityBenchmark'
@@ -21,6 +21,7 @@ export default function Assess() {
   const [answers, setAnswers] = useState<Record<number, number>>(() => sharedAnswers ?? {})
   const [showResults, setShowResults] = useState(!!sharedAnswers)
   const [isDownloaded, setIsDownloaded] = useState(false)
+  const [isBoardSlideDownloaded, setIsBoardSlideDownloaded] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
   const [isArticleDownloaded, setIsArticleDownloaded] = useState(false)
   const isSharedReport = !!sharedAnswers
@@ -181,6 +182,135 @@ export default function Assess() {
 
     setIsDownloaded(true)
     setTimeout(() => setIsDownloaded(false), 2000)
+  }
+
+  // Generate high-resolution presentation board slide (16:9 widescreen layout)
+  const triggerBoardSlideDownload = () => {
+    const escapeXml = (str: string) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    const tierText = escapeXml(maturityTier.label)
+    const scoreText = escapeXml(`Security Posture: ${percentage}% | Average Score: ${averageScore}/5.0`)
+    
+    // Construct 16:9 Widescreen slide SVG content
+    const svgContent = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" style="background:#070a13; font-family:'Inter', sans-serif;">
+      <!-- Gradient Definitions -->
+      <defs>
+        <linearGradient id="primaryGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#3b82f6" />
+          <stop offset="100%" stop-color="#14b8a6" />
+        </linearGradient>
+        <linearGradient id="cardBg" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0d1222" />
+          <stop offset="100%" stop-color="#0a0e1a" />
+        </linearGradient>
+      </defs>
+
+      <!-- Background Grid Pattern -->
+      <rect width="1920" height="1080" fill="#070a13"/>
+      <path d="M 0,90 L 1920,90 M 0,990 L 1920,990" stroke="#1e293b" stroke-width="1" stroke-dasharray="5,5"/>
+
+      <!-- Slide Header -->
+      <text x="80" y="80" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="3" uppercase="true">IDENTITY GOVERNANCE &amp; COMPLIANCE BRIEFING</text>
+      <text x="80" y="130" fill="#f8fafc" font-size="36" font-weight="900" letter-spacing="-1">EXECUTIVE IAM POSTURE ASSESSMENT</text>
+      <text x="1840" y="80" fill="#ef4444" font-size="14" font-weight="900" letter-spacing="2" text-anchor="end">⚠️ CONFIDENTIAL — FOR BOARD REVIEW ONLY</text>
+
+      <!-- LEFT SIDEBAR: Overall Performance KPI Card -->
+      <g transform="translate(80, 200)">
+        <rect width="520" height="710" rx="20" fill="url(#cardBg)" stroke="#3b82f6" stroke-width="2" />
+        <!-- Score Dial Header -->
+        <text x="40" y="60" fill="#3b82f6" font-size="14" font-weight="800" letter-spacing="2">MATURITY INDEX RATING</text>
+        
+        <!-- Large Score Dial Graphic -->
+        <circle cx="260" cy="230" r="110" fill="none" stroke="#1e293b" stroke-width="16" />
+        <circle cx="260" cy="230" r="110" fill="none" stroke="url(#primaryGlow)" stroke-width="16" stroke-dasharray="691" stroke-dashoffset="${691 - (691 * percentage) / 100}" stroke-linecap="round" />
+        <text x="260" y="245" fill="#f8fafc" font-size="54" font-weight="900" text-anchor="middle">${percentage}%</text>
+
+        <!-- Rating Pill -->
+        <text x="260" y="410" fill="#38bdf8" font-size="28" font-weight="900" text-anchor="middle" uppercase="true">${tierText}</text>
+        <text x="260" y="440" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">${scoreText}</text>
+
+        <!-- Executive Narrative Summary -->
+        <rect x="30" y="480" width="460" height="190" rx="12" fill="#070a13" stroke="#1e293b" />
+        <text x="50" y="520" fill="#94a3b8" font-size="14" font-weight="bold" letter-spacing="1">ARCHITECT'S ANALYSIS</text>
+        <text x="50" y="555" fill="#e2e8f0" font-size="14" font-weight="medium" leading="22">
+          <tspan x="50" dy="0">This self-audit evaluates our capability across five core</tspan>
+          <tspan x="50" dy="25">identity pillars (directory, MFA, delegation, access</tspan>
+          <tspan x="50" dy="25">policies, and session trust). The current footprint</tspan>
+          <tspan x="50" dy="25">attests to an optimized, risk-mitigated environment.</tspan>
+        </text>
+      </g>
+
+      <!-- CENTER SECTION: Pillar-By-Pillar Maturity Graph -->
+      <g transform="translate(640, 200)">
+        <rect width="600" height="710" rx="20" fill="url(#cardBg)" stroke="#1e293b" stroke-width="1.5" />
+        <text x="40" y="60" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="2">PILLAR DIMENSION MATURITY GAUGE</text>
+
+        <!-- Bars Rendering Grid -->
+        ${questions.map((q, i) => {
+          const val = answers[i] || 1
+          const barHeight = (val / 5) * 380
+          const yPos = 560 - barHeight
+          const xPos = 65 + (i * 105)
+          const dimLabel = q.dimension.length > 14 ? q.dimension.substring(0, 11) + '...' : q.dimension
+          return `
+            <!-- Background track -->
+            <rect x="${xPos}" y="180" width="48" height="380" rx="8" fill="#070a13" stroke="#1e293b" stroke-width="1" />
+            <!-- Active value -->
+            <rect x="${xPos}" y="${yPos}" width="48" height="${barHeight}" rx="8" fill="url(#primaryGlow)" />
+            <!-- Floating Text Value -->
+            <text x="${xPos + 24}" y="${yPos - 15}" fill="#f8fafc" font-size="16" font-weight="900" text-anchor="middle">${val.toFixed(1)}</text>
+            <!-- X-Axis Labels -->
+            <text x="${xPos + 24}" y="595" fill="#f8fafc" font-size="12" font-weight="bold" text-anchor="middle">${escapeXml(dimLabel)}</text>
+            <text x="${xPos + 24}" y="618" fill="#64748b" font-size="10" font-weight="700" text-anchor="middle">Dim ${i + 1}</text>
+          `
+        }).join('')}
+
+        <!-- Peer Average Line Marker -->
+        <line x1="40" y1="370" x2="560" y2="370" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4" />
+        <text x="550" y="360" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="end">PEER MEDIAN (2.5)</text>
+      </g>
+
+      <!-- RIGHT COLUMN: Strategic Remediation Plan -->
+      <g transform="translate(1280, 200)">
+        <rect width="560" height="710" rx="20" fill="url(#cardBg)" stroke="#1e293b" stroke-width="1.5" />
+        <text x="40" y="60" fill="#94a3b8" font-size="14" font-weight="800" letter-spacing="2">IMMEDIATE ACTION BOARD DIRECTIVES</text>
+
+        <!-- Action Items list -->
+        ${questions.map((q, i) => {
+          const selectedOpt = q.options.find(o => o.score === answers[i]) || q.options[0]
+          const label = escapeXml(q.dimension)
+          const remediation = escapeXml(selectedOpt.remediation)
+          const truncatedRemediation = remediation.length > 56 ? remediation.substring(0, 53) + '...' : remediation
+          const yOffset = 150 + (i * 105)
+          return `
+            <!-- Indicator Icon -->
+            <circle cx="50" cy="${yOffset + 10}" r="16" fill="#3b82f6" fill-opacity="0.1" stroke="#3b82f6" stroke-width="1" />
+            <text x="50" y="${yOffset + 15}" fill="#38bdf8" font-size="13" font-weight="bold" text-anchor="middle">${i + 1}</text>
+            
+            <text x="85" y="${yOffset + 5}" fill="#f8fafc" font-size="14" font-weight="bold">${label}</text>
+            <text x="85" y="${yOffset + 26}" fill="#94a3b8" font-size="12" font-weight="medium">${truncatedRemediation}</text>
+            <line x1="40" y1="${yOffset + 54}" x2="520" y2="${yOffset + 54}" stroke="#1e293b" stroke-width="1" />
+          `
+        }).join('')}
+      </g>
+
+      <!-- Footer Metadata / Signoff -->
+      <text x="80" y="1030" fill="#64748b" font-size="12" font-weight="600" letter-spacing="1">GENERATED VIA WWW.ABOUTIAM.COM · MIT LICENSE EDUCATIONAL WORKSPACE</text>
+      <text x="1840" y="1030" fill="#64748b" font-size="12" font-weight="700" letter-spacing="1" text-anchor="end">SLIDE 1 OF 1 · ALL RIGHTS RESERVED</text>
+    </svg>
+    `
+
+    // Generate blob and download natively
+    const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = 'aboutiam_board_maturity_slide.svg'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    setIsBoardSlideDownloaded(true)
+    setTimeout(() => setIsBoardSlideDownloaded(false), 2000)
   }
 
   return (
@@ -402,6 +532,13 @@ export default function Assess() {
                 >
                   {isDownloaded ? <Check className="w-4 h-4 text-white" /> : <Download className="w-4 h-4" />}
                   {isDownloaded ? 'Roadmap Downloaded!' : 'Download SVG Roadmap'}
+                </button>
+                <button
+                  onClick={triggerBoardSlideDownload}
+                  className="px-4 py-2.5 rounded-lg border border-accent-primary/20 hover:border-accent-primary bg-bg-sidebar hover:bg-accent-glow text-accent-primary text-xs font-bold transition-all hover-cyber-glow flex items-center gap-1.5"
+                >
+                  {isBoardSlideDownloaded ? <Check className="w-4 h-4 text-accent-primary" /> : <Presentation className="w-4 h-4 text-accent-primary animate-pulse-slow" />}
+                  {isBoardSlideDownloaded ? 'Board Slide Exported!' : 'Export for Board Slide (16:9)'}
                 </button>
                 <button
                   onClick={copyShareableLink}

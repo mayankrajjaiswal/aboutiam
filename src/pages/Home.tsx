@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart, CheckCircle2 } from 'lucide-react'
+import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart, CheckCircle2, Lock } from 'lucide-react'
 import GoogleDriveSync from '../components/GoogleDriveSync'
 import StudyPackDownload from '../components/StudyPackDownload'
 import DailyPuzzleWidget from '../components/DailyPuzzleWidget'
@@ -84,7 +84,7 @@ export default function Home() {
       {/* Dual-Track Visual Map (Beginner vs. Expert) */}
       <section className="grid md:grid-cols-2 gap-8 pt-6">
         {/* Beginner's Track Card */}
-        <div className="relative group p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm hover:shadow-md transition-all flex flex-col justify-between overflow-hidden">
+        <div className="relative group p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-accent-primary/5 rounded-full blur-2xl group-hover:bg-accent-primary/10 transition-all"></div>
           <div className="space-y-4 relative z-10">
             <div className="w-12 h-12 rounded-xl bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -111,7 +111,7 @@ export default function Home() {
         </div>
 
         {/* Expert's Track Card */}
-        <div className="relative group p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm hover:shadow-md transition-all flex flex-col justify-between overflow-hidden">
+        <div className="relative group p-8 rounded-2xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-accent-secondary/5 rounded-full blur-2xl group-hover:bg-accent-secondary/10 transition-all"></div>
           <div className="space-y-4 relative z-10">
             <div className="w-12 h-12 rounded-xl bg-accent-glow text-accent-secondary flex items-center justify-center border border-accent-secondary/10">
@@ -151,7 +151,7 @@ export default function Home() {
           {/* Academy Card */}
           <Link
             to="/learn"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -172,7 +172,7 @@ export default function Home() {
           {/* Playgrounds Card */}
           <Link
             to="/playground"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -193,7 +193,7 @@ export default function Home() {
           {/* Security Tools Card */}
           <Link
             to="/tools"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -214,7 +214,7 @@ export default function Home() {
           {/* GRC Assessments Card */}
           <Link
             to="/assess"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -235,7 +235,7 @@ export default function Home() {
           {/* AI Architect Assistant Card */}
           <Link
             to="/assistant"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -256,7 +256,7 @@ export default function Home() {
           {/* Certification Hub Card */}
           <Link
             to="/certifications"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -289,7 +289,7 @@ export default function Home() {
           {/* Architecture Center */}
           <Link
             to="/architecture"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -310,7 +310,7 @@ export default function Home() {
           {/* Design Patterns */}
           <Link
             to="/patterns"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -331,7 +331,7 @@ export default function Home() {
           {/* Identity Timeline */}
           <Link
             to="/timeline"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -352,7 +352,7 @@ export default function Home() {
           {/* Vendor Center */}
           <Link
             to="/vendor"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -373,7 +373,7 @@ export default function Home() {
           {/* Research & CVEs */}
           <Link
             to="/research"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -394,7 +394,7 @@ export default function Home() {
           {/* Threat Intel & Bulletins */}
           <Link
             to="/bulletins"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -415,7 +415,7 @@ export default function Home() {
           {/* Events & Conferences */}
           <Link
             to="/events"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -436,7 +436,7 @@ export default function Home() {
           {/* Industry Reports */}
           <Link
             to="/reports"
-            className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -453,6 +453,63 @@ export default function Home() {
               Browse Reports <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </div>
           </Link>
+        </div>
+      </section>
+
+      {/* Executive Sovereign Value Proposition Panel */}
+      <section className="p-8 rounded-2xl bg-gradient-to-br from-bg-card to-bg-sidebar border border-border-subtle shadow-sm flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden select-none hover-cyber-glow">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="space-y-4 max-w-2xl relative z-10">
+          <span className="text-[10px] bg-accent-glow text-accent-primary border border-accent-primary/20 px-2.5 py-0.5 rounded-full font-bold font-mono uppercase tracking-wider">
+            Sovereign Security Architecture
+          </span>
+          <h2 className="text-3xl font-extrabold tracking-tight text-text-primary">Why Choose AboutIAM?</h2>
+          <p className="text-sm text-text-secondary leading-relaxed">
+            AboutIAM is engineered on three core principles of professional integrity, making it the perfect platform for enterprise developers, consultants, and security teams.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-6 pt-2">
+            <div className="space-y-2">
+              <div className="w-8 h-8 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-sm text-text-primary">100% Client-Side</h4>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                All cryptography and simulations run securely inside your browser. No data ever leaves your device.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <div className="w-8 h-8 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <Users className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-sm text-text-primary">Zero-Account Setup</h4>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Start learning instantly. No login, no profile forms, no cookies, and absolute tracking privacy.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <div className="w-8 h-8 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                <Layers className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-sm text-text-primary">Sovereign Sandbox</h4>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Hostable on-prem or air-gapped with zero setup or subscription cost. Complete open-source freedom.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="shrink-0 flex items-center justify-center w-full lg:w-1/3 relative z-10">
+          <div className="p-6 rounded-2xl bg-bg-sidebar border border-border-subtle max-w-xs space-y-4 shadow-sm w-full text-center">
+            <div className="w-12 h-12 rounded-full bg-accent-primary text-white flex items-center justify-center mx-auto shadow-md">
+              <Lock className="w-6 h-6" />
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-bold text-text-primary">Enterprise Ready</h4>
+              <p className="text-xs text-text-secondary">Fully compliant with standard GRC and zero-trust guidelines.</p>
+            </div>
+            <Link to="/assess" className="block w-full text-center py-2.5 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-lg shadow-accent-primary/20">
+              Run Posture Audit
+            </Link>
+          </div>
         </div>
       </section>
 

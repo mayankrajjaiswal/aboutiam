@@ -535,7 +535,7 @@ export default function PlaygroundCatalog() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {visiblePlaygrounds.map((pg, i) => (
-          <div key={i} className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 hover:shadow-md transition-all flex flex-col justify-between">
+          <div key={i} className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover-cyber-glow flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">

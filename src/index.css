@@ -143,3 +143,42 @@ code, pre, .font-mono {
     scroll-behavior: auto !important;
   }
 }
+
+/* Smooth Global Theme Swapping */
+body, header, aside, main, div, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, svg, a {
+  transition-property: background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Cyber-Lab Premium Interactions (Hover Glows) */
+.hover-cyber-glow {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.hover-cyber-glow:hover {
+  border-color: rgba(37, 99, 235, 0.35) !important;
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.08), 0 8px 10px -6px rgba(37, 99, 235, 0.08) !important;
+  transform: translateY(-2px);
+}
+.dark .hover-cyber-glow:hover {
+  border-color: rgba(59, 130, 246, 0.45) !important;
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15), 0 8px 10px -6px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Trace Terminal Enhancements (Code & Keyword Styling) */
+.terminal-keyword-info {
+  color: #38bdf8 !important; /* sky-400 */
+  font-weight: 600;
+}
+.terminal-keyword-success {
+  color: #34d399 !important; /* emerald-400 */
+  font-weight: 600;
+}
+.terminal-keyword-warning {
+  color: #fbbf24 !important; /* amber-400 */
+  font-weight: 600;
+}
+.terminal-keyword-danger {
+  color: #f87171 !important; /* red-400 */
+  font-weight: 600;
+}

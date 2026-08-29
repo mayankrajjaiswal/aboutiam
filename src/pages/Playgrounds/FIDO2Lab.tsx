@@ -176,18 +176,29 @@ Device security chip (TPM / Secure Enclave) generates a brand new asymmetric key
               Test your device's actual hardware security chip (TPM / Secure Enclave)! Click below to trigger a real, browser-native WebAuthn passkey registration ceremony.
             </p>
 
-            <button
-              type="button"
-              disabled={realHandshakeActive}
-              onClick={handleTriggerRealWebAuthn}
-              className="w-full py-2.5 bg-accent-primary hover:bg-accent-hover disabled:opacity-40 text-white font-black rounded-lg text-xs transition shadow flex items-center justify-center gap-1.5"
-            >
-              {realHandshakeActive ? (
-                <>⏳ Complete Fingerprint/Key Scan...</>
-              ) : (
-                <>🔑 Trigger Live WebAuthn Ceremony</>
-              )}
-            </button>
+            {realHandshakeActive ? (
+              <div className="flex flex-col items-center justify-center p-6 border border-accent-primary/20 bg-accent-glow/5 rounded-lg space-y-4 hover-cyber-glow">
+                <div className="relative flex items-center justify-center">
+                  <div className="absolute inset-0 bg-accent-primary/20 rounded-full animate-ping scale-150"></div>
+                  <div className="absolute inset-0 bg-accent-primary/30 rounded-full animate-pulse scale-110"></div>
+                  <div className="relative w-16 h-16 rounded-full bg-accent-glow border-2 border-accent-primary flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.6)] z-10">
+                    <Fingerprint className="w-8 h-8 text-accent-primary" />
+                  </div>
+                </div>
+                <div className="text-center space-y-1">
+                  <span className="text-xs font-bold text-accent-primary uppercase tracking-wider block animate-pulse">Awaiting Biometric Scan...</span>
+                  <span className="text-[10px] text-text-muted">Touch your YubiKey or FaceID/TouchID sensor to prove presence (UP flag).</span>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleTriggerRealWebAuthn}
+                className="w-full py-2.5 bg-accent-primary hover:bg-accent-hover text-white font-black rounded-lg text-xs transition shadow flex items-center justify-center gap-1.5 hover-cyber-glow"
+              >
+                🔑 Trigger Live WebAuthn Ceremony
+              </button>
+            )}
 
             {realHandshakeError && (
               <div className="p-3 rounded-lg bg-status-danger/10 border border-status-danger/20 text-[10px] font-mono text-status-danger flex items-start gap-1.5">

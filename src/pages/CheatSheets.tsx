@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { CheckSquare, ShieldCheck } from 'lucide-react'
+import { CheckSquare, ShieldCheck, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
 import BookmarkButton from '../components/BookmarkButton'
 import ContentFeedback from '../components/ContentFeedback'
 import { CHEAT_SHEETS, SHEET_CATEGORIES, type SheetDifficulty } from '../data/cheatSheetsData'
+import { buildCheatSheetMarkdown } from '../lib/export/cheatSheetExport'
 
 const DIFFICULTIES: SheetDifficulty[] = ['Beginner', 'Intermediate', 'Advanced']
 
@@ -53,6 +54,18 @@ export default function CheatSheets() {
   const pct = totalChecks > 0 ? Math.round((sheetCompletedCount / totalChecks) * 100) : 0
 
   const visibleSheets = difficultyFilter === 'All' ? CHEAT_SHEETS : CHEAT_SHEETS.filter(s => s.difficulty === difficultyFilter)
+
+  const handleExport = () => {
+    const checkedIds = new Set(currentSheet.checks.filter(c => completed[c.id]).map(c => c.id))
+    const markdown = buildCheatSheetMarkdown(currentSheet, checkedIds)
+    const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `aboutiam_audit_${currentSheet.id}.md`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   return (
     <div className="space-y-8 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -197,7 +210,13 @@ export default function CheatSheets() {
               })}
             </div>
 
-            <div className="pt-6 flex justify-end relative z-10">
+            <div className="pt-6 flex justify-between items-center relative z-10 border-t border-border-subtle mt-6">
+              <button
+                onClick={handleExport}
+                className="px-4 py-2 rounded-lg bg-accent-primary hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-md shadow-accent-primary/20 flex items-center gap-1.5 hover-cyber-glow"
+              >
+                <Download className="w-3.5 h-3.5" /> Export Hardening Report (Markdown)
+              </button>
               <ContentFeedback id={`sheet-${currentSheet.id}`} title={currentSheet.title} />
             </div>
           </div>

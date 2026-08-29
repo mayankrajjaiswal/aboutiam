@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import {
   History, ShieldAlert, ShieldCheck, Lock, Fingerprint,
   Terminal, Shield, Globe, Cpu, Play, RotateCcw, AlertTriangle, FileText,
@@ -80,6 +80,10 @@ const ERAS: Era[] = [
 export default function IdentityTimeline() {
   const [pageView, setPageView] = useState<'timeline' | 'hall-of-fame' | 'patents'>('timeline')
   const [selectedEra, setSelectedEra] = useState<number>(1)
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] })
+  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -513,13 +517,19 @@ export default function IdentityTimeline() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* LEFT PANE: The Timeline Path (lg:col-span-4) */}
-        <div className="lg:col-span-4 space-y-4">
-          <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm">
-            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider mb-6 flex items-center gap-2 border-b border-border-subtle pb-3">
+        <div className="lg:col-span-4 space-y-4" ref={containerRef}>
+          <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm relative overflow-hidden">
+            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider mb-6 flex items-center gap-2 border-b border-border-subtle pb-3 relative z-10">
               <History className="w-4 h-4 text-accent-primary" /> The Historical Path
             </h3>
 
-            <div className="relative pl-6 border-l-2 border-border-subtle/80 space-y-6">
+            <div className="relative pl-6 border-l-2 border-border-subtle/80 space-y-6 z-10">
+              {/* Laser Scroll Animated Line overlaying the static border */}
+              <motion.div 
+                style={{ scaleY }}
+                className="absolute left-[-2px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-accent-primary via-accent-secondary to-accent-primary origin-top shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+              />
+
               {ERAS.map((era) => {
                 const isSelected = selectedEra === era.id
                 return (

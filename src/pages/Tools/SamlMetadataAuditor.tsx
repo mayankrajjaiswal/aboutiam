@@ -3,10 +3,22 @@ import { FileCode, ShieldAlert, ShieldCheck, FileCheck, CheckCircle2 } from 'luc
 import ToolPageShell from '../../components/Tools/ToolPageShell'
 import { TOOLS } from '../../data/toolsRegistry'
 
+interface AuditRisk {
+  level: 'critical' | 'high' | 'warning'
+  msg: string
+}
+
+interface AnalysisResult {
+  entityId: string
+  type: string
+  risks: AuditRisk[]
+  certCount: number
+}
+
 export default function SamlMetadataAuditor() {
   const tool = TOOLS.find((t) => t.slug === 'saml-metadata-auditor')!
   const [xmlInput, setXmlInput] = useState('')
-  const [analysis, setAnalysis] = useState<any>(null)
+  const [analysis, setAnalysis] = useState<AnalysisResult | null>(null)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   const handleAudit = () => {
@@ -115,7 +127,7 @@ export default function SamlMetadataAuditor() {
                       <CheckCircle2 className="w-5 h-5" /> No critical risks detected.
                     </div>
                   ) : (
-                    analysis.risks.map((risk: any, i: number) => (
+                    analysis.risks.map((risk: AuditRisk, i: number) => (
                       <div key={i} className={`p-3 rounded-lg border text-xs leading-relaxed flex items-start gap-2.5 ${
                         risk.level === 'critical' ? 'bg-status-danger/10 border-status-danger/30 text-status-danger' : 
                         risk.level === 'high' ? 'bg-orange-500/10 border-orange-500/30 text-orange-500' :

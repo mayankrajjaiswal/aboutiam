@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 29 Aug 2026 20:38:20 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 18:18:34 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -125,6 +125,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/scim-payload-validator</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Validate or scaffold SCIM 2.0 User and Group JSON payloads against the core schema, with inline errors for missing or malformed attributes.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: OAuth 2.1 Transition Auditor]]></title>
+      <link>https://www.aboutiam.com/tools/oauth-2-1-auditor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/oauth-2-1-auditor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Scan authorization requests and client configurations against OAuth 2.1 best practices. Flags deprecated flows (Implicit, ROPC) and missing constraints (PKCE, exact redirects).]]></description>
       <category>Security Tool</category>
     </item>
     <item>

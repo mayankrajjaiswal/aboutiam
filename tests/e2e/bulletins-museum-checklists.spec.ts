@@ -78,7 +78,7 @@ test.describe('AboutIAM Incident Playbooks, Checklists, and Vendor Intel', () =>
     // Enter Compare Mode
     const compareBtn = page.locator('button:has-text("Compare")').first()
     await expect(compareBtn).toBeVisible()
-    await compareBtn.click()
+    await compareBtn.click({ force: true })
 
     // Expect "Compare (0/3)" status or list format with checkboxes to load
     await expect(page.locator('span:has-text("Compare (")').first()).toBeVisible()

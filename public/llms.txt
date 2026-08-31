@@ -15,6 +15,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [OAuth 2.0 & OIDC Flow Visualizer — Step-by-Step Simulator](https://www.aboutiam.com/playground/oauth/): Watch a real OAuth 2.0 / OpenID Connect authorization code flow unfold step-by-step with PKCE, animated redirects, and raw HTTP inspection.
 - [SAML 2.0 Playground — XML Assertions & Signature Wrapping](https://www.aboutiam.com/playground/saml/): Build SAML assertions and launch a live Signature Wrapping (SSW) attack against a mock Service Provider — entirely in your browser.
 - [FIDO2 & WebAuthn Playground — Passkey Registration Simulator](https://www.aboutiam.com/playground/fido2/): Emulate a full FIDO2/WebAuthn passkey registration and login ceremony, parsing real clientDataJSON and authenticatorData bytes.
+- [Passkey Conditional UI (Autofill)](https://www.aboutiam.com/playground/fido2-conditional-ui/): Experience how WebAuthn mediation: conditional seamlessly integrates passkeys directly into standard form autocomplete dropdowns.
 - [ABAC vs RBAC Playground — Access Control Policy Simulator](https://www.aboutiam.com/playground/access/): Evaluate live attribute-based (ABAC) and role-based (RBAC) access decisions side-by-side against device, location, and department context.
 - [LDAP Playground — Active Directory Filter Simulator](https://www.aboutiam.com/playground/ldap/): Search a simulated Active Directory tree with real RFC 4515 LDAP filters and watch matching nodes highlight instantly.
 - [Zero Trust Playground — NIST SP 800-207 Risk Planner](https://www.aboutiam.com/playground/zta/): Model a NIST SP 800-207 Zero Trust risk-scoring engine and see how device, network, and identity signals change access outcomes live.
@@ -37,6 +38,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [B2B SaaS JIT Provisioning — Identity Mapper](https://www.aboutiam.com/playground/jit-provisioning/): Simulate how enterprise SaaS platforms automatically onboard new corporate users on the fly by mapping SAML/OIDC claims directly into the application database.
 - [API Gateway Phantom Token Sandbox](https://www.aboutiam.com/playground/phantom-token/): Learn the ultimate enterprise pattern for securing SPAs. Watch an API Gateway translate an opaque string into a signed JWT for microservices, hiding PII from the frontend.
 - [STIX/TAXII Identity-IOC Fan-Out Simulator](https://www.aboutiam.com/playground/stix-taxii-ioc/): Assemble a STIX 2.1 object bundle for an identity-relevant indicator of compromise, publish it to a mock TAXII 2.1 collection, and watch subscription filters shape fan-out delivery.
+- [OIDC Federation Lab (Shared Trust Chains)](https://www.aboutiam.com/playground/oidc-federation/): Simulate how multi-tenant federated networks discover, trust, and verify public JWKS across independent issuers.
 - [Device Posture Playground — Zero Trust Attestation Simulator](https://www.aboutiam.com/playground/device-trust/): Simulate a Zero Trust device-posture handshake checking firewall state, disk encryption, OS version, and client certificates before granting access.
 - [Passkey Internals Playground — WebAuthn Byte-Level Explorer](https://www.aboutiam.com/playground/passkey-internals/): Deconstruct the raw authenticatorData byte offsets and CBOR public keys a hardware TPM generates during passkey registration.
 - [AI Deepfake vs MFA Playground — Voice Spoofing Simulator](https://www.aboutiam.com/playground/ai-threat-lab/): Simulate an AI voice-deepfake attack against legacy phone-based MFA and see why FIDO2 hardware-bound credentials resist it.
@@ -137,6 +139,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Identity-Grade CSP (Content-Security-Policy) Builder](https://www.aboutiam.com/tools/csp-builder/): Visually construct a hardened Content-Security-Policy header. Select your authentication providers to automatically generate strict directive rules.
 - [X.509 Certificate to JWKS Converter](https://www.aboutiam.com/tools/x509-to-jwks-converter/): Convert legacy PEM X.509 certificates directly into modern JSON Web Key Sets (JWKS) arrays for OIDC migrations.
 - [SAML Metadata Auditor](https://www.aboutiam.com/tools/saml-metadata-auditor/): Decode, parse, and flag critical schema risks in XML metadata.
+- [OAuth 2.1 Transition Auditor](https://www.aboutiam.com/tools/oauth-2-1-auditor/): Scan authorization requests and client configurations against OAuth 2.1 best practices.
 
 ## Advanced Ecosystem & Governance
 

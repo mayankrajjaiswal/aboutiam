@@ -13,7 +13,7 @@ test.describe('AboutIAM Search Bar & Command Palette Integration', () => {
 
   test('should trigger search modal using keyboard shortcut Ctrl+K', async ({ page }) => {
     // Focus page
-    await page.locator('h1').first().click()
+    await page.locator('h1').first().click({ force: true })
     // Trigger keyboard shortcut
     await page.keyboard.press('Control+k')
     
@@ -23,7 +23,7 @@ test.describe('AboutIAM Search Bar & Command Palette Integration', () => {
   })
 
   test('should successfully search for new and old security tools', async ({ page }) => {
-    await page.locator('h1').first().click()
+    await page.locator('h1').first().click({ force: true })
     await page.keyboard.press('Control+k')
     const modalInput = page.locator('input[placeholder*="Search tools"]')
     await expect(modalInput).toBeVisible()

@@ -308,6 +308,29 @@ export const TOOLS: ToolMeta[] = [
     ],
   },
   {
+    slug: 'oauth-2-1-auditor',
+    title: 'OAuth 2.1 Transition Auditor',
+    description: 'Scan authorization requests and client configurations against OAuth 2.1 best practices. Flags deprecated flows (Implicit, ROPC) and missing constraints (PKCE, exact redirects).',
+    category: 'Tokens & Assertions',
+    icon: ShieldCheck,
+    phase: 2,
+    status: 'live',
+    keywords: ['oauth', 'oauth 2.1', 'implicit flow', 'pkce', 'ropc', 'security bcp', 'deprecation'],
+    analogy: 'Like upgrading from a handwritten guest list to a digital tap-and-go keycard system — closing old loopholes that used to let people bypass the bouncer.',
+    expert: 'Validates implementation compliance with the OAuth 2.1 spec (draft-ietf-oauth-v2-1) and OAuth 2.0 Security Best Current Practice (BCP). Enforces PKCE everywhere, bans Implicit and Resource Owner Password Credentials (ROPC) flows, and strictly requires exact redirect URI matching over prefix matching.',
+    faqs: [
+      {
+        q: 'What is OAuth 2.1?',
+        a: 'OAuth 2.1 is an in-progress effort to consolidate and simplify OAuth 2.0. It incorporates the original RFC 6749, RFC 6750, along with the Security Best Current Practices, deprecating historically insecure flows.'
+      },
+      {
+        q: 'Why is the Implicit flow deprecated?',
+        a: 'The Implicit flow returns access tokens directly in the URI fragment, exposing them to browser history, rogue scripts, and malicious extensions. OAuth 2.1 mandates the Authorization Code flow with PKCE instead, keeping tokens strictly in the backchannel.'
+      }
+    ],
+    taskTags: ['check-compliance']
+  },
+  {
     slug: 'basic-auth-decoder',
     taskTags: ['decode'],
     title: 'Basic & Bearer Auth Header Decoder',

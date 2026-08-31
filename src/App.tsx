@@ -52,6 +52,7 @@ const JwksInspector = lazy(() => import('./pages/Tools/JwksInspector'))
 const PolicyEvaluator = lazy(() => import('./pages/Tools/PolicyEvaluator'))
 const PassphraseEntropy = lazy(() => import('./pages/Tools/PassphraseEntropy'))
 const OidcDiscoveryAuditor = lazy(() => import('./pages/Tools/OidcDiscoveryAuditor'))
+const Oauth21Auditor = lazy(() => import('./pages/Tools/Oauth21Auditor'))
 const AnsibleVault = lazy(() => import('./pages/Tools/AnsibleVault'))
 const SopsSimulator = lazy(() => import('./pages/Tools/SopsSimulator'))
 const InterviewCareerCenter = lazy(() => import('./pages/InterviewCareerCenter'))
@@ -90,6 +91,7 @@ const JWTStudio = lazy(() => import('./pages/Playgrounds/JWTStudio'))
 const OAuthVisualizer = lazy(() => import('./pages/Playgrounds/OAuthVisualizer'))
 const SAMLWorkbench = lazy(() => import('./pages/Playgrounds/SAMLWorkbench'))
 const FIDO2Lab = lazy(() => import('./pages/Playgrounds/FIDO2Lab'))
+const Fido2ConditionalUi = lazy(() => import('./pages/Playgrounds/Fido2ConditionalUi'))
 const AccessControlLab = lazy(() => import('./pages/Playgrounds/AccessControlLab'))
 const LDAPTreeSimulator = lazy(() => import('./pages/Playgrounds/LDAPTreeSimulator'))
 const ZTAPlanner = lazy(() => import('./pages/Playgrounds/ZTAPlanner'))
@@ -110,6 +112,7 @@ const ItdrLab = lazy(() => import('./pages/Playgrounds/ItdrLab'))
 const GamingIdentityLab = lazy(() => import('./pages/Playgrounds/GamingIdentityLab'))
 const StixTaxiiIocLab = lazy(() => import('./pages/Playgrounds/StixTaxiiIocLab'))
 const DeviceTrust = lazy(() => import('./pages/Playgrounds/DeviceTrust'))
+const OidcFederationLab = lazy(() => import('./pages/Playgrounds/OidcFederationLab'))
 const PasskeyInternals = lazy(() => import('./pages/Playgrounds/PasskeyInternals'))
 const CommunityForums = lazy(() => import('./pages/CommunityForums'))
 const Assess = lazy(() => import('./pages/Assess'))
@@ -286,6 +289,8 @@ export default function App() {
               <Route path="/tools/certificate-verifier" element={<CertificateVerifier />} />
               <Route path="/tools/pqc-readiness-auditor" element={<PqcReadinessAuditor />} />
               <Route path="/tools/cyber-insurance-readiness" element={<CyberInsuranceReadiness />} />
+              <Route path="/tools/oauth-2-1-auditor" element={<Oauth21Auditor />} />
+              <Route path="/playground/oidc-federation" element={<OidcFederationLab />} />
               <Route path="/tools/print-poster" element={<PrintablePoster />} />
               <Route path="/tools/oauth-risk-analyzer" element={<OauthRiskAnalyzer />} />
               <Route path="/tools/csp-builder" element={<CspBuilder />} />
@@ -309,6 +314,7 @@ export default function App() {
               <Route path="/playground/oauth" element={<OAuthVisualizer />} />
               <Route path="/playground/saml" element={<SAMLWorkbench />} />
               <Route path="/playground/fido2" element={<FIDO2Lab />} />
+              <Route path="/playground/fido2-conditional-ui" element={<Fido2ConditionalUi />} />
               <Route path="/playground/access" element={<AccessControlLab />} />
               <Route path="/playground/ldap" element={<LDAPTreeSimulator />} />
               <Route path="/playground/zta" element={<ZTAPlanner />} />

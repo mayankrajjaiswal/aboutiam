@@ -110,6 +110,20 @@ export default function PlaygroundCatalog() {
       badge: "Active (Advanced)",
     },
     {
+      title: "OIDC Federation Lab (Shared Trust Chains)",
+      desc: "Simulate how multi-tenant federated networks discover, trust, and verify public JWKS across independent issuers.",
+      icon: Network,
+      link: "/playground/oidc-federation",
+      badge: "Active (Advanced)",
+    },
+    {
+      title: "DPoP (Proof-of-Possession) Sandbox",
+      desc: "Prevent session hijacking using Sender-Constrained Tokens (RFC 9449). Generate a browser keypair, bind it to an access token, and watch an API Gateway block replayed tokens.",
+      icon: Shield,
+      link: "/playground/dpop",
+      badge: "Active (Advanced)",
+    },
+    {
       title: "Session Hijacking & Token Theft Lab",
       desc: "Emulate session cookie theft via infostealers, paste and replay stolen tokens against protected APIs, and apply modern mitigations like IP binding, DPoP, and CAEP.",
       icon: Shield,

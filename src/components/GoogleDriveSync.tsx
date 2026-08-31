@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Cloud, UploadCloud, DownloadCloud, Loader2, AlertTriangle, ShieldCheck } from 'lucide-react'
+import { Cloud, UploadCloud, DownloadCloud, Loader2, AlertTriangle, ShieldCheck, WifiOff } from 'lucide-react'
 import {
   getGoogleClientId,
   requestAccessToken,
@@ -12,7 +12,7 @@ import {
 } from '../lib/googleDrive'
 import { useGoogleDriveSyncStore } from '../store/googleDriveSyncStore'
 
-type SyncStatus = 'idle' | 'backing-up' | 'restoring'
+type SyncStatus = 'idle' | 'backing-up' | 'restoring' | 'queued-offline'
 
 export default function GoogleDriveSync() {
   const clientId = getGoogleClientId()
@@ -27,6 +27,12 @@ export default function GoogleDriveSync() {
   const handleBackup = async () => {
     if (!clientId) return
     setError(null)
+    
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      setStatus('queued-offline')
+      return
+    }
+
     setStatus('backing-up')
     try {
       const token = await requestAccessToken(clientId)
@@ -39,6 +45,16 @@ export default function GoogleDriveSync() {
       setStatus('idle')
     }
   }
+
+  useEffect(() => {
+    const handleOnline = () => {
+      if (status === 'queued-offline') {
+        handleBackup()
+      }
+    }
+    window.addEventListener('online', handleOnline)
+    return () => window.removeEventListener('online', handleOnline)
+  }, [status])
 
   const handleRestore = async () => {
     if (!clientId) return
@@ -96,10 +112,12 @@ export default function GoogleDriveSync() {
               type="button"
               onClick={handleBackup}
               disabled={isBusy}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent-primary hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-black uppercase tracking-wider transition-colors cursor-pointer"
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white text-xs font-black uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                status === 'queued-offline' ? 'bg-status-warning hover:bg-status-warning' : 'bg-accent-primary hover:bg-accent-hover'
+              }`}
             >
-              {status === 'backing-up' ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
-              Back Up to Google Drive
+              {status === 'backing-up' ? <Loader2 className="w-4 h-4 animate-spin" /> : status === 'queued-offline' ? <WifiOff className="w-4 h-4" /> : <UploadCloud className="w-4 h-4" />}
+              {status === 'queued-offline' ? 'Queued (Offline)' : 'Back Up to Google Drive'}
             </button>
             <button
               type="button"

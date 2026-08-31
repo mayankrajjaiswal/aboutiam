@@ -8,6 +8,7 @@ import { mapScoreToGartnerLevel, estimatePeerPercentile, PEER_BENCHMARK_SOURCE_N
 import { saveLastAssessment } from '../lib/assess/assessHistory'
 import JourneyBreadcrumb from '../components/JourneyBreadcrumb'
 import ShareScoreButton from '../components/ShareScoreButton'
+import ThreatToControlMap from '../components/Assess/ThreatToControlMap'
 
 function getSharedParam(): string | null {
   if (typeof window === 'undefined') return null
@@ -801,6 +802,8 @@ export default function Assess() {
               </div>
             </div>
           </div>
+
+          <ThreatToControlMap answers={answers} />
 
           {/* Gartner-Style Maturity Benchmark Overlay */}
           <div className="grid md:grid-cols-5 gap-8">

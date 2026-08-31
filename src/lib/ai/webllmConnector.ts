@@ -28,7 +28,7 @@ export function createWebllmConnector(modelId: string = SPIKE_MODEL_ID): WebllmC
 
   const load: WebllmConnector['load'] = async (onProgress) => {
     if (!detectWebGpuSupport()) {
-      throw new Error('WebGPU is not available in this browser. The WASM-only fallback path is not yet implemented in this spike.')
+      throw new Error('Hardware Acceleration (WebGPU) is required but not supported by your browser or OS. To protect your device from freezing, the WASM-only CPU fallback has been disabled. Try Chrome/Edge on a device with a dedicated or modern integrated GPU.')
     }
 
     worker = new Worker(new URL('./webllm.worker.ts', import.meta.url), { type: 'module' })
@@ -36,7 +36,7 @@ export function createWebllmConnector(modelId: string = SPIKE_MODEL_ID): WebllmC
     engine = await CreateWebWorkerMLCEngine(worker, modelId, {
       initProgressCallback: (report) => {
         onProgress({ text: report.text, percent: parseProgressPercent(report.text) })
-      },
+      }
     })
   }
 

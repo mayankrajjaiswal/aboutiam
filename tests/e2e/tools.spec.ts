@@ -3,6 +3,12 @@ import { test, expect } from '@playwright/test'
 test.describe('AboutIAM Security Tools Catalog & Utilities', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:5173/')
+    await page.evaluate(() => {
+      localStorage.setItem('aboutiam-disclaimer', JSON.stringify({ state: { hasSeenDisclaimer: true } }))
+      localStorage.setItem('aboutiam-guided-tour', JSON.stringify({ state: { hasSeenTour: true } }))
+      localStorage.setItem('aboutiam-whats-new', JSON.stringify({ state: { lastSeenVersion: '2026.07.28' } }))
+    })
+    await page.reload()
   })
 
   test('should navigate to security tools and list all live tools', async ({ page }) => {
@@ -11,11 +17,11 @@ test.describe('AboutIAM Security Tools Catalog & Utilities', () => {
     await expect(page).toHaveTitle(/Free Client-Side IAM & Security Tools | AboutIAM/)
     
     // Expect tools catalog list to be present
-    const toolsGrid = page.locator('div.grid')
+    const toolsGrid = page.locator('div.grid').first()
     await expect(toolsGrid).toBeVisible()
     
     // Verify specific category headers or titles are rendered
-    await expect(page.locator('h2', { hasText: 'Auth & Directory Builders' }).or(page.locator('h2', { hasText: 'Security Utilities' }))).toBeVisible()
+    await expect(page.locator('h3', { hasText: 'Auth & Directory Builders' }).or(page.locator('h3', { hasText: 'Security Utilities' }))).toBeVisible()
   })
 
   test('should successfully decode a JWT token locally', async ({ page }) => {
@@ -35,7 +41,7 @@ test.describe('AboutIAM Security Tools Catalog & Utilities', () => {
 
   test('should audit SAML metadata for critical schema and signature risks', async ({ page }) => {
     await page.goto('http://localhost:5173/tools/saml-metadata-auditor')
-    await expect(page.locator('h2')).toContainText('SAML Metadata Auditor')
+    await expect(page.locator('h2')).toContainText('SAML 2.0 Metadata Schema Auditor')
 
     // Fill with a mock insecure metadata XML payload (using weak SHA-1 or HTTP bindings)
     const mockMetadata = `<?xml version="1.0" encoding="UTF-8"?>
@@ -56,12 +62,12 @@ test.describe('AboutIAM Security Tools Catalog & Utilities', () => {
     await textarea.fill(mockMetadata)
 
     // Click Audit Metadata button
-    const auditButton = page.locator('button:has-text("Audit Metadata")')
+    const auditButton = page.locator('button:has-text("Audit Metadata Schema")')
     if (await auditButton.isVisible()) {
       await auditButton.click()
       
       // Ensure the audit findings panel is visible
-      const findingsHeader = page.locator('h3:has-text("Audit Findings")').or(page.locator('div:has-text("Findings")'))
+      const findingsHeader = page.locator('h3:has-text("Audit Results")').first()
       await expect(findingsHeader).toBeVisible()
     }
   })
@@ -79,7 +85,7 @@ test.describe('AboutIAM Security Tools Catalog & Utilities', () => {
     await verifyBtn.click()
 
     // Wait for mock handshake and verdict
-    const malformedText = page.locator('div:has-text("Malformed Input")').or(page.locator('div:has-text("Signature Invalid")'))
+    const malformedText = page.locator('div:has-text("Malformed Input")').or(page.locator('div:has-text("Signature Invalid")')).first()
     await expect(malformedText).toBeVisible({ timeout: 5000 })
   })
 
@@ -90,7 +96,7 @@ test.describe('AboutIAM Security Tools Catalog & Utilities', () => {
     const textInput = page.locator('textarea').first()
     await textInput.fill('AboutIAM-E2E-Test')
     
-    const encodedValue = await page.locator('textarea').nth(1).inputValue()
+    const encodedValue = await page.locator('p.font-mono').first().textContent() || ''
     expect(encodedValue).toContain('QWJvdXRJQU0tRTJFLVRlc3Q') // Base64 or Base64URL encoding
   })
 })

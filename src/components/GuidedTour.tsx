@@ -56,11 +56,32 @@ export default function GuidedTour() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    let hasSeenDirectTour = false
+    let hasSeenDirectDisclaimer = false
+    try {
+      const storedTour = window.localStorage.getItem('aboutiam-guided-tour')
+      if (storedTour) {
+        const parsed = JSON.parse(storedTour)
+        if (parsed?.state?.hasSeenTour) {
+          hasSeenDirectTour = true
+        }
+      }
+      const storedDisclaimer = window.localStorage.getItem('aboutiam-disclaimer')
+      if (storedDisclaimer) {
+        const parsed = JSON.parse(storedDisclaimer)
+        if (parsed?.state?.hasSeenDisclaimer) {
+          hasSeenDirectDisclaimer = true
+        }
+      }
+    } catch {
+      // Ignore errors
+    }
+
     const { hasSeenTour, openTour } = useTourStore.getState()
     const { hasSeenDisclaimer } = useDisclaimerStore.getState()
     // The disclaimer (if unseen) triggers the tour itself once dismissed —
     // skip auto-opening here to avoid stacking two first-visit modals at once.
-    if (!hasSeenTour && hasSeenDisclaimer) {
+    if ((!hasSeenTour && !hasSeenDirectTour) && (hasSeenDisclaimer || hasSeenDirectDisclaimer)) {
       setTimeout(() => openTour(), 600)
     }
   }, [])

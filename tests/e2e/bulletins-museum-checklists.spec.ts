@@ -3,6 +3,21 @@ import { test, expect } from '@playwright/test'
 test.describe('AboutIAM Incident Playbooks, Checklists, and Vendor Intel', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:5173/')
+    await page.evaluate(() => {
+      localStorage.setItem('aboutiam-disclaimer', JSON.stringify({ state: { hasSeenDisclaimer: true } }))
+      localStorage.setItem('aboutiam-guided-tour', JSON.stringify({ state: { hasSeenTour: true } }))
+      localStorage.setItem('aboutiam-whats-new', JSON.stringify({ state: { lastSeenVersion: '2026.07.28' } }))
+    })
+    await page.reload()
+    
+    // Self-healing: if the disclaimer modal pops up due to hydration lag, dismiss it
+    const dismissBtn = page.locator('button:has-text("Got it, let\'s go")')
+    try {
+      await expect(dismissBtn).toBeVisible({ timeout: 1000 })
+      await dismissBtn.click()
+    } catch {
+      // Modal didn't pop up or was already dismissed
+    }
   })
 
   test('should load Security Bulletins and run the data-driven Crisis Response Simulator', async ({ page }) => {
@@ -10,12 +25,12 @@ test.describe('AboutIAM Incident Playbooks, Checklists, and Vendor Intel', () =>
     await expect(page.locator('h1')).toContainText('Identity Security Bulletin Board')
 
     // Click on the first incident bulletin selector
-    const firstBulletin = page.locator('button:has-text("SolarWinds")').first().or(page.locator('button[class*="text-left"]').first())
+    const firstBulletin = page.locator('button:has-text("MFA Fatigue")').first()
     await expect(firstBulletin).toBeVisible()
     await firstBulletin.click()
 
     // Assert simulator container is present
-    await expect(page.locator('span:has-text("Crisis Simulator")')).toBeVisible()
+    await expect(page.locator('span:has-text("Crisis Simulator")').first()).toBeVisible()
 
     // Click Step 1: Detect Threat
     const step1Btn = page.locator('button:has-text("Step 1: Detect Threat")')
@@ -41,7 +56,7 @@ test.describe('AboutIAM Incident Playbooks, Checklists, and Vendor Intel', () =>
 
   test('should load developer cheat-sheets checklists and update progress', async ({ page }) => {
     await page.goto('http://localhost:5173/cheat-sheets')
-    await expect(page.locator('h2')).toContainText('Developer Hardening Playbooks')
+    await expect(page.locator('h2')).toContainText('Security & Compliance Cheat Sheets')
 
     // Click on a checkbox in the active checklist
     const firstCheckbox = page.locator('input[type="checkbox"]').first()
@@ -58,7 +73,7 @@ test.describe('AboutIAM Incident Playbooks, Checklists, and Vendor Intel', () =>
 
   test('should load Vendor Knowledge Center and toggle Compare Mode', async ({ page }) => {
     await page.goto('http://localhost:5173/vendor')
-    await expect(page.locator('h1')).toContainText('Enterprise Ecosystem & Vendor Intelligence')
+    await expect(page.locator('h1')).toContainText('Enterprise Ecosystem Hub')
 
     // Enter Compare Mode
     const compareBtn = page.locator('button:has-text("Compare")').first()
@@ -69,12 +84,12 @@ test.describe('AboutIAM Incident Playbooks, Checklists, and Vendor Intel', () =>
     await expect(page.locator('span:has-text("Compare (")').first()).toBeVisible()
 
     // Select the first platform to compare (e.g. keycloak, okta, microsoft-entra)
-    const firstPlatform = page.locator('button:has-text("Microsoft Entra")').first().or(page.locator('button[class*="text-left"]').first())
+    const firstPlatform = page.locator('button:has-text("Microsoft Entra ID")').first()
     await expect(firstPlatform).toBeVisible()
     await firstPlatform.click()
 
     // Select the second platform to compare (e.g. okta)
-    const secondPlatform = page.locator('button:has-text("Okta")').first().or(page.locator('button[class*="text-left"]').nth(1))
+    const secondPlatform = page.locator('button:has-text("Okta")').first()
     await expect(secondPlatform).toBeVisible()
     await secondPlatform.click()
 

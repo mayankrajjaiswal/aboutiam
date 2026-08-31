@@ -29,7 +29,20 @@ export default function DisclaimerModal() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!useDisclaimerStore.getState().hasSeenDisclaimer) {
+    let hasSeenDirect = false
+    try {
+      const stored = window.localStorage.getItem('aboutiam-disclaimer')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        if (parsed?.state?.hasSeenDisclaimer) {
+          hasSeenDirect = true
+        }
+      }
+    } catch {
+      // Ignore errors
+    }
+
+    if (!useDisclaimerStore.getState().hasSeenDisclaimer && !hasSeenDirect) {
       setTimeout(() => useDisclaimerStore.getState().openDisclaimer(), 300)
     }
   }, [])

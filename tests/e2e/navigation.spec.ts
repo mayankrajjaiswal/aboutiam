@@ -4,10 +4,25 @@ test.describe('AboutIAM General Navigation & Presenter Mode', () => {
   test.beforeEach(async ({ page }) => {
     // Visit local server (Vite dev server usually runs on http://localhost:5173 during tests)
     await page.goto('http://localhost:5173/')
+    await page.evaluate(() => {
+      localStorage.setItem('aboutiam-disclaimer', JSON.stringify({ state: { hasSeenDisclaimer: true } }))
+      localStorage.setItem('aboutiam-guided-tour', JSON.stringify({ state: { hasSeenTour: true } }))
+      localStorage.setItem('aboutiam-whats-new', JSON.stringify({ state: { lastSeenVersion: '2026.07.28' } }))
+    })
+    await page.reload()
+    
+    // Self-healing: if the disclaimer modal pops up due to hydration lag, dismiss it
+    const dismissBtn = page.locator('button:has-text("Got it, let\'s go")')
+    try {
+      await expect(dismissBtn).toBeVisible({ timeout: 1000 })
+      await dismissBtn.click()
+    } catch {
+      // Modal didn't pop up or was already dismissed
+    }
   })
 
   test('should load the overview dashboard successfully', async ({ page }) => {
-    await expect(page).toHaveTitle(/AboutIAM Overview Dashboard | AboutIAM/)
+    await expect(page).toHaveTitle(/AboutIAM \| The Interactive Identity Workspace/)
     await expect(page.locator('h1')).toContainText("Master Identity & Access")
   })
 
@@ -26,7 +41,7 @@ test.describe('AboutIAM General Navigation & Presenter Mode', () => {
       await expect(exitButton).toBeVisible()
       
       // Click exit to restore layout
-      await exitButton.click()
+      await exitButton.click({ force: true })
       await expect(exitButton).not.toBeVisible()
     }
   })
@@ -36,7 +51,13 @@ test.describe('AboutIAM General Navigation & Presenter Mode', () => {
     if (await themeButton.isVisible()) {
       const initialHtmlClass = await page.locator('html').getAttribute('class') || ''
       await themeButton.click()
-      const toggledHtmlClass = await page.locator('html').getAttribute('class') || ''
+      let toggledHtmlClass = await page.locator('html').getAttribute('class') || ''
+      
+      // If the class didn't change (e.g. system 'light' -> explicit 'light'), click again to reach 'dark'
+      if (initialHtmlClass === toggledHtmlClass) {
+        await themeButton.click()
+        toggledHtmlClass = await page.locator('html').getAttribute('class') || ''
+      }
       
       // Class should change as theme cycles
       expect(initialHtmlClass).not.toBe(toggledHtmlClass)

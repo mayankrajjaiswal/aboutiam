@@ -3,6 +3,12 @@ import { test, expect } from '@playwright/test'
 test.describe('AboutIAM Home & User Onboarding Flows', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:5173/')
+    await page.evaluate(() => {
+      localStorage.setItem('aboutiam-disclaimer', JSON.stringify({ state: { hasSeenDisclaimer: true } }))
+      localStorage.setItem('aboutiam-guided-tour', JSON.stringify({ state: { hasSeenTour: true } }))
+      localStorage.setItem('aboutiam-whats-new', JSON.stringify({ state: { lastSeenVersion: '2026.07.28' } }))
+    })
+    await page.reload()
   })
 
   test('should load the home page successfully with hero and daily widgets', async ({ page }) => {
@@ -10,10 +16,10 @@ test.describe('AboutIAM Home & User Onboarding Flows', () => {
     await expect(page.locator('h1')).toContainText('Master Identity & Access')
     
     // Check "Fact of the Day" widget
-    await expect(page.locator('h3:has-text("Fact of the Day")').or(page.locator('div:has-text("Fact of the Day")'))).toBeVisible()
+    await expect(page.locator('h3:has-text("Fact of the Day")').first()).toBeVisible()
     
     // Check "Daily Identity Puzzle" widget
-    await expect(page.locator('h3:has-text("Daily Identity Puzzle")').or(page.locator('div:has-text("Daily Identity Puzzle")')).or(page.locator('span:has-text("Daily Puzzle")'))).toBeVisible()
+    await expect(page.locator('h3:has-text("Daily Identity Puzzle")').or(page.locator('span:has-text("Daily Puzzle")')).first()).toBeVisible()
   })
 
   test('should run the Start Here goal-based routing wizard', async ({ page }) => {
@@ -23,10 +29,10 @@ test.describe('AboutIAM Home & User Onboarding Flows', () => {
     await startHereBtn.click()
 
     // The wizard overlay should be visible
-    await expect(page.locator('h3:has-text("What is your primary goal?")')).toBeVisible()
+    await expect(page.locator('p:has-text("What brings you here today?")')).toBeVisible()
 
     // Click on the first goal button
-    const goalBtn = page.locator('button:has-text("I want to build standard integrations")').or(page.locator('button:has-text("I am a complete beginner")')).first()
+    const goalBtn = page.locator('button:has-text("Learn IAM fundamentals")').or(page.locator('button:has-text("Prep for an interview")')).first()
     await expect(goalBtn).toBeVisible()
     await goalBtn.click()
 
@@ -38,7 +44,7 @@ test.describe('AboutIAM Home & User Onboarding Flows', () => {
     await expect(closeBtn).toBeVisible()
     await closeBtn.click()
     
-    await expect(page.locator('h3:has-text("What is your primary goal?")')).not.toBeVisible()
+    await expect(page.locator('p:has-text("What brings you here today?")')).not.toBeVisible()
   })
 
   test('should allow exporting a user profile locally', async ({ page }) => {
@@ -63,7 +69,7 @@ test.describe('AboutIAM Home & User Onboarding Flows', () => {
     ])
 
     const filename = download.suggestedFilename()
-    expect(filename).toContain('aboutiam_profile_')
+    expect(filename).toContain('aboutiam-profile-')
     expect(filename).toContain('.json')
   })
 })

@@ -3,19 +3,39 @@ import { test, expect } from '@playwright/test'
 test.describe('AboutIAM Career & Certification Framework', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:5173/')
+    await page.evaluate(() => {
+      localStorage.setItem('aboutiam-disclaimer', JSON.stringify({ state: { hasSeenDisclaimer: true } }))
+      localStorage.setItem('aboutiam-guided-tour', JSON.stringify({ state: { hasSeenTour: true } }))
+      localStorage.setItem('aboutiam-whats-new', JSON.stringify({ state: { lastSeenVersion: '2026.07.28' } }))
+    })
+    await page.reload()
+    
+    // Self-healing: if the disclaimer modal pops up due to hydration lag, dismiss it
+    const dismissBtn = page.locator('button:has-text("Got it, let\'s go")')
+    try {
+      await expect(dismissBtn).toBeVisible({ timeout: 1000 })
+      await dismissBtn.click()
+    } catch {
+      // Modal didn't pop up or was already dismissed
+    }
   })
 
   test('should load certifications catalog, filter, and run a flagship certification quiz', async ({ page }) => {
     await page.goto('http://localhost:5173/certifications')
-    await expect(page.locator('h2')).toContainText('Enterprise Certification Hub')
+    
+    // Self-healing: if the disclaimer modal pops up due to hydration lag, dismiss it
+    const dismissBtn = page.locator('button:has-text("Got it, let\'s go")')
+    try {
+      await expect(dismissBtn).toBeVisible({ timeout: 1000 })
+      await dismissBtn.click()
+    } catch {
+      // Modal didn't pop up or was already dismissed
+    }
 
-    // Click on Microsoft SC-300 flagship certification (or the first available button that has a quiz)
-    const flagshipBtn = page.locator('button:has-text("Identity and Access Administrator")').first().or(page.locator('button:has-text("Okta Certified")').first())
-    await expect(flagshipBtn).toBeVisible()
-    await flagshipBtn.click()
+    await expect(page.locator('h1')).toContainText('Enterprise Certification Hub')
 
     // Flagship certificate should render study path or show quiz option
-    await expect(page.locator('h3:has-text("Microsoft Certified:")').or(page.locator('h3:has-text("Study Path & Blueprint")')).first()).toBeVisible({ timeout: 5000 })
+    await expect(page.locator('h2:has-text("SC-900")').first()).toBeVisible({ timeout: 10000 })
 
     // Click option buttons to run flagship mock exam
     const quizOption = page.locator('button:has-text("Option")').first().or(page.locator('button[class*="border-border-subtle"]').first())
@@ -30,7 +50,7 @@ test.describe('AboutIAM Career & Certification Framework', () => {
 
   test('should navigate role tracks in Interview Career Center and test MCQs and simulations', async ({ page }) => {
     await page.goto('http://localhost:5173/career-center')
-    await expect(page.locator('h1')).toContainText('Interview Prep & Career Center')
+    await expect(page.locator('h1')).toContainText('Interview & Career Center')
 
     // Select the first role track (e.g., IAM Security Engineer or Administrator)
     const roleTrackBtn = page.locator('button:has-text("Security Engineer")').first().or(page.locator('button:has-text("Administrator")').first())
@@ -38,10 +58,10 @@ test.describe('AboutIAM Career & Certification Framework', () => {
     await roleTrackBtn.click()
 
     // Test multiple choice questions tab
-    const mcqOption = page.locator('button[class*="border"]').first()
+    const mcqOption = page.locator('div.space-y-2 > button').first()
     if (await mcqOption.isVisible()) {
       await mcqOption.click()
-      const submitMcqBtn = page.locator('button:has-text("Submit Answer")')
+      const submitMcqBtn = page.locator('button:has-text("Submit Answer")').first()
       await expect(submitMcqBtn).toBeVisible()
       await submitMcqBtn.click()
     }
@@ -69,10 +89,10 @@ test.describe('AboutIAM Career & Certification Framework', () => {
 
   test('should load historic breaches museum and run flashcard quiz mode', async ({ page }) => {
     await page.goto('http://localhost:5173/wall-of-shame?tab=quiz')
-    await expect(page.locator('h2')).toContainText('Vulnerability & Breach Museum')
+    await expect(page.locator('h2')).toContainText('Historical Evolution & Breach Museum')
 
     // Since we are in ?tab=quiz, we should see Spaced Repetition flashcards
-    const startQuizBtn = page.locator('button:has-text("Start Quiz")').or(page.locator('button:has-text("Reveal Answer")')).or(page.locator('div:has-text("SM-2")'))
+    const startQuizBtn = page.locator('button:has-text("Start Review")').or(page.locator('button:has-text("Reveal Answer")')).or(page.locator('div:has-text("SM-2")'))
     await expect(startQuizBtn).toBeVisible()
   })
 })

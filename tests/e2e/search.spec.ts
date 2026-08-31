@@ -3,11 +3,19 @@ import { test, expect } from '@playwright/test'
 test.describe('AboutIAM Search Bar & Command Palette Integration', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:5173/')
+    await page.evaluate(() => {
+      localStorage.setItem('aboutiam-disclaimer', JSON.stringify({ state: { hasSeenDisclaimer: true } }))
+      localStorage.setItem('aboutiam-guided-tour', JSON.stringify({ state: { hasSeenTour: true } }))
+      localStorage.setItem('aboutiam-whats-new', JSON.stringify({ state: { lastSeenVersion: '2026.07.28' } }))
+    })
+    await page.reload()
   })
 
   test('should trigger search modal using keyboard shortcut Ctrl+K', async ({ page }) => {
+    // Focus page
+    await page.locator('h1').first().click()
     // Trigger keyboard shortcut
-    await page.keyboard.press('Control+KeyK')
+    await page.keyboard.press('Control+k')
     
     // Command palette should become visible
     const modalInput = page.locator('input[placeholder*="Search tools"]')
@@ -15,7 +23,8 @@ test.describe('AboutIAM Search Bar & Command Palette Integration', () => {
   })
 
   test('should successfully search for new and old security tools', async ({ page }) => {
-    await page.keyboard.press('Control+KeyK')
+    await page.locator('h1').first().click()
+    await page.keyboard.press('Control+k')
     const modalInput = page.locator('input[placeholder*="Search tools"]')
     await expect(modalInput).toBeVisible()
 

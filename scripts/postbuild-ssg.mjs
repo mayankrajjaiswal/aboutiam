@@ -283,6 +283,22 @@ function generateJsonLd(route) {
       "description": route.description,
       "publisher": { "@id": `${SITE_URL}/#organization` }
     })
+  } else if (route.path.startsWith('/playground/') && route.path !== '/playground') {
+    graphList.push({
+      "@type": "SoftwareApplication",
+      "@id": `${canonicalUrl}#software`,
+      "name": route.title.split('—')[0].split('|')[0].trim(),
+      "operatingSystem": "All",
+      "applicationCategory": "EducationalApplication",
+      "browserRequirements": "Requires HTML5, WebCrypto API",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      },
+      "description": route.description,
+      "publisher": { "@id": `${SITE_URL}/#organization` }
+    })
   } else if (route.path.startsWith('/learn') || route.path.startsWith('/primer')) {
     graphList.push({
       "@type": "Course",
@@ -330,9 +346,6 @@ function renderPage(template, route) {
 
   const hreflangs = `
   <link rel="alternate" hreflang="en" href="${canonicalUrl}" />
-  <link rel="alternate" hreflang="es" href="${SITE_URL}/es${route.path}/" />
-  <link rel="alternate" hreflang="fr" href="${SITE_URL}/fr${route.path}/" />
-  <link rel="alternate" hreflang="de" href="${SITE_URL}/de${route.path}/" />
   <link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />
   `.trim()
 

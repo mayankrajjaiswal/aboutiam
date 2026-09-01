@@ -13,12 +13,23 @@ describe('Sitemap Generator', () => {
     expect(sitemapXml).toContain('<loc>https://www.aboutiam.com/</loc>')
   })
 
-  it('should include exactly one entry for every ROUTE_META path with no duplicates', () => {
+  it('should include exactly one entry for every ROUTE_META path with no duplicates, plus all dynamic parameter URLs', () => {
     const urls = buildSitemapUrls(ROUTE_META)
     const locs = urls.map(u => u.loc)
 
     expect(new Set(locs).size).toBe(locs.length)
-    expect(urls.length).toBe(ROUTE_META.length)
+    expect(urls.length).toBeGreaterThan(ROUTE_META.length)
+
+    // Check that some dynamic query-param URLs are present in the sitemap output
+    const hasTerm = locs.some(l => l.includes('?term='))
+    const hasStandard = locs.some(l => l.includes('?standard='))
+    const hasStudy = locs.some(l => l.includes('?study='))
+    const hasCert = locs.some(l => l.includes('?cert='))
+
+    expect(hasTerm).toBe(true)
+    expect(hasStandard).toBe(true)
+    expect(hasStudy).toBe(true)
+    expect(hasCert).toBe(true)
   })
 
   it('should give the homepage the highest priority and daily changefreq', () => {

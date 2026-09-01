@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { ROUTE_META } from '../../src/routeMeta'
 import { TOOLS } from '../../src/data/toolsRegistry'
+import { buildSitemapUrls } from '../../scripts/generate-sitemap'
 
 // public/sitemap.xml, public/llms.txt, and public/rss.xml are committed
 // "dev-copy/fallback-source" build artifacts (per GEMINI.md's documented
@@ -15,10 +16,11 @@ import { TOOLS } from '../../src/data/toolsRegistry'
 const repoRoot = join(__dirname, '..', '..')
 
 describe('committed public/ build artifacts are not stale relative to their source registries', () => {
-  it('public/sitemap.xml has exactly one <url> entry per ROUTE_META route', () => {
+  it('public/sitemap.xml has exactly one <url> entry per generated sitemap URL', () => {
     const sitemap = readFileSync(join(repoRoot, 'public', 'sitemap.xml'), 'utf-8')
     const urlCount = (sitemap.match(/<url>/g) ?? []).length
-    expect(urlCount, 'run `npm run build` (or `node --experimental-strip-types scripts/generate-sitemap.ts`) to refresh public/sitemap.xml').toBe(ROUTE_META.length)
+    const expectedCount = buildSitemapUrls(ROUTE_META).length
+    expect(urlCount, 'run `npm run build` (or `node --experimental-strip-types scripts/generate-sitemap.ts`) to refresh public/sitemap.xml').toBe(expectedCount)
   })
 
   it('public/llms.txt links every ROUTE_META route', () => {

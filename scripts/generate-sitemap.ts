@@ -3,6 +3,17 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { ROUTE_META } from '../src/routeMeta.ts'
 
+// Import all datasets directly
+import { ENCYCLOPEDIA_TERMS } from '../src/data/encyclopediaData.ts'
+import { STANDARDS } from '../src/data/standardsData.ts'
+import { BULLETINS } from '../src/data/bulletinsData.ts'
+import { BREACHES } from '../src/data/breachesData.ts'
+import { PROJECTS as REFERENCE_PROJECTS } from '../src/data/referenceProjects.ts'
+import { CASE_STUDIES } from '../src/data/caseStudiesData.ts'
+import { CERTIFICATIONS } from '../src/data/certificationsData.ts'
+import { CVE_DATABASE, RFC_DATABASE } from '../src/data/researchData.ts'
+import { EXPLORE_PRODUCTS } from '../src/data/exploreData.ts'
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
@@ -14,15 +25,22 @@ export interface SitemapUrl {
   priority: string
 }
 
+// Slugifies an RFC/draft "number" field (e.g. "RFC 6749" -> "rfc-6749")
+function rfcSlug(number: string): string {
+  return number.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+}
+
 /**
  * Derives changefreq/priority from a route's path depth so every route in
  * ROUTE_META (the same registry driving live meta tags and SSG pages) gets a
  * sitemap entry automatically — no manual list to fall out of sync.
+ * Also appends all dynamic parameter-driven deep links to ensure 100% crawl indexability.
  */
 export function buildSitemapUrls(routes: typeof ROUTE_META): SitemapUrl[] {
   const seen = new Set<string>()
   const urls: SitemapUrl[] = []
 
+  // 1. Process Core Static Pages
   for (const route of routes) {
     const normalizedPath = route.path === '/' ? '' : route.path.replace(/\/+$/, '')
     const loc = `${SITE_URL}${normalizedPath}/`
@@ -47,6 +65,67 @@ export function buildSitemapUrls(routes: typeof ROUTE_META): SitemapUrl[] {
     urls.push({ loc, changefreq, priority })
   }
 
+  // Helper helper to safely append unique parameter-based URLs
+  const appendParamUrl = (path: string, param: string, id: string, freq: SitemapUrl['changefreq'] = 'weekly', priority = '0.7') => {
+    const loc = `${SITE_URL}${path}/?${param}=${encodeURIComponent(id)}`
+    if (!seen.has(loc)) {
+      seen.add(loc)
+      urls.push({ loc, changefreq: freq, priority })
+    }
+  }
+
+  // 2. Process Dynamic Datasets to build over 280+ deep-links
+  // A. Glossary Terms
+  ENCYCLOPEDIA_TERMS.forEach((t) => {
+    const termId = t.id || t.term.toLowerCase()
+    appendParamUrl('/encyclopedia', 'term', termId, 'weekly', '0.7')
+  })
+
+  // B. Living Standards
+  STANDARDS.forEach((s) => {
+    appendParamUrl('/standards', 'standard', s.id, 'weekly', '0.8')
+  })
+
+  // C. Case Studies
+  CASE_STUDIES.forEach((c) => {
+    appendParamUrl('/case-studies', 'study', c.id, 'weekly', '0.8')
+  })
+
+  // D. Security Bulletins
+  BULLETINS.forEach((b) => {
+    appendParamUrl('/bulletins', 'bulletin', b.id, 'weekly', '0.8')
+  })
+
+  // E. Certifications
+  CERTIFICATIONS.forEach((c) => {
+    appendParamUrl('/certifications', 'cert', c.id, 'weekly', '0.7')
+  })
+
+  // F. Historical Breaches (Wall of Shame)
+  BREACHES.forEach((b) => {
+    appendParamUrl('/wall-of-shame', 'lab', b.id, 'weekly', '0.7')
+  })
+
+  // G. Reference Implementations
+  REFERENCE_PROJECTS.forEach((p) => {
+    appendParamUrl('/references', 'ref', p.id, 'weekly', '0.7')
+  })
+
+  // H. Landscape Product Directory
+  EXPLORE_PRODUCTS.forEach((p) => {
+    appendParamUrl('/explore', 'product', p.id, 'weekly', '0.7')
+  })
+
+  // I. CVEs
+  CVE_DATABASE.forEach((c) => {
+    appendParamUrl('/research', 'cve', c.id, 'weekly', '0.8')
+  })
+
+  // J. RFC Registry
+  RFC_DATABASE.forEach((r) => {
+    appendParamUrl('/research', 'rfc', rfcSlug(r.number), 'weekly', '0.7')
+  })
+
   return urls
 }
 
@@ -70,7 +149,7 @@ ${urls.map(u => `  <url>
 }
 
 // Self-execute if run directly via node command line
-if (process.argv[1] && process.argv[1].endsWith('generate-sitemap.ts')) {
+if (process.argv[1] && (process.argv[1].endsWith('generate-sitemap.ts') || process.argv[1].endsWith('generate-sitemap.js'))) {
   try {
     const { sitemapXml, totalCount } = buildSitemapXml(ROUTE_META)
 

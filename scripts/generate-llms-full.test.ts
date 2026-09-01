@@ -20,6 +20,11 @@ describe('Complete Context LLM Digest (llms-full.txt)', () => {
       expect(content).toContain('## Incident Bulletins & Playbooks')
       expect(content).toContain('## Historical Identity Security Breaches')
       expect(content).toContain('## Reference Architectures & Code Implementations')
+      expect(content).toContain('## Enterprise Case Studies')
+      expect(content).toContain('## Certifications Study Blueprints')
+      expect(content).toContain('## Critical Identity CVEs & Code-Level Patches')
+      expect(content).toContain('## Protocols & Core RFCs Registry')
+      expect(content).toContain('## Enterprise Identity Landscape Directory')
       expect(content.length).toBeGreaterThan(1000)
     }
   })

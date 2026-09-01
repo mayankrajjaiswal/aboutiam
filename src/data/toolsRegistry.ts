@@ -930,6 +930,57 @@ export const TOOLS: ToolMeta[] = [
       { q: 'Can I print this in color or black and white?', a: 'The SVG uses high-contrast vector outlines designed to stand out beautifully in both full-color and high-contrast monochrome printing.' }
     ],
     relatedLinks: [{ label: 'Explore the full Cheat Sheet Playbooks →', href: '/cheat-sheets' }]
+  },
+  {
+    slug: 'c2pa-provenance',
+    taskTags: ['check-compliance'],
+    title: 'C2PA Cryptographic Provenance Tool',
+    description: 'Decode C2PA cryptographic manifests to verify the signing certificate of camera hardware and review exact AI-generation edit history.',
+    category: 'Emerging & Decentralized Identity',
+    icon: FileSignature,
+    phase: 3,
+    status: 'live',
+    keywords: ['c2pa', 'content provenance', 'cryptographic manifest', 'deepfake defense', 'image metadata'],
+    analogy: 'Think of C2PA like a certified biometric birth certificate for files. Instead of guessing if a photo has been tampered with or deepfaked, you can verify the camera chip\'s cryptographic seal and trace its full edit history.',
+    expert: 'C2PA stands for the Coalition for Content Provenance and Authenticity (RFC-grade specifications). It signs metadata assertions at the physical hardware layer and appends them as CBOR blocks within JUMBF (ISO/IEC 19566-5) structures inside JPEGs, PNGs, or MP4s.',
+    faqs: [
+      { q: 'Is C2PA compatible with browser-native WebCrypto?', a: 'Yes — the digital signatures inside the C2PA manifest are validated client-side using standard ECDSA or RSA public keys.' },
+      { q: 'How does it protect against screenshot attacks?', a: 'Screenshots strip C2PA metadata, but the tool will flag the lack of active provenance headers, warning that the media has lost its digital chain-of-custody.' }
+    ]
+  },
+  {
+    slug: 'eu-ai-act-assessor',
+    taskTags: ['check-compliance'],
+    title: 'EU AI Act Identity Compliance Assessor',
+    description: 'Map your identity architecture against the EU AI Act focusing on governance of high-risk AI, human-in-the-loop, and identity logging.',
+    category: 'Supply Chain & Governance',
+    icon: Scale,
+    phase: 3,
+    status: 'live',
+    keywords: ['eu ai act', 'ai identity governance', 'human in the loop', 'compliance audit', 'high risk ai'],
+    analogy: 'Think of this like an architectural GRC driving-test. By assessing your AI system\'s integration with organizational directory logs and security boundaries, it ensures your setup won\'t trigger massive regulatory penalties under upcoming European law.',
+    expert: 'Provides an automated checklist mapping your IAM topology against Title III, Chapter 2 of the EU AI Act (Regulation (EU) 2024/1689). Enforces strict logging criteria, API client attestation tracking, and human-in-the-loop authorization gates.',
+    faqs: [
+      { q: 'Does this apply to basic SaaS integrations?', a: 'If your SaaS utilizes high-risk generative components or user profiling in the EU jurisdiction, it is fully subject to Title III regulations.' },
+      { q: 'Is my compliance data uploaded?', a: 'No — the assessor runs entirely locally in your browser session. No parameters or architectures are shared.' }
+    ]
+  },
+  {
+    slug: 'log-anonymizer',
+    taskTags: ['generate'],
+    title: 'OIDC / SAML Trace Log Anonymizer',
+    description: 'Locally parse and redact PII, signatures, and Bearer tokens from raw HTTP/HAR trace logs so they can be safely shared for debugging.',
+    category: 'Tokens & Assertions',
+    icon: ShieldCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['log anonymizer', 'har scrubber', 'redact access token', 'jwt scrubber', 'saml trace cleaner'],
+    analogy: 'Think of this like a cryptographic document shredder. Before pasting a debug log onto StackOverflow or sharing it on GitHub, this tool strips out sensitive passwords, authorization headers, and raw keys, leaving the structure intact.',
+    expert: 'Runs real-time AST/regex pattern matching over raw JSON, XML, or raw HTTP headers. Sanitizes standard keys like Authorization: Bearer, client_secret, x-api-key, SAML Signature XML nodes, and private key strings completely client-side.',
+    faqs: [
+      { q: 'Does this handle complete HAR archive files?', a: 'Yes — it parses the HAR JSON schema, matches sensitive headers, and recursively sanitizes JWT claim contents.' },
+      { q: 'Can I add custom redaction rules?', a: 'Yes — you can specify custom regex keys in the UI that map to local-variables for custom proprietary token sanitization.' }
+    ]
   }
 ]
 

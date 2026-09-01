@@ -86,6 +86,16 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Multi-Cloud Overlapping IAM Policy Evaluator](https://www.aboutiam.com/playground/cloud-policy-evaluator/): Step inside the heart of an enterprise Policy Evaluation Engine. Visualize and evaluate how Organization SCP boundaries, identity-based IAM permissions, and Resource policies combine to govern access.
 - [Dynamic Trust Framework & Verifiable Presentation Playground](https://www.aboutiam.com/playground/federated-vp/): Explore the architecture of eIDAS 2.0 and the European Digital Identity (EUDI) Wallet. Selectively disclose claims, verify cryptographic SD-JWT signatures, and audit issuers against cross-border trust registries.
 - [Autonomous Security Agent Simulation Playground](https://www.aboutiam.com/playground/autonomous-agent/): Deploy autonomous Red Team and Blue Team AI security agents in simulated token-hijacking and redirect-hijacking arenas. Watch security enforcers dynamically adapt, detect anomalies, and apply cryptographic defenses.
+- [RAG-Aware Authorization Policy Engine](https://www.aboutiam.com/playground/rag-authorization/): Simulate vector-level chunk metadata masking to authorize access to AI generated embeddings before the LLM synthesizes an answer.
+- [Ephemeral AI Swarm Identity Orchestrator](https://www.aboutiam.com/playground/ai-swarm/): Deploy an AI swarm and visualize constrained, short-lived tokens (RFC 8693) generated and revoked autonomously by a parent AI.
+- [Fully Homomorphic Encryption (FHE) Auth Sandbox](https://www.aboutiam.com/playground/fhe-auth/): Perform mathematical polynomial intersection on encrypted ciphertexts to verify credentials without exposing the underlying plaintext.
+- [Quantum Key Distribution (QKD) Simulator](https://www.aboutiam.com/playground/qkd-simulator/): Observe the quantum state of photons collapsing during a transmission interception, compared to traditional lattice-based PQC.
+- [ISO 18013-5 mDL Proximity Authentication Lab](https://www.aboutiam.com/playground/mdl-proximity/): Establish an offline secure BLE session using ECDH to pass a cryptographically signed CBOR payload without internet access.
+- [Space Identity & DTN Simulator](https://www.aboutiam.com/playground/space-identity/): Construct a Delay-Tolerant Networking (DTN) space identity packet and simulate store-and-forward authentication across planetary lag.
+- [V2X PKI Expressway Simulator](https://www.aboutiam.com/playground/v2x-pki/): Simulate autonomous vehicles validating sub-10ms ephemeral pseudonymous certificates and rejecting invalid leaf-node brake signals.
+- [eBPF Kernel-Level Identity Tracer](https://www.aboutiam.com/playground/ebpf-tracer/): Configure an eBPF ring-0 authorization policy and watch the kernel drop unauthorized network packets at the OS level.
+- [Digital Twin Identity Binding Workbench](https://www.aboutiam.com/playground/digital-twin/): Cryptographically bond a Physical Unclonable Function (PUF) chip to an X.509 cloud certificate representing an IoT digital twin.
+- [BCI Neural Auth Baseline Simulator](https://www.aboutiam.com/playground/bci-auth/): Map a Brain-Computer Interface (BCI) P300 brainwave hash against a baseline for continuous spatial computing authentication.
 
 ## Security Tools
 
@@ -140,6 +150,9 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [X.509 Certificate to JWKS Converter](https://www.aboutiam.com/tools/x509-to-jwks-converter/): Convert legacy PEM X.509 certificates directly into modern JSON Web Key Sets (JWKS) arrays for OIDC migrations.
 - [SAML Metadata Auditor](https://www.aboutiam.com/tools/saml-metadata-auditor/): Decode, parse, and flag critical schema risks in XML metadata.
 - [OAuth 2.1 Transition Auditor](https://www.aboutiam.com/tools/oauth-2-1-auditor/): Scan authorization requests and client configurations against OAuth 2.1 best practices.
+- [C2PA Cryptographic Provenance Tool](https://www.aboutiam.com/tools/c2pa-provenance/): Decode C2PA cryptographic manifests to verify the signing certificate of camera hardware and review exact AI-generation edit history.
+- [EU AI Act Identity Compliance Assessor](https://www.aboutiam.com/tools/eu-ai-act-assessor/): Map your identity architecture against the EU AI Act focusing on governance of high-risk AI, human-in-the-loop, and identity logging.
+- [OIDC / SAML Trace Log Anonymizer](https://www.aboutiam.com/tools/log-anonymizer/): Locally parse and redact PII, signatures, and Bearer tokens from raw HTTP/HAR trace logs so they can be safely shared for debugging.
 
 ## Advanced Ecosystem & Governance
 

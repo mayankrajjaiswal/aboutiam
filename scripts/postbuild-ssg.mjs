@@ -174,6 +174,19 @@ const ROUTES = [
   { path: '/cheat-sheets', title: 'IAM Cheat Sheets — 24 Security Compliance Checklists', description: 'Interactive hardening checklists for OAuth, SAML, JWT, Zero Trust, Kubernetes RBAC, SOC 2, HIPAA, and GDPR, with live compliance gauges.' },
   { path: '/contributors', title: 'Team & Contact', description: 'Meet the AboutIAM contributors and get in touch.' },
   { path: '/terms', title: 'Terms, License & Disclaimer', description: 'MIT license details and educational-use disclaimer for AboutIAM\'s interactive identity security labs.' },
+  { path: '/playground/rag-authorization', title: 'RAG-Aware Authorization Policy Engine', description: 'Simulate vector-level chunk metadata masking to authorize access to AI generated embeddings before the LLM synthesizes an answer.' },
+  { path: '/playground/ai-swarm', title: 'Ephemeral AI Swarm Identity Orchestrator', description: 'Deploy an AI swarm and visualize constrained, short-lived tokens (RFC 8693) generated and revoked autonomously by a parent AI.' },
+  { path: '/playground/fhe-auth', title: 'Fully Homomorphic Encryption (FHE) Auth Sandbox', description: 'Perform mathematical polynomial intersection on encrypted ciphertexts to verify credentials without exposing the underlying plaintext.' },
+  { path: '/playground/qkd-simulator', title: 'Quantum Key Distribution (QKD) Simulator', description: 'Observe the quantum state of photons collapsing during a transmission interception, compared to traditional lattice-based PQC.' },
+  { path: '/playground/mdl-proximity', title: 'ISO 18013-5 mDL Proximity Authentication Lab', description: 'Establish an offline secure BLE session using ECDH to pass a cryptographically signed CBOR payload without internet access.' },
+  { path: '/playground/space-identity', title: 'Space Identity & DTN Simulator', description: 'Construct a Delay-Tolerant Networking (DTN) space identity packet and simulate store-and-forward authentication across planetary lag.' },
+  { path: '/playground/v2x-pki', title: 'V2X PKI Expressway Simulator', description: 'Simulate autonomous vehicles validating sub-10ms ephemeral pseudonymous certificates and rejecting invalid leaf-node brake signals.' },
+  { path: '/playground/ebpf-tracer', title: 'eBPF Kernel-Level Identity Tracer', description: 'Configure an eBPF ring-0 authorization policy and watch the kernel drop unauthorized network packets at the OS level.' },
+  { path: '/playground/digital-twin', title: 'Digital Twin Identity Binding Workbench', description: 'Cryptographically bond a Physical Unclonable Function (PUF) chip to an X.509 cloud certificate representing an IoT digital twin.' },
+  { path: '/playground/bci-auth', title: 'BCI Neural Auth Baseline Simulator', description: 'Map a Brain-Computer Interface (BCI) P300 brainwave hash against a baseline for continuous spatial computing authentication.' },
+  { path: '/tools/c2pa-provenance', title: 'C2PA Cryptographic Provenance Tool', description: 'Decode C2PA cryptographic manifests to verify the signing certificate of camera hardware and review exact AI-generation edit history.' },
+  { path: '/tools/eu-ai-act-assessor', title: 'EU AI Act Identity Compliance Assessor', description: 'Map your identity architecture against the EU AI Act focusing on governance of high-risk AI, human-in-the-loop, and identity logging.' },
+  { path: '/tools/log-anonymizer', title: 'OIDC / SAML Trace Log Anonymizer', description: 'Locally parse and redact PII, signatures, and Bearer tokens from raw HTTP/HAR trace logs so they can be safely shared for debugging.' },
 ]
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

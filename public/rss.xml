@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Sep 2026 14:46:31 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2026 15:15:31 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -405,6 +405,30 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/print-poster</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Renders a beautiful, high-fidelity, printable SVG Cheat Sheet Poster. Perfect for office walls or dev workspaces—summarizes key OAuth, SAML, and JWT guidelines on a single high-contrast sheet.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: C2PA Cryptographic Provenance Tool]]></title>
+      <link>https://www.aboutiam.com/tools/c2pa-provenance</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/c2pa-provenance</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Decode C2PA cryptographic manifests to verify the signing certificate of camera hardware and review exact AI-generation edit history.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: EU AI Act Identity Compliance Assessor]]></title>
+      <link>https://www.aboutiam.com/tools/eu-ai-act-assessor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/eu-ai-act-assessor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Map your identity architecture against the EU AI Act focusing on governance of high-risk AI, human-in-the-loop, and identity logging.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: OIDC / SAML Trace Log Anonymizer]]></title>
+      <link>https://www.aboutiam.com/tools/log-anonymizer</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/log-anonymizer</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Locally parse and redact PII, signatures, and Bearer tokens from raw HTTP/HAR trace logs so they can be safely shared for debugging.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

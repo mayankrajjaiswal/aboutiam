@@ -184,6 +184,21 @@ const StandardsExplorer = lazy(() => import('./pages/StandardsExplorer'))
 const EventsCalendar = lazy(() => import('./pages/EventsCalendar'))
 const IamReports = lazy(() => import('./pages/IamReports'))
 
+// Horizon 3 Next-Gen Modules
+const RagAuthorization = lazy(() => import('./pages/Playgrounds/RagAuthorization'))
+const AiSwarmOrchestrator = lazy(() => import('./pages/Playgrounds/AiSwarmOrchestrator'))
+const FheAuthSandbox = lazy(() => import('./pages/Playgrounds/FheAuthSandbox'))
+const QkdSimulator = lazy(() => import('./pages/Playgrounds/QkdSimulator'))
+const MdlProximity = lazy(() => import('./pages/Playgrounds/MdlProximity'))
+const SpaceIdentityDtn = lazy(() => import('./pages/Playgrounds/SpaceIdentityDtn'))
+const V2xPki = lazy(() => import('./pages/Playgrounds/V2xPki'))
+const EbpfIdentityTracer = lazy(() => import('./pages/Playgrounds/EbpfIdentityTracer'))
+const DigitalTwinBinding = lazy(() => import('./pages/Playgrounds/DigitalTwinBinding'))
+const BciAuthBaseline = lazy(() => import('./pages/Playgrounds/BciAuthBaseline'))
+const C2paProvenance = lazy(() => import('./pages/Tools/C2paProvenance'))
+const EuAiActAssessor = lazy(() => import('./pages/Tools/EuAiActAssessor'))
+const LogAnonymizer = lazy(() => import('./pages/Tools/LogAnonymizer'))
+
 function PageLoadingFallback() {
   return (
     <div className="flex items-center justify-center py-24">
@@ -370,6 +385,19 @@ export default function App() {
               <Route path="/playground/cloud-policy-evaluator" element={<CloudPolicyEvaluator />} />
               <Route path="/playground/federated-vp" element={<FederatedVpPlayground />} />
               <Route path="/playground/autonomous-agent" element={<AutonomousAgentLab />} />
+              <Route path="/playground/rag-authorization" element={<RagAuthorization />} />
+              <Route path="/playground/ai-swarm" element={<AiSwarmOrchestrator />} />
+              <Route path="/playground/fhe-auth" element={<FheAuthSandbox />} />
+              <Route path="/playground/qkd-simulator" element={<QkdSimulator />} />
+              <Route path="/playground/mdl-proximity" element={<MdlProximity />} />
+              <Route path="/playground/space-identity" element={<SpaceIdentityDtn />} />
+              <Route path="/playground/v2x-pki" element={<V2xPki />} />
+              <Route path="/playground/ebpf-tracer" element={<EbpfIdentityTracer />} />
+              <Route path="/playground/digital-twin" element={<DigitalTwinBinding />} />
+              <Route path="/playground/bci-auth" element={<BciAuthBaseline />} />
+              <Route path="/tools/c2pa-provenance" element={<C2paProvenance />} />
+              <Route path="/tools/eu-ai-act-assessor" element={<EuAiActAssessor />} />
+              <Route path="/tools/log-anonymizer" element={<LogAnonymizer />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

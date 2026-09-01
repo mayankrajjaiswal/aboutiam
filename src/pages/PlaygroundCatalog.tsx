@@ -590,6 +590,41 @@ export default function PlaygroundCatalog() {
       icon: Glasses,
       link: "/playground/bci-auth",
       badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Wasm-Native OPA & Directory Engine Simulator",
+      desc: "Simulate compiling OPA Rego policies to Wasm and executing them locally, alongside in-memory directory queries.",
+      icon: Terminal,
+      link: "/playground/opa-wasm",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Model Context Protocol (MCP) Server Sandbox",
+      desc: "An interactive Model Context Protocol simulator where users configure the AboutIAM MCP server, see how desktop LLM clients poll the tools, and query the Encyclopedia.",
+      icon: Bot,
+      link: "/playground/mcp-server",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "WebRTC P2P Cryptographic Handshake",
+      desc: "A split-pane simulator where users manually generate SDP offers, exchange ICE candidates, and negotiate a secure Diffie-Hellman channel between Peer A and Peer B.",
+      icon: Radio,
+      link: "/playground/webrtc-p2p",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Active SOC \"War Room\" Threat Simulator",
+      desc: "A gamified, timed incident response dashboard. Users must parse incoming logs, issue revokes, and manage an active threat before a 60-second timer exhausts the simulated insurance coverage.",
+      icon: Zap,
+      link: "/playground/war-room",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Computer-Vision Biometric Mesh Lab",
+      desc: "A visual canvas simulator tracking head angles, blink rates, and flash-challenge responses to differentiate a live human from a deepfake replay attack.",
+      icon: Eye,
+      link: "/playground/biometric-mesh",
+      badge: "Active (Next-Gen)",
     }
   ]
 

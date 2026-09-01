@@ -199,6 +199,13 @@ const C2paProvenance = lazy(() => import('./pages/Tools/C2paProvenance'))
 const EuAiActAssessor = lazy(() => import('./pages/Tools/EuAiActAssessor'))
 const LogAnonymizer = lazy(() => import('./pages/Tools/LogAnonymizer'))
 
+// Advanced Horizon 3 Next-Gen Playgrounds
+const OpaWasmPlayground = lazy(() => import('./pages/Playgrounds/OpaWasmPlayground'))
+const McpServerPlayground = lazy(() => import('./pages/Playgrounds/McpServerPlayground'))
+const WebrtcP2pPlayground = lazy(() => import('./pages/Playgrounds/WebrtcP2pPlayground'))
+const WarRoomPlayground = lazy(() => import('./pages/Playgrounds/WarRoomPlayground'))
+const BiometricMeshPlayground = lazy(() => import('./pages/Playgrounds/BiometricMeshPlayground'))
+
 function PageLoadingFallback() {
   return (
     <div className="flex items-center justify-center py-24">
@@ -398,6 +405,11 @@ export default function App() {
               <Route path="/tools/c2pa-provenance" element={<C2paProvenance />} />
               <Route path="/tools/eu-ai-act-assessor" element={<EuAiActAssessor />} />
               <Route path="/tools/log-anonymizer" element={<LogAnonymizer />} />
+              <Route path="/playground/opa-wasm" element={<OpaWasmPlayground />} />
+              <Route path="/playground/mcp-server" element={<McpServerPlayground />} />
+              <Route path="/playground/webrtc-p2p" element={<WebrtcP2pPlayground />} />
+              <Route path="/playground/war-room" element={<WarRoomPlayground />} />
+              <Route path="/playground/biometric-mesh" element={<BiometricMeshPlayground />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

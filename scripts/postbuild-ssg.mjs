@@ -187,6 +187,11 @@ const ROUTES = [
   { path: '/tools/c2pa-provenance', title: 'C2PA Cryptographic Provenance Tool', description: 'Decode C2PA cryptographic manifests to verify the signing certificate of camera hardware and review exact AI-generation edit history.' },
   { path: '/tools/eu-ai-act-assessor', title: 'EU AI Act Identity Compliance Assessor', description: 'Map your identity architecture against the EU AI Act focusing on governance of high-risk AI, human-in-the-loop, and identity logging.' },
   { path: '/tools/log-anonymizer', title: 'OIDC / SAML Trace Log Anonymizer', description: 'Locally parse and redact PII, signatures, and Bearer tokens from raw HTTP/HAR trace logs so they can be safely shared for debugging.' },
+  { path: '/playground/opa-wasm', title: 'Wasm-Native OPA & Directory Engine Simulator', description: 'Simulate compiling OPA Rego policies to Wasm and executing them locally, alongside in-memory directory queries.' },
+  { path: '/playground/mcp-server', title: 'Model Context Protocol (MCP) Server Sandbox', description: 'An interactive Model Context Protocol simulator where users configure the AboutIAM MCP server, see how desktop LLM clients poll the tools, and query the Encyclopedia.' },
+  { path: '/playground/webrtc-p2p', title: 'WebRTC P2P Cryptographic Handshake', description: 'A split-pane simulator where users manually generate SDP offers, exchange ICE candidates, and negotiate a secure Diffie-Hellman channel between Peer A and Peer B.' },
+  { path: '/playground/war-room', title: 'Active SOC "War Room" Threat Simulator', description: 'A gamified, timed incident response dashboard. Users must parse incoming logs, issue revokes, and manage an active threat before a 60-second timer exhausts the simulated insurance coverage.' },
+  { path: '/playground/biometric-mesh', title: 'Computer-Vision Biometric Mesh Lab', description: 'A visual canvas simulator tracking head angles, blink rates, and flash-challenge responses to differentiate a live human from a deepfake replay attack.' },
 ]
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

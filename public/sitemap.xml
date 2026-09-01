@@ -1052,6 +1052,36 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/playground/opa-wasm/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/playground/mcp-server/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/playground/webrtc-p2p/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/playground/war-room/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/playground/biometric-mesh/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=aaa</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>

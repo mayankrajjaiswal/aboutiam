@@ -1042,3 +1042,36 @@ onReset={() => {
 4. Add a `describe('foo', ...)` block to `mockShell.test.ts` covering both a supported invocation and an unsupported one (per the doc's own test requirement: every supported command produces its expected output, and an unsupported command returns a helpful message rather than crashing).
 
 **To embed the terminal in a page**, just render `<IamTerminal welcomeLines={[...]} />` — no props beyond that are required. It manages its own scrollback, command history (↑/↓ arrow recall), and the `clear` command internally. First piloted inside `InterviewCareerCenter.tsx`'s "Config Exercises" tab, alongside (not replacing) the existing regex/config-validation exercises, which serve a different pedagogical purpose.
+
+---
+
+### 🏛️ II. Wikidata Semantic Entity Mappings in SSG
+
+`scripts/postbuild-ssg.mjs` injects standard-compliant Schema.org `sameAs` entity mappings directly into pre-rendered HTML metadata. This connects our protocol/standards pages directly to open global directories (Wikidata) representing:
+- **OAuth:** `https://www.wikidata.org/wiki/Q1046342`
+- **OpenID Connect:** `https://www.wikidata.org/wiki/Q25112117`
+- **SAML:** `https://www.wikidata.org/wiki/Q1632736`
+- **SCIM:** `https://www.wikidata.org/wiki/Q17144933`
+- **WebAuthn / FIDO2:** `https://www.wikidata.org/wiki/Q60753556`
+- **JSON Web Token (JWT):** `https://www.wikidata.org/wiki/Q28127393`
+- **Zero Trust Security:** `https://www.wikidata.org/wiki/Q104840842`
+
+---
+
+### 🏛️ JJ. Maintaining the 13 Next-Gen Horizon 3 Modules
+
+To sustain, extend, or update the 10 next-gen playgrounds and 3 next-gen tools:
+1. **Adding Playgrounds to Catalog:** All playgrounds must be added to the static `playgrounds` list inside `src/pages/PlaygroundCatalog.tsx` to ensure card rendering, and to `SIMULATORS_LIST` inside `src/lib/search/searchService.ts` to ensure first-class Search indexation.
+2. **Adding Tools to Registry:** All tools must be registered in `src/data/toolsRegistry.ts`, which automatically injects them into the `ToolsCatalog` and the search index.
+3. **Markdown Digests:** Upgraded `scripts/generate-llms-full.ts` and `scripts/generate-qa.ts` dynamically pull from these datasets, appending fully qualified absolute canonical URLs next to each entry to guarantee high-accuracy conversational AI citation.
+
+---
+
+### 🏛️ KK. Playwright End-to-End (E2E) Test Suite
+
+We maintain a robust, fully automated browser testing suite under `tests/e2e/`.
+- `tests/e2e/horizon3-nextgen.spec.ts` covers the 13 new Horizon 3 additions:
+  - Bypasses first-visit Disclaimer overlays.
+  - Simulates active UI interactions (toggling QKD Photons, running FHE mathematical matrix resolves, or running log redactions).
+  - Asserts live output and DOM elements.
+- **Run command:** `npx playwright test` to execute E2E checks in headless browsers.

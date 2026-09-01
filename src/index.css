@@ -195,3 +195,26 @@ body, header, aside, main, div, button, input, select, textarea, h1, h2, h3, h4,
   content-visibility: auto;
   contain-intrinsic-size: 200px;
 }
+
+/* Next-Gen Responsive Mobile Landscape & Rotation Adjustments (F3)
+   When a device is rotated to landscape (viewport height is very small),
+   fixed headers and footers can choke the available layout space.
+   We dynamically release fixed headers, decrease paddings, and ensure
+   absolute scrollability of all page content for all mobile screen ranges. */
+@media (max-height: 520px) and (max-width: 960px) {
+  header.fixed, .fixed.top-0 {
+    position: absolute !important; /* Let header scroll with flow to recover vertical height */
+  }
+  nav.fixed, .fixed.bottom-0 {
+    position: absolute !important; /* Let bottom nav scroll away on small-height landscape mode */
+  }
+  main {
+    padding-top: 4.5rem !important; /* Compress layout spacing */
+    padding-bottom: 4.5rem !important;
+  }
+}
+
+/* Ensure smooth touch inertial scroll across all elements */
+* {
+  -webkit-overflow-scrolling: touch;
+}

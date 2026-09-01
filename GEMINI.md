@@ -159,6 +159,23 @@ The active workspace maps cleanly to the following page assets under `src/pages/
 | **`/tools/ansible-vault`** | `Tools/AnsibleVault.tsx` | Encrypt or decrypt secrets client-side using the standard Ansible Vault 1.1/1.2 AES-256 cipher format — 100% browser-native PBKDF2 + AES-CTR + HMAC-SHA256. |
 | **`/tools/sops-simulator`** | `Tools/SopsSimulator.tsx` | Selectively encrypt configuration values inside YAML or JSON files using simulated AWS KMS, Azure Key Vault, or Age keys. |
 | **`/tools/conformance-checker`** | `Tools/ConformanceChecker.tsx` | Paste an OIDC discovery document or SAML 2.0 metadata XML and run an automated pass/fail checklist against required fields and structural rules (`src/lib/tools/conformance.ts`). |
+| **`/playground/fido2-conditional-ui`** | `Playgrounds/Fido2ConditionalUi.tsx` | Simulate browser autofill UI integrations and passwordless passkey authentication flows. |
+| **`/playground/oidc-federation`** | `Playgrounds/OidcFederationLab.tsx` | Explore multi-tenant OIDC federation configurations, trust hierarchies, and automated client registration. |
+| **`/playground/xacml-engine`** | `Playgrounds/XacmlPolicyEngine.tsx` | Evaluate policy scopes using XACML combining algorithms (deny-overrides, permit-overrides). |
+| **`/playground/gnap-visualizer`** | `Playgrounds/GnapVisualizer.tsx` | Explore RFC-grade Grant Negotiation and Authorization Protocol (GNAP) parameters and token flows. |
+| **`/playground/caep-signals`** | `Playgrounds/CaepLab.tsx` | Simulate pushes of Security Event Tokens (SETs) for continuous session-revocation signals. |
+| **`/playground/vc-did`** | `Playgrounds/VcDidLab.tsx` | Issue and verify Ed25519-signed Verifiable Credentials and Presentations in-browser. |
+| **`/playground/identity-broker`** | `Playgrounds/IdentityBrokerSandbox.tsx` | Explore multi-tenant single sign-on federation routing and protocol translation. |
+| **`/playground/passkey-policy`** | `Playgrounds/PasskeyPolicyLab.tsx` | Configure enterprise-grade FIDO2/WebAuthn registration parameters and AAGUID filters. |
+| **`/playground/workload-federation`** | `Playgrounds/WorkloadIdentityFederation.tsx` | Secure CI/CD automated build pipelines using federated ephemeral OIDC token handshakes. |
+| **`/playground/cloud-policy`** | `Playgrounds/CloudPolicyEvaluator.tsx` | Visualize Organization SCP boundaries, identity-based permissions, and resource policies. |
+| **`/playground/federated-vp`** | `Playgrounds/FederatedVpPlayground.tsx` | Selective disclosure of claims and verifications against national trust registries (eIDAS 2.0). |
+| **`/tools/oauth-risk-analyzer`** | `Tools/OauthRiskAnalyzer.tsx` | Input OAuth 2.0 request parameters to parse and risk-evaluate authorization URL query strings. |
+| **`/tools/csp-builder`** | `Tools/CspBuilder.tsx` | Build standard-compliant Content Security Policy (CSP) headers using a visual checkbox wizard. |
+| **`/tools/oauth21-auditor`** | `Tools/Oauth21Auditor.tsx` | Audit client application configurations against strict OAuth 2.1 protocol security recommendations. |
+| **`/tools/x509-jwks-converter`** | `Tools/X509ToJwksConverter.tsx` | Convert raw X.509 PEM certificates into standard JSON Web Key Set (JWKS) JSON formats. |
+| **`/tools/saml-metadata-auditor`** | `Tools/SamlMetadataAuditor.tsx` | Upload SAML metadata XML to scan for common security misconfigurations, weak signatures, or outdated bindings. |
+| **`/tools/printable-poster`** | `Tools/PrintablePoster.tsx` | Generate clean, high-contrast, scalable SVG cheating sheet posters suitable for large-format print. |
 
 ---
 
@@ -1058,9 +1075,9 @@ onReset={() => {
 
 ---
 
-### 🏛️ JJ. Maintaining the 13 Next-Gen Horizon 3 Modules
+### 🏛️ JJ. Maintaining the 18 Next-Gen Horizon 3 & 4 Modules
 
-To sustain, extend, or update the 10 next-gen playgrounds and 3 next-gen tools:
+To sustain, extend, or update the 15 next-gen playgrounds and 3 next-gen tools:
 1. **Adding Playgrounds to Catalog:** All playgrounds must be added to the static `playgrounds` list inside `src/pages/PlaygroundCatalog.tsx` to ensure card rendering, and to `SIMULATORS_LIST` inside `src/lib/search/searchService.ts` to ensure first-class Search indexation.
 2. **Adding Tools to Registry:** All tools must be registered in `src/data/toolsRegistry.ts`, which automatically injects them into the `ToolsCatalog` and the search index.
 3. **Markdown Digests:** Upgraded `scripts/generate-llms-full.ts` and `scripts/generate-qa.ts` dynamically pull from these datasets, appending fully qualified absolute canonical URLs next to each entry to guarantee high-accuracy conversational AI citation.
@@ -1070,8 +1087,8 @@ To sustain, extend, or update the 10 next-gen playgrounds and 3 next-gen tools:
 ### 🏛️ KK. Playwright End-to-End (E2E) Test Suite
 
 We maintain a robust, fully automated browser testing suite under `tests/e2e/`.
-- `tests/e2e/horizon3-nextgen.spec.ts` covers the 13 new Horizon 3 additions:
-  - Bypasses first-visit Disclaimer overlays.
-  - Simulates active UI interactions (toggling QKD Photons, running FHE mathematical matrix resolves, or running log redactions).
-  - Asserts live output and DOM elements.
-- **Run command:** `npx playwright test` to execute E2E checks in headless browsers.
+- `tests/e2e/horizon3-nextgen.spec.ts` covers the 13 original Next-Gen features (entanglement, FHE, eBPF, mDL, etc.).
+- `tests/e2e/horizon3-advanced.spec.ts` covers the 5 advanced next-gen features (OPA Wasm, MCP server, WebRTC, War Room, pupil flashes).
+- `tests/e2e/horizon4-nextgen.spec.ts` covers the 5 new Horizon 4 playgrounds (MPC Threshold secret sharing, ZK Cross-Chain proofs, Sybil-Resistant Iris Orbs, M2M AI Negotiations, and Ocular-Kinetic continuous trust tracking).
+  - All files automatically bypass first-visit Disclaimer overlays, simulate active UI interactions, and assert live output and DOM elements.
+- **Run command:** `npx playwright test` to execute all E2E checks in headless browsers.

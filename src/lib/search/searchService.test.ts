@@ -377,4 +377,27 @@ describe('getSearchIndex deep-link entries', () => {
     const ids = INTERVIEW_QUESTIONS.map((q) => q.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
+
+  it('indexes all 10 new Next-Gen Horizon 3 playgrounds as simulators', () => {
+    const index = getSearchIndex()
+    const nextGenPlaygrounds = [
+      'rag-authorization',
+      'ai-swarm',
+      'fhe-auth',
+      'qkd-simulator',
+      'mdl-proximity',
+      'space-identity',
+      'v2x-pki',
+      'ebpf-tracer',
+      'digital-twin',
+      'bci-auth'
+    ]
+
+    nextGenPlaygrounds.forEach((id) => {
+      const results = index.search(id, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `sim-${id}`)
+      expect(match, `expected next-gen simulator "${id}" to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string }).link).toBe(`/playground/${id}`)
+    })
+  })
 })

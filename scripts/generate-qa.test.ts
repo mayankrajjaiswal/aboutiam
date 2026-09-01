@@ -17,6 +17,10 @@ describe('High-Density Q&A RAG Index (qa.txt)', () => {
       expect(content).toContain('## Section 2: Identity Standards & Protocols Q&A')
       expect(content).toContain('## Section 3: Incident Response & Mitigation Playbooks Q&A')
       expect(content).toContain('## Section 4: Real-World Identity Breaches Post-Mortems Q&A')
+      expect(content).toContain('## Section 5: Enterprise Identity Case Studies Q&A')
+      expect(content).toContain('## Section 6: Identity Certifications Study Guides Q&A')
+      expect(content).toContain('## Section 7: Identity CVEs and Hardening Code Q&A')
+      expect(content).toContain('## Section 8: Interactive Interview Preparation Q&A')
       expect(content.length).toBeGreaterThan(1000)
     }
   })

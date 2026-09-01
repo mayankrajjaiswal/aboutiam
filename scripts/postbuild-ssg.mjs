@@ -308,7 +308,19 @@ function generateJsonLd(route) {
       "provider": { "@id": `${SITE_URL}/#organization` }
     })
   } else if (route.path.startsWith('/standards/') || route.path.startsWith('/research') || route.path.startsWith('/bulletins')) {
-    graphList.push({
+    const wikidataMap = {
+      'oauth': 'https://www.wikidata.org/wiki/Q1046342',
+      'oidc': 'https://www.wikidata.org/wiki/Q25112117',
+      'saml': 'https://www.wikidata.org/wiki/Q1632736',
+      'scim': 'https://www.wikidata.org/wiki/Q17144933',
+      'webauthn': 'https://www.wikidata.org/wiki/Q60753556',
+      'jwt': 'https://www.wikidata.org/wiki/Q28127393',
+      'zero-trust': 'https://www.wikidata.org/wiki/Q104840842'
+    }
+    const matchingKey = Object.keys(wikidataMap).find(k => route.path.toLowerCase().includes(k))
+    const sameAs = matchingKey ? [wikidataMap[matchingKey]] : []
+
+    const articleSchema = {
       "@type": "TechArticle",
       "@id": `${canonicalUrl}#article`,
       "headline": route.title.split('—')[0].split('|')[0].trim(),
@@ -316,7 +328,11 @@ function generateJsonLd(route) {
       "author": { "@id": `${SITE_URL}/#organization` },
       "publisher": { "@id": `${SITE_URL}/#organization` },
       "url": canonicalUrl
-    })
+    }
+    if (sameAs.length > 0) {
+      articleSchema.sameAs = sameAs
+    }
+    graphList.push(articleSchema)
   }
 
   const finalSchema = {

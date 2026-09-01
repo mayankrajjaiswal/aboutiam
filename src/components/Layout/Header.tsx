@@ -196,7 +196,7 @@ export default function Header() {
         {/* Zen Mode / Presentation Mode Toggle */}
         <button
           onClick={toggleZenMode}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary text-xs font-semibold transition-colors focus:outline-none cursor-pointer hover-cyber-glow"
+          className="hidden lg:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary text-xs font-semibold transition-colors focus:outline-none cursor-pointer hover-cyber-glow"
           title="Enter Zen Presentation Mode (Full Screen with hidden Sidebar & Header)"
         >
           <Presentation className="w-4 h-4 text-accent-primary animate-pulse-slow" />
@@ -206,7 +206,7 @@ export default function Header() {
         {/* Replay Guided Tour */}
         <button
           onClick={openTour}
-          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
+          className="hidden md:inline-flex p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
           title="Replay the guided feature tour"
           aria-label="Replay the guided feature tour"
         >
@@ -216,7 +216,7 @@ export default function Header() {
         {/* Replay all per-feature Coach Marks (distinct from the global Guided Tour above) */}
         <button
           onClick={resetCoachMarks}
-          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
+          className="hidden md:inline-flex p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
           title="Replay all feature coach marks (the small tips on complex tools)"
           aria-label="Replay all feature coach marks"
         >
@@ -226,7 +226,7 @@ export default function Header() {
         {/* What's New: recent site updates */}
         <button
           onClick={openWhatsNew}
-          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
+          className="hidden sm:inline-flex p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none cursor-pointer"
           title="What's new on AboutIAM"
           aria-label="What's new on AboutIAM"
         >
@@ -238,7 +238,7 @@ export default function Header() {
           href="/rss.xml"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
+          className="hidden sm:inline-flex p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
           title="Subscribe to RSS Feed"
         >
           <Rss className="w-4 h-4 text-text-secondary hover:text-text-primary" />
@@ -249,7 +249,7 @@ export default function Header() {
           href="https://github.com/mayankrajjaiswal/aboutiam"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
+          className="hidden sm:inline-flex p-2 rounded-lg border border-border-subtle bg-bg-sidebar hover:bg-bg-nested text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
           title="Browse on GitHub"
         >
           <svg className="w-4 h-4 fill-current text-text-secondary hover:text-text-primary" viewBox="0 0 24 24" aria-hidden="true">

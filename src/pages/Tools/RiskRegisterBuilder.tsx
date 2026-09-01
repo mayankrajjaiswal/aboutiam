@@ -56,7 +56,7 @@ export default function RiskRegisterBuilder() {
                 <th className="p-3">Score / Tier</th>
                 <th className="p-3 min-w-[140px]">Owner</th>
                 <th className="p-3 min-w-[220px]">Mitigation</th>
-                <th className="p-3">Target Date</th>
+                <th className="p-3 min-w-[140px]">Target Date</th>
                 <th className="p-3"></th>
               </tr>
             </thead>

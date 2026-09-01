@@ -178,7 +178,7 @@ export default function AutonomousAgentLab() {
             <span className="text-[10px] uppercase font-bold text-text-muted block flex items-center gap-1.5">
               <BarChart2 className="w-3.5 h-3.5 text-accent-secondary" /> Battle Engagement Timeline
             </span>
-            <div className="grid grid-cols-4 gap-2 select-none">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 select-none">
               {['Acquisition', 'Replay', 'Defense', 'Defeated'].map((p, idx) => {
                 const isActive = stepIndex === idx
                 const isPassed = stepIndex >= idx

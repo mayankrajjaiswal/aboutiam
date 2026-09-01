@@ -346,29 +346,29 @@ ${generatedBlueprint.policyCode}
           <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-lg flex-grow flex flex-col justify-between min-h-[460px]">
             <div>
               {/* Output Tab Selection Header */}
-              <div className="flex justify-between items-center mb-4 border-b border-border-subtle pb-2">
-                <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-border-subtle pb-2">
+                <div className="flex gap-2 overflow-x-auto pb-1 max-w-full">
                   <button
                     onClick={() => setActiveTab('blueprint')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition ${activeTab === 'blueprint' ? 'bg-accent-glow border-accent-primary text-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition shrink-0 whitespace-nowrap ${activeTab === 'blueprint' ? 'bg-accent-glow border-accent-primary text-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
                   >
                     Architect Topology
                   </button>
                   <button
                     onClick={() => setActiveTab('threat')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition ${activeTab === 'threat' ? 'bg-accent-glow border-accent-primary text-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition shrink-0 whitespace-nowrap ${activeTab === 'threat' ? 'bg-accent-glow border-accent-primary text-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
                   >
                     Threat Model
                   </button>
                   <button
                     onClick={() => setActiveTab('products')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition ${activeTab === 'products' ? 'bg-accent-glow border-accent-primary text-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition shrink-0 whitespace-nowrap ${activeTab === 'products' ? 'bg-accent-glow border-accent-primary text-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
                   >
                     Products & Specs
                   </button>
                   <button
                     onClick={() => setActiveTab('policy')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition ${activeTab === 'policy' ? 'bg-accent-glow border-accent-primary text-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition shrink-0 whitespace-nowrap ${activeTab === 'policy' ? 'bg-accent-glow border-accent-primary text-accent-primary' : 'bg-bg-nested/40 border-border-subtle text-text-secondary hover:border-border-subtle'}`}
                   >
                     Access Policy Code
                   </button>
@@ -376,7 +376,7 @@ ${generatedBlueprint.policyCode}
 
                 <button
                   onClick={downloadBlueprint}
-                  className="text-xs bg-accent-primary hover:bg-accent-hover text-white px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition shadow"
+                  className="text-xs bg-accent-primary hover:bg-accent-hover text-white px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition shadow shrink-0"
                 >
                   <Download className="w-3.5 h-3.5" /> Export Blueprint Bundle
                 </button>

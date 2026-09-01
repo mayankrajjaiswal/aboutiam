@@ -136,7 +136,7 @@ export default function CaepEventStorm() {
           </button>
         </div>
 
-        <div className="relative h-80 rounded-2xl bg-bg-nested border border-border-subtle overflow-hidden">
+        <div className="relative h-64 sm:h-80 rounded-2xl bg-bg-nested border border-border-subtle overflow-hidden max-h-[50vh] sm:max-h-none">
           <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
             {SUBSCRIBER_POSITIONS.map((pos, idx) => (
               <line

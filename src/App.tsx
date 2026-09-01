@@ -206,6 +206,13 @@ const WebrtcP2pPlayground = lazy(() => import('./pages/Playgrounds/WebrtcP2pPlay
 const WarRoomPlayground = lazy(() => import('./pages/Playgrounds/WarRoomPlayground'))
 const BiometricMeshPlayground = lazy(() => import('./pages/Playgrounds/BiometricMeshPlayground'))
 
+// Horizon 4 Next-Gen Playgrounds
+const MpcThresholdSandbox = lazy(() => import('./pages/Playgrounds/MpcThresholdSandbox'))
+const ZkCrossChainAuth = lazy(() => import('./pages/Playgrounds/ZkCrossChainAuth'))
+const SybilResistanceOrb = lazy(() => import('./pages/Playgrounds/SybilResistanceOrb'))
+const M2mNegotiatorSandbox = lazy(() => import('./pages/Playgrounds/M2mNegotiatorSandbox'))
+const OcularKineticTrust = lazy(() => import('./pages/Playgrounds/OcularKineticTrust'))
+
 function PageLoadingFallback() {
   return (
     <div className="flex items-center justify-center py-24">
@@ -410,6 +417,11 @@ export default function App() {
               <Route path="/playground/webrtc-p2p" element={<WebrtcP2pPlayground />} />
               <Route path="/playground/war-room" element={<WarRoomPlayground />} />
               <Route path="/playground/biometric-mesh" element={<BiometricMeshPlayground />} />
+              <Route path="/playground/mpc-threshold" element={<MpcThresholdSandbox />} />
+              <Route path="/playground/zk-cross-chain" element={<ZkCrossChainAuth />} />
+              <Route path="/playground/sybil-orb" element={<SybilResistanceOrb />} />
+              <Route path="/playground/m2m-negotiator" element={<M2mNegotiatorSandbox />} />
+              <Route path="/playground/ocular-kinetic" element={<OcularKineticTrust />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

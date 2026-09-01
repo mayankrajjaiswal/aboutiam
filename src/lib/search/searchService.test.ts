@@ -378,7 +378,7 @@ describe('getSearchIndex deep-link entries', () => {
     expect(new Set(ids).size).toBe(ids.length)
   })
 
-  it('indexes all 10 new Next-Gen Horizon 3 playgrounds as simulators', () => {
+  it('indexes all 15 new Next-Gen Horizon 3 & 4 playgrounds as simulators', () => {
     const index = getSearchIndex()
     const nextGenPlaygrounds = [
       'rag-authorization',
@@ -390,7 +390,12 @@ describe('getSearchIndex deep-link entries', () => {
       'v2x-pki',
       'ebpf-tracer',
       'digital-twin',
-      'bci-auth'
+      'bci-auth',
+      'mpc-threshold',
+      'zk-cross-chain',
+      'sybil-orb',
+      'm2m-negotiator',
+      'ocular-kinetic'
     ]
 
     nextGenPlaygrounds.forEach((id) => {

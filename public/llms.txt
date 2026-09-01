@@ -101,6 +101,11 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [WebRTC P2P Cryptographic Handshake](https://www.aboutiam.com/playground/webrtc-p2p/): A split-pane simulator where users manually generate SDP offers, exchange ICE candidates, and negotiate a secure Diffie-Hellman channel between Peer A and Peer B.
 - [Active SOC "War Room" Threat Simulator](https://www.aboutiam.com/playground/war-room/): A gamified, timed incident response dashboard. Users must parse incoming logs, issue revokes, and manage an active threat before a 60-second timer exhausts the simulated insurance coverage.
 - [Computer-Vision Biometric Mesh Lab](https://www.aboutiam.com/playground/biometric-mesh/): A visual canvas simulator tracking head angles, blink rates, and flash-challenge responses to differentiate a live human from a deepfake replay attack.
+- [MPC Threshold Signature Scheme Sandbox](https://www.aboutiam.com/playground/mpc-threshold/): Model Shamir's Secret Sharing to split, distribute, and combine cryptographic signature shards across separate user devices.
+- [ZK Cross-Chain Auth Simulator](https://www.aboutiam.com/playground/zk-cross-chain/): Generate a browser-native zk-SNARK cryptographic proof of Web3 wallet holdings to authorize access to corporate Web2 APIs anonymously.
+- [Sybil-Resistant Iris Hash Lab](https://www.aboutiam.com/playground/sybil-orb/): Explore how biometric Gabor filter vectors generate secure, irreversible, Sybil-resistant Iris-Codes for Proof-of-Personhood.
+- [M2M AI Protocol Negotiator](https://www.aboutiam.com/playground/m2m-negotiator/): Visualize autonomous AI agents executing smart-contract bids to negotiate custom-scoped OAuth 2.1 access rules dynamically.
+- [Kinetic-Tremor Continuous Trust Simulator](https://www.aboutiam.com/playground/ocular-kinetic/): Model spatial computing continuous authentication by tracking microscopic hand tremors and involuntary eye saccades.
 
 ## Security Tools
 

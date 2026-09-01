@@ -187,6 +187,11 @@ export const ROUTE_META: RouteMeta[] = [
   { path: '/playground/webrtc-p2p', title: 'WebRTC P2P Cryptographic Handshake', description: 'A split-pane simulator where users manually generate SDP offers, exchange ICE candidates, and negotiate a secure Diffie-Hellman channel between Peer A and Peer B.' },
   { path: '/playground/war-room', title: 'Active SOC "War Room" Threat Simulator', description: 'A gamified, timed incident response dashboard. Users must parse incoming logs, issue revokes, and manage an active threat before a 60-second timer exhausts the simulated insurance coverage.' },
   { path: '/playground/biometric-mesh', title: 'Computer-Vision Biometric Mesh Lab', description: 'A visual canvas simulator tracking head angles, blink rates, and flash-challenge responses to differentiate a live human from a deepfake replay attack.' },
+  { path: '/playground/mpc-threshold', title: 'MPC Threshold Signature Scheme Sandbox', description: 'Model Shamir\'s Secret Sharing to split, distribute, and combine cryptographic signature shards across separate user devices.' },
+  { path: '/playground/zk-cross-chain', title: 'ZK Cross-Chain Auth Simulator', description: 'Generate a browser-native zk-SNARK cryptographic proof of Web3 wallet holdings to authorize access to corporate Web2 APIs anonymously.' },
+  { path: '/playground/sybil-orb', title: 'Sybil-Resistant Iris Hash Lab', description: 'Explore how biometric Gabor filter vectors generate secure, irreversible, Sybil-resistant Iris-Codes for Proof-of-Personhood.' },
+  { path: '/playground/m2m-negotiator', title: 'M2M AI Protocol Negotiator', description: 'Visualize autonomous AI agents executing smart-contract bids to negotiate custom-scoped OAuth 2.1 access rules dynamically.' },
+  { path: '/playground/ocular-kinetic', title: 'Kinetic-Tremor Continuous Trust Simulator', description: 'Model spatial computing continuous authentication by tracking microscopic hand tremors and involuntary eye saccades.' },
 ]
 
 const DEFAULT_META: RouteMeta = {

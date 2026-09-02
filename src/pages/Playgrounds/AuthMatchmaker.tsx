@@ -69,7 +69,7 @@ export default function AuthMatchmaker() {
             {/* Q1 */}
             <div className={`p-4 rounded-xl border transition-all ${step >= 0 ? 'bg-bg-card border-accent-primary shadow-sm' : 'bg-bg-sidebar/50 border-border-subtle opacity-50'}`}>
               <h4 className="font-bold text-text-primary text-sm mb-3 flex items-center gap-2"><Server className="w-4 h-4 text-accent-primary" /> Hosting Model</h4>
-              <div className="grid grid-cols-2 gap-2 text-xs font-bold">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 text-xs font-bold">
                 <button 
                   onClick={() => { setHosting('saas'); setStep(1) }}
                   className={`p-2 rounded-lg border ${hosting === 'saas' ? 'bg-accent-primary text-white border-accent-primary' : 'bg-bg-sidebar border-border-subtle text-text-secondary hover:text-text-primary'}`}
@@ -84,7 +84,7 @@ export default function AuthMatchmaker() {
             {/* Q2 */}
             <div className={`p-4 rounded-xl border transition-all ${step >= 1 ? 'bg-bg-card border-accent-secondary shadow-sm' : 'bg-bg-sidebar/50 border-border-subtle opacity-50 pointer-events-none'}`}>
               <h4 className="font-bold text-text-primary text-sm mb-3 flex items-center gap-2"><Shield className="w-4 h-4 text-accent-secondary" /> Compliance Need</h4>
-              <div className="grid grid-cols-2 gap-2 text-xs font-bold">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 text-xs font-bold">
                 <button 
                   onClick={() => { setCompliance('standard'); setStep(2) }}
                   className={`p-2 rounded-lg border ${compliance === 'standard' ? 'bg-accent-secondary text-white border-accent-secondary' : 'bg-bg-sidebar border-border-subtle text-text-secondary hover:text-text-primary'}`}
@@ -99,7 +99,7 @@ export default function AuthMatchmaker() {
             {/* Q3 */}
             <div className={`p-4 rounded-xl border transition-all ${step >= 2 ? 'bg-bg-card border-status-success shadow-sm' : 'bg-bg-sidebar/50 border-border-subtle opacity-50 pointer-events-none'}`}>
               <h4 className="font-bold text-text-primary text-sm mb-3 flex items-center gap-2"><Code className="w-4 h-4 text-status-success" /> Primary Stack</h4>
-              <div className="grid grid-cols-2 gap-2 text-xs font-bold">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 text-xs font-bold">
                 <button 
                   onClick={() => { setStack('react'); setStep(3) }}
                   className={`p-2 rounded-lg border ${stack === 'react' ? 'bg-status-success text-white border-status-success' : 'bg-bg-sidebar border-border-subtle text-text-secondary hover:text-text-primary'}`}

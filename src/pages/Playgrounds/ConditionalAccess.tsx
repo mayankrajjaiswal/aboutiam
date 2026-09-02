@@ -170,7 +170,7 @@ export default function ConditionalAccess() {
             {/* Group */}
             <div className="space-y-1">
               <label className="text-[10px] text-text-muted font-bold block uppercase">User Department Group</label>
-              <div className="grid grid-cols-2 gap-1.5 text-xs font-bold">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-1.5 text-xs font-bold">
                 {['Finance', 'HR', 'Engineering', 'Guest'].map((g) => (
                   <button
                     key={g}
@@ -210,7 +210,7 @@ export default function ConditionalAccess() {
             {/* Network Untrusted vs Trusted */}
             <div className="space-y-1">
               <label className="text-[10px] text-text-muted font-bold block uppercase">Network Security Boundary</label>
-              <div className="grid grid-cols-2 gap-1.5 text-xs font-bold">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-1.5 text-xs font-bold">
                 <button
                   onClick={() => setNetwork('Intranet')}
                   className={`py-1.5 rounded-lg border transition-all ${

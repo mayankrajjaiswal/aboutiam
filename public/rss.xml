@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Sep 2026 10:51:14 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 02 Sep 2026 11:25:06 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -429,6 +429,30 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/log-anonymizer</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Locally parse and redact PII, signatures, and Bearer tokens from raw HTTP/HAR trace logs so they can be safely shared for debugging.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Web Crypto PKI Certificate Authority (CA) Workbench]]></title>
+      <link>https://www.aboutiam.com/tools/pki-ca-workbench</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/pki-ca-workbench</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A 100% browser-native PKI engine using the Web Crypto API to visually configure and run an entire Certificate Authority hierarchy—generate Root CAs, sign Intermediate CSRs, and issue leaf PEM certificates.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Cloud & K8s IAM Policy Security Auditor & Linter]]></title>
+      <link>https://www.aboutiam.com/tools/cloud-policy-auditor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/cloud-policy-auditor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[An interactive multi-cloud IAM policy linter. Paste your AWS IAM, GCP IAM, or Kubernetes RBAC configuration and scan client-side for privilege escalation vulnerabilities and wildcard access risks.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: W3C SD-JWT Selective Disclosure Wallet SDK Studio]]></title>
+      <link>https://www.aboutiam.com/tools/sd-jwt-wallet-sdk</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/sd-jwt-wallet-sdk</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Deeply explore the developer-level cryptographic mechanics of SD-JWT Selective Disclosures. Generate random salt parameters, hash claims client-side, and verify disclosures against the issuer-signed JWT envelope.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

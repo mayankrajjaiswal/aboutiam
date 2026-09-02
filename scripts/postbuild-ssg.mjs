@@ -197,6 +197,10 @@ const ROUTES = [
   { path: '/playground/sybil-orb', title: 'Sybil-Resistant Iris Hash Lab', description: 'Explore how biometric Gabor filter vectors generate secure, irreversible, Sybil-resistant Iris-Codes for Proof-of-Personhood.' },
   { path: '/playground/m2m-negotiator', title: 'M2M AI Protocol Negotiator', description: 'Visualize autonomous AI agents executing smart-contract bids to negotiate custom-scoped OAuth 2.1 access rules dynamically.' },
   { path: '/playground/ocular-kinetic', title: 'Kinetic-Tremor Continuous Trust Simulator', description: 'Model spatial computing continuous authentication by tracking microscopic hand tremors and involuntary eye saccades.' },
+  { path: '/tools/pki-ca-workbench', title: 'Web Crypto PKI Certificate Authority (CA) Workbench', description: 'Visual, 100% browser-native PKI engine using the W3C Web Crypto SubtleCrypto API. Configure, issue, and inspect a full Root-to-Leaf X.509 Certificate Chain.' },
+  { path: '/tools/cloud-policy-auditor', title: 'Cloud & K8s IAM Policy Security Auditor & Linter', description: 'Scan your AWS, GCP, and Kubernetes access policies client-side to detect privilege escalation vectors, compliance violations, and generate hardened schemas.' },
+  { path: '/tools/sd-jwt-wallet-sdk', title: 'W3C SD-JWT Selective Disclosure Wallet SDK Studio', description: 'Interactive developer dashboard explaining the cryptographic salting, hashing, and partial-redaction mechanics of W3C Verifiable Credentials.' },
+  { path: '/playground/advanced-oauth-hack-defend', title: 'Advanced OAuth 2.1 Threat Modeling & Mitigation Simulator', description: 'Interactive multi-stage hacking playground. Model the JWT Algorithm Confusion exploit and simulate the PKCE authorization-code injection bypass.' },
 ]
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

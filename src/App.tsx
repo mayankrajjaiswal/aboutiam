@@ -213,6 +213,12 @@ const SybilResistanceOrb = lazy(() => import('./pages/Playgrounds/SybilResistanc
 const M2mNegotiatorSandbox = lazy(() => import('./pages/Playgrounds/M2mNegotiatorSandbox'))
 const OcularKineticTrust = lazy(() => import('./pages/Playgrounds/OcularKineticTrust'))
 
+// Flagship Expansion Pages
+const PkiCaWorkbench = lazy(() => import('./pages/Tools/PkiCaWorkbench'))
+const CloudPolicyAuditor = lazy(() => import('./pages/Tools/CloudPolicyAuditor'))
+const SdJwtWalletSdk = lazy(() => import('./pages/Tools/SdJwtWalletSdk'))
+const AdvancedOauthHackDefend = lazy(() => import('./pages/Playgrounds/AdvancedOauthHackDefend'))
+
 function PageLoadingFallback() {
   return (
     <div className="flex items-center justify-center py-24">
@@ -422,6 +428,12 @@ export default function App() {
               <Route path="/playground/sybil-orb" element={<SybilResistanceOrb />} />
               <Route path="/playground/m2m-negotiator" element={<M2mNegotiatorSandbox />} />
               <Route path="/playground/ocular-kinetic" element={<OcularKineticTrust />} />
+
+              {/* Flagship Expansion Route mappings */}
+              <Route path="/tools/pki-ca-workbench" element={<PkiCaWorkbench />} />
+              <Route path="/tools/cloud-policy-auditor" element={<CloudPolicyAuditor />} />
+              <Route path="/tools/sd-jwt-wallet-sdk" element={<SdJwtWalletSdk />} />
+              <Route path="/playground/advanced-oauth-hack-defend" element={<AdvancedOauthHackDefend />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

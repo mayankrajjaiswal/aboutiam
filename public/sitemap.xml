@@ -1112,6 +1112,30 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/tools/pki-ca-workbench/</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/cloud-policy-auditor/</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/tools/sd-jwt-wallet-sdk/</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/playground/advanced-oauth-hack-defend/</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=aaa</loc>
     <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>

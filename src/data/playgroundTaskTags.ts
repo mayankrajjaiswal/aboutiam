@@ -39,4 +39,5 @@ export const PLAYGROUND_TASK_TAGS: Record<string, TaskTag[]> = {
   '/playground/cloud-policy-evaluator': ['validate-policy'],
   '/playground/federated-vp': ['validate-policy'],
   '/playground/autonomous-agent': ['validate-policy'],
+  '/playground/advanced-oauth-hack-defend': ['simulate-attack'],
 }

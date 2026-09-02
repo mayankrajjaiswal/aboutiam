@@ -981,6 +981,57 @@ export const TOOLS: ToolMeta[] = [
       { q: 'Does this handle complete HAR archive files?', a: 'Yes — it parses the HAR JSON schema, matches sensitive headers, and recursively sanitizes JWT claim contents.' },
       { q: 'Can I add custom redaction rules?', a: 'Yes — you can specify custom regex keys in the UI that map to local-variables for custom proprietary token sanitization.' }
     ]
+  },
+  {
+    slug: 'pki-ca-workbench',
+    taskTags: ['generate'],
+    title: 'Web Crypto PKI Certificate Authority (CA) Workbench',
+    description: 'A 100% browser-native PKI engine using the Web Crypto API to visually configure and run an entire Certificate Authority hierarchy—generate Root CAs, sign Intermediate CSRs, and issue leaf PEM certificates.',
+    category: 'PKI & Certificates',
+    icon: KeyRound,
+    phase: 3,
+    status: 'live',
+    keywords: ['pki ca workbench', 'certificate authority simulator', 'generate root ca', 'web crypto pki', 'issue x509 leaf cert'],
+    analogy: 'Running a Certificate Authority is like being a state passport agency. You establish your sovereign seal (Root CA), delegate stamping authority to regional offices (Intermediate CAs), and check/issue security passports (leaf certificates) to individuals.',
+    expert: 'Built entirely on top of the W3C Web Crypto SubtleCrypto API. Generates secure, ephemeral asymmetric key pairs (ECDSA P-256 or RSA-2048) in local memory, performs CSR signing using standard SHA-256 signatures, and serializes results into standard X.509 DER structure mapped to base64 PEM.',
+    faqs: [
+      { q: 'Is a backend server required to issue these certificates?', a: 'No. Traditional PKI tutorials depend on openssl CLI or a remote server, but this workbench compiles certificates purely in JavaScript using the Web Crypto API.' },
+      { q: 'Can I trust these certificates in my OS or browser?', a: 'No, unless you manually add the generated Root CA to your operating system trust store. This is intended for secure local development, sandbox orchestration, and architectural learning.' }
+    ]
+  },
+  {
+    slug: 'cloud-policy-auditor',
+    taskTags: ['check-compliance'],
+    title: 'Cloud & K8s IAM Policy Security Auditor & Linter',
+    description: 'An interactive multi-cloud IAM policy linter. Paste your AWS IAM, GCP IAM, or Kubernetes RBAC configuration and scan client-side for privilege escalation vulnerabilities and wildcard access risks.',
+    category: 'Supply Chain & Governance',
+    icon: ShieldCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['cloud policy auditor', 'iam linter', 'aws policy scanner', 'rbac compliance audit', 'least privilege tool'],
+    analogy: 'Imagine auditing a corporate building\'s physical keycards. If a guard issues keycards with "Access: *" (access any door in any facility), your system has huge risk. This auditor highlights over-privileged keycard configs and helps restrict them.',
+    expert: 'Parses policy statements into an Abstract Syntax Tree (AST) client-side. Matches definitions against standard OWASP and Cloud Security Alliance compliance rules, flagging wildcard resource scopes, privilege escalation action verbs, and unconstrained cross-account delegations.',
+    faqs: [
+      { q: 'Does this tool transmit my IAM policy to a third-party server?', a: 'No. To align with our 100% client-side zero-backend standard, policies are parsed and analyzed entirely inside local browser memory.' },
+      { q: 'Which cloud providers are currently supported?', a: 'Supports AWS IAM Policy schemas, Google Cloud IAM Bindings, and Kubernetes RBAC ClusterRole and RoleBinding structures.' }
+    ]
+  },
+  {
+    slug: 'sd-jwt-wallet-sdk',
+    taskTags: ['decode'],
+    title: 'W3C SD-JWT Selective Disclosure Wallet SDK Studio',
+    description: 'Deeply explore the developer-level cryptographic mechanics of SD-JWT Selective Disclosures. Generate random salt parameters, hash claims client-side, and verify disclosures against the issuer-signed JWT envelope.',
+    category: 'Emerging & Decentralized Identity',
+    icon: Wallet,
+    phase: 3,
+    status: 'live',
+    keywords: ['sd-jwt wallet sdk', 'selective disclosure developer tool', 'sd-jwt salting utility', 'w3c verifiable credentials'],
+    analogy: 'Imagine you have an official, sealed letter from a doctor containing 5 health claims. Instead of scanning and sending the whole paper, you generate unique medical coupons (salts and hashes) for individual claims. You can send just the "vaccination record" coupon, and the recipient verifies it matches the doctor\'s original seal without seeing anything else.',
+    expert: 'Implements the IETF Selective Disclosure JSON Web Token specification. It details base64url(JSON array [salt, claimName, claimValue]), computes SHA-256 digests, and validates them against the `_sd` JSON array present in the JWT. It also handles Holder Binding JWT validation.',
+    faqs: [
+      { q: 'What is the role of salt in SD-JWT claims?', a: 'Each claim is paired with a cryptographically secure random salt before hashing. This prevents dictionary attacks—without salts, a verifier could guess small claims (like "gender: Male") by precomputing standard hashes.' },
+      { q: 'How does a verifier trust that the claims belong to me?', a: 'SD-JWT uses Holder Binding. The presenter includes a Key Binding JWT (KB-JWT) signed with their private key, proving possession of the key associated with the credential\'s `cnf` claim.' }
+    ]
   }
 ]
 

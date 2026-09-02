@@ -625,6 +625,13 @@ export default function PlaygroundCatalog() {
       icon: Eye,
       link: "/playground/biometric-mesh",
       badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Advanced OAuth 2.1 Threat Modeling & Mitigation Simulator",
+      desc: "An interactive, multi-stage Hack-and-Defend sandbox. Simulate JWT Algorithm Confusion (forging RS256 with local HS256), PKCE bypass exploits, and wildcard redirect hijacking, and then apply modern OAuth 2.1 mitigations.",
+      icon: Sliders,
+      link: "/playground/advanced-oauth-hack-defend",
+      badge: "Active (Advanced)",
     }
   ]
 

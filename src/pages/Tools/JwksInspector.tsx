@@ -201,7 +201,7 @@ export default function JwksInspector() {
                     ⚠️ {key.error}
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 gap-4 text-[10px] font-mono leading-normal">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[10px] font-mono leading-normal">
                     <div className="space-y-1.5">
                       <div>
                         <span className="text-text-muted block text-[9px] uppercase font-bold">Algorithm (alg)</span>

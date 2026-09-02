@@ -250,7 +250,7 @@ export default function ScimDiffTool() {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 text-[9px] font-mono bg-bg-card p-2 rounded">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[9px] font-mono bg-bg-card p-2 rounded">
                       <div>
                         <span className="block text-text-muted font-bold text-[8px] uppercase">IdP Value (Src)</span>
                         <span className="block text-blue-400 font-bold truncate mt-0.5">{JSON.stringify(item.idpVal)}</span>

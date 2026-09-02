@@ -251,7 +251,7 @@ export default function AnsibleVault() {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>
                   <label htmlFor="enc-password" className="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1.5">Vault Password</label>
                   <input

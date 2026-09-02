@@ -45,7 +45,7 @@ export default function BiometricMeshPlayground() {
             <span className="font-mono font-bold text-accent-secondary">{blinkCount} blinks</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               onClick={() => handleAction('blink')}
               className="p-3 text-xs font-bold rounded-xl border border-border-subtle bg-bg-sidebar hover:bg-bg-card transition"

@@ -47,7 +47,7 @@ export default function EbpfIdentityTracer() {
       <div className="bg-bg-card border border-border-subtle p-6 rounded-2xl shadow-sm space-y-6">
         <div className="space-y-2">
           <label className="text-xs font-bold text-text-primary uppercase tracking-wide">1. Set Kernel enforcement policy</label>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               onClick={() => { setKernelPolicy('audit'); log('info', 'Kernel policy set to AUDIT'); }}
               className={`p-4 rounded-xl border text-xs font-bold transition-all ${kernelPolicy === 'audit' ? 'border-accent-primary bg-accent-primary/10 text-accent-primary' : 'border-border-subtle bg-bg-sidebar hover:bg-bg-card'}`}
@@ -65,7 +65,7 @@ export default function EbpfIdentityTracer() {
 
         <div className="space-y-2">
           <label className="text-xs font-bold text-text-primary uppercase tracking-wide">2. Trigger execution requests</label>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               onClick={() => handleTrigger('signed')}
               className="p-4 rounded-xl border border-border-subtle bg-bg-sidebar hover:bg-bg-card transition text-xs font-bold text-text-primary text-center"

@@ -37,7 +37,7 @@ export default function OcularKineticTrust() {
     >
       <div className="bg-bg-card border border-border-subtle p-6 rounded-2xl shadow-sm space-y-6">
         <label className="text-xs font-bold text-text-primary uppercase tracking-wide">Simulate Headset Wearer States</label>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
             onClick={() => handleScan('stable')}
             className="p-4 rounded-xl border border-border-subtle bg-bg-sidebar hover:bg-bg-card transition text-xs font-bold text-text-primary text-center"

@@ -45,7 +45,7 @@ export default function RagAuthorization() {
       <div className="bg-bg-card border border-border-subtle p-6 rounded-2xl shadow-sm space-y-6">
         <div className="space-y-2">
           <label className="text-xs font-bold text-text-primary uppercase tracking-wide">1. Configure Metadata Policy</label>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               onClick={() => { setPolicyType('permissive'); log('info', 'Switched to Permissive Policy Mode'); }}
               className={`p-4 rounded-xl border text-xs font-bold transition-all ${policyType === 'permissive' ? 'border-accent-primary bg-accent-primary/10 text-accent-primary' : 'border-border-subtle bg-bg-sidebar hover:bg-bg-card'}`}

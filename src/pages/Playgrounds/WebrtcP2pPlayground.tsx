@@ -38,7 +38,7 @@ export default function WebrtcP2pPlayground() {
       onRevealHint={() => {}}
     >
       <div className="bg-bg-card border border-border-subtle p-6 rounded-2xl shadow-sm space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
             onClick={() => { setActivePane('sdp'); log('info', 'Viewing SDP Exchange parameters'); }}
             className={`p-3 rounded-xl border text-xs font-bold transition-all ${activePane === 'sdp' ? 'border-accent-primary bg-accent-primary/10 text-accent-primary' : 'border-border-subtle bg-bg-sidebar hover:bg-bg-card'}`}

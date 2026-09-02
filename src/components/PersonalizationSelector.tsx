@@ -50,7 +50,7 @@ export default function PersonalizationSelector({ isOpen, onClose }: Personaliza
   return (
     <div
       ref={dropdownRef}
-      className="absolute right-0 top-full mt-2.5 w-80 bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-2xl z-50 animate-fadeIn space-y-4"
+      className="absolute right-0 top-full mt-2.5 w-[calc(100vw-2rem)] xs:w-80 bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-2xl z-50 animate-fadeIn space-y-4"
     >
       <div className="flex items-center justify-between border-b border-border-subtle pb-2.5">
         <div className="flex items-center gap-2">

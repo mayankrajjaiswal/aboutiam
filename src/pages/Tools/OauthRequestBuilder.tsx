@@ -121,14 +121,14 @@ export default function OauthRequestBuilder() {
           <LabeledInput label="Authorization Endpoint" value={authEndpoint} onChange={setAuthEndpoint} />
           <LabeledInput label="Token Endpoint" value={tokenEndpoint} onChange={setTokenEndpoint} />
           
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <LabeledInput label="Client ID" value={clientId} onChange={setClientId} />
             <LabeledInput label="Client Secret" value={clientSecret} onChange={setClientSecret} />
           </div>
 
           <LabeledInput label="Redirect URI" value={redirectUri} onChange={setRedirectUri} />
           
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1">Response Type</label>
               <select 
@@ -145,7 +145,7 @@ export default function OauthRequestBuilder() {
             <LabeledInput label="Scope" value={scope} onChange={setScope} />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <label className="block text-[10px] font-bold text-text-muted uppercase tracking-wider">State Parameter</label>
@@ -176,7 +176,7 @@ export default function OauthRequestBuilder() {
             </div>
 
             {usePkce && (
-              <div className="grid grid-cols-2 gap-3 text-[10px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px]">
                 <div>
                   <span className="block text-text-muted font-bold mb-1">code_verifier</span>
                   <input type="text" value={codeVerifier} onChange={e => setCodeVerifier(e.target.value)} className="w-full bg-bg-sidebar border border-border-subtle/80 rounded px-2 py-0.5 text-[10px] text-text-primary" />
@@ -236,7 +236,7 @@ export default function OauthRequestBuilder() {
             </p>
 
             {/* Tab selection for Secret Post vs Secret Basic */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] font-bold text-text-muted uppercase">client_secret_post (Credentials in Body)</span>

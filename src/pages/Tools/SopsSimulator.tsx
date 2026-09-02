@@ -233,7 +233,7 @@ export default function SopsSimulator() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="key-provider" className="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1.5">KMS Key Provider (KEK)</label>
                   <select
@@ -274,7 +274,7 @@ export default function SopsSimulator() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="provider-id" className="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1.5">Provider Identifier (KMS ARN / Key URL)</label>
                   <input

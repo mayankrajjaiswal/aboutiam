@@ -190,7 +190,7 @@ export default function CsrGenerator() {
             </div>
 
             {/* O & OU */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-[10px] text-text-muted font-bold block uppercase" htmlFor="o-input">Organization (O)</label>
                 <input

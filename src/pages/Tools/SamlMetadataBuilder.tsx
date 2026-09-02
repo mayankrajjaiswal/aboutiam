@@ -174,7 +174,7 @@ export default function SamlMetadataBuilder() {
             {/* Role Tab selection */}
             <div className="space-y-1">
               <label className="text-[10px] text-text-muted font-bold block uppercase">Federation Role</label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => handleRoleChange('sp')}

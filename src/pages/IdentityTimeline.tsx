@@ -810,7 +810,7 @@ export default function IdentityTimeline() {
 
                           <div className="space-y-2">
                             <label className="text-[10px] text-text-muted font-bold block">SAML USER ROLE CLAIM</label>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                               <button
                                 onClick={() => handleSamlRoleChange('User')}
                                 className={`py-2 px-3 rounded text-xs font-bold border transition-all ${
@@ -899,7 +899,7 @@ export default function IdentityTimeline() {
                         <div className="p-4 rounded-xl bg-bg-nested border border-border-subtle space-y-3">
                           <h5 className="text-xs font-extrabold text-text-primary uppercase">JWT Token Parameters</h5>
                           
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                             <div>
                               <label className="text-[9px] text-text-muted font-bold block mb-1">SIGNING ALGORITHM</label>
                               <select
@@ -926,7 +926,7 @@ export default function IdentityTimeline() {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                             <div>
                               <label className="text-[9px] text-text-muted font-bold block mb-1" htmlFor="jwt-sub-input">SUBJECT (SUB)</label>
                               <input 

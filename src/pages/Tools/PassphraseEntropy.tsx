@@ -135,7 +135,7 @@ export default function PassphraseEntropy() {
           </div>
 
           {/* Results section */}
-          <div className="mt-5 pt-4 border-t border-border-subtle/50 grid grid-cols-2 gap-4 text-xs font-mono">
+          <div className="mt-5 pt-4 border-t border-border-subtle/50 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
             <div>
               <span className="text-text-muted block text-[9px] uppercase font-bold mb-0.5">Entropy Strength</span>
               <span className={`text-sm font-black ${passwordResult.entropy >= 60 ? 'text-status-success' : passwordResult.entropy >= 40 ? 'text-status-warning' : 'text-status-danger'}`}>
@@ -181,7 +181,7 @@ export default function PassphraseEntropy() {
           </div>
 
           {/* Results section */}
-          <div className="mt-5 pt-4 border-t border-border-subtle/50 grid grid-cols-2 gap-4 text-xs font-mono">
+          <div className="mt-5 pt-4 border-t border-border-subtle/50 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
             <div>
               <span className="text-text-muted block text-[9px] uppercase font-bold mb-0.5">Entropy Strength</span>
               <span className={`text-sm font-black ${passphraseResult.entropy >= 60 ? 'text-status-success' : passphraseResult.entropy >= 40 ? 'text-status-warning' : 'text-status-danger'}`}>

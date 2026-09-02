@@ -245,7 +245,7 @@ export default function OidcDiscoveryAuditor() {
               </div>
 
               {/* Supported lists (Scopes/signing algorithms) */}
-              <div className="grid grid-cols-2 gap-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div className="p-3.5 bg-bg-sidebar rounded-xl border border-border-subtle/50 space-y-2">
                   <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wide block border-b border-border-subtle/50 pb-1">
                     Supported Scopes

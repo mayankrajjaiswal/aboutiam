@@ -9,17 +9,11 @@ import { BULLETINS } from '../src/data/bulletinsData.ts'
 import { BREACHES } from '../src/data/breachesData.ts'
 import { CASE_STUDIES } from '../src/data/caseStudiesData.ts'
 import { CERTIFICATIONS } from '../src/data/certificationsData.ts'
-import { CVE_DATABASE, RFC_DATABASE } from '../src/data/researchData.ts'
-import { EXPLORE_PRODUCTS } from '../src/data/exploreData.ts'
+import { CVE_DATABASE } from '../src/data/researchData.ts'
 import { INTERVIEW_QUESTIONS } from '../src/data/aiKnowledgeGraph.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-
-// Slugifies an RFC/draft "number" field (e.g. "RFC 6749" -> "rfc-6749")
-function rfcSlug(number: string): string {
-  return number.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
-}
 
 function generateQaFeed(): string {
   const lines: string[] = []

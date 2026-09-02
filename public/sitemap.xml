@@ -3,3259 +3,3259 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.aboutiam.com/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/primer/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/roadmap/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/learn/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/architecture/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/knowledge-graph/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/daily-puzzle/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/vendor/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/patterns/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/jwt-decoder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/jwt-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/base64-encoder-decoder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/sha256-hash-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/hmac-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/uuid-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/password-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/oauth-pkce-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/totp-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/ldap-filter-builder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/scim-payload-validator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/basic-auth-decoder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/jwk-pem-converter/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/x509-certificate-decoder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/saml-decoder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/saml-metadata-builder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/scim-diff/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/csr-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/sd-jwt-decoder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/webauthn-decoder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/did-key-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/bcrypt-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/oauth-builder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/jwks-inspector/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/policy-evaluator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/passphrase-entropy/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/oidc-discovery/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/ansible-vault/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/sops-simulator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/jwt/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/oauth/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/saml/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/fido2/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/fido2-conditional-ui/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/access/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ldap/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/zta/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/scim/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/oauth-attack/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/kerberos/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ctf/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/identity-architect/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/jwt-cracker/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/cert-chain/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/gpo-simulator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/reference-builder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/session-hijacking/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/conditional-access/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/opa/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/token-exchange/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/itdr/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/gaming-identity/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/device-code-flow/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/jit-provisioning/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/phantom-token/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/stix-taxii-ioc/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/oidc-federation/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/device-trust/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/passkey-internals/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ai-threat-lab/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/zkp-wallet/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ambient-trust/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/workload-mesh/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/xacml/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/gnap/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/caep/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/vc-did/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/matchmaker/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/assess/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/command-center/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/key-ring/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/conformance-checker/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/pbkdf2-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/cert-bundle-splitter/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/did-document-validator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/identity-sbom-analyzer/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/iam-tco-calculator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/iam-rfp-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/iam-salary-compass/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/tabletop-exercise-generator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/raci-builder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/risk-register-builder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/certificate-verifier/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/pqc-readiness-auditor/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/cyber-insurance-readiness/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/print-poster/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/oauth-risk-analyzer/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/csp-builder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/x509-to-jwks-converter/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/saml-metadata-auditor/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/oauth-2-1-auditor/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ldap-schema-designer/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/hr-attribute-mapper/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/identity-fabric/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/liveness-injection/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ot-ics-identity/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/trust-registry/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ciem-explorer/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/legacy-federation/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/spatial-identity-lab/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/agent-identity/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/nhi-sprawl/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/passkey-rollout-strategist/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/modernization-backlog/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/incident-commander/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/build-your-idp/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/openid4vc-wallet/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/fapi2/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/dpop/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/caep-event-storm/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/attack-path-graph/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/identity-broker/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/magic-link-stepup/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/credential-stuffing/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ciam-consent/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/access-certification/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/role-mining/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/access-request-cart/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/risk-engine/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/pam-vaulting/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/hybrid-ad-sync/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/pqc-handshake/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/passkey-policy/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/workload-identity/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/cloud-policy-evaluator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/federated-vp/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/autonomous-agent/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/career-center/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/scenario-builder/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/labs/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/decision-matrix/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/threat-modeling/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/design-review/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/events/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/reports/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/assistant/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/timeline/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/community/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/community-forums/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/cheat-sheets/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/contributors/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/terms/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/rag-authorization/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ai-swarm/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/fhe-auth/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/qkd-simulator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/mdl-proximity/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/space-identity/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/v2x-pki/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ebpf-tracer/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/digital-twin/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/bci-auth/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/c2pa-provenance/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/eu-ai-act-assessor/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/tools/log-anonymizer/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/opa-wasm/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/mcp-server/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/webrtc-p2p/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/war-room/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/biometric-mesh/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/mpc-threshold/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/zk-cross-chain/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/sybil-orb/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/m2m-negotiator/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/playground/ocular-kinetic/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=aaa</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=abac</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=active_directory</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=access_token</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=authn</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=authz</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=bff</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=bcrypt</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=caep</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ciam</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=did</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=directory</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=fido2</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=idp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=id_token</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=iga</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=jwe</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=jwks</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=jws</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=jwt</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=kerberos</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ldap</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=mfa</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=oauth</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=oidc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=pam</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=passkey</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=pkce</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=rbac</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=rebac</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=saml</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=scim</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ssf</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=sso</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=totp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=vc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=zero_trust</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=onewelcome</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=sta</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=identity_orchestration</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=dpop</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=fapi</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=gnap</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=scim_patch</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=mtls</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=par</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=dmarc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=zkp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=kms</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=abac_policy_engine</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ciba</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=rar</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=sd_jwt</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=mdl</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=radius</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ocsp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=crl</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=token_binding</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=step_up_auth</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=rba</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=jit_provisioning</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=entitlement_management</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=access_recertification</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ws_federation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=spiffe_spire</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=password</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=passwordless</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=service_provider</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=relying_party</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=federation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=claims</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=consent_management</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=onboarding_offboarding</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=least_privilege</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=session</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=cookie</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=api_key</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=basic_auth</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=digest_auth</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=bearer_token</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=opaque_token</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=token_introspection</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=token_revocation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=discovery_document</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=dynamic_client_registration</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=confidential_public_client</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=nonce</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=state_parameter</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=scope</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=resource_server</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=authorization_server</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=authorization_code_grant</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=client_credentials_grant</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=device_code_grant</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=refresh_token</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=saml_assertion</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=saml_metadata</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=nameid</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=idp_sp_initiated</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=single_logout</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=forceauthn</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ldap_bind</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ldap_filter</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ldap_injection</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=domain_controller</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ad_forest_domain_trust</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ntlm</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=kdc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=tgt_tgs</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=pass_the_hash_ticket</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=golden_silver_ticket</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=radius_companions</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=hybrid_identity</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=shibboleth</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=cas</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=sod</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=toxic_combination</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=role_mining</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=role_explosion</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=privileged_account</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=break_glass_account</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=service_account</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=non_human_identity</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=pdp_pep</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=pap_pip</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=xacml</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=attribute_authority</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ztna</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=sdp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=continuous_authentication</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=device_posture</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ueba</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=risk_based_authentication</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=credential_stuffing</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=password_spraying</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=brute_force_attack</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=phishing</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=mfa_fatigue</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=sim_swapping</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=mitm</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=replay_attack</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=privilege_escalation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=lateral_movement</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=account_takeover</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=csrf</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=xss</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=open_redirect</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=impossible_travel</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=device_fingerprinting</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=symmetric_asymmetric_encryption</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=public_private_key</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=digital_signature</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=hmac</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=hashing_vs_encryption</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=salting</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=aes</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=rsa</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ecc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=pki_ca_csr</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=x509</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=hsm</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=secrets_management</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=key_rotation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=ssi</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=verifiable_presentation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=did_document</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=oid4vc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=siop</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=eidas</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=assurance_levels</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=jit_access</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=deprovisioning</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=birthright_access</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=identity_lifecycle_management</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=kba</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=account_recovery</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=identity_proofing</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=kyc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=social_login</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=magic_link</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=account_lockout</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=sspr</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=oauth21</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=oidc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=scim20</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=webauthn</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=fido-certification</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=saml2</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=ldapv3</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=kerberos</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=totp-hotp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=radius</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=jose</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=x509-pki</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=rfc8693</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=nist80063</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=xacml3</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=gnap</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=caep-ssf</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=vc-did</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=openid4vc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=spiffe-spire</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=dpop</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/standards/?standard=fapi2</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=netflix</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=uber</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=cloudflare</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=thales_financial_ciam</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=google_beyondcorp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=slack_scim_scale</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=stripe_api_auth</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=login_gov_ial2</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=healthcare_portal_hipaa</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=retail_multitenant_ciam</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=university_federated_sso</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=github_oauth_apps</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/case-studies/?study=crossborder_b2b_federation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=mfa_fatigue</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=snowflake_breach</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=weak_password_reuse</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=phishing_session_cookie</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=public_s3_iam_keys</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=default_admin_credentials</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=okta_support</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=illicit_consent_grant</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=saml_metadata_tampering</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=scim_deprovisioning_failure</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=jwt_alg_none_exploit</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=third_party_oauth_overprivilege</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=golden_saml</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=kerberoasting_service_accounts</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=silver_ticket_forgery</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=cicd_supply_chain_secret_leak</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=cloud_privilege_escalation_chain</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=cross_tenant_token_forgery</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=sc900</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=security-plus</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cidpro</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=aws-cloud-practitioner</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=sc300</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=okta_admin</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=ping_professional</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=az500</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=forgerock-ams</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=okta-consultant</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=aws-security-specialty</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=gcp-security-engineer</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=sailpoint-identitynow</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=saviynt-admin</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=one-identity-manager</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cyberark-trustee</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cyberark_defender</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=beyondtrust-admin</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=delinea-admin</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cyberark-sentry</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cissp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=ccsp</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cism</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=crisc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cipt</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cipm</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/certifications/?cert=cks</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=goldensaml</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=pushfatigue</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=wildcard</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=oktahar</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=silversaml</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=lastpass</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=rockyou</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=disney-credential-stuffing</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=colonial-pipeline</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=twitter-bitly-admin-tool</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=capitalone-ssrf</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=uber-github-aws-keys</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=marriott-starwood</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=0ktapus-smishing</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=mailchimp-internal-tool</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=uber-2022-pam-credential-discovery</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=github-oauth-app-token-theft</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=storm-0558</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=snowflake-credential-stuffing</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=moveit-mass-exfil</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=notpetya-golden-ticket</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=change-healthcare-no-mfa</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=lapsus-mfa-sim-swap</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=scattered-spider-helpdesk</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=okta-sitel-subprocessor</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=kerberoasting-dcsync</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/wall-of-shame/?lab=pass-the-hash-lateral-movement</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=springboot-keycloak</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=node-express-oauth</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=opa-rego-authorization</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=scim-server-payload</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=github-aws-oidc</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=aws-iam-boundary</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=express-session-cookie</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=node-basic-auth-middleware</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=ldap-bind-search</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=passport-oidc-strategy</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=jwt-refresh-rotation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=webauthn-server-verification</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=vault-approle-dynamic-secrets</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=gcp-workload-identity-federation</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=k8s-oidc-serviceaccount-rbac</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/references/?ref=istio-mtls-authorization-policy</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=keycloak</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=authentik</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=auth0-okta</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=entra-id</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=teleport</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=hashicorp-vault</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=ory</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=zitadel</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=okta-workforce</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=ping-identity</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=jumpcloud</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=onelogin</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=workos</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=frontegg</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=cyberark</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=beyondtrust</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=hashicorp-boundary</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=doppler</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=google-workspace</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=openldap</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/explore/?product=freeipa</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2022-23529</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2015-9235</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2015-2951</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2016-7036</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2019-7644</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2020-13379</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2021-27582</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2023-38146</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2024-21626</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2022-22965</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2021-44228</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2020-1472</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2014-6271</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2017-5638</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2019-11510</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-6749</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-7519</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-6238</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-4511</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-7636</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-7643</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-7644</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-7009</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-7662</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-8414</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-8628</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-4120</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-9068</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-9449</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-9396</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=rfc-9635</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.aboutiam.com/research/?rfc=oauth-2-1</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

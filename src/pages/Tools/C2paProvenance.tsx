@@ -5,11 +5,24 @@ import BeginnerExpertExplainer from '../../components/Tools/BeginnerExpertExplai
 import { useClipboardCopy } from '../../components/Tools/useClipboardCopy'
 import { getToolBySlug } from '../../data/toolsRegistry'
 
+interface ManifestAction {
+  action: string
+  software: string
+}
+
+interface ManifestData {
+  issuer: string
+  hardwareAttestation: string
+  edited: boolean
+  actions: ManifestAction[]
+  certSubject: string
+}
+
 export default function C2paProvenance() {
   const tool = getToolBySlug('c2pa-provenance')!
   const { copy, copiedId } = useClipboardCopy()
   const [inputText, setInputText] = useState('')
-  const [manifestData, setManifestData] = useState<any | null>(null)
+  const [manifestData, setManifestData] = useState<ManifestData | null>(null)
 
   const handleSimulate = (scenario: 'camera' | 'photoshop' | 'manipulated') => {
     if (scenario === 'camera') {
@@ -122,7 +135,7 @@ export default function C2paProvenance() {
                 <div className="space-y-2">
                   <h4 className="text-xs font-bold text-text-primary uppercase tracking-wide">Historical Edit Timeline</h4>
                   <div className="space-y-2">
-                    {manifestData.actions.map((act: any, idx: number) => (
+                    {manifestData.actions.map((act, idx: number) => (
                       <div key={idx} className="flex items-center gap-3 p-3 bg-bg-nested border border-border-subtle rounded-xl text-xs">
                         <span className="bg-bg-card px-2.5 py-1 rounded-md text-[10px] font-black font-mono text-accent-secondary">
                           {act.action}

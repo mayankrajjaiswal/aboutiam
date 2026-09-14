@@ -19,7 +19,7 @@
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
-    "@mlc-ai/web-llm": "^0.2.84",
+    "@mlc-ai/web-llm": "^0.2.85",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^13.2.0",
     "jspdf": "^4.2.1",

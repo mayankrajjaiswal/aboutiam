@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Sep 2026 15:44:36 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 19 Sep 2026 15:51:14 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -493,6 +493,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/agent-identity-record</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Fill in the 25 fields across the 8 agent-identity groups (Identity, Ownership, Principal, Intent, Authority, Conditions, Provenance, Lifecycle) to generate a portable JSON/YAML agent identity record plus a human-readable job description — with completeness and over-broad-authority warnings.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Crypto Agility Inventory Builder]]></title>
+      <link>https://www.aboutiam.com/tools/crypto-agility-inventory</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/crypto-agility-inventory</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Record the cryptographic dependencies across your own identity estate — algorithm, key length, rotation capability, HNDL exposure, and migration difficulty per component — and get a prioritized migration backlog with CSV/JSON export.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

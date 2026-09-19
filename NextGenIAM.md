@@ -1343,8 +1343,8 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P8.7–P8.9 `src/lib/tools/passwordlessRoi.ts` + tests → registry → page + route (§7.3.3) — sourced/labelled defaults
 - [x] P8.10–P8.12 Wallet Readiness Assessor (§7.3.4)
 - [x] P8.13–P8.15 Agent Identity Record Generator (§7.3.5)
-- [ ] P8.16–P8.18 Crypto Agility Inventory Builder (§7.3.6)
-- [ ] P8.19 Flip all 6 registry entries to `status: 'live'`; verify JSON-LD + FAQ render; mobile sweep
+- [x] P8.16–P8.18 Crypto Agility Inventory Builder (§7.3.6)
+- [x] P8.19 Flip all 6 registry entries to `status: 'live'`; verify JSON-LD + FAQ render; mobile sweep — all 6 tools were built with `status: 'live'` from the start; JSON-LD/FAQ rendering verified generically via `ToolPageShell` component tests; grep sweep for hardcoded pixel widths across all 6 tool pages found none
 
 ### P9 — Integration & Polish (16 todos)
 - [ ] P9.1 Academy track 7 with exactly 6 modules (§6.3) + `academyTracks.test.ts` green

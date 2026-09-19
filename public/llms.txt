@@ -182,6 +182,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Passwordless ROI & Helpdesk Cost Calculator](https://www.aboutiam.com/tools/passwordless-roi-calculator/): Model a 3-year cost comparison between password-based auth and a FIDO passwordless rollout, with a break-even point and sensitivity analysis — every default explicitly labeled as an illustrative assumption, not a vendor claim.
 - [Wallet Readiness Assessor](https://www.aboutiam.com/tools/wallet-readiness-assessor/): Select your digital-wallet roles (verifier, issuer, holder), sector, and jurisdiction footprint for a role-specific readiness checklist, applicable standards profile, and relevant compliance deadlines.
 - [Agent Identity Record Generator](https://www.aboutiam.com/tools/agent-identity-record/): Fill in the 25 fields across the 8 agent-identity groups to generate a portable JSON/YAML agent identity record plus a human-readable job description, with completeness and over-broad-authority warnings.
+- [Crypto Agility Inventory Builder](https://www.aboutiam.com/tools/crypto-agility-inventory/): Record cryptographic dependencies across your identity estate — algorithm, key length, rotation capability, HNDL exposure, migration difficulty — and get a prioritized migration backlog with CSV/JSON export.
 
 ## Advanced Ecosystem & Governance
 

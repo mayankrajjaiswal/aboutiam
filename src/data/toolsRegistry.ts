@@ -1127,6 +1127,25 @@ export const TOOLS: ToolMeta[] = [
       { q: 'What do the warnings mean?', a: 'They flag the same governance defects the Agent Registry Studio teaches: no accountable owner, no expiry forcing re-certification, and authority grants broad enough to defeat least-privilege.' }
     ],
     relatedLinks: [{ label: 'Agentic Identity Center →', href: '/next-gen/agentic-identity' }, { label: 'Agent Registry & Lifecycle Studio →', href: '/playground/agent-registry' }]
+  },
+  {
+    slug: 'crypto-agility-inventory',
+    taskTags: ['check-compliance', 'generate'],
+    title: 'Crypto Agility Inventory Builder',
+    description: 'Record the cryptographic dependencies across your own identity estate — algorithm, key length, rotation capability, HNDL exposure, and migration difficulty per component — and get a prioritized migration backlog with CSV/JSON export.',
+    category: 'Supply Chain & Governance',
+    icon: PackageSearch,
+    phase: 3,
+    status: 'live',
+    keywords: ['crypto agility inventory', 'pqc migration backlog', 'harvest now decrypt later inventory', 'cryptographic bill of materials'],
+    analogy: 'A home energy audit that walks room by room, rating each appliance by how much it costs to replace and how urgently it needs replacing — except the rooms are your identity systems and the appliances are the cryptographic algorithms inside them.',
+    expert: 'Add one entry per cryptographic dependency in your own estate (component, algorithm, key length, rotation capability, harvest-now-decrypt-later exposure, migration difficulty), and the tool computes a priority score weighted toward HNDL exposure and rotation risk, producing a sorted migration backlog exportable as CSV or JSON. This is your own estate\'s inventory, distinct from the reference industry-wide dependency graph modeled in the Crypto Migration Planner playground.',
+    faqs: [
+      { q: 'Is my inventory data sent anywhere?', a: 'No — everything is entered, scored, and exported entirely in your browser. Nothing is transmitted or stored server-side.' },
+      { q: 'How is the priority score calculated?', a: 'It weights harvest-now-decrypt-later exposure most heavily (that risk accrues silently today even before quantum computers arrive), then rotation risk (non-rotatable dependencies are more urgent), then raw migration difficulty.' },
+      { q: 'Can I feed this into the Crypto Migration Planner?', a: 'The two tools model different things — this one is your own estate\'s inventory, while the planner walks the industry-wide dependency-ordering exercise — but the same HNDL-exposure and difficulty concepts carry over between them.' }
+    ],
+    relatedLinks: [{ label: 'Crypto Agility & PQC Center →', href: '/next-gen/crypto-agility' }, { label: 'Crypto Migration Planner →', href: '/playground/crypto-migration' }]
   }
 ]
 

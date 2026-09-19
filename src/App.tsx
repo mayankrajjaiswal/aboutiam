@@ -233,6 +233,7 @@ const AgentGovernanceReadiness = lazy(() => import('./pages/Tools/AgentGovernanc
 const PasswordlessRoiCalculator = lazy(() => import('./pages/Tools/PasswordlessRoiCalculator'))
 const WalletReadinessAssessor = lazy(() => import('./pages/Tools/WalletReadinessAssessor'))
 const AgentIdentityRecordGenerator = lazy(() => import('./pages/Tools/AgentIdentityRecordGenerator'))
+const CryptoAgilityInventoryBuilder = lazy(() => import('./pages/Tools/CryptoAgilityInventoryBuilder'))
 
 // Next-Gen IAM pillar
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
@@ -479,6 +480,7 @@ export default function App() {
               <Route path="/tools/passwordless-roi-calculator" element={<PasswordlessRoiCalculator />} />
               <Route path="/tools/wallet-readiness-assessor" element={<WalletReadinessAssessor />} />
               <Route path="/tools/agent-identity-record" element={<AgentIdentityRecordGenerator />} />
+              <Route path="/tools/crypto-agility-inventory" element={<CryptoAgilityInventoryBuilder />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

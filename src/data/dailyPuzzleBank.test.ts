@@ -41,4 +41,10 @@ describe('DAILY_PUZZLE_BANK', () => {
   it('has at least 30 entries to sustain a non-trivial non-repeat cycle', () => {
     expect(DAILY_PUZZLE_BANK.length).toBeGreaterThanOrEqual(30)
   })
+
+  it('includes 7 Next-Gen IAM protocol-guess puzzles', () => {
+    const nextGenPuzzles = DAILY_PUZZLE_BANK.filter((p) => p.id.startsWith('proto-nextgen-'))
+    expect(nextGenPuzzles).toHaveLength(7)
+    expect(nextGenPuzzles.every((p) => p.format === 'protocol-guess')).toBe(true)
+  })
 })

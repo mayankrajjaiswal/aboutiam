@@ -213,6 +213,7 @@ const ROUTES = [
   { path: '/playground/prompt-injection-escalation', title: 'Prompt Injection → Privilege Escalation Lab', description: 'Walk a 6-stage attack chain from a hostile instruction hidden in retrieved content to full account takeover, toggling identity and fabric controls to see exactly where — and whether — the chain breaks.' },
   { path: '/playground/agent-observability', title: 'Agent Behavior Observability Lab — Task Drift Detection', description: 'Watch an agent\'s actual actions stream in against its declared task, tune where on the 6-rung intervention ladder you step in, and see whether you stopped the damage in time or intervened too early.' },
   { path: '/playground/fido-fleet-ops', title: 'FIDO Fleet Operations Simulator — Authenticator Fleet at Scale', description: 'Run a 5-round FIDO authenticator fleet across office, remote, shared-device, privileged, and contractor segments, allocating form factors and responding to events while tracking coverage, helpdesk load, cost, and satisfaction.' },
+  { path: '/playground/attestation-policy', title: 'AAGUID & Attestation Policy Lab — Enterprise Authenticator Allow-Listing', description: 'Author an enterprise authenticator policy (certification level, attestation conveyance, resident-key and user-verification requirements) and run it against 8 simulated registration attempts to see whether it correctly accepts strong devices and rejects weak or stale ones.' },
 ]
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

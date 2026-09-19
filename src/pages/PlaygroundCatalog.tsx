@@ -677,6 +677,13 @@ export default function PlaygroundCatalog() {
       link: "/playground/fido-fleet-ops",
       badge: "Active (Next-Gen)",
       enterpriseProducts: "Thales SafeNet Trusted Access, Yubico, Microsoft Entra ID"
+    },
+    {
+      title: "AAGUID & Attestation Policy Lab",
+      desc: "Author an enterprise authenticator policy — certification level, attestation conveyance, resident-key and user-verification requirements — and run it against 8 simulated registration attempts to see whether it correctly accepts strong devices and rejects weak or stale ones.",
+      icon: BadgeCheck,
+      link: "/playground/attestation-policy",
+      badge: "Active (Next-Gen)",
     }
   ]
 

@@ -113,6 +113,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Prompt Injection → Privilege Escalation Lab](https://www.aboutiam.com/playground/prompt-injection-escalation/): Walk a 6-stage attack chain from a hostile instruction hidden in retrieved content to full account takeover, toggling identity and fabric controls to see exactly where — and whether — the chain breaks.
 - [Agent Behavior Observability Lab — Task Drift Detection](https://www.aboutiam.com/playground/agent-observability/): Watch an agent's actual actions stream in against its declared task, tune where on the 6-rung intervention ladder you step in, and see whether you stopped the damage in time or intervened too early.
 - [FIDO Fleet Operations Simulator — Authenticator Fleet at Scale](https://www.aboutiam.com/playground/fido-fleet-ops/): Run a 5-round FIDO authenticator fleet across office, remote, shared-device, privileged, and contractor segments, allocating form factors and responding to events while tracking coverage, helpdesk load, cost, and satisfaction.
+- [AAGUID & Attestation Policy Lab — Enterprise Authenticator Allow-Listing](https://www.aboutiam.com/playground/attestation-policy/): Author an enterprise authenticator policy (certification level, attestation conveyance, resident-key and user-verification requirements) and run it against 8 simulated registration attempts to see whether it correctly accepts strong devices and rejects weak or stale ones.
 
 ## Security Tools
 

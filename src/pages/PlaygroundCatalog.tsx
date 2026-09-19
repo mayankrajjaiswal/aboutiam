@@ -662,6 +662,13 @@ export default function PlaygroundCatalog() {
       icon: ShieldAlert,
       link: "/playground/prompt-injection-escalation",
       badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Agent Behavior Observability Lab",
+      desc: "Watch an agent's actual actions stream in against its declared task, tune where on the 6-rung intervention ladder you step in, and see whether you stopped the damage in time — or intervened so early you'd have blocked a legitimate run too.",
+      icon: Eye,
+      link: "/playground/agent-observability",
+      badge: "Active (Next-Gen)",
     }
   ]
 

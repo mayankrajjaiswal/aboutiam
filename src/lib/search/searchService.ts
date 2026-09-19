@@ -18,6 +18,14 @@ import { BREACHES } from '../../data/breachesData'
 import { CHEAT_SHEETS } from '../../data/cheatSheetsData'
 import { COMPARISONS, LEARNING_TRACKS, INTERVIEW_QUESTIONS } from '../../data/aiKnowledgeGraph'
 import { ROUTE_META } from '../../routeMeta'
+import { NEXT_GEN_THEMES } from '../../data/nextGenThemes'
+import { AGENTIC_QUADRANTS } from '../../data/agenticEcosystemQuadrants'
+import { AGENT_THREAT_CATALOG } from '../../data/agentThreatCatalog'
+import { FIDO_FORM_FACTORS } from '../../data/fidoFormFactors'
+import { BUSINESS_WALLET_USE_CASES } from '../../data/businessWalletUseCases'
+import { WALLET_PROGRAMMES } from '../../data/walletProgrammes'
+import { CRYPTO_MIGRATION_WORKSTREAMS } from '../../data/cryptoAgilityRoadmap'
+import { HSM_ROOT_OF_TRUST_CONCEPTS } from '../../data/hsmRootOfTrust'
 
 export interface SearchItem {
   id: string
@@ -435,7 +443,118 @@ export function getSearchIndex(): MiniSearch<SearchItem> {
     })
   })
 
-  // 21. Add every remaining site page (sidebar/nav pages not covered above)
+  // 21. Add Next-Gen IAM Themes (derived from the shared nextGenThemes.ts — every
+  // theme added there is automatically searchable, no separate list to sync)
+  NEXT_GEN_THEMES.forEach(t => {
+    items.push({
+      id: `nextgen-theme-${t.id}`,
+      title: t.title,
+      fullName: 'Next-Gen IAM Theme',
+      description: t.thesis,
+      category: '🚀 Next-Gen IAM',
+      link: t.route,
+      keywords: [t.whyNow, 'next-gen', 'strategic theme']
+    })
+  })
+
+  // 22. Add Agentic Ecosystem Quadrants (derived from the shared agenticEcosystemQuadrants.ts)
+  AGENTIC_QUADRANTS.forEach(q => {
+    items.push({
+      id: `nextgen-quadrant-${q.id}`,
+      title: q.title,
+      fullName: 'Agentic Identity Ecosystem',
+      description: q.whoActs,
+      category: '🚀 Next-Gen IAM',
+      link: `/next-gen/agentic-identity?tab=quadrants&quadrant=${q.id}`,
+      keywords: [q.title, 'agentic', 'ecosystem', 'delegation']
+    })
+  })
+
+  // 23. Add Agent Threat Catalog entries (derived from the shared agentThreatCatalog.ts —
+  // every threat added there is automatically searchable, no separate list to sync)
+  AGENT_THREAT_CATALOG.forEach(t => {
+    items.push({
+      id: `nextgen-threat-${t.id}`,
+      title: t.title,
+      fullName: `${t.category} · ${t.severity}`,
+      description: t.description,
+      category: '🚀 Next-Gen IAM — AI Threats',
+      link: `/next-gen/ai-security-fabric?tab=threats&threat=${t.id}`,
+      keywords: [t.category, t.severity, ...t.frameworkMapping]
+    })
+  })
+
+  // 24. Add FIDO Form Factors (derived from the shared fidoFormFactors.ts — every
+  // form factor added there is automatically searchable, no separate list to sync)
+  FIDO_FORM_FACTORS.forEach(f => {
+    items.push({
+      id: `nextgen-formfactor-${f.id}`,
+      title: f.name,
+      fullName: `${f.category} · ${f.aalCeiling}`,
+      description: f.description,
+      category: '🚀 Next-Gen IAM — FIDO Fleets',
+      link: `/next-gen/phishing-resistant-auth?tab=form-factors&factor=${f.id}`,
+      keywords: [f.category, f.aalCeiling, f.attestationSupport]
+    })
+  })
+
+  // 25. Add Business Wallet Use Cases (derived from the shared businessWalletUseCases.ts —
+  // every use case added there is automatically searchable, no separate list to sync)
+  BUSINESS_WALLET_USE_CASES.forEach(u => {
+    items.push({
+      id: `nextgen-wallet-usecase-${u.id}`,
+      title: u.title,
+      fullName: `${u.sector} · ${u.role}`,
+      description: u.problemToday,
+      category: '🚀 Next-Gen IAM — Digital Wallets',
+      link: `/next-gen/digital-wallets?tab=business-wallet&usecase=${u.id}`,
+      keywords: [u.sector, u.role, ...u.credentialTypes]
+    })
+  })
+
+  // 26. Add Wallet Programmes (derived from the shared walletProgrammes.ts — every
+  // programme added there is automatically searchable, no separate list to sync)
+  WALLET_PROGRAMMES.forEach(p => {
+    items.push({
+      id: `nextgen-wallet-programme-${p.id}`,
+      title: p.name,
+      fullName: `${p.jurisdiction} · ${p.status}`,
+      description: p.relyingPartyNotes,
+      category: '🚀 Next-Gen IAM — Digital Wallets',
+      link: `/next-gen/digital-wallets?tab=programmes&programme=${p.id}`,
+      keywords: [p.jurisdiction, p.region, p.status, p.trustModel]
+    })
+  })
+
+  // 27. Add Crypto Migration Workstreams (derived from the shared cryptoAgilityRoadmap.ts —
+  // every workstream added there is automatically searchable, no separate list to sync)
+  CRYPTO_MIGRATION_WORKSTREAMS.forEach(w => {
+    items.push({
+      id: `nextgen-crypto-workstream-${w.id}`,
+      title: w.title,
+      fullName: `${w.domain} · ${w.difficulty}`,
+      description: `Migrate from ${w.currentAlgorithms.join(', ')} to ${w.targetAlgorithms.join(', ')}.`,
+      category: '🚀 Next-Gen IAM — Crypto Agility',
+      link: `/next-gen/crypto-agility?tab=migration&workstream=${w.id}`,
+      keywords: [w.domain, w.difficulty, w.hndlExposure]
+    })
+  })
+
+  // 28. Add HSM Root-of-Trust Concepts (derived from the shared hsmRootOfTrust.ts —
+  // every concept added there is automatically searchable, no separate list to sync)
+  HSM_ROOT_OF_TRUST_CONCEPTS.forEach(c => {
+    items.push({
+      id: `nextgen-rot-${c.id}`,
+      title: c.title,
+      fullName: `${c.category} · Root of Trust`,
+      description: c.expert,
+      category: '🚀 Next-Gen IAM — Crypto Agility',
+      link: `/next-gen/crypto-agility?tab=root-of-trust&concept=${c.id}`,
+      keywords: [c.category, 'hsm', 'root of trust', 'fips 140-3']
+    })
+  })
+
+  // 29. Add every remaining site page (sidebar/nav pages not covered above)
   // sourced from routeMeta.ts — the same table already required to be kept
   // in sync for SEO, so new routes get indexed here automatically.
   const coveredPaths = new Set(items.map(i => i.link.split('?')[0]))

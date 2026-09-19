@@ -206,6 +206,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Agentic Identity Center — Governing AI Agents as Principals](https://www.aboutiam.com/next-gen/agentic-identity/): Give an AI agent a job description: identity, ownership, declared intent, and a lifecycle. The four-quadrant ecosystem model, design-time vs run-time governance, and a 9-lab hands-on path.
 - [AI Security Fabric Center — The Runtime Control Plane for AI Agents](https://www.aboutiam.com/next-gen/ai-security-fabric/): The Discover-Decide-Enforce-Observe loop, semantic guardrails vs classic policy, the intervention ladder, and a 12-entry OWASP-mapped agent threat catalogue.
 - [Phishing-Resistant Auth & FIDO Device Fleets](https://www.aboutiam.com/next-gen/phishing-resistant-auth/): FIDO2/WebAuthn form-factor selection, the 8-stage fleet lifecycle (procure to recycle), enterprise attestation, helpdesk ROI economics, and crypto agility — operating passwordless auth at scale.
+- [Digital Wallets & Verifiable Credentials Center](https://www.aboutiam.com/next-gen/digital-wallets/): The three wallet roles (issuer, holder, verifier), the under-served organizational business wallet, eIDAS 2.0 relying-party obligations, and 12 global wallet programmes compared.
 
 ## Optional
 

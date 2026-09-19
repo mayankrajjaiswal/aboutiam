@@ -39,9 +39,9 @@ export const FIDO_FLEET_LIFECYCLE: FleetLifecycleStage[] = [
     stakeholders: ['IT Procurement', 'Identity & Access Management team', 'Finance'],
   },
   {
-    id: 'personalise',
+    id: 'personalize',
     order: 2,
-    title: 'Personalise',
+    title: 'Personalize',
     objective: 'Brand, configure, and prepare authenticators for the specific organization and use case before distribution.',
     activities: ['Apply organizational branding/printing where the form factor supports it', 'Pre-configure policy defaults (PIN requirements, algorithm selection)', 'Package devices for the intended distribution channel'],
     whatGoesWrong: ['Personalization becomes a bottleneck that delays rollout by weeks', 'Inconsistent configuration across a batch causes enrollment failures downstream'],

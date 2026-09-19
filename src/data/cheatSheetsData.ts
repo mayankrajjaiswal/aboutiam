@@ -347,5 +347,49 @@ export const CHEAT_SHEETS: CheatSheet[] = [
       { id: 'dora_3', task: 'Maintain identity-related major-incident reporting readiness', desc: 'Be able to produce authentication/access timelines quickly enough to meet DORA\'s incident-reporting deadlines.' },
       { id: 'dora_4', task: 'Define an exit strategy for privileged vendor access', desc: 'Document how privileged third-party ICT access is fully revoked and re-owned if a critical vendor relationship ends.' }
     ]
+  },
+
+  // ── Identity Infrastructure & Governance (Next-Gen IAM) ──
+  {
+    id: 'agent_identity_record',
+    title: 'Agent Identity Record Checklist',
+    target: 'Platform Teams Deploying AI Agents',
+    category: 'Identity Infrastructure & Governance',
+    difficulty: 'Intermediate',
+    checks: [
+      { id: 'air_1', task: 'Assign a stable, unique agent_id and a named human owner', desc: 'Every agent instance needs a subject identifier and an accountable owner before it is granted any credential -- no shared "service" account fallback.' },
+      { id: 'air_2', task: 'Write a declared-intent statement with explicit in-scope and out-of-scope tasks', desc: 'A purpose statement makes drift detectable even when it is not yet technically enforced -- list what the agent should never do, not just what it should.' },
+      { id: 'air_3', task: 'Scope permitted tools and data classes to the minimum the declared intent requires', desc: 'Avoid wildcard or "all"/"admin" tool grants -- an over-broad grant defeats least-privilege regardless of how narrow the declared intent is.' },
+      { id: 'air_4', task: 'Set an expiry and a review cadence, not an indefinite lifetime', desc: 'Without a forced re-certification date, an agent\'s authority persists indefinitely even after its original task is long finished.' },
+      { id: 'air_5', task: 'Define revocation triggers beyond the scheduled review', desc: 'Owner departure and repeated drift-detection flags should trigger immediate revocation, not wait for the next quarterly review.' }
+    ]
+  },
+  {
+    id: 'delegation_chain_patterns',
+    title: 'Delegation Chain Patterns Checklist',
+    target: 'Backend Engineers Building Multi-Hop Agent Authority',
+    category: 'Identity Infrastructure & Governance',
+    difficulty: 'Advanced',
+    checks: [
+      { id: 'dcp_1', task: 'Preserve the full chain of authority across every hop', desc: 'Use RFC 8693 Token Exchange with `act`/`may_act` claims so a verifier can trace an action back to the original human or system that authorized it, not just the immediate caller.' },
+      { id: 'dcp_2', task: 'Enforce monotonic scope narrowing at every hop', desc: 'A sub-agent\'s token must be a strict subset of its parent\'s authority -- never a copy of the parent\'s full scope set "to be safe."' },
+      { id: 'dcp_3', task: 'Use Rich Authorization Requests (RFC 9396) for structured, auditable intent', desc: 'Prefer declared, structured `authorization_details` over a coarse scope string when the delegated action has real consequence (e.g. amount, recipient, resource).' },
+      { id: 'dcp_4', task: 'Require CIBA-style out-of-band approval for consequential, unattended actions', desc: 'When no user is present in the request path, decouple the approval device from the requesting device rather than defaulting to standing pre-authorization.' },
+      { id: 'dcp_5', task: 'Log every delegation hop with who approved it and when', desc: 'An incomplete audit trail across hops makes a compromised mid-chain agent indistinguishable from a legitimate one during incident response.' }
+    ]
+  },
+  {
+    id: 'crypto_agility_checklist',
+    title: 'Crypto Agility Checklist',
+    target: 'Security Architects Planning PQC Migration',
+    category: 'Identity Infrastructure & Governance',
+    difficulty: 'Advanced',
+    checks: [
+      { id: 'cac_1', task: 'Inventory every cryptographic algorithm, key length, and rotation capability in your identity estate', desc: 'You cannot prioritize a migration you have not inventoried -- capture this per component, not as one estate-wide assumption.' },
+      { id: 'cac_2', task: 'Flag "harvest now, decrypt later" exposure separately from raw migration difficulty', desc: 'Long-lived confidential data encrypted today with classical algorithms is at risk well before a cryptographically relevant quantum computer exists -- weight this risk independently.' },
+      { id: 'cac_3', task: 'Migrate root-of-trust and CA hierarchies before anything they sign', desc: 'Cryptographic components cannot migrate independently -- a CA must move to a PQC-capable signature algorithm before anything it has signed can meaningfully follow.' },
+      { id: 'cac_4', task: 'Adopt hybrid classical+PQC schemes during the transition, not a hard cutover', desc: 'Hybrid key exchange (e.g. X25519 + ML-KEM-768) and dual signatures preserve interoperability with systems that have not yet migrated.' },
+      { id: 'cac_5', task: 'Track federal/industry deprecation deadlines for classical algorithms explicitly', desc: 'NIST finalized FIPS 203/204/205 in August 2024, with federal guidance targeting 2030/2031 for deprecating classical key-establishment/signature algorithms -- plan against dated milestones, not "eventually."' }
+    ]
   }
 ]

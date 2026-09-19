@@ -2768,6 +2768,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/case-studies/?study=agent_governance_rollout</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/case-studies/?study=fido_fleet_migration</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/case-studies/?study=wallet_acceptance_readiness</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/bulletins/?bulletin=mfa_fatigue</loc>
     <lastmod>2026-09-19</lastmod>
     <changefreq>weekly</changefreq>

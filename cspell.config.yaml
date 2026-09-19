@@ -42,6 +42,7 @@ words:
   - authorization-grant-type
   - authtime
   - automount
+  - autopay
   - autotable
   - Axiomatics
   - backchannel
@@ -821,6 +822,7 @@ words:
   - unparseable
   - Unredacted
   - unredacted
+  - unrequested
   - unreviewed
   - unrevocable
   - unrotated

@@ -6,17 +6,25 @@ import { AGENT_BATTLE_SCENARIOS } from '../../src/data/autonomousAgentScenarios'
 
 describe('Autonomous Security Agent Simulation Playground page', () => {
   it('should contain robust attack and defense scenarios in data', () => {
-    expect(AGENT_BATTLE_SCENARIOS.length).toBe(2)
+    expect(AGENT_BATTLE_SCENARIOS.length).toBe(4)
     const first = AGENT_BATTLE_SCENARIOS[0]
     expect(first.id).toBe('token_hijacking')
     expect(first.steps.length).toBeGreaterThan(0)
-    
-    first.steps.forEach(step => {
-      expect(step.name).toBeDefined()
-      expect(step.redAction).toBeDefined()
-      expect(step.blueReaction).toBeDefined()
-      expect(['SUCCESS', 'BLOCKED']).toContain(step.result)
-    })
+
+    for (const scenario of AGENT_BATTLE_SCENARIOS) {
+      scenario.steps.forEach(step => {
+        expect(step.name).toBeDefined()
+        expect(step.redAction).toBeDefined()
+        expect(step.blueReaction).toBeDefined()
+        expect(['SUCCESS', 'BLOCKED']).toContain(step.result)
+      })
+    }
+  })
+
+  it('includes the two new agentic-identity battles: prompt injection and sub-agent privilege inheritance', () => {
+    const ids = AGENT_BATTLE_SCENARIOS.map((s) => s.id)
+    expect(ids).toContain('prompt_injection_escalation')
+    expect(ids).toContain('subagent_privilege_inheritance')
   })
 
   it('renders correctly and lets user trigger agentic battle', async () => {

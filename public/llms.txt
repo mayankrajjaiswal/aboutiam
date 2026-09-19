@@ -107,6 +107,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [M2M AI Protocol Negotiator](https://www.aboutiam.com/playground/m2m-negotiator/): Visualize autonomous AI agents executing smart-contract bids to negotiate custom-scoped OAuth 2.1 access rules dynamically.
 - [Kinetic-Tremor Continuous Trust Simulator](https://www.aboutiam.com/playground/ocular-kinetic/): Model spatial computing continuous authentication by tracking microscopic hand tremors and involuntary eye saccades.
 - [Advanced OAuth 2.1 Threat Modeling & Mitigation Simulator](https://www.aboutiam.com/playground/advanced-oauth-hack-defend/): Interactive multi-stage hacking playground. Model the JWT Algorithm Confusion exploit and simulate the PKCE authorization-code injection bypass.
+- [Agent Registry & Lifecycle Studio — Audit AI Agent Governance Gaps](https://www.aboutiam.com/playground/agent-registry/): Audit an AI agent identity record for missing owners, absent expiry, and over-broad authority, remediate each gap, then walk the agent through registration, approval, operation, and decommission.
 
 ## Security Tools
 

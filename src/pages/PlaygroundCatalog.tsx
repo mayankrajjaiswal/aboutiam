@@ -632,6 +632,14 @@ export default function PlaygroundCatalog() {
       icon: Sliders,
       link: "/playground/advanced-oauth-hack-defend",
       badge: "Active (Advanced)",
+    },
+    {
+      title: "Agent Registry & Lifecycle Studio",
+      desc: "Audit an AI agent's identity record for governance gaps — a missing owner, no expiry, over-broad authority — fix each one, then walk the agent through its full lifecycle from registration to decommission.",
+      icon: ClipboardList,
+      link: "/playground/agent-registry",
+      badge: "Active (Next-Gen)",
+      enterpriseProducts: "Thales OneWelcome, Microsoft Entra Agent ID, Okta"
     }
   ]
 

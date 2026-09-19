@@ -1268,16 +1268,16 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P1.22 Registry review: every factual entry has source + `verifiedDate` + `confidence`; every header comment in house style
 
 ### P2 — Vocabulary & Standards (10 todos)
-- [ ] P2.1 Encyclopedia: 14 T1/T2 terms (§6.1)
-- [ ] P2.2 Encyclopedia: 4 T3 terms
-- [ ] P2.3 Encyclopedia: 4 T4 terms
-- [ ] P2.4 Encyclopedia: 3 T5 terms; verify the new category filters correctly on `/encyclopedia`
-- [ ] P2.5 Standards: `mcp`, `rfc9396-rar`, `ciba` (full `IdentityStandard` shape incl. ASCII `flowchart`)
-- [ ] P2.6 Standards: `agent-authz-emerging` (draft status + body + date explicit), `fido-fdo`
-- [ ] P2.7 Standards: `eidas2-arf`, `openid4vci`, `pqc-fips203-205`
-- [ ] P2.8 Compliance deadlines: 6 entries, each primary-source verified (§6.4)
-- [ ] P2.9 Knowledge graph: add nodes + all edges from §8.4; `knowledgeGraphData.test.ts` green
-- [ ] P2.10 `searchService.ts`: index all new registries; extend `searchService.test.ts` with loop-over-all invariants
+- [x] P2.1 Encyclopedia: 14 T1/T2 terms (§6.1)
+- [x] P2.2 Encyclopedia: 4 T3 terms
+- [x] P2.3 Encyclopedia: 4 T4 terms
+- [x] P2.4 Encyclopedia: 3 T5 terms; verify the new category filters correctly on `/encyclopedia`
+- [x] P2.5 Standards: `mcp`, `rfc9396-rar`, `ciba` (full `IdentityStandard` shape incl. ASCII `flowchart`)
+- [x] P2.6 Standards: `agent-authz-emerging` (draft status + body + date explicit), `fido-fdo`
+- [x] P2.7 Standards: `eidas2-arf`, `openid4vci`, `pqc-fips203-205`
+- [x] P2.8 Compliance deadlines: 6 entries, each primary-source verified (§6.4)
+- [x] P2.9 Knowledge graph: add nodes + all edges from §8.4; `knowledgeGraphData.test.ts` green
+- [x] P2.10 `searchService.ts`: index all new registries; extend `searchService.test.ts` with loop-over-all invariants
 
 ### P3 — Flagship Pages (12 todos)
 - [ ] P3.1 `src/pages/NextGenIamCenter.tsx` (§5.2)
@@ -1402,6 +1402,8 @@ Record deviations, discoveries, and anything a future maintainer would need. Esp
 | 2026-09-19 | P0.5 | FDO (FIDO Device Onboard, IoT provisioning) and FIDO2/WebAuthn enterprise attestation/AAGUID are **distinct spec families**, not one mechanism as an earlier plan draft implied. Corrected §2.5 and §6.2; `standardsData.ts` `fido-fdo` entry (P2) must stay scoped to IoT onboarding only. |
 | 2026-09-19 | P1 (all) | Confirmed by design: only 4 of the 12 registries (`agentThreatCatalog`, `fidoFormFactors`, `walletProgrammes`, `hsmRootOfTrust`) carry per-entry `sourceLink`/`verifiedDate` fields. The other 8 are conceptual/taxonomic models (frameworks, not dated factual claims) and are sourced once at the file-header level per §2.4 — this satisfies P1.22, not a gap. |
 | 2026-09-19 | P1 (all) | Full suite checkpoint after P1: 1626 tests passing across 257 files (baseline ~1527), 0 new lint issues, `tsc -b` clean. `walletAdoptionTracker.ts` (pre-existing, imported by `StandardsExplorer.tsx`) verified untouched and still green alongside the new `walletProgrammes.ts`. |
+| 2026-09-19 | P2.7 | `public/sitemap.xml`/`llms.txt`/`llms-full.txt`/`llms-index.json`/`qa.txt`/`rss.xml` were stale relative to `src/routeMeta.ts` **before this branch's work began** (confirmed by stashing all nextgen changes and re-running `tests/integration/generatedArtifactsFresh.test.ts` against the untouched baseline -- it failed there too, pre-existing repo drift unrelated to this pillar). A full build regenerated them; committed separately, and the sitemap now also picks up the 8 new standards and 25 new terms via their existing dynamic `?standard=`/`?term=` deep-link entries. |
+| 2026-09-19 | P2.9-P2.10 | Instead of writing a brand-new SSG↔routeMeta parity test (§0.3/§11), confirmed `scripts/postbuild-ssg.test.ts` already covers it in both directions with exact title/description matching -- relied on that existing test rather than duplicating it, per §11's guidance. Wrote the two genuinely new invariants (cross-link resolution, search-index coverage) instead. |
 
 ---
 

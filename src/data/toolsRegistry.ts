@@ -1108,6 +1108,25 @@ export const TOOLS: ToolMeta[] = [
       { q: 'Where do the deadlines come from?', a: 'They are pulled live from this site\'s own compliance-deadlines registry, each with an official source link and a verification date — nothing here is invented for this tool specifically.' }
     ],
     relatedLinks: [{ label: 'Digital Wallets & VCs Center →', href: '/next-gen/digital-wallets' }, { label: 'Business Wallet Studio →', href: '/playground/business-wallet' }]
+  },
+  {
+    slug: 'agent-identity-record',
+    taskTags: ['generate'],
+    title: 'Agent Identity Record Generator',
+    description: 'Fill in the 25 fields across the 8 agent-identity groups (Identity, Ownership, Principal, Intent, Authority, Conditions, Provenance, Lifecycle) to generate a portable JSON/YAML agent identity record plus a human-readable job description — with completeness and over-broad-authority warnings.',
+    category: 'Supply Chain & Governance',
+    icon: FileJson2,
+    phase: 3,
+    status: 'live',
+    keywords: ['agent identity record', 'ai agent job description generator', 'agent registry schema', 'agentic identity artifact'],
+    analogy: 'Writing a real job description before you hire someone — name, manager, what they\'re authorized to do, what they\'re explicitly not authorized to do, and when their contract is reviewed. This generator produces that same document for an AI agent, in a format you can actually store and enforce.',
+    expert: 'Guided form over the same 25-field, 8-group agent identity record schema used throughout the Agentic Identity pillar (`agentRegistryModel.ts`). Emits the record as grouped JSON or YAML, plus a human-readable job-description document, and validates it: flags every unmet required field, a missing owner (critical), a missing expiry (high), over-broad permitted-tools or permitted-scopes grants (wildcard/"all"/full-access patterns), and absent human-approval or revocation triggers.',
+    faqs: [
+      { q: 'Is this data sent anywhere?', a: 'No — everything is generated and validated entirely in your browser.' },
+      { q: 'Where does the 25-field schema come from?', a: 'It is the same schema taught in the Agentic Identity Center\'s "An Agent Needs a Job Description" section and used by the Agent Registry & Lifecycle Studio playground — each field is mapped to a familiar IAM concept.' },
+      { q: 'What do the warnings mean?', a: 'They flag the same governance defects the Agent Registry Studio teaches: no accountable owner, no expiry forcing re-certification, and authority grants broad enough to defeat least-privilege.' }
+    ],
+    relatedLinks: [{ label: 'Agentic Identity Center →', href: '/next-gen/agentic-identity' }, { label: 'Agent Registry & Lifecycle Studio →', href: '/playground/agent-registry' }]
   }
 ]
 

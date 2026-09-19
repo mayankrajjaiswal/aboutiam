@@ -232,6 +232,7 @@ const McpManifestAuditor = lazy(() => import('./pages/Tools/McpManifestAuditor')
 const AgentGovernanceReadiness = lazy(() => import('./pages/Tools/AgentGovernanceReadiness'))
 const PasswordlessRoiCalculator = lazy(() => import('./pages/Tools/PasswordlessRoiCalculator'))
 const WalletReadinessAssessor = lazy(() => import('./pages/Tools/WalletReadinessAssessor'))
+const AgentIdentityRecordGenerator = lazy(() => import('./pages/Tools/AgentIdentityRecordGenerator'))
 
 // Next-Gen IAM pillar
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
@@ -477,6 +478,7 @@ export default function App() {
               <Route path="/tools/agent-governance-readiness" element={<AgentGovernanceReadiness />} />
               <Route path="/tools/passwordless-roi-calculator" element={<PasswordlessRoiCalculator />} />
               <Route path="/tools/wallet-readiness-assessor" element={<WalletReadinessAssessor />} />
+              <Route path="/tools/agent-identity-record" element={<AgentIdentityRecordGenerator />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

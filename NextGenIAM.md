@@ -1338,9 +1338,9 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 *(Expand each group into its 4 discrete todos as you reach it, mirroring the P6 pattern.)*
 
 ### P8 — Tools (18 todos)
-- [ ] P8.1–P8.3 `src/lib/tools/mcpManifest.ts` + tests → registry entry → page + route ritual (§7.3.1)
-- [ ] P8.4–P8.6 Agent Governance Readiness: scoring lib + tests → registry → page + route (§7.3.2)
-- [ ] P8.7–P8.9 `src/lib/tools/passwordlessRoi.ts` + tests → registry → page + route (§7.3.3) — sourced/labelled defaults
+- [x] P8.1–P8.3 `src/lib/tools/mcpManifest.ts` + tests → registry entry → page + route ritual (§7.3.1)
+- [x] P8.4–P8.6 Agent Governance Readiness: scoring lib + tests → registry → page + route (§7.3.2)
+- [x] P8.7–P8.9 `src/lib/tools/passwordlessRoi.ts` + tests → registry → page + route (§7.3.3) — sourced/labelled defaults
 - [ ] P8.10–P8.12 Wallet Readiness Assessor (§7.3.4)
 - [ ] P8.13–P8.15 Agent Identity Record Generator (§7.3.5)
 - [ ] P8.16–P8.18 Crypto Agility Inventory Builder (§7.3.6)

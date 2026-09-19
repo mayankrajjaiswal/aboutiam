@@ -179,6 +179,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [W3C SD-JWT Selective Disclosure Wallet SDK Studio](https://www.aboutiam.com/tools/sd-jwt-wallet-sdk/): Interactive developer dashboard explaining the cryptographic salting, hashing, and partial-redaction mechanics of W3C Verifiable Credentials.
 - [MCP Manifest & Tool-Permission Auditor](https://www.aboutiam.com/tools/mcp-manifest-auditor/): Paste an MCP server tool manifest to flag identity-relevant risks — unbounded parameters, undistinguished destructive operations, missing scope declarations, credential-accepting parameters, and over-broad resource patterns — with a suggested least-privilege scope per tool.
 - [Agent Governance Readiness Assessor](https://www.aboutiam.com/tools/agent-governance-readiness/): A 26-question self-assessment across 8 agent-identity dimensions and 4 AI-control-plane functions, producing a banded maturity score, per-dimension breakdown, and a prioritized gap list with recommended next pages.
+- [Passwordless ROI & Helpdesk Cost Calculator](https://www.aboutiam.com/tools/passwordless-roi-calculator/): Model a 3-year cost comparison between password-based auth and a FIDO passwordless rollout, with a break-even point and sensitivity analysis — every default explicitly labeled as an illustrative assumption, not a vendor claim.
 
 ## Advanced Ecosystem & Governance
 

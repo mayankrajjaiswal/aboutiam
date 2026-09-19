@@ -230,6 +230,7 @@ const CredentialIssuanceStudio = lazy(() => import('./pages/Playgrounds/Credenti
 const CryptoMigrationPlanner = lazy(() => import('./pages/Playgrounds/CryptoMigrationPlanner'))
 const McpManifestAuditor = lazy(() => import('./pages/Tools/McpManifestAuditor'))
 const AgentGovernanceReadiness = lazy(() => import('./pages/Tools/AgentGovernanceReadiness'))
+const PasswordlessRoiCalculator = lazy(() => import('./pages/Tools/PasswordlessRoiCalculator'))
 
 // Next-Gen IAM pillar
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
@@ -473,6 +474,7 @@ export default function App() {
               <Route path="/playground/crypto-migration" element={<CryptoMigrationPlanner />} />
               <Route path="/tools/mcp-manifest-auditor" element={<McpManifestAuditor />} />
               <Route path="/tools/agent-governance-readiness" element={<AgentGovernanceReadiness />} />
+              <Route path="/tools/passwordless-roi-calculator" element={<PasswordlessRoiCalculator />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

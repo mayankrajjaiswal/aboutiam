@@ -1070,6 +1070,25 @@ export const TOOLS: ToolMeta[] = [
       { q: 'Can I export my results?', a: 'Yes — download a plain-text report with your overall score, per-dimension breakdown, and the full prioritized gap list.' }
     ],
     relatedLinks: [{ label: 'Agentic Identity Center →', href: '/next-gen/agentic-identity' }, { label: 'Agent Registry & Lifecycle Studio →', href: '/playground/agent-registry' }]
+  },
+  {
+    slug: 'passwordless-roi-calculator',
+    taskTags: ['check-compliance'],
+    title: 'Passwordless ROI & Helpdesk Cost Calculator',
+    description: 'Model a 3-year cost comparison between continuing password-based authentication and rolling out FIDO passwordless devices — password-reset tickets, lockout time, and MFA-fatigue incidents versus device unit, fulfillment, and support costs.',
+    category: 'Program & Vendor Management',
+    icon: Presentation,
+    phase: 3,
+    status: 'live',
+    keywords: ['passwordless roi calculator', 'helpdesk cost savings', 'fido tco', 'passkey business case'],
+    analogy: 'Comparing the ongoing cost of constantly replacing broken padlocks and calling a locksmith versus a one-time investment in a keyless entry system — the calculator shows you exactly where the two cost lines cross.',
+    expert: 'A planning model, not a vendor performance claim: annualizes password-related helpdesk cost (reset tickets, lockout downtime, MFA-fatigue incident remediation) against a device rollout\'s one-time and recurring costs (unit price, fulfillment, support, refresh cycle), then computes a 3-year cumulative comparison, break-even point, and a sensitivity view showing which two inputs most influence the result.',
+    faqs: [
+      { q: 'Are the default numbers real industry benchmarks?', a: 'No. Every default is explicitly labeled an illustrative assumption in the tool itself — replace every one of them with your own organization\'s actual ticket volume, cost-per-ticket, and device pricing before relying on the output for a real budget decision.' },
+      { q: 'Does this tool send my inputs anywhere?', a: 'No — the entire calculation runs locally in your browser.' },
+      { q: 'What does the sensitivity view show?', a: 'The two inputs whose ±20% change most shifts your 3-year savings figure — useful for knowing which numbers are worth getting right before presenting a business case.' }
+    ],
+    relatedLinks: [{ label: 'Phishing-Resistant Auth Center →', href: '/next-gen/phishing-resistant-auth' }, { label: 'FIDO Fleet Operations Simulator →', href: '/playground/fido-fleet-ops' }]
   }
 ]
 

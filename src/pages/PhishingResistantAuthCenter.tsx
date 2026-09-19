@@ -9,6 +9,7 @@ import { FIDO_FLEET_LIFECYCLE } from '../data/fidoFleetLifecycle'
 import ContentFeedback from '../components/ContentFeedback'
 import RelatedContentRail from '../components/RelatedContentRail'
 import BookmarkButton from '../components/BookmarkButton'
+import { useDeepLinkedItem, itemDomId } from '../lib/nextgen/useDeepLinkedItem'
 
 type TabId = 'why' | 'form-factors' | 'fleet-lifecycle' | 'attestation' | 'economics' | 'sustainability' | 'crypto-agility' | 'labs'
 
@@ -30,6 +31,7 @@ const AAL_COLOR: Record<AalCeiling, string> = {
 
 export default function PhishingResistantAuthCenter() {
   const [activeTab, setActiveTab] = useState<TabId>('why')
+  const highlightedFactor = useDeepLinkedItem('factor', FIDO_FORM_FACTORS.map((f) => f.id))
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -122,7 +124,7 @@ export default function PhishingResistantAuthCenter() {
           <p className="text-sm text-text-secondary max-w-3xl">No single form factor fits a whole organization — segmentation is the skill.</p>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {FIDO_FORM_FACTORS.map((f) => (
-              <div key={f.id} className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-2">
+              <div key={f.id} id={itemDomId('factor', f.id)} className={`p-5 rounded-2xl bg-bg-card border shadow-sm space-y-2 transition-colors ${highlightedFactor === f.id ? 'border-accent-primary ring-2 ring-accent-primary/30' : 'border-border-subtle'}`}>
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <h3 className="text-sm font-black text-text-primary">{f.name}</h3>
                   <span className={`text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider border ${AAL_COLOR[f.aalCeiling]}`}>

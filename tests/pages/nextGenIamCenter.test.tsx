@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { axe } from 'jest-axe'
 import { screen, fireEvent } from '@testing-library/react'
 import { renderWithProviders } from '../../src/test/renderWithProviders'
 import NextGenIamCenter from '../../src/pages/NextGenIamCenter'
@@ -49,5 +50,13 @@ describe('NextGenIamCenter page', () => {
   it('renders the cross-theme dependency diagram', () => {
     renderWithProviders(<NextGenIamCenter />)
     expect(screen.getByText(/how the five themes depend on each other/i)).toBeInTheDocument()
+  })
+
+  // The pillar landing page is the entry point for all 5 theme hubs, each of
+  // which already carries this assertion -- it should not be the one page in
+  // the pillar without it.
+  it('has no detectable accessibility violations', async () => {
+    const { container } = renderWithProviders(<NextGenIamCenter />)
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

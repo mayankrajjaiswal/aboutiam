@@ -9,6 +9,7 @@ import { AGENT_THREAT_CATALOG, type AgentThreatCategory } from '../data/agentThr
 import ContentFeedback from '../components/ContentFeedback'
 import RelatedContentRail from '../components/RelatedContentRail'
 import BookmarkButton from '../components/BookmarkButton'
+import { useDeepLinkedItem, itemDomId } from '../lib/nextgen/useDeepLinkedItem'
 
 type TabId = 'concept' | 'discovery' | 'guardrails' | 'egress' | 'observability' | 'intervene' | 'threats' | 'labs'
 
@@ -40,6 +41,7 @@ const THREAT_CATEGORIES: AgentThreatCategory[] = [
 export default function AiSecurityFabricCenter() {
   const [activeTab, setActiveTab] = useState<TabId>('concept')
   const [threatCategoryFilter, setThreatCategoryFilter] = useState<AgentThreatCategory | 'All'>('All')
+  const highlightedId = useDeepLinkedItem('threat', AGENT_THREAT_CATALOG.map((t) => t.id))
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -273,7 +275,7 @@ export default function AiSecurityFabricCenter() {
           </div>
           <div className="space-y-3">
             {filteredThreats.map((threat) => (
-              <div key={threat.id} className="p-4 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-2">
+              <div key={threat.id} id={itemDomId('threat', threat.id)} className={`p-4 rounded-2xl bg-bg-card border shadow-sm space-y-2 transition-colors ${highlightedId === threat.id ? 'border-accent-primary ring-2 ring-accent-primary/30' : 'border-border-subtle'}`}>
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <span className="text-sm font-black text-text-primary">{threat.title}</span>
                   <span className={`text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider border ${

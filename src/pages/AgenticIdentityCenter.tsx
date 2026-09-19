@@ -12,6 +12,7 @@ import { VENDOR_CATALOG, type VendorType } from '../data/vendorCatalog'
 import ContentFeedback from '../components/ContentFeedback'
 import RelatedContentRail from '../components/RelatedContentRail'
 import BookmarkButton from '../components/BookmarkButton'
+import { useDeepLinkedItem, itemDomId } from '../lib/nextgen/useDeepLinkedItem'
 
 type TabId = 'why' | 'quadrants' | 'job-description' | 'governance' | 'standards' | 'labs' | 'vendors'
 
@@ -95,6 +96,7 @@ const FIELD_GROUP_ORDER: AgentRecordFieldGroup[] = [
 
 export default function AgenticIdentityCenter() {
   const [activeTab, setActiveTab] = useState<TabId>('why')
+  const highlightedQuadrant = useDeepLinkedItem('quadrant', AGENTIC_QUADRANTS.map((q) => q.id))
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -207,7 +209,7 @@ export default function AgenticIdentityCenter() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {AGENTIC_QUADRANTS.map((q) => (
-              <div key={q.id} className="p-5 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-3">
+              <div key={q.id} id={itemDomId('quadrant', q.id)} className={`p-5 rounded-2xl bg-bg-card border shadow-sm space-y-3 transition-colors ${highlightedQuadrant === q.id ? 'border-accent-primary ring-2 ring-accent-primary/30' : 'border-border-subtle'}`}>
                 <h3 className="text-sm font-black text-text-primary">{q.title}</h3>
                 <p className="text-xs text-text-secondary">{q.whoActs}</p>
                 <div className="p-3 rounded-xl bg-bg-nested/30 text-[11px] text-text-secondary italic">

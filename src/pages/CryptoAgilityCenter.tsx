@@ -10,6 +10,7 @@ import { NEXT_GEN_THEMES, type NextGenThemeId } from '../data/nextGenThemes'
 import ContentFeedback from '../components/ContentFeedback'
 import RelatedContentRail from '../components/RelatedContentRail'
 import BookmarkButton from '../components/BookmarkButton'
+import { useDeepLinkedItem, itemDomId } from '../lib/nextgen/useDeepLinkedItem'
 
 type TabId = 'agility' | 'inventory' | 'pqc' | 'root-of-trust' | 'migration' | 'cross-cutting' | 'labs'
 
@@ -39,6 +40,8 @@ const THEME_CRYPTO_DEPENDENCY: { themeId: NextGenThemeId; dependency: string; pq
 
 export default function CryptoAgilityCenter() {
   const [activeTab, setActiveTab] = useState<TabId>('agility')
+  const highlightedConcept = useDeepLinkedItem('concept', HSM_ROOT_OF_TRUST_CONCEPTS.map((c) => c.id))
+  const highlightedWorkstream = useDeepLinkedItem('workstream', CRYPTO_MIGRATION_WORKSTREAMS.map((w) => w.id))
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -167,7 +170,7 @@ export default function CryptoAgilityCenter() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {HSM_ROOT_OF_TRUST_CONCEPTS.map((c) => (
-              <div key={c.id} className="p-4 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-2">
+              <div key={c.id} id={itemDomId('concept', c.id)} className={`p-4 rounded-2xl bg-bg-card border shadow-sm space-y-2 transition-colors ${highlightedConcept === c.id ? 'border-accent-primary ring-2 ring-accent-primary/30' : 'border-border-subtle'}`}>
                 <h3 className="text-sm font-black text-text-primary">{c.title}</h3>
                 <p className="text-[11px] text-accent-primary italic">{c.analogy}</p>
                 <p className="text-xs text-text-secondary">{c.expert}</p>
@@ -187,7 +190,7 @@ export default function CryptoAgilityCenter() {
           </p>
           <div className="space-y-2">
             {CRYPTO_MIGRATION_WORKSTREAMS.map((w) => (
-              <div key={w.id} className="p-4 rounded-xl bg-bg-card border border-border-subtle space-y-2">
+              <div key={w.id} id={itemDomId('workstream', w.id)} className={`p-4 rounded-xl bg-bg-card border space-y-2 transition-colors ${highlightedWorkstream === w.id ? 'border-accent-primary ring-2 ring-accent-primary/30' : 'border-border-subtle'}`}>
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <span className="text-sm font-black text-text-primary">{w.title}</span>
                   <span className={`text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider border ${HNDL_COLOR[w.hndlExposure]}`}>

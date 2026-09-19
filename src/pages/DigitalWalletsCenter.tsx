@@ -10,6 +10,7 @@ import { COMPLIANCE_DEADLINES } from '../data/complianceDeadlines'
 import ContentFeedback from '../components/ContentFeedback'
 import RelatedContentRail from '../components/RelatedContentRail'
 import BookmarkButton from '../components/BookmarkButton'
+import { useDeepLinkedItem, itemDomId } from '../lib/nextgen/useDeepLinkedItem'
 
 type TabId = 'roles' | 'business-wallet' | 'lifecycle' | 'regulation' | 'programmes' | 'trust-models' | 'labs'
 
@@ -64,6 +65,8 @@ const WALLET_DEADLINE_IDS = new Set(['eidas2-wallet-rollout', 'eidas2-relying-pa
 export default function DigitalWalletsCenter() {
   const [activeTab, setActiveTab] = useState<TabId>('roles')
   const [regionFilter, setRegionFilter] = useState<WalletRegion | 'All'>('All')
+  const highlightedUseCase = useDeepLinkedItem('usecase', BUSINESS_WALLET_USE_CASES.map((u) => u.id))
+  const highlightedProgramme = useDeepLinkedItem('programme', WALLET_PROGRAMMES.map((p) => p.id))
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -153,7 +156,7 @@ export default function DigitalWalletsCenter() {
           <p className="text-sm text-text-secondary max-w-3xl">The biggest single gap: custody, delegation, multi-signer authority, and audit at scale — different from a personal wallet.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {BUSINESS_WALLET_USE_CASES.map((u) => (
-              <div key={u.id} className="p-4 rounded-2xl bg-bg-card border border-border-subtle shadow-sm space-y-2">
+              <div key={u.id} id={itemDomId('usecase', u.id)} className={`p-4 rounded-2xl bg-bg-card border shadow-sm space-y-2 transition-colors ${highlightedUseCase === u.id ? 'border-accent-primary ring-2 ring-accent-primary/30' : 'border-border-subtle'}`}>
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <h3 className="text-sm font-black text-text-primary">{u.title}</h3>
                   <span className="text-[9px] bg-bg-nested border border-border-subtle text-text-secondary font-black px-2 py-0.5 rounded uppercase">{u.role}</span>
@@ -252,7 +255,7 @@ export default function DigitalWalletsCenter() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {filteredProgrammes.map((p) => (
-              <div key={p.id} className="p-4 rounded-xl bg-bg-card border border-border-subtle space-y-1.5">
+              <div key={p.id} id={itemDomId('programme', p.id)} className={`p-4 rounded-xl bg-bg-card border space-y-1.5 transition-colors ${highlightedProgramme === p.id ? 'border-accent-primary ring-2 ring-accent-primary/30' : 'border-border-subtle'}`}>
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <span className="text-sm font-black text-text-primary">{p.name}</span>
                   <span className="text-[9px] bg-bg-nested border border-border-subtle text-text-secondary font-black px-2 py-0.5 rounded uppercase">{p.status}</span>

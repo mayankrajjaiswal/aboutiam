@@ -230,6 +230,12 @@ const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace
 const replaceTag = (html, regex, replacement) => html.replace(regex, () => replacement)
 
 function getOgImage(path) {
+  // NOTE: the /next-gen pillar deliberately reuses og-image.png rather than
+  // shipping an og-next-gen.png. Every og-*.png in public/ is currently the
+  // same byte-identical file, so a dedicated name would add a duplicate asset
+  // and imply per-section artwork that does not exist. NextGenIAM.md §8.6
+  // explicitly allows mapping to an existing image instead of producing one.
+  // Give the pillar its own branch here the moment real artwork exists.
   if (path.startsWith('/tools')) return `${SITE_URL}/og-tools.png`
   if (path.startsWith('/playground')) return `${SITE_URL}/og-playground.png`
   if (path.startsWith('/encyclopedia')) return `${SITE_URL}/og-encyclopedia.png`

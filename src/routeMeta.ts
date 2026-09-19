@@ -201,6 +201,7 @@ export const ROUTE_META: RouteMeta[] = [
   { path: '/next-gen/ai-security-fabric', title: 'AI Security Fabric Center — The Runtime Control Plane for AI Agents', description: 'The Discover-Decide-Enforce-Observe loop, semantic guardrails vs classic policy, the intervention ladder, and a 12-entry OWASP-mapped agent threat catalogue.' },
   { path: '/next-gen/phishing-resistant-auth', title: 'Phishing-Resistant Auth & FIDO Device Fleets', description: 'FIDO2/WebAuthn form-factor selection, the 8-stage fleet lifecycle (procure to recycle), enterprise attestation, helpdesk ROI economics, and crypto agility — operating passwordless auth at scale.' },
   { path: '/next-gen/digital-wallets', title: 'Digital Wallets & Verifiable Credentials Center', description: 'The three wallet roles (issuer, holder, verifier), the under-served organizational business wallet, eIDAS 2.0 relying-party obligations, and 12 global wallet programmes compared.' },
+  { path: '/next-gen/crypto-agility', title: 'Crypto Agility & Root of Trust Center', description: 'Post-quantum cryptography (NIST FIPS 203/204/205), hardware root of trust, and dependency-ordered migration planning — the substrate binding agentic identity, FIDO fleets, and digital wallets together.' },
 ]
 
 const DEFAULT_META: RouteMeta = {

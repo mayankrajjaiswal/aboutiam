@@ -225,6 +225,7 @@ const AgenticIdentityCenter = lazy(() => import('./pages/AgenticIdentityCenter')
 const AiSecurityFabricCenter = lazy(() => import('./pages/AiSecurityFabricCenter'))
 const PhishingResistantAuthCenter = lazy(() => import('./pages/PhishingResistantAuthCenter'))
 const DigitalWalletsCenter = lazy(() => import('./pages/DigitalWalletsCenter'))
+const CryptoAgilityCenter = lazy(() => import('./pages/CryptoAgilityCenter'))
 
 function PageLoadingFallback() {
   return (
@@ -447,6 +448,7 @@ export default function App() {
               <Route path="/next-gen/ai-security-fabric" element={<AiSecurityFabricCenter />} />
               <Route path="/next-gen/phishing-resistant-auth" element={<PhishingResistantAuthCenter />} />
               <Route path="/next-gen/digital-wallets" element={<DigitalWalletsCenter />} />
+              <Route path="/next-gen/crypto-agility" element={<CryptoAgilityCenter />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

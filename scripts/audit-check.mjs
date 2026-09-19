@@ -8,15 +8,10 @@
 // to become a general-purpose audit bypass.
 import { execSync } from 'node:child_process'
 
-const ALLOWLIST = [
-  {
-    ghsaId: 'GHSA-qwww-vcr4-c8h2',
-    package: 'react-router',
-    reason:
-      'React Router RSC-mode CSRF bypass — this app is a client-side SPA using BrowserRouter/Routes/Route only, never the unstable RSC APIs the advisory names as the attack surface. No non-breaking fix exists yet (first patched version 8.3.0, which react-router-dom has not published as of this writing).',
-    reviewBy: '2026-10-01',
-  },
-]
+// Empty by design: GHSA-qwww-vcr4-c8h2 (react-router RSC-mode CSRF bypass) was
+// the only entry, and react-router-dom 7.18.3+ pulls in a patched react-router,
+// so `npm audit` is clean without any exception.
+const ALLOWLIST = []
 
 const auditLevel = 'moderate'
 const severityRank = { info: 0, low: 1, moderate: 2, high: 3, critical: 4 }

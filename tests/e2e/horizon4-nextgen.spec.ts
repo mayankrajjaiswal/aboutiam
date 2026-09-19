@@ -23,7 +23,7 @@ test.describe('Horizon 4 Next-Gen Playgrounds', () => {
   // 1. MPC Threshold Signature Scheme
   test('should run MPC Threshold Signature Sandbox', async ({ page }) => {
     await page.goto('http://localhost:5173/playground/mpc-threshold')
-    await expect(page.locator('h2:has-text("MPC Threshold Signature Scheme Sandbox")')).toBeVisible()
+    await expect(page.locator('h1:has-text("MPC Threshold Signature Scheme Sandbox")')).toBeVisible()
 
     const deviceBtn = page.locator('button:has-text("2 devices")')
     await expect(deviceBtn).toBeVisible()
@@ -33,54 +33,54 @@ test.describe('Horizon 4 Next-Gen Playgrounds', () => {
     await expect(signBtn).toBeVisible()
     await signBtn.click()
 
-    await expect(page.locator('div.font-mono')).toContainText('Lagrange polynomial interpolation')
+    await expect(page.locator('div.terminal-high-contrast').first()).toContainText('Lagrange polynomial interpolation')
   })
 
   // 2. ZK Cross-Chain Auth
   test('should run ZK Cross-Chain Auth Simulator', async ({ page }) => {
     await page.goto('http://localhost:5173/playground/zk-cross-chain')
-    await expect(page.locator('h2:has-text("ZK Cross-Chain Auth Simulator")')).toBeVisible()
+    await expect(page.locator('h1:has-text("ZK Cross-Chain Auth Simulator")')).toBeVisible()
 
     const proveBtn = page.locator('button:has-text("Generate & Verify zk-SNARK")')
     await expect(proveBtn).toBeVisible()
     await proveBtn.click()
 
-    await expect(page.locator('div.font-mono')).toContainText('zk-SNARK cryptographic circuit')
+    await expect(page.locator('div.terminal-high-contrast').first()).toContainText('zk-SNARK cryptographic circuit')
   })
 
   // 3. Sybil-Resistant Iris Hash Lab
   test('should run Sybil-Resistant Iris Hash Lab', async ({ page }) => {
     await page.goto('http://localhost:5173/playground/sybil-orb')
-    await expect(page.locator('h2:has-text("Sybil-Resistant Iris Hash Lab")')).toBeVisible()
+    await expect(page.locator('h1:has-text("Sybil-Resistant Iris Hash Lab")')).toBeVisible()
 
     const scanBtn = page.locator('button:has-text("Scan Iris")')
     await expect(scanBtn).toBeVisible()
     await scanBtn.click()
 
-    await expect(page.locator('div.font-mono')).toContainText('Gabor filter vectors')
+    await expect(page.locator('div.terminal-high-contrast').first()).toContainText('Gabor filter vectors')
   })
 
   // 4. M2M AI Protocol Negotiator
   test('should run M2M AI Protocol Negotiator', async ({ page }) => {
     await page.goto('http://localhost:5173/playground/m2m-negotiator')
-    await expect(page.locator('h2:has-text("M2M AI Protocol Negotiator")')).toBeVisible()
+    await expect(page.locator('h1:has-text("M2M AI Protocol Negotiator")')).toBeVisible()
 
     const negotiateBtn = page.locator('button:has-text("Start M2M Negotiation")')
     await expect(negotiateBtn).toBeVisible()
     await negotiateBtn.click()
 
-    await expect(page.locator('div.font-mono')).toContainText('Client Agent requesting scope', { timeout: 5000 })
+    await expect(page.locator('div.terminal-high-contrast').first()).toContainText('Client Agent requesting scope', { timeout: 5000 })
   })
 
   // 5. Kinetic-Tremor Continuous Trust
   test('should run Kinetic-Tremor Continuous Trust Simulator', async ({ page }) => {
     await page.goto('http://localhost:5173/playground/ocular-kinetic')
-    await expect(page.locator('h2:has-text("Kinetic-Tremor Continuous Trust Simulator")')).toBeVisible()
+    await expect(page.locator('h1:has-text("Kinetic-Tremor Continuous Trust Simulator")')).toBeVisible()
 
     const stableBtn = page.locator('button:has-text("Stable Baseline")')
     await expect(stableBtn).toBeVisible()
     await stableBtn.click()
 
-    await expect(page.locator('div.font-mono')).toContainText('saccades')
+    await expect(page.locator('div.terminal-high-contrast').first()).toContainText('saccades')
   })
 })

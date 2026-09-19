@@ -134,11 +134,9 @@ export default function FIDO2Lab() {
           })
         }, 50)
       } else if (!isHoldingSensor && !isSimulatingHardware) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setTimeout(() => setSensorProgress(0), 0)
       }
       return () => clearInterval(timer)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isHoldingSensor, sensorProgress, isSimulatingHardware])
   }
 

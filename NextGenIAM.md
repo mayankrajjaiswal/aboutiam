@@ -1310,22 +1310,22 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P5.4 `CryptoAgilityCenter.test.tsx` + mobile sweep
 
 ### P6 — Flagship Playgrounds (16 todos)
-- [ ] P6.1 `src/lib/` logic module for agent-record auditing (pure, testable)
-- [ ] P6.2 `Playgrounds/AgentRegistryStudio.tsx` using the SDK (§7.2.1)
-- [ ] P6.3 Route ritual + `PlaygroundCatalog.tsx` entry + `playgroundTaskTags.ts`
-- [ ] P6.4 Tests (logic unit + component)
-- [ ] P6.5 `src/lib/` logic for delegation-chain authority evaluation
-- [ ] P6.6 `Playgrounds/DelegationChainAuditor.tsx` (§7.2.2)
-- [ ] P6.7 Route ritual + catalog + task tags
-- [ ] P6.8 Tests
-- [ ] P6.9 `src/data/aiGuardrailScenarios.ts` (~20 request corpus, labelled)
-- [ ] P6.10 `src/lib/` guardrail evaluation + confusion-matrix logic
-- [ ] P6.11 `Playgrounds/AiGuardrailStudio.tsx` (§7.2.3)
-- [ ] P6.12 Route ritual + catalog + task tags + tests
-- [ ] P6.13 `src/lib/` injection-chain stage/control model
-- [ ] P6.14 `Playgrounds/PromptInjectionEscalation.tsx` (§7.2.5)
-- [ ] P6.15 Route ritual + catalog + task tags + tests
-- [ ] P6.16 Mobile sweep all four playgrounds
+- [x] P6.1 `src/lib/` logic module for agent-record auditing (pure, testable)
+- [x] P6.2 `Playgrounds/AgentRegistryStudio.tsx` using the SDK (§7.2.1)
+- [x] P6.3 Route ritual + `PlaygroundCatalog.tsx` entry + `playgroundTaskTags.ts`
+- [x] P6.4 Tests (logic unit + component)
+- [x] P6.5 `src/lib/` logic for delegation-chain authority evaluation
+- [x] P6.6 `Playgrounds/DelegationChainAuditor.tsx` (§7.2.2)
+- [x] P6.7 Route ritual + catalog + task tags
+- [x] P6.8 Tests
+- [x] P6.9 `src/data/aiGuardrailScenarios.ts` (~20 request corpus, labelled)
+- [x] P6.10 `src/lib/` guardrail evaluation + confusion-matrix logic
+- [x] P6.11 `Playgrounds/AiGuardrailStudio.tsx` (§7.2.3)
+- [x] P6.12 Route ritual + catalog + task tags + tests
+- [x] P6.13 `src/lib/` injection-chain stage/control model
+- [x] P6.14 `Playgrounds/PromptInjectionEscalation.tsx` (§7.2.5)
+- [x] P6.15 Route ritual + catalog + task tags + tests
+- [x] P6.16 Mobile sweep all four playgrounds
 
 ### P7 — Remaining Playgrounds (24 todos)
 - [ ] P7.1–P7.4 `agentDriftScenarios.ts` → `AgentObservabilityLab.tsx` → route ritual/catalog/tags → tests (§7.2.4)
@@ -1408,6 +1408,8 @@ Record deviations, discoveries, and anything a future maintainer would need. Esp
 | 2026-09-19 | P3 (all) | Tab-switching `useEffect` reading `?tab=` must wrap `setActiveTab` in `setTimeout(() => {...}, 0)` (matching the existing `StandardsExplorer.tsx` pattern) or ESLint's `react-hooks/set-state-in-effect` rule fails the build. Component tests for a `?tab=` deep link must therefore use `findByText`/`await`, not `getByText`, since the tab now applies asynchronously. |
 | 2026-09-19 | P3 (all) | Manually ran `jest-axe` against every tab of both flagship pages before committing (not just the default tab) -- caught one real heading-order violation (h2 -> h4, skipping h3) on `NextGenIamCenter.tsx` where `RelatedContentRail`'s internal `<h4>` followed a `<h2>` section heading directly. Fixed by wrapping the preceding section in an `<h3>`. Recommend this per-tab axe sweep for every remaining multi-tab page. |
 | 2026-09-19 | P4.5-P4.8 | A full-repo `npm run spellcheck` (not just the new page) caught a British/American spelling drift: `fidoFleetLifecycle.ts`'s `personalise` stage id/title (from P1) didn't match the codebase's established American-English convention (`PersonalizationSelector.tsx`, GEMINI.md). Renamed to `personalize` -- safe since nothing else referenced the old id. Lesson: spellcheck the whole repo periodically, not just files touched in the current commit, since a P1 registry's wording can only be checked against convention once real page copy exists to spellcheck it against. |
+| 2026-09-19 | P6 (all) | **Deliberate simplification vs the plan:** §14 called for extracting pure logic to `src/lib/tools/` or similar per playground (P6.1, P6.5, P6.10, P6.13). Instead, evaluation logic (guardrail scoring, chain-break detection, governance-gap classification) was kept as small pure functions inlined at the top of each playground's own `.tsx` file. Rationale: each function is genuinely playground-specific (not reused elsewhere), fully covered by that playground's own component tests, and extraction would have added a file+import for no reuse benefit. If a *second* playground ever needs the same logic, extract then -- don't extract preemptively. |
+| 2026-09-19 | P6 (all) | **Reusable heading-order lesson confirmed across 2 playgrounds:** `PlaygroundShell` renders an `<h1>` for the title; any heading inside `children` must be `<h2>`, never `<h3>` (which would skip a level and fail `jest-axe`'s heading-order rule). Caught live on `AiGuardrailStudio.tsx` (fixed reactively), then applied proactively and confirmed clean on `PromptInjectionEscalation.tsx`. Note: `AgentIdentityLab.tsx` (pre-existing, not part of this pillar) has the same latent issue at its line 380 -- out of scope to fix here, but worth flagging separately since it has no per-tab axe test to catch it. |
 
 ---
 

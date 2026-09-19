@@ -3050,6 +3050,158 @@ spec:
 - **Architectural Best Practices:** Normalize every inbound partner credential (SAML or OIDC) to one internal token format immediately at the broker, never downstream.; Encode jurisdiction and partner-org identity as explicit claims validated at every hop, not just at initial authentication.
 - **View Live Case Study Details:** https://www.aboutiam.com/case-studies/?study=crossborder_b2b_federation
 
+### Case Study: A Global Software & Cloud Platform Company (anonymized archetype) — Rolling Out Agent Identity Governance for Internal AI Assistants {#case-study-agent_governance_rollout}
+- **Category:** Next-Gen IAM | **Difficulty:** Advanced
+- **Summary:** Deconstruct an enterprise's rollout of an agent identity registry and runtime governance for dozens of internal AI assistants that had accumulated standing, ungoverned access to production systems.
+- **Core Security Problem:** Internal support, DevOps, and analytics teams had independently deployed dozens of AI agents over 18 months, each granted broad standing credentials "to get things working" — with no central inventory, no accountable owner per agent, and no way to answer "what can our AI agents actually do right now?"
+- **Requirements:** A central agent identity registry capturing owner, declared intent, and permitted tools for every existing and future agent.; Retroactive discovery of shadow agents already running with standing credentials outside the registry.; A runtime control plane that can detect and intervene when an agent's behavior drifts from its declared intent.
+- **Key Implementation Challenges:** Several production-critical agents had no identifiable human owner after 18 months of team reorganizations.; Retrofitting scoped credentials onto agents already wired into production without breaking their existing workflows.; Convincing engineering teams that narrowing an agent's access was worth the short-term friction of re-scoping working integrations.
+- **Authentication Model:** Each agent instance is issued its own short-lived, narrowly-scoped credential via RFC 8693 Token Exchange rather than a long-lived static API key; the registry ties every credential back to a specific agent identity record.
+- **Authorization Model:** Tool-level scopes are derived directly from each agent's declared intent field in its registry record; a semantic guardrail in the AI control plane evaluates each tool call against that declared intent before allowing it through.
+- **Lifecycle Management:** New agents must be registered with an owner, declared intent, and expiry before receiving any credential; a quarterly re-certification review is enforced automatically, and owner-departure events trigger immediate credential review.
+- **Federation Strategy:** Not a cross-organization federation problem — the challenge is internal: normalizing dozens of independently-built agents (spanning several different frameworks) onto one common identity and credentialing model.
+- **Architecture Flow:**
+```text
+
++-------------------------------------------------------------+
+|              AGENT IDENTITY GOVERNANCE ROLLOUT               |
++-------------------------------------------------------------+
+
+        [ Discovery Sweep: MCP/API Gateway Logs ]
+                          |
+                          v
+            [ Agent Identity Registry ]
+        (owner, intent, tools, expiry per agent)
+                          |
+             +------------+------------+
+             v                         v
+   [ AI Control Plane ]        [ Access Broker / STS ]
+   (discover/decide/enforce/       (issues scoped,
+        observe loop)               short-lived tokens)
+
+```
+- **Sequence Flow Diagram:**
+```text
+
+   Agent Owner        Identity Registry        AI Control Plane        Target API
+       |                     |                        |                     |
+       |-- Register Agent -->|                        |                     |
+       |                     |-- Issue Scoped Cred --->|                     |
+       |                     |                        |-- Evaluate Intent ->|
+       |                     |                        |<--- Allow/Block ----|
+
+```
+- **STRIDE Threat Modeling Matrix:**
+  - **Risk:** Shadow agents running with standing credentials outside the registry -> **Mitigation:** A discovery sweep across API gateway and MCP tool-manifest logs cross-references every observed agent-like credential against the registry, flagging anything unregistered.
+  - **Risk:** Retrofitted agent silently loses required access mid-migration, causing an outage -> **Mitigation:** Scoped credentials were rolled out in shadow/audit mode first — logging what would have been blocked without actually blocking it — before flipping to enforcement per agent.
+- **Remediation Lessons Learned:** The single highest-value first step was discovery, not enforcement — you cannot govern what you have not inventoried.; Framing re-scoping as reducing blast radius (not distrust of the team) made engineering teams far more willing to cooperate.; A shadow/audit-mode rollout before hard enforcement caught several legitimate access patterns the original registry entry had missed.
+- **Common Implementation Mistakes:** Initially tried to enforce scoped credentials on every agent simultaneously, causing a wave of support tickets from agents that needed access the registry entry hadn't captured.; Left "owner" as an optional field early on, which meant a third of agents had no accountable owner by the time governance actually mattered.
+- **Architectural Best Practices:** Make the owner field mandatory and non-transferable-by-default at registration time — require an explicit transfer step when an owner leaves, rather than letting it silently go stale.; Roll out enforcement in shadow/audit mode per agent before switching to blocking mode, so unexpected legitimate access patterns surface safely first.
+- **View Live Case Study Details:** https://www.aboutiam.com/case-studies/?study=agent_governance_rollout
+
+### Case Study: A Multinational Manufacturing & Logistics Enterprise (anonymized archetype) — Migrating a 40,000-Employee Workforce to Passwordless FIDO2 at Fleet Scale {#case-study-fido_fleet_migration}
+- **Category:** Next-Gen IAM | **Difficulty:** Advanced
+- **Summary:** Deconstruct a multi-year rollout of hardware FIDO2 security keys and platform passkeys to a 40,000-person global workforce, spanning office staff, warehouse floor workers with shared terminals, and field technicians with no reliable connectivity.
+- **Core Security Problem:** Recurring MFA-fatigue-driven account compromises and a mounting helpdesk password-reset bill pushed the organization toward FIDO2, but the workforce's device diversity (shared warehouse terminals, offline field tablets, standard office laptops) meant no single form factor could cover everyone.
+- **Requirements:** Segment the workforce by form-factor fit rather than mandating one device type organization-wide.; A device-fulfillment and support pipeline that could provision, replace, and revoke hardware keys at fleet scale.; Enterprise attestation to guarantee only approved hardware key models could register, given the deployment's security-sensitive facilities.
+- **Key Implementation Challenges:** Shared warehouse terminals meant per-user platform passkeys (bound to one device) were unworkable — those workers needed portable hardware keys instead.; Field technicians in low-connectivity areas needed a registration flow that didn't depend on a live network round-trip at enrollment time.; Replacing a lost or damaged hardware key for a worker on a remote site without a multi-week shipping delay.
+- **Authentication Model:** Three form factors mapped to three worker segments: platform passkeys for office staff on personal/assigned laptops, portable hardware security keys for warehouse floor staff sharing terminals, and ruggedized hardware keys for field technicians, all validated against an enterprise AAGUID allow-list at registration.
+- **Authorization Model:** Standard workforce SSO authorization is unchanged; the migration only replaces the authentication factor. Step-up authentication for high-risk actions (payroll changes, admin console access) requires a fresh FIDO2 ceremony, not a cached session.
+- **Lifecycle Management:** Device fulfillment is tied to the HR joiner event (new hires receive a pre-provisioned key on day one); loss/damage triggers immediate revocation of the old credential and expedited replacement shipping tied to the worker's site; leaver events trigger automatic key revocation and physical key return tracking.
+- **Federation Strategy:** No cross-organization federation involved — this is an internal workforce authentication migration, coordinated with the existing SSO/IdP layer rather than replacing it.
+- **Architecture Flow:**
+```text
+
++-------------------------------------------------------------+
+|            FIDO2 FLEET ROLLOUT BY WORKER SEGMENT             |
++-------------------------------------------------------------+
+
+  [ Office Staff ]         [ Warehouse Floor ]        [ Field Techs ]
+        |                          |                          |
+        v                          v                          v
+ Platform Passkey         Portable USB/NFC Key       Ruggedized USB Key
+ (device-bound)          (shared-terminal safe)      (offline enrollment)
+        |                          |                          |
+        +--------------+-----------+--------------+-----------+
+                       v
+          [ Enterprise Attestation Policy Gate ]
+                       |
+                       v
+              [ Identity Provider / RP ]
+
+```
+- **Sequence Flow Diagram:**
+```text
+
+   New Hire            Fulfillment Pipeline          Identity Provider
+      |                        |                              |
+      |<-- Pre-provisioned ----|                              |
+      |         Key            |                              |
+      |----- Register Key -------------------------------->  |
+      |                        |         Validate AAGUID ---> |
+      |<------------------------------ Enrollment Confirmed --|
+
+```
+- **STRIDE Threat Modeling Matrix:**
+  - **Risk:** A non-approved consumer-grade security key registers and bypasses procurement/compliance controls -> **Mitigation:** Enterprise attestation policy validates the AAGUID of every registering device against an explicit allow-list of approved hardware models before permitting enrollment.
+  - **Risk:** A lost hardware key at a remote field site leaves a worker locked out for weeks awaiting replacement shipping -> **Mitigation:** A temporary, time-boxed break-glass fallback (phone-call verification plus a short-lived recovery code) bridges the gap until the replacement physical key arrives, with mandatory re-verification once it does.
+- **Remediation Lessons Learned:** No single FIDO2 form factor fits an entire diverse workforce — segmenting by actual working conditions (shared terminals, offline sites, standard desks) up front avoided multiple failed rollout attempts.; Device fulfillment and support logistics, not the cryptography, turned out to be the actual long pole in the project timeline.; Tying key issuance directly to the HR joiner/leaver pipeline eliminated the largest source of stale, ungoverned credentials.
+- **Common Implementation Mistakes:** The initial pilot mandated platform passkeys fleet-wide, which immediately failed for warehouse floor staff sharing terminals across shifts.; Underestimated replacement shipping lead time to remote field sites, which produced a wave of helpdesk escalations during the early rollout weeks.
+- **Architectural Best Practices:** Map form factors to actual working conditions before choosing a single default — treat the FIDO Form Factor decision as segment-specific, not organization-wide.; Build the break-glass fallback process and its own audit trail before rollout day, not reactively after the first lost-key incident.
+- **View Live Case Study Details:** https://www.aboutiam.com/case-studies/?study=fido_fleet_migration
+
+### Case Study: A Pan-European Retail Bank (anonymized archetype) — Preparing a Regulated Relying Party for EU Digital Identity Wallet Acceptance {#case-study-wallet_acceptance_readiness}
+- **Category:** Next-Gen IAM | **Difficulty:** Advanced
+- **Summary:** Deconstruct a retail bank's multi-year readiness program to accept the EU Digital Identity Wallet as a customer onboarding and authentication credential ahead of its eIDAS 2.0 relying-party acceptance obligation.
+- **Core Security Problem:** As a regulated financial institution operating across several EU member states, the bank faced a fixed regulatory deadline to accept EU Digital Identity Wallet credentials — but its existing KYC and authentication stack had no concept of a wallet-presented, selectively-disclosed verifiable credential.
+- **Requirements:** Implement OpenID4VP to request and verify wallet-presented credentials for customer onboarding (KYC) and step-up authentication.; Build a trust-registry lookup so the bank only accepts credentials from wallet issuers it actually trusts, not any cryptographically valid credential.; Maintain a fallback onboarding path for the large share of customers not yet holding a wallet during the phased national rollout.
+- **Key Implementation Challenges:** Member states rolled out their national wallet availability on different timelines, so the bank had to support a partial, uneven rollout rather than a single go-live date.; Existing KYC vendor integrations assumed document-scan-based identity proofing, not a pre-verified wallet credential presentation.; Legal and compliance teams needed to interpret an evolving regulatory framework (the Architecture and Reference Framework) whose implementing details were still being finalized during the build.
+- **Authentication Model:** For onboarding, the wallet presents a verified Personal Identification Data (PID) credential in place of a manual document scan; for step-up authentication on high-risk actions, a lighter attribute presentation (e.g. age or account-holder attestation) is requested instead of re-running full KYC.
+- **Authorization Model:** Unchanged from the existing core banking authorization model — the wallet integration replaces how identity is proofed and authenticated, not how account permissions are subsequently granted.
+- **Lifecycle Management:** Wallet-based onboarding runs alongside the legacy document-scan KYC path for the full multi-year transition window; the bank did not force a hard cutover, since national wallet availability itself was still phasing in across member states.
+- **Federation Strategy:** The trust relationship is with each national wallet-issuing authority (or its designated trust framework), verified via a trust-registry lookup rather than a bilateral integration per country.
+- **Architecture Flow:**
+```text
+
++-------------------------------------------------------------+
+|          WALLET-ACCEPTANCE-READY RELYING PARTY FLOW          |
++-------------------------------------------------------------+
+
+        [ Customer's EU Digital Identity Wallet ]
+                          |  (OpenID4VP presentation)
+                          v
+              [ Bank Verifier Endpoint ]
+                          |
+              +-----------+-----------+
+              v                       v
+   [ Trust Registry Lookup ]   [ Credential Verification ]
+   (is this issuer trusted?)   (signature, revocation, freshness)
+              |                       |
+              +-----------+-----------+
+                          v
+              [ Core Banking KYC / AuthN System ]
+
+```
+- **Sequence Flow Diagram:**
+```text
+
+    Customer Wallet         Bank Verifier          Trust Registry
+        |                        |                        |
+        |--- Present Credential->|                        |
+        |                        |--- Check Issuer ------>|
+        |                        |<--- Issuer Trusted -----|
+        |                        |--- Verify Signature --->|
+        |<---- Onboarding OK ----|      (local)            |
+
+```
+- **STRIDE Threat Modeling Matrix:**
+  - **Risk:** A cryptographically valid credential from an issuer the bank never intended to trust is accepted -> **Mitigation:** Every presented credential is checked against a trust-registry lookup of accredited issuers before being honored, independent of whether its signature verifies correctly.
+  - **Risk:** A revoked or expired credential is presented and accepted as still valid -> **Mitigation:** The verifier checks live revocation status and credential freshness on every presentation rather than caching a prior verification result.
+- **Remediation Lessons Learned:** Treat the trust-registry lookup as a first-class control, not an afterthought — cryptographic validity and trustworthiness are two separate questions.; A phased, dual-path rollout (wallet alongside legacy KYC) was necessary given the national rollout was itself phased and uneven across member states.; Early, close coordination with legal/compliance paid off given how much of the regulatory framework's implementing detail was still being finalized during the build.
+- **Common Implementation Mistakes:** Initial design assumed a single EU-wide go-live date and had to be reworked once it became clear national wallet availability would roll out unevenly by member state.; Underestimated how much of the existing KYC vendor integration assumed a document-scan flow, requiring more rework than a simple "add a new credential type" change.
+- **Architectural Best Practices:** Build the trust-registry check as an explicit, auditable step in the verification pipeline, separate from and in addition to standard cryptographic signature verification.; Keep the legacy onboarding path fully operational throughout the transition rather than betting the program on wallet adoption timelines outside the bank's control.
+- **View Live Case Study Details:** https://www.aboutiam.com/case-studies/?study=wallet_acceptance_readiness
+
 ## Certifications Study Blueprints
 *Read the live certifications study hub at:* https://www.aboutiam.com/certifications/
 
@@ -4269,3 +4421,48 @@ ipa-client-install \
   --mkhomedir
 ```
 - **View Live Product Profile Details:** https://www.aboutiam.com/explore/?product=freeipa
+
+### Product Profile: Microsoft Entra Agent ID {#product-entra-agent-id}
+- **Product Type:** Agentic Identity Platform | **Difficulty Level:** Advanced | **License:** Enterprise Commercial
+- **Standard Deployment Formats:** Microsoft Azure Cloud Native SaaS (part of the Microsoft Entra / Agent 365 family)
+- **Optimal System Use Cases:** Purpose-built identity and access platform for AI agents — creates a first-class agent identity (distinct from a user or service principal) with a named sponsor, Conditional Access, and ID Protection coverage. Reached general availability in April 2026.
+- **Supported Identity Standards:** OIDC: Yes | SAML: No | SCIM: No | FIDO2: No | LDAP: No
+- **Search Keywords:** agentic identity, ai agent governance, agent 365, non-human identity
+- **Sample Integration Code Block:**
+```text
+# Microsoft Graph — create an agent identity (beta endpoint)
+POST https://graph.microsoft.com/beta/servicePrincipals/Microsoft.Graph.AgentIdentity
+OData-Version: 4.0
+Content-Type: application/json
+Authorization: Bearer {token}
+
+{
+  "displayName": "refund-processing-subagent",
+  "agentIdentityBlueprintId": "{blueprint-app-id}",
+  "sponsors@odata.bind": [
+    "https://graph.microsoft.com/beta/users/{sponsor-user-id}"
+  ]
+}
+```
+- **View Live Product Profile Details:** https://www.aboutiam.com/explore/?product=entra-agent-id
+
+### Product Profile: Thales Digital ID Wallet {#product-thales-digital-id-wallet}
+- **Product Type:** Wallet Infrastructure | **Difficulty Level:** Advanced | **License:** Enterprise Commercial
+- **Standard Deployment Formats:** Mobile app + Thales Trusted Cred Platform (issuance) / Thales Mobile Security Core (on-device key protection)
+- **Optimal System Use Cases:** Government and relying-party wallet infrastructure for storing, managing, and selectively sharing digital identity credentials (PID, mobile driving licence, banking credentials) issued by multiple trusted issuers, built for eIDAS 2.0 / EUDI Wallet compliance.
+- **Supported Identity Standards:** OIDC: No | SAML: No | SCIM: No | FIDO2: No | LDAP: No
+- **Search Keywords:** eidas 2.0, eudi wallet, verifiable credentials, mobile driving licence
+- **Sample Integration Code Block:**
+```text
+# Illustrative OpenID4VCI credential offer a Thales Trusted Cred
+# Platform issuer might present to a wallet (see standardsData.ts
+# 'openid4vci' for the full OpenID Foundation specification)
+{
+  "credential_issuer": "https://issuer.example-govid.eu",
+  "credential_configuration_ids": ["eu.europa.ec.eudi.pid_mdoc"],
+  "grants": {
+    "authorization_code": { "issuer_state": "st_9f21a" }
+  }
+}
+```
+- **View Live Product Profile Details:** https://www.aboutiam.com/explore/?product=thales-digital-id-wallet

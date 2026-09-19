@@ -74,7 +74,7 @@ export const HSM_ROOT_OF_TRUST_CONCEPTS: RootOfTrustConcept[] = [
     title: 'HSM-Backed CA Hierarchy',
     category: 'Identity Dependency',
     analogy: 'Every notary stamp in a country ultimately traces back to a single, physically-secured master seal -- if that seal is compromised, every stamp it ever authorized is suspect.',
-    expert: 'A PKI\'s root and intermediate Certificate Authority private keys are generated and held inside HSMs precisely because everything the CA signs -- every certificate, every credential, every token-signing key it ultimately underwrites -- inherits its trustworthiness from that one root key\'s protection.',
+    expert: 'A public key infrastructure\'s root and intermediate Certificate Authority private keys are generated and held inside HSMs precisely because everything the CA signs -- every certificate, every credential, every token-signing key it ultimately underwrites -- inherits its trustworthiness from that one root key\'s protection.',
     dependentThemes: ['crypto-agility', 'agentic-identity', 'phishing-resistant-auth', 'digital-wallets'],
     standardRefs: ['x509-pki'],
     sourceLink: 'https://csrc.nist.gov/pubs/fips/140-3/final',

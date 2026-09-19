@@ -1280,18 +1280,18 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P2.10 `searchService.ts`: index all new registries; extend `searchService.test.ts` with loop-over-all invariants
 
 ### P3 — Flagship Pages (12 todos)
-- [ ] P3.1 `src/pages/NextGenIamCenter.tsx` (§5.2)
-- [ ] P3.2 Route ritual for `/next-gen` (5 files, §0.3)
-- [ ] P3.3 `NextGenIamCenter.test.tsx` (render + a11y)
-- [ ] P3.4 `src/pages/AgenticIdentityCenter.tsx` — tabs `why`, `quadrants`, `job-description` (§5.3.1–5.3.3)
-- [ ] P3.5 Same page — tabs `governance`, `standards`, `labs`, `vendors` (§5.3.4–5.3.7)
-- [ ] P3.6 Route ritual for `/next-gen/agentic-identity`
-- [ ] P3.7 `AgenticIdentityCenter.test.tsx` (tab switching + deep-link params + a11y)
-- [ ] P3.8 `src/pages/AiSecurityFabricCenter.tsx` — tabs `concept`, `discovery`, `guardrails`, `egress`
-- [ ] P3.9 Same page — tabs `observability`, `intervene`, `threats`, `labs`
-- [ ] P3.10 Route ritual for `/next-gen/ai-security-fabric`
-- [ ] P3.11 `AiSecurityFabricCenter.test.tsx`
-- [ ] P3.12 Mobile sweep at 320/375/768px on all three pages; fix overflow
+- [x] P3.1 `src/pages/NextGenIamCenter.tsx` (§5.2)
+- [x] P3.2 Route ritual for `/next-gen` (5 files, §0.3)
+- [x] P3.3 `NextGenIamCenter.test.tsx` (render + a11y)
+- [x] P3.4 `src/pages/AgenticIdentityCenter.tsx` — tabs `why`, `quadrants`, `job-description` (§5.3.1–5.3.3)
+- [x] P3.5 Same page — tabs `governance`, `standards`, `labs`, `vendors` (§5.3.4–5.3.7)
+- [x] P3.6 Route ritual for `/next-gen/agentic-identity`
+- [x] P3.7 `AgenticIdentityCenter.test.tsx` (tab switching + deep-link params + a11y)
+- [x] P3.8 `src/pages/AiSecurityFabricCenter.tsx` — tabs `concept`, `discovery`, `guardrails`, `egress`
+- [x] P3.9 Same page — tabs `observability`, `intervene`, `threats`, `labs`
+- [x] P3.10 Route ritual for `/next-gen/ai-security-fabric`
+- [x] P3.11 `AiSecurityFabricCenter.test.tsx`
+- [x] P3.12 Mobile sweep at 320/375/768px on all three pages; fix overflow
 
 ### P4 — Trust Infrastructure Pages (8 todos)
 - [ ] P4.1 `PhishingResistantAuthCenter.tsx` — tabs `why`, `form-factors`, `fleet-lifecycle`, `attestation`
@@ -1404,6 +1404,9 @@ Record deviations, discoveries, and anything a future maintainer would need. Esp
 | 2026-09-19 | P1 (all) | Full suite checkpoint after P1: 1626 tests passing across 257 files (baseline ~1527), 0 new lint issues, `tsc -b` clean. `walletAdoptionTracker.ts` (pre-existing, imported by `StandardsExplorer.tsx`) verified untouched and still green alongside the new `walletProgrammes.ts`. |
 | 2026-09-19 | P2.7 | `public/sitemap.xml`/`llms.txt`/`llms-full.txt`/`llms-index.json`/`qa.txt`/`rss.xml` were stale relative to `src/routeMeta.ts` **before this branch's work began** (confirmed by stashing all nextgen changes and re-running `tests/integration/generatedArtifactsFresh.test.ts` against the untouched baseline -- it failed there too, pre-existing repo drift unrelated to this pillar). A full build regenerated them; committed separately, and the sitemap now also picks up the 8 new standards and 25 new terms via their existing dynamic `?standard=`/`?term=` deep-link entries. |
 | 2026-09-19 | P2.9-P2.10 | Instead of writing a brand-new SSG↔routeMeta parity test (§0.3/§11), confirmed `scripts/postbuild-ssg.test.ts` already covers it in both directions with exact title/description matching -- relied on that existing test rather than duplicating it, per §11's guidance. Wrote the two genuinely new invariants (cross-link resolution, search-index coverage) instead. |
+| 2026-09-19 | P3 (all) | **Workflow discovered:** after wiring a new route into `routeMeta.ts`, run `node --experimental-strip-types scripts/generate-sitemap.ts` and `scripts/generate-llms.ts` directly (not a full `npm run build`) to refresh `public/sitemap.xml`/`llms.txt` before committing -- much faster, and keeps `tests/integration/generatedArtifactsFresh.test.ts` green without a full build each time. Repeat this after every new route from P4 onward. |
+| 2026-09-19 | P3 (all) | Tab-switching `useEffect` reading `?tab=` must wrap `setActiveTab` in `setTimeout(() => {...}, 0)` (matching the existing `StandardsExplorer.tsx` pattern) or ESLint's `react-hooks/set-state-in-effect` rule fails the build. Component tests for a `?tab=` deep link must therefore use `findByText`/`await`, not `getByText`, since the tab now applies asynchronously. |
+| 2026-09-19 | P3 (all) | Manually ran `jest-axe` against every tab of both flagship pages before committing (not just the default tab) -- caught one real heading-order violation (h2 -> h4, skipping h3) on `NextGenIamCenter.tsx` where `RelatedContentRail`'s internal `<h4>` followed a `<h2>` section heading directly. Fixed by wrapping the preceding section in an `<h3>`. Recommend this per-tab axe sweep for every remaining multi-tab page. |
 
 ---
 

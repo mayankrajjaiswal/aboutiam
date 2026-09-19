@@ -1358,7 +1358,7 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P9.9 Extend `agentIdentityScenarios.ts` (+4) and `autonomousAgentScenarios.ts` (+2)
 - [x] P9.10 Extend `passkeyPolicyScenarios.ts` (+2) and `pqcAlgorithmRisk.ts` (theme linkage)
 - [x] P9.11 3 case studies (anonymised archetypes) + 3 cheat sheets (§7.4)
-- [ ] P9.12 2 reference architectures (§7.4)
+- [x] P9.12 2 reference architectures (§7.4)
 - [ ] P9.13 `vendorCatalog.ts` `THALES_PRODUCTS` theme capability mapping — publicly documented only (§2.6)
 - [ ] P9.14 `tests/e2e/nextgen-pillar.spec.ts`; `npx playwright test` green
 - [ ] P9.15 Write the two new invariant tests from §11 (cross-link resolution; search-index coverage). The SSG↔routeMeta parity test **already exists** in `scripts/postbuild-ssg.test.ts` — just confirm it passes for all 22 new routes

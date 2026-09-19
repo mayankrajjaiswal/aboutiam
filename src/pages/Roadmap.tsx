@@ -92,6 +92,21 @@ export default function Roadmap() {
       playgroundLink: '/playground/zta',
       playgroundLabel: 'Launch Zero Trust Planner',
       certifications: ['CCSP (Certified Cloud Security Professional)', 'FIDO Alliance Certifications']
+    },
+    {
+      id: 'stage-6',
+      title: 'Stage 6: Next-Generation Identity (The Frontier)',
+      subtitle: 'Govern AI agents, phishing-resistant fleets, wallets, and crypto agility',
+      desc: 'Go past today\'s settled patterns into what identity teams are building next. AI agents introduce a new class of principal that needs a job description and runtime governance of its own; digital wallets are becoming a regulatory acceptance obligation; and every trust chain above rests on cryptography with a finite shelf life.',
+      milestones: [
+        'Give an AI agent a portable identity record with owner, declared intent, and lifecycle',
+        'Model a runtime AI control plane: discover, decide, enforce, observe',
+        'Plan a dependency-ordered post-quantum cryptography migration'
+      ],
+      academyTrackLink: '/learn',
+      playgroundLink: '/next-gen',
+      playgroundLabel: 'Open the Next-Gen IAM Center',
+      certifications: []
     }
   ]
 
@@ -205,16 +220,18 @@ export default function Roadmap() {
                 )}
 
                 {/* Target Certifications */}
-                <div className="p-4 bg-status-warning/5 border border-status-warning/25 rounded-xl space-y-2">
-                  <span className="text-[10px] font-bold text-status-warning uppercase tracking-wider flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 fill-current" /> Target Cybersecurity Certification
-                  </span>
-                  <ul className="list-disc pl-4 text-xs text-text-secondary leading-relaxed font-semibold space-y-1">
-                    {active.certifications.map((c, i) => (
-                      <li key={i}>{c}</li>
-                    ))}
-                  </ul>
-                </div>
+                {active.certifications.length > 0 && (
+                  <div className="p-4 bg-status-warning/5 border border-status-warning/25 rounded-xl space-y-2">
+                    <span className="text-[10px] font-bold text-status-warning uppercase tracking-wider flex items-center gap-1">
+                      <Star className="w-3.5 h-3.5 fill-current" /> Target Cybersecurity Certification
+                    </span>
+                    <ul className="list-disc pl-4 text-xs text-text-secondary leading-relaxed font-semibold space-y-1">
+                      {active.certifications.map((c, i) => (
+                        <li key={i}>{c}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>

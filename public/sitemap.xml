@@ -3422,6 +3422,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/explore/?product=entra-agent-id</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aboutiam.com/explore/?product=thales-digital-id-wallet</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/research/?cve=CVE-2022-23529</loc>
     <lastmod>2026-09-19</lastmod>
     <changefreq>weekly</changefreq>

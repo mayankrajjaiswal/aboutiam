@@ -68,6 +68,15 @@ const ERAS: Era[] = [
   },
   {
     id: 6,
+    year: '2024-2026',
+    title: 'Agentic Identity & Post-Quantum Migration',
+    boundary: 'AI Agent Principals & Cryptographic Shelf-Life Boundaries',
+    layman: 'Two things converge at once. First, companies start giving AI assistants their own ID badges instead of borrowing a human\'s — with a named owner, a job description, and an expiry date. Second, everyone starts changing the locks on their vaults before quantum computers are good enough to pick the old ones.',
+    expert: 'The Model Context Protocol (Anthropic, Nov 2024) standardized how AI agents connect to external tools, accelerating the need for agent-specific identity (Microsoft Entra Agent ID reached general availability April 2026). In parallel, NIST finalized the first post-quantum cryptography standards -- FIPS 203 (ML-KEM), 204 (ML-DSA), 205 (SLH-DSA) -- in August 2024, and the EU\'s eIDAS 2.0 regulation (in force since May 2024) began mandating Digital Identity Wallets across member states.',
+    techBadge: 'MCP, Agent Identity, FIPS 203/204/205, eIDAS 2.0'
+  },
+  {
+    id: 7,
     year: '2030+',
     title: 'Continuous Ambient Trust & SSI',
     boundary: 'Zero-Session Post-Auth Boundaries',

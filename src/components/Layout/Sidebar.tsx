@@ -175,7 +175,7 @@ function AccordionGroup({
           className={`w-full flex items-center justify-between py-2.5 px-4 text-[11px] font-black uppercase tracking-wider text-text-muted hover:text-text-primary transition-colors text-left focus:outline-none`}
         >
           <span className="flex items-center gap-1.5">
-            {groupKey === 'core' ? '🚀' : groupKey === 'tools' ? '🛠️' : groupKey === 'architecture' ? '📊' : groupKey === 'ecosystem' ? '🏢' : '💬'} {title}
+            {groupKey === 'core' ? '🚀' : groupKey === 'tools' ? '🛠️' : groupKey === 'architecture' ? '📊' : groupKey === 'ecosystem' ? '🏢' : groupKey === 'nextGen' ? '✨' : '💬'} {title}
           </span>
           {forceOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
         </button>

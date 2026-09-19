@@ -655,6 +655,13 @@ export default function PlaygroundCatalog() {
       icon: Scale,
       link: "/playground/ai-guardrails",
       badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Prompt Injection → Privilege Escalation Lab",
+      desc: "Walk a 6-stage attack chain from a hostile instruction hidden in retrieved content to full account takeover. Toggle identity and fabric controls at any stage and see exactly where — and whether — the chain breaks.",
+      icon: ShieldAlert,
+      link: "/playground/prompt-injection-escalation",
+      badge: "Active (Next-Gen)",
     }
   ]
 

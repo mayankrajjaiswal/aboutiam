@@ -110,6 +110,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Agent Registry & Lifecycle Studio — Audit AI Agent Governance Gaps](https://www.aboutiam.com/playground/agent-registry/): Audit an AI agent identity record for missing owners, absent expiry, and over-broad authority, remediate each gap, then walk the agent through registration, approval, operation, and decommission.
 - [Delegation Chain Auditor — Multi-Hop Agent Authority Simulator](https://www.aboutiam.com/playground/delegation-chain/): Build a multi-hop on-behalf-of chain across the four agentic ecosystems, choose a delegation mechanism at each hop, and see whether authority narrows or widens, and whether attribution survives to the final action.
 - [AI Guardrail Policy Studio — Semantic Guardrails vs Classic Policy](https://www.aboutiam.com/playground/ai-guardrails/): Tune a semantic guardrail against a 20-request corpus of legitimate, drifting, and hostile agent requests, and watch false positives rise as false negatives fall — compared side-by-side against a deterministic ABAC policy.
+- [Prompt Injection → Privilege Escalation Lab](https://www.aboutiam.com/playground/prompt-injection-escalation/): Walk a 6-stage attack chain from a hostile instruction hidden in retrieved content to full account takeover, toggling identity and fabric controls to see exactly where — and whether — the chain breaks.
 
 ## Security Tools
 

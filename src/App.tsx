@@ -221,6 +221,7 @@ const AdvancedOauthHackDefend = lazy(() => import('./pages/Playgrounds/AdvancedO
 const AgentRegistryStudio = lazy(() => import('./pages/Playgrounds/AgentRegistryStudio'))
 const DelegationChainAuditor = lazy(() => import('./pages/Playgrounds/DelegationChainAuditor'))
 const AiGuardrailStudio = lazy(() => import('./pages/Playgrounds/AiGuardrailStudio'))
+const PromptInjectionEscalation = lazy(() => import('./pages/Playgrounds/PromptInjectionEscalation'))
 
 // Next-Gen IAM pillar
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
@@ -455,6 +456,7 @@ export default function App() {
               <Route path="/playground/agent-registry" element={<AgentRegistryStudio />} />
               <Route path="/playground/delegation-chain" element={<DelegationChainAuditor />} />
               <Route path="/playground/ai-guardrails" element={<AiGuardrailStudio />} />
+              <Route path="/playground/prompt-injection-escalation" element={<PromptInjectionEscalation />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

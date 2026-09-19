@@ -648,6 +648,13 @@ export default function PlaygroundCatalog() {
       link: "/playground/delegation-chain",
       badge: "Active (Next-Gen)",
       enterpriseProducts: "Thales OneWelcome, Microsoft Entra Agent ID, Ping Identity"
+    },
+    {
+      title: "AI Guardrail Policy Studio",
+      desc: "Tune a semantic guardrail's strictness against a 20-request corpus of legitimate, drifting, and hostile agent requests, and watch false positives climb as false negatives fall — compared live against a deterministic ABAC policy.",
+      icon: Scale,
+      link: "/playground/ai-guardrails",
+      badge: "Active (Next-Gen)",
     }
   ]
 

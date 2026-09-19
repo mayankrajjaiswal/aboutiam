@@ -1184,6 +1184,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.aboutiam.com/playground/ai-guardrails/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.aboutiam.com/encyclopedia/?term=aaa</loc>
     <lastmod>2026-09-19</lastmod>
     <changefreq>weekly</changefreq>

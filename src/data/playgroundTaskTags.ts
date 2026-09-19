@@ -42,4 +42,5 @@ export const PLAYGROUND_TASK_TAGS: Record<string, TaskTag[]> = {
   '/playground/advanced-oauth-hack-defend': ['simulate-attack'],
   '/playground/agent-registry': ['validate-policy', 'check-compliance'],
   '/playground/delegation-chain': ['validate-policy', 'simulate-attack'],
+  '/playground/ai-guardrails': ['validate-policy', 'simulate-attack'],
 }

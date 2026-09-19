@@ -1234,38 +1234,38 @@ This is your safety net for the §0.3 ritual: **if you add a route to `routeMeta
 Small, sequential, independently verifiable. **Tick as you go.** After every `src/` todo: `npx tsc -b && npm run lint && npm run test`.
 
 ### P0 — Foundation (8 todos)
-- [ ] P0.1 Read `GEMINI.md` §4A, §4D, §4E, §4F, §4I, §4Q, §4AA, §4BB, §4CC in full
-- [ ] P0.2 Read `src/data/standardsData.ts` (one full entry), `complianceDeadlines.ts`, `toolsRegistry.ts` (one full entry) as shape templates
-- [ ] P0.3 Read `src/lib/sdk/usePlayground.ts` + `PlaygroundShell.tsx`; note the exact prop contract
-- [ ] P0.4 Read `src/components/Tools/ToolPageShell.tsx`; note it takes a `ToolMeta`
-- [ ] P0.5 Fetch every §2.5 source; record URL + `verifiedDate` + one-line finding in §15 of this file
-- [ ] P0.6 Add all new domain terms/acronyms to `cspell.config.yaml`; run `npm run spellcheck`
-- [ ] P0.7 Create `src/data/nextGenThemes.ts` (5 themes, full shape per §6.7)
-- [ ] P0.8 Create `src/data/nextGenThemes.test.ts`; gate green
+- [x] P0.1 Read `GEMINI.md` §4A, §4D, §4E, §4F, §4I, §4Q, §4AA, §4BB, §4CC in full
+- [x] P0.2 Read `src/data/standardsData.ts` (one full entry), `complianceDeadlines.ts`, `toolsRegistry.ts` (one full entry) as shape templates
+- [x] P0.3 Read `src/lib/sdk/usePlayground.ts` + `PlaygroundShell.tsx`; note the exact prop contract
+- [x] P0.4 Read `src/components/Tools/ToolPageShell.tsx`; note it takes a `ToolMeta`
+- [x] P0.5 Fetch every §2.5 source; record URL + `verifiedDate` + one-line finding in §15 of this file
+- [x] P0.6 Add all new domain terms/acronyms to `cspell.config.yaml`; run `npm run spellcheck`
+- [x] P0.7 Create `src/data/nextGenThemes.ts` (5 themes, full shape per §6.7)
+- [x] P0.8 Create `src/data/nextGenThemes.test.ts`; gate green
 
 ### P1 — Registries (22 todos)
-- [ ] P1.1 `agenticEcosystemQuadrants.ts` (4 quadrants, §6.8) — re-author all examples
-- [ ] P1.2 `agenticEcosystemQuadrants.test.ts`
-- [ ] P1.3 `agentRegistryModel.ts` field groups (8 groups, §6.9) with `iamEquivalent` on every field
-- [ ] P1.4 `agentRegistryModel.ts` sample agents (6, each with seeded `governanceGaps`; one deliberately over-governed)
-- [ ] P1.5 `agentRegistryModel.test.ts`
-- [ ] P1.6 `agentGovernanceCapabilities.ts` (§6.0 #4 — the two-column split)
-- [ ] P1.7 `agentGovernanceCapabilities.test.ts`
-- [ ] P1.8 `aiControlPlaneFunctions.ts` (4 functions, §5.4.1)
-- [ ] P1.9 `aiControlPlaneFunctions.test.ts`
-- [ ] P1.10 `agentThreatCatalog.ts` (12 threats, all 6 categories, §6.10)
-- [ ] P1.11 `agentThreatCatalog.test.ts` (assert framework mapping + both control types present)
-- [ ] P1.12 `fidoFormFactors.ts` (6 form factors, §6.11)
-- [ ] P1.13 `fidoFormFactors.test.ts`
-- [ ] P1.14 `fidoFleetLifecycle.ts` (8 stages, §6.12)
-- [ ] P1.15 `fidoFleetLifecycle.test.ts` (assert `order` is contiguous 1..8)
-- [ ] P1.16 `businessWalletUseCases.ts` (8 use cases, §6.13)
-- [ ] P1.17 `businessWalletUseCases.test.ts`
-- [ ] P1.18 `walletProgrammes.ts` (12 programmes, §6.5) — do not break `walletAdoptionTracker.ts` importers
-- [ ] P1.19 `walletProgrammes.test.ts`
-- [ ] P1.20 `cryptoAgilityRoadmap.ts` (10 workstreams, §6.14) + `hsmRootOfTrust.ts` (6 concepts, §6.6)
-- [ ] P1.21 Tests for both; assert `dependsOn` forms a DAG with no cycles
-- [ ] P1.22 Registry review: every factual entry has source + `verifiedDate` + `confidence`; every header comment in house style
+- [x] P1.1 `agenticEcosystemQuadrants.ts` (4 quadrants, §6.8) — re-author all examples
+- [x] P1.2 `agenticEcosystemQuadrants.test.ts`
+- [x] P1.3 `agentRegistryModel.ts` field groups (8 groups, §6.9) with `iamEquivalent` on every field
+- [x] P1.4 `agentRegistryModel.ts` sample agents (6, each with seeded `governanceGaps`; one deliberately over-governed)
+- [x] P1.5 `agentRegistryModel.test.ts`
+- [x] P1.6 `agentGovernanceCapabilities.ts` (§6.0 #4 — the two-column split)
+- [x] P1.7 `agentGovernanceCapabilities.test.ts`
+- [x] P1.8 `aiControlPlaneFunctions.ts` (4 functions, §5.4.1)
+- [x] P1.9 `aiControlPlaneFunctions.test.ts`
+- [x] P1.10 `agentThreatCatalog.ts` (12 threats, all 6 categories, §6.10)
+- [x] P1.11 `agentThreatCatalog.test.ts` (assert framework mapping + both control types present)
+- [x] P1.12 `fidoFormFactors.ts` (6 form factors, §6.11)
+- [x] P1.13 `fidoFormFactors.test.ts`
+- [x] P1.14 `fidoFleetLifecycle.ts` (8 stages, §6.12)
+- [x] P1.15 `fidoFleetLifecycle.test.ts` (assert `order` is contiguous 1..8)
+- [x] P1.16 `businessWalletUseCases.ts` (8 use cases, §6.13)
+- [x] P1.17 `businessWalletUseCases.test.ts`
+- [x] P1.18 `walletProgrammes.ts` (12 programmes, §6.5) — do not break `walletAdoptionTracker.ts` importers
+- [x] P1.19 `walletProgrammes.test.ts`
+- [x] P1.20 `cryptoAgilityRoadmap.ts` (10 workstreams, §6.14) + `hsmRootOfTrust.ts` (6 concepts, §6.6)
+- [x] P1.21 Tests for both; assert `dependsOn` forms a DAG with no cycles
+- [x] P1.22 Registry review: every factual entry has source + `verifiedDate` + `confidence`; every header comment in house style
 
 ### P2 — Vocabulary & Standards (10 todos)
 - [ ] P2.1 Encyclopedia: 14 T1/T2 terms (§6.1)
@@ -1399,7 +1399,9 @@ Record deviations, discoveries, and anything a future maintainer would need. Esp
 
 | Date | Phase/Todo | Note |
 |---|---|---|
-| | | |
+| 2026-09-19 | P0.5 | FDO (FIDO Device Onboard, IoT provisioning) and FIDO2/WebAuthn enterprise attestation/AAGUID are **distinct spec families**, not one mechanism as an earlier plan draft implied. Corrected §2.5 and §6.2; `standardsData.ts` `fido-fdo` entry (P2) must stay scoped to IoT onboarding only. |
+| 2026-09-19 | P1 (all) | Confirmed by design: only 4 of the 12 registries (`agentThreatCatalog`, `fidoFormFactors`, `walletProgrammes`, `hsmRootOfTrust`) carry per-entry `sourceLink`/`verifiedDate` fields. The other 8 are conceptual/taxonomic models (frameworks, not dated factual claims) and are sourced once at the file-header level per §2.4 — this satisfies P1.22, not a gap. |
+| 2026-09-19 | P1 (all) | Full suite checkpoint after P1: 1626 tests passing across 257 files (baseline ~1527), 0 new lint issues, `tsc -b` clean. `walletAdoptionTracker.ts` (pre-existing, imported by `StandardsExplorer.tsx`) verified untouched and still green alongside the new `walletProgrammes.ts`. |
 
 ---
 

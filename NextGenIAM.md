@@ -1294,14 +1294,14 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P3.12 Mobile sweep at 320/375/768px on all three pages; fix overflow
 
 ### P4 — Trust Infrastructure Pages (8 todos)
-- [ ] P4.1 `PhishingResistantAuthCenter.tsx` — tabs `why`, `form-factors`, `fleet-lifecycle`, `attestation`
-- [ ] P4.2 Same page — tabs `economics`, `sustainability`, `crypto-agility`, `labs`
-- [ ] P4.3 Route ritual for `/next-gen/phishing-resistant-auth`
-- [ ] P4.4 `PhishingResistantAuthCenter.test.tsx`
-- [ ] P4.5 `DigitalWalletsCenter.tsx` — tabs `roles`, `business-wallet`, `lifecycle`, `regulation`
-- [ ] P4.6 Same page — tabs `programmes`, `trust-models`, `labs`
-- [ ] P4.7 Route ritual for `/next-gen/digital-wallets`
-- [ ] P4.8 `DigitalWalletsCenter.test.tsx` + mobile sweep both pages
+- [x] P4.1 `PhishingResistantAuthCenter.tsx` — tabs `why`, `form-factors`, `fleet-lifecycle`, `attestation`
+- [x] P4.2 Same page — tabs `economics`, `sustainability`, `crypto-agility`, `labs`
+- [x] P4.3 Route ritual for `/next-gen/phishing-resistant-auth`
+- [x] P4.4 `PhishingResistantAuthCenter.test.tsx`
+- [x] P4.5 `DigitalWalletsCenter.tsx` — tabs `roles`, `business-wallet`, `lifecycle`, `regulation`
+- [x] P4.6 Same page — tabs `programmes`, `trust-models`, `labs`
+- [x] P4.7 Route ritual for `/next-gen/digital-wallets`
+- [x] P4.8 `DigitalWalletsCenter.test.tsx` + mobile sweep both pages
 
 ### P5 — Crypto Page (4 todos)
 - [ ] P5.1 `CryptoAgilityCenter.tsx` — tabs `agility`, `inventory`, `pqc`, `root-of-trust`
@@ -1407,6 +1407,7 @@ Record deviations, discoveries, and anything a future maintainer would need. Esp
 | 2026-09-19 | P3 (all) | **Workflow discovered:** after wiring a new route into `routeMeta.ts`, run `node --experimental-strip-types scripts/generate-sitemap.ts` and `scripts/generate-llms.ts` directly (not a full `npm run build`) to refresh `public/sitemap.xml`/`llms.txt` before committing -- much faster, and keeps `tests/integration/generatedArtifactsFresh.test.ts` green without a full build each time. Repeat this after every new route from P4 onward. |
 | 2026-09-19 | P3 (all) | Tab-switching `useEffect` reading `?tab=` must wrap `setActiveTab` in `setTimeout(() => {...}, 0)` (matching the existing `StandardsExplorer.tsx` pattern) or ESLint's `react-hooks/set-state-in-effect` rule fails the build. Component tests for a `?tab=` deep link must therefore use `findByText`/`await`, not `getByText`, since the tab now applies asynchronously. |
 | 2026-09-19 | P3 (all) | Manually ran `jest-axe` against every tab of both flagship pages before committing (not just the default tab) -- caught one real heading-order violation (h2 -> h4, skipping h3) on `NextGenIamCenter.tsx` where `RelatedContentRail`'s internal `<h4>` followed a `<h2>` section heading directly. Fixed by wrapping the preceding section in an `<h3>`. Recommend this per-tab axe sweep for every remaining multi-tab page. |
+| 2026-09-19 | P4.5-P4.8 | A full-repo `npm run spellcheck` (not just the new page) caught a British/American spelling drift: `fidoFleetLifecycle.ts`'s `personalise` stage id/title (from P1) didn't match the codebase's established American-English convention (`PersonalizationSelector.tsx`, GEMINI.md). Renamed to `personalize` -- safe since nothing else referenced the old id. Lesson: spellcheck the whole repo periodically, not just files touched in the current commit, since a P1 registry's wording can only be checked against convention once real page copy exists to spellcheck it against. |
 
 ---
 

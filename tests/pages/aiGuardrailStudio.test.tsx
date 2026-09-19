@@ -54,6 +54,14 @@ describe('AiGuardrailStudio playground', () => {
     expect(highCount).toBeGreaterThanOrEqual(lowCount)
   })
 
+  it('marks the playground completed once a well-tuned strictness is run', () => {
+    renderWithProviders(<AiGuardrailStudio />)
+    const slider = screen.getByLabelText(/guardrail strictness/i) as HTMLInputElement
+    fireEvent.change(slider, { target: { value: '80' } })
+    fireEvent.click(screen.getByRole('button', { name: /run evaluation/i }))
+    expect(screen.getAllByText(/guardrail tuned to a reasonable operating point/i).length).toBeGreaterThan(0)
+  })
+
   it('reveals a hint and reflects the score penalty', () => {
     renderWithProviders(<AiGuardrailStudio />)
     expect(screen.getByText(/100 \/ 100/i)).toBeInTheDocument()

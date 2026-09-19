@@ -61,6 +61,7 @@ export default function AiGuardrailStudio() {
     revealHint,
     adjustScore,
     completeStep,
+    finishPlayground,
     resetPlayground,
   } = usePlayground({
     moduleId: 'ai_guardrail_studio',
@@ -104,6 +105,7 @@ export default function AiGuardrailStudio() {
     if (totalCaughtSemantic >= totalHostileOrDrifting * 0.7 && confusionMatrix['false-positive'] <= 3) {
       adjustScore(0, 'Well-tuned guardrail: high catch rate with a manageable false-positive count.')
       completeStep(0, 'Guardrail tuned to a reasonable operating point.')
+      finishPlayground('Guardrail tuned to a reasonable operating point: high catch rate with a manageable false-positive count.')
     } else if (confusionMatrix['false-positive'] > 5) {
       adjustScore(-10, 'Over-tuned: too many legitimate requests are being blocked.')
       log('warning', 'This strictness level blocks too many legitimate requests — real users would be blocked constantly.')

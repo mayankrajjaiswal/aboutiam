@@ -5,7 +5,7 @@ import {
   Printer, Globe, Cpu, Database, ShieldCheck
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { getTrackGraduationBadges, getPlaygroundMilestoneBadges } from '../lib/achievements/achievementRules'
+import { getTrackGraduationBadges, getPlaygroundMilestoneBadges, getNextGenAchievementBadges } from '../lib/achievements/achievementRules'
 import { useBookmarksStore } from '../store/bookmarksStore'
 import BookmarkButton from '../components/BookmarkButton'
 
@@ -223,7 +223,8 @@ export default function CommunityHub() {
     // Cross-module milestone badges: aggregate Academy track completion and total Playground
     // completions already tracked via `aboutiam-academy-progress` / `aboutiam_labs_completed`.
     ...getTrackGraduationBadges(completedModules),
-    ...getPlaygroundMilestoneBadges(labsCompletedCount)
+    ...getPlaygroundMilestoneBadges(labsCompletedCount),
+    ...getNextGenAchievementBadges(completedLabs)
   ], [completedLabs, completedModules, scenarioRun, museumVisited, builderConfigured, labsCompletedCount])
 
   // Monthly Security Challenges list

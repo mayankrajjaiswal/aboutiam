@@ -362,7 +362,7 @@ function generateJsonLd(route) {
       "description": route.description,
       "provider": { "@id": `${SITE_URL}/#organization` }
     })
-  } else if (route.path.startsWith('/standards/') || route.path.startsWith('/research') || route.path.startsWith('/bulletins')) {
+  } else if (route.path.startsWith('/standards/') || route.path.startsWith('/research') || route.path.startsWith('/bulletins') || route.path.startsWith('/next-gen')) {
     const wikidataMap = {
       'oauth': 'https://www.wikidata.org/wiki/Q1046342',
       'oidc': 'https://www.wikidata.org/wiki/Q25112117',
@@ -370,7 +370,15 @@ function generateJsonLd(route) {
       'scim': 'https://www.wikidata.org/wiki/Q17144933',
       'webauthn': 'https://www.wikidata.org/wiki/Q60753556',
       'jwt': 'https://www.wikidata.org/wiki/Q28127393',
-      'zero-trust': 'https://www.wikidata.org/wiki/Q104840842'
+      'zero-trust': 'https://www.wikidata.org/wiki/Q104840842',
+      // Next-Gen pillar concepts. Only QIDs verified against the live item
+      // page are listed here (NextGenIAM.md §8.6 item 5) -- a wrong sameAs is
+      // worse than none, since it asserts the page is about the wrong entity.
+      // Verified 2026-09-20:
+      //   Q7233576  "post-quantum cryptography" (aliases: PQC, quantum-safe)
+      //   Q65118250 "FIDO2 Project" (FIDO Alliance + W3C joint project)
+      'crypto-agility': 'https://www.wikidata.org/wiki/Q7233576',
+      'phishing-resistant-auth': 'https://www.wikidata.org/wiki/Q65118250'
     }
     const matchingKey = Object.keys(wikidataMap).find(k => route.path.toLowerCase().includes(k))
     const sameAs = matchingKey ? [wikidataMap[matchingKey]] : []

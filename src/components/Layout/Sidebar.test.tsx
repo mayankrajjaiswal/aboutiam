@@ -50,6 +50,17 @@ describe('Sidebar', () => {
     })
   })
 
+  it('renders the Next-Gen IAM group with its sub-groups', () => {
+    renderWithProviders(<Sidebar />)
+    fireEvent.click(screen.getByText(/Next-Gen IAM/))
+    expect(screen.getByText('Overview')).toBeInTheDocument()
+    expect(screen.getByText('Agentic AI')).toBeInTheDocument()
+    expect(screen.getByText('Trust Infrastructure')).toBeInTheDocument()
+    expect(screen.getByText('Next-Gen IAM Center')).toBeInTheDocument()
+    expect(screen.getByText('Agentic Identity')).toBeInTheDocument()
+    expect(screen.getByText('Crypto Agility & PQC')).toBeInTheDocument()
+  })
+
   it('a sub-group toggle collapses its own items independently of the others', () => {
     renderWithProviders(<Sidebar />)
     fireEvent.click(screen.getByText(/Enterprise Ecosystem/))

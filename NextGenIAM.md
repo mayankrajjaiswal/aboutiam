@@ -1348,7 +1348,7 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 
 ### P9 — Integration & Polish (16 todos)
 - [x] P9.1 Academy track 7 with exactly 6 modules (§6.3) + `academyTracks.test.ts` green — also updated `achievementRules.ts`/`.test.ts` (track-7 graduation badge), `Learn.tsx` (track-7 verification quiz), and the `GEMINI.md` track/module count reference
-- [ ] P9.2 Sidebar `nextGenItems` group + active-check wiring (§8.1)
+- [x] P9.2 Sidebar `nextGenItems` group + active-check wiring (§8.1)
 - [ ] P9.3 Home page Next-Gen strip (§8.2)
 - [ ] P9.4 Roadmap next-gen stage (§8.5)
 - [ ] P9.5 Explore + Timeline additions (§8.5)

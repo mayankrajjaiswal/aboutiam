@@ -5,7 +5,8 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen, Cpu, Award, Compass, Bot, X, Home, ShieldAlert,
   CheckSquare, GraduationCap, Users, Map, Wrench, Network, Building,
-  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Puzzle, Search
+  ScanSearch, Layers, History, ChevronDown, ChevronRight, CalendarDays, FileBarChart, Waypoints, Puzzle, Search,
+  Sparkles, Fingerprint, Wallet, AtomIcon
 } from 'lucide-react'
 import { useLayoutStore } from '../../store/layoutStore'
 
@@ -287,6 +288,15 @@ const ecosystemItems: NavItem[] = [
   { name: 'AI Knowledge Assistant', path: '/assistant', icon: Bot, subGroup: 'Reference & AI' },
 ]
 
+const nextGenItems: NavItem[] = [
+  { name: 'Next-Gen IAM Center', path: '/next-gen', icon: Sparkles, subGroup: 'Overview' },
+  { name: 'Agentic Identity', path: '/next-gen/agentic-identity', icon: Bot, subGroup: 'Agentic AI' },
+  { name: 'AI Security Fabric', path: '/next-gen/ai-security-fabric', icon: ShieldAlert, subGroup: 'Agentic AI' },
+  { name: 'Phishing-Resistant Auth', path: '/next-gen/phishing-resistant-auth', icon: Fingerprint, subGroup: 'Trust Infrastructure' },
+  { name: 'Digital Wallets & VCs', path: '/next-gen/digital-wallets', icon: Wallet, subGroup: 'Trust Infrastructure' },
+  { name: 'Crypto Agility & PQC', path: '/next-gen/crypto-agility', icon: AtomIcon, subGroup: 'Trust Infrastructure' },
+]
+
 const communityItems = [
   { name: 'Identity Timeline', path: '/timeline', icon: History },
   { name: 'Events & Conferences', path: '/events', icon: CalendarDays },
@@ -310,6 +320,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
     tools: false,
     architecture: false,
     ecosystem: false,
+    nextGen: false,
     community: false,
   })
 
@@ -325,14 +336,16 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
       const toolsActive = toolsItems.some(i => isActive(i.path))
       const archActive = architectureItems.some(i => isActive(i.path))
       const ecoActive = ecosystemItems.some(i => isActive(i.path))
+      const nextGenActive = nextGenItems.some(i => isActive(i.path))
       const commActive = communityItems.some(i => isActive(i.path))
 
-      if (coreActive || toolsActive || archActive || ecoActive || commActive) {
+      if (coreActive || toolsActive || archActive || ecoActive || nextGenActive || commActive) {
         setOpenGroups({
           core: coreActive,
           tools: toolsActive,
           architecture: archActive,
           ecosystem: ecoActive,
+          nextGen: nextGenActive,
           community: commActive,
         })
       }
@@ -349,6 +362,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
         tools: groupKey === 'tools' ? nextOpen : false,
         architecture: groupKey === 'architecture' ? nextOpen : false,
         ecosystem: groupKey === 'ecosystem' ? nextOpen : false,
+        nextGen: groupKey === 'nextGen' ? nextOpen : false,
         community: groupKey === 'community' ? nextOpen : false,
       }
     })
@@ -444,6 +458,17 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
           handleLinkClick={handleLinkClick}
           isOpen={openGroups.ecosystem}
           onToggle={() => toggleGroup('ecosystem')}
+          filterQuery={filterQuery}
+        />
+        <AccordionGroup
+          title="Next-Gen IAM"
+          groupKey="nextGen"
+          items={nextGenItems}
+          collapsed={collapsed}
+          pathname={location.pathname}
+          handleLinkClick={handleLinkClick}
+          isOpen={openGroups.nextGen}
+          onToggle={() => toggleGroup('nextGen')}
           filterQuery={filterQuery}
         />
         <AccordionGroup

@@ -197,6 +197,7 @@ export const ROUTE_META: RouteMeta[] = [
   { path: '/tools/sd-jwt-wallet-sdk', title: 'W3C SD-JWT Selective Disclosure Wallet SDK Studio', description: 'Interactive developer dashboard explaining the cryptographic salting, hashing, and partial-redaction mechanics of W3C Verifiable Credentials.' },
   { path: '/playground/advanced-oauth-hack-defend', title: 'Advanced OAuth 2.1 Threat Modeling & Mitigation Simulator', description: 'Interactive multi-stage hacking playground. Model the JWT Algorithm Confusion exploit and simulate the PKCE authorization-code injection bypass.' },
   { path: '/next-gen', title: 'Next-Gen IAM Center — Agentic Identity, Wallets & Post-Quantum', description: 'The five shifts reshaping identity: agentic identity governance, the AI security fabric, phishing-resistant FIDO fleets, digital wallets, and post-quantum crypto agility — with a maturity self-assessment and role-based learning paths.' },
+  { path: '/next-gen/agentic-identity', title: 'Agentic Identity Center — Governing AI Agents as Principals', description: 'Give an AI agent a job description: identity, ownership, declared intent, and a lifecycle. The four-quadrant ecosystem model, design-time vs run-time governance, and a 9-lab hands-on path.' },
 ]
 
 const DEFAULT_META: RouteMeta = {

@@ -203,6 +203,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [IAM Breach Museum — 27 Real-World Identity Security Incidents](https://www.aboutiam.com/wall-of-shame/): Explore historic identity breaches like Golden SAML and MFA push-bombing fatigue, each with a vulnerable-vs-secure code deconstruction.
 - [IAM Cheat Sheets — 24 Security Compliance Checklists](https://www.aboutiam.com/cheat-sheets/): Interactive hardening checklists for OAuth, SAML, JWT, Zero Trust, Kubernetes RBAC, SOC 2, HIPAA, and GDPR, with live compliance gauges.
 - [Next-Gen IAM Center — Agentic Identity, Wallets & Post-Quantum](https://www.aboutiam.com/next-gen/): The five shifts reshaping identity: agentic identity governance, the AI security fabric, phishing-resistant FIDO fleets, digital wallets, and post-quantum crypto agility — with a maturity self-assessment and role-based learning paths.
+- [Agentic Identity Center — Governing AI Agents as Principals](https://www.aboutiam.com/next-gen/agentic-identity/): Give an AI agent a job description: identity, ownership, declared intent, and a lifecycle. The four-quadrant ecosystem model, design-time vs run-time governance, and a 9-lab hands-on path.
 
 ## Optional
 

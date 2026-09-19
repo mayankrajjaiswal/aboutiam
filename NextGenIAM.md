@@ -345,7 +345,7 @@ This is the most important analytical section. **Read it before creating anythin
 |---|---|
 | No control-plane concept page (discovery → policy → enforcement → observability) | `/next-gen/ai-security-fabric` (§5.4) |
 | No AI firewall / semantic guardrail simulator — nothing lets a learner author a guardrail and watch it block | AI Guardrail Policy Studio (§7.2.3) |
-| No task-drift / intent-deviation detection lab | Agent Behaviour Observability Lab (§7.2.4) |
+| No task-drift / intent-deviation detection lab | Agent Behavior Observability Lab (§7.2.4) |
 | No sensitive-egress (DLP-for-agents) exercise | Covered in §7.2.3 as a second guardrail class |
 | No prompt-injection-to-privilege-escalation chain lab (existing AI Threat Lab covers attacks generically, not the identity-escalation path) | Prompt Injection → Privilege Escalation Lab (§7.2.5) |
 | No MCP tool-permission manifest auditor tool | `/tools/mcp-manifest-auditor` (§7.3.1) |
@@ -967,7 +967,7 @@ export interface CryptoMigrationWorkstream {
 **Flow:** (1) Author guardrails in a simple declarative form: intent bounds ("only answer billing questions"), tool allow/deny, data-class egress rules, rate/spend caps. (2) Run a corpus of ~20 simulated agent requests — some legitimate, some drifting, some hostile. (3) See per-request decisions with the triggering rule. (4) **Confusion matrix**: true/false positives and negatives. (5) Tighten rules and watch false positives rise as false negatives fall — the central honest lesson: a semantic guardrail is a tuned classifier, not a boolean policy. (6) Compare against a classic ABAC policy on the same corpus to show what each catches and misses.
 **Data:** new `aiGuardrailScenarios.ts` (bundle with this lab). **moduleId:** `ai_guardrail_studio`.
 
-#### 7.2.4 Agent Behaviour Observability Lab — `/playground/agent-observability`
+#### 7.2.4 Agent Behavior Observability Lab — `/playground/agent-observability`
 **Teaches:** task drift, intent-vs-action comparison, when to intervene.
 **Flow:** (1) An agent is assigned a declared task. (2) Watch a timeline of its actual actions stream in. (3) A drift score computes from declared-intent vs observed-action divergence. (4) Set intervention thresholds on the ladder (log → warn → require approval → throttle → block → revoke). (5) Replay: see which rung fires when, and the cost of each — intervene too early and you break a legitimate task; too late and the damage is done. (6) Include a session-revocation event (CAEP/SSF-style) and show the propagation lag.
 **Data:** new `agentDriftScenarios.ts`. **moduleId:** `agent_observability_lab`.

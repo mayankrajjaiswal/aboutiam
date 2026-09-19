@@ -225,6 +225,7 @@ const PromptInjectionEscalation = lazy(() => import('./pages/Playgrounds/PromptI
 const AgentObservabilityLab = lazy(() => import('./pages/Playgrounds/AgentObservabilityLab'))
 const FidoFleetOps = lazy(() => import('./pages/Playgrounds/FidoFleetOps'))
 const AttestationPolicyLab = lazy(() => import('./pages/Playgrounds/AttestationPolicyLab'))
+const BusinessWalletStudio = lazy(() => import('./pages/Playgrounds/BusinessWalletStudio'))
 
 // Next-Gen IAM pillar
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
@@ -463,6 +464,7 @@ export default function App() {
               <Route path="/playground/agent-observability" element={<AgentObservabilityLab />} />
               <Route path="/playground/fido-fleet-ops" element={<FidoFleetOps />} />
               <Route path="/playground/attestation-policy" element={<AttestationPolicyLab />} />
+              <Route path="/playground/business-wallet" element={<BusinessWalletStudio />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

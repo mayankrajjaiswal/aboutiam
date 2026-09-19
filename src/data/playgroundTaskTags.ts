@@ -47,4 +47,5 @@ export const PLAYGROUND_TASK_TAGS: Record<string, TaskTag[]> = {
   '/playground/agent-observability': ['validate-policy', 'simulate-attack'],
   '/playground/fido-fleet-ops': ['build-diagram'],
   '/playground/attestation-policy': ['validate-policy'],
+  '/playground/business-wallet': ['validate-policy', 'simulate-attack'],
 }

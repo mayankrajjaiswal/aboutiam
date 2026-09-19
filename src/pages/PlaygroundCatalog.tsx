@@ -684,6 +684,14 @@ export default function PlaygroundCatalog() {
       icon: BadgeCheck,
       link: "/playground/attestation-policy",
       badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Business Wallet Studio",
+      desc: "Set up an organizational wallet: choose a custody model, receive a credential, delegate presentation authority to employees, and present it to a verifier. Inject a departed employee, a mid-transaction revocation, and a threshold violation to test governance.",
+      icon: Landmark,
+      link: "/playground/business-wallet",
+      badge: "Active (Next-Gen)",
+      enterpriseProducts: "Thales OneWelcome, Microsoft Entra Verified ID"
     }
   ]
 

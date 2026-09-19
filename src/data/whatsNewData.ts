@@ -19,6 +19,36 @@ export interface WhatsNewRelease {
  */
 export const WHATS_NEW_RELEASES: WhatsNewRelease[] = [
   {
+    version: '2026.09.19',
+    date: '2026-09-19',
+    items: [
+      {
+        title: 'Next-Gen IAM pillar',
+        description:
+          'A new pillar covering where identity is heading: AI agents as a new principal type, runtime AI security governance, phishing-resistant FIDO fleets, digital wallets & verifiable credentials, and crypto agility for the post-quantum transition. 6 hub pages, 10 interactive playgrounds, and 6 tools.',
+        path: '/next-gen',
+      },
+      {
+        title: 'Agentic Identity & AI Security Fabric playgrounds',
+        description:
+          'Build and audit AI agent identity records, trace multi-hop delegation chains, tune semantic guardrails against real hostile/drifting request corpora, and escalate a prompt-injection attack step by step.',
+        path: '/playground/agent-registry',
+      },
+      {
+        title: 'FIDO fleets, wallets & crypto agility playgrounds',
+        description:
+          'Simulate FIDO device fleet operations at scale, tune enterprise attestation policy, issue and present verifiable credentials, and plan a dependency-ordered post-quantum cryptography migration.',
+        path: '/playground/fido-fleet-ops',
+      },
+      {
+        title: 'IAM Academy Track 7: Next-Generation Identity',
+        description:
+          'A new 6-module Academy track covering agent job descriptions, delegation chains, runtime AI governance, wallets, and crypto agility -- bringing the Academy to 7 tracks and 42 modules total.',
+        path: '/learn',
+      },
+    ],
+  },
+  {
     version: '2026.07.28',
     date: '2026-07-28',
     items: [

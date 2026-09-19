@@ -1353,7 +1353,7 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P9.4 Roadmap next-gen stage (§8.5) — Stage 6 "Next-Generation Identity" added after Stage 5, linking to `/learn` (Track 7) and `/next-gen`
 - [x] P9.5 Explore + Timeline additions (§8.5) — `exploreData.ts` gained two new `type` categories (`Agentic Identity Platform`: Microsoft Entra Agent ID; `Wallet Infrastructure`: Thales Digital ID Wallet, per §2.6's "surface vendors comparatively" rule); `IdentityTimeline.tsx` gained a new era (2024-2026, MCP/Entra Agent ID/FIPS 203-205/eIDAS 2.0, all previously-verified in §15)
 - [x] P9.6 Achievements: 3 new rules (§8.7)
-- [ ] P9.7 What's New entry announcing the pillar (§8.7)
+- [x] P9.7 What's New entry announcing the pillar (§8.7)
 - [ ] P9.8 7 daily puzzles (§7.4)
 - [ ] P9.9 Extend `agentIdentityScenarios.ts` (+4) and `autonomousAgentScenarios.ts` (+2)
 - [ ] P9.10 Extend `passkeyPolicyScenarios.ts` (+2) and `pqcAlgorithmRisk.ts` (theme linkage)

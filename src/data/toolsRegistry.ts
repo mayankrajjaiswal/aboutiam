@@ -1051,6 +1051,25 @@ export const TOOLS: ToolMeta[] = [
       { q: 'Why does a missing scope declaration matter?', a: 'Without a declared scope, an identity/authorization layer has no structured way to check whether the calling agent is actually permitted to use that specific tool — it becomes an all-or-nothing trust decision.' }
     ],
     relatedLinks: [{ label: 'AI Security Fabric Center →', href: '/next-gen/ai-security-fabric' }, { label: 'MCP Server Playground →', href: '/playground/mcp-server' }]
+  },
+  {
+    slug: 'agent-governance-readiness',
+    taskTags: ['check-compliance'],
+    title: 'Agent Governance Readiness Assessor',
+    description: 'A 26-question self-assessment across the 8 agent-identity dimensions and 4 AI-control-plane functions, producing a banded maturity score, per-dimension breakdown, and a prioritized gap list with recommended next pages.',
+    category: 'Supply Chain & Governance',
+    icon: ClipboardCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['agent governance assessment', 'ai agent maturity model', 'agentic identity readiness', 'ai governance checklist'],
+    analogy: 'A building inspection checklist for AI agents — instead of checking smoke detectors and fire exits, you\'re checking whether every agent has an owner, a job description, and someone watching what it actually does.',
+    expert: 'Scores 26 questions on a 0-3 maturity scale across the identity-record field groups (Identity, Ownership, Principal, Intent, Authority, Conditions, Provenance, Lifecycle) and the AI control-plane functions (Discover, Decide, Enforce, Observe), producing an overall percentage score, a maturity band (Unmanaged/Inventoried/Governed/Adaptive matching the Next-Gen IAM Center\'s own ladder), a per-dimension breakdown, and gaps sorted lowest-maturity-first with a recommended page per gap.',
+    faqs: [
+      { q: 'Is my assessment data sent anywhere?', a: 'No — every answer is scored entirely in your browser. Nothing is transmitted or stored server-side.' },
+      { q: 'What do the maturity bands mean?', a: 'They match the same 4-level ladder used throughout the Next-Gen IAM Center: Unmanaged, Inventoried, Governed, and Adaptive — so your score maps directly onto that pillar\'s guidance.' },
+      { q: 'Can I export my results?', a: 'Yes — download a plain-text report with your overall score, per-dimension breakdown, and the full prioritized gap list.' }
+    ],
+    relatedLinks: [{ label: 'Agentic Identity Center →', href: '/next-gen/agentic-identity' }, { label: 'Agent Registry & Lifecycle Studio →', href: '/playground/agent-registry' }]
   }
 ]
 

@@ -229,6 +229,7 @@ const BusinessWalletStudio = lazy(() => import('./pages/Playgrounds/BusinessWall
 const CredentialIssuanceStudio = lazy(() => import('./pages/Playgrounds/CredentialIssuanceStudio'))
 const CryptoMigrationPlanner = lazy(() => import('./pages/Playgrounds/CryptoMigrationPlanner'))
 const McpManifestAuditor = lazy(() => import('./pages/Tools/McpManifestAuditor'))
+const AgentGovernanceReadiness = lazy(() => import('./pages/Tools/AgentGovernanceReadiness'))
 
 // Next-Gen IAM pillar
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
@@ -471,6 +472,7 @@ export default function App() {
               <Route path="/playground/credential-issuance" element={<CredentialIssuanceStudio />} />
               <Route path="/playground/crypto-migration" element={<CryptoMigrationPlanner />} />
               <Route path="/tools/mcp-manifest-auditor" element={<McpManifestAuditor />} />
+              <Route path="/tools/agent-governance-readiness" element={<AgentGovernanceReadiness />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

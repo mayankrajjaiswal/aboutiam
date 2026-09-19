@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Sep 2026 15:03:27 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 19 Sep 2026 15:14:03 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -461,6 +461,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/mcp-manifest-auditor</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Paste an MCP (Model Context Protocol) server tool manifest to flag identity-relevant risks — unbounded parameters, undistinguished destructive operations, missing scope declarations, credential-accepting parameters, and over-broad resource patterns.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Agent Governance Readiness Assessor]]></title>
+      <link>https://www.aboutiam.com/tools/agent-governance-readiness</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/agent-governance-readiness</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A 26-question self-assessment across the 8 agent-identity dimensions and 4 AI-control-plane functions, producing a banded maturity score, per-dimension breakdown, and a prioritized gap list with recommended next pages.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

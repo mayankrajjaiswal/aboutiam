@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Sep 2026 11:39:01 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 19 Sep 2026 15:03:27 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -453,6 +453,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/sd-jwt-wallet-sdk</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Deeply explore the developer-level cryptographic mechanics of SD-JWT Selective Disclosures. Generate random salt parameters, hash claims client-side, and verify disclosures against the issuer-signed JWT envelope.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: MCP Manifest & Tool-Permission Auditor]]></title>
+      <link>https://www.aboutiam.com/tools/mcp-manifest-auditor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/mcp-manifest-auditor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Paste an MCP (Model Context Protocol) server tool manifest to flag identity-relevant risks — unbounded parameters, undistinguished destructive operations, missing scope declarations, credential-accepting parameters, and over-broad resource patterns.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

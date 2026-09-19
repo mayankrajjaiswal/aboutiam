@@ -177,6 +177,7 @@ Runs entirely client-side (React 19, TypeScript, Vite, Zustand). Source: https:/
 - [Web Crypto PKI Certificate Authority (CA) Workbench](https://www.aboutiam.com/tools/pki-ca-workbench/): Visual, 100% browser-native PKI engine using the W3C Web Crypto SubtleCrypto API. Configure, issue, and inspect a full Root-to-Leaf X.509 Certificate Chain.
 - [Cloud & K8s IAM Policy Security Auditor & Linter](https://www.aboutiam.com/tools/cloud-policy-auditor/): Scan your AWS, GCP, and Kubernetes access policies client-side to detect privilege escalation vectors, compliance violations, and generate hardened schemas.
 - [W3C SD-JWT Selective Disclosure Wallet SDK Studio](https://www.aboutiam.com/tools/sd-jwt-wallet-sdk/): Interactive developer dashboard explaining the cryptographic salting, hashing, and partial-redaction mechanics of W3C Verifiable Credentials.
+- [MCP Manifest & Tool-Permission Auditor](https://www.aboutiam.com/tools/mcp-manifest-auditor/): Paste an MCP server tool manifest to flag identity-relevant risks — unbounded parameters, undistinguished destructive operations, missing scope declarations, credential-accepting parameters, and over-broad resource patterns — with a suggested least-privilege scope per tool.
 
 ## Advanced Ecosystem & Governance
 

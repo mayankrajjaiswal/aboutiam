@@ -1032,6 +1032,25 @@ export const TOOLS: ToolMeta[] = [
       { q: 'What is the role of salt in SD-JWT claims?', a: 'Each claim is paired with a cryptographically secure random salt before hashing. This prevents dictionary attacks—without salts, a verifier could guess small claims (like "gender: Male") by precomputing standard hashes.' },
       { q: 'How does a verifier trust that the claims belong to me?', a: 'SD-JWT uses Holder Binding. The presenter includes a Key Binding JWT (KB-JWT) signed with their private key, proving possession of the key associated with the credential\'s `cnf` claim.' }
     ]
+  },
+  {
+    slug: 'mcp-manifest-auditor',
+    taskTags: ['check-compliance', 'validate-policy'],
+    title: 'MCP Manifest & Tool-Permission Auditor',
+    description: 'Paste an MCP (Model Context Protocol) server tool manifest to flag identity-relevant risks — unbounded parameters, undistinguished destructive operations, missing scope declarations, credential-accepting parameters, and over-broad resource patterns.',
+    category: 'Supply Chain & Governance',
+    icon: ScanSearch,
+    phase: 3,
+    status: 'live',
+    keywords: ['mcp manifest auditor', 'model context protocol security', 'ai agent tool permissions', 'mcp server audit'],
+    analogy: 'Reviewing a new employee\'s proposed job description before they start — does "delete_account" clearly say it\'s destructive? Does the form asking for a password field make sense on a job application? A bad manifest is a bad job description for an AI agent\'s tools.',
+    expert: 'Parses an MCP tool-definition manifest (a single tool object, a bare array, or a `{ tools: [...] }` wrapper) and evaluates each tool for identity-relevant risk: destructive/write operations lacking explicit annotation, absent scope declarations needed for authorization checks, parameters that look like raw credentials, unbounded string parameters with no length/pattern constraint, ambiguous or missing descriptions, and wildcard resource patterns. Outputs a severity-ranked report and a suggested least-privilege scope per tool.',
+    faqs: [
+      { q: 'Does this tool connect to any MCP server?', a: 'No — paste a manifest JSON directly. Everything is parsed and analyzed locally in your browser; nothing is sent anywhere.' },
+      { q: 'What manifest shapes are supported?', a: 'A single tool-definition object, a bare array of tool definitions, or an object with a top-level `tools` array — the common shapes MCP servers expose.' },
+      { q: 'Why does a missing scope declaration matter?', a: 'Without a declared scope, an identity/authorization layer has no structured way to check whether the calling agent is actually permitted to use that specific tool — it becomes an all-or-nothing trust decision.' }
+    ],
+    relatedLinks: [{ label: 'AI Security Fabric Center →', href: '/next-gen/ai-security-fabric' }, { label: 'MCP Server Playground →', href: '/playground/mcp-server' }]
   }
 ]
 

@@ -1304,10 +1304,10 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P4.8 `DigitalWalletsCenter.test.tsx` + mobile sweep both pages
 
 ### P5 — Crypto Page (4 todos)
-- [ ] P5.1 `CryptoAgilityCenter.tsx` — tabs `agility`, `inventory`, `pqc`, `root-of-trust`
-- [ ] P5.2 Same page — tabs `migration`, `cross-cutting`, `labs`
-- [ ] P5.3 Route ritual for `/next-gen/crypto-agility`
-- [ ] P5.4 `CryptoAgilityCenter.test.tsx` + mobile sweep
+- [x] P5.1 `CryptoAgilityCenter.tsx` — tabs `agility`, `inventory`, `pqc`, `root-of-trust`
+- [x] P5.2 Same page — tabs `migration`, `cross-cutting`, `labs`
+- [x] P5.3 Route ritual for `/next-gen/crypto-agility`
+- [x] P5.4 `CryptoAgilityCenter.test.tsx` + mobile sweep
 
 ### P6 — Flagship Playgrounds (16 todos)
 - [ ] P6.1 `src/lib/` logic module for agent-record auditing (pure, testable)

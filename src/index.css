@@ -218,3 +218,37 @@ body, header, aside, main, div, button, input, select, textarea, h1, h2, h3, h4,
 * {
   -webkit-overflow-scrolling: touch;
 }
+
+/*
+ * Narrow-viewport overflow guard (<=640px).
+ *
+ * A CSS grid/flex item defaults to `min-width: auto`, meaning it refuses to
+ * shrink below the intrinsic width of its content. On a 320px phone that makes
+ * a single long word, a wide button row, or a fixed-width child silently push
+ * its whole track wider than the viewport -- producing a horizontally scrolling
+ * page. This was measured across the site: 24 routes scrolled sideways at
+ * 320px, every one of them tracing back to this default rather than to any
+ * single component's markup.
+ *
+ * Patching every grid child by hand does not scale and regresses the moment
+ * someone adds a new card, so the floor is set once here. Anything that
+ * genuinely must stay wide (data tables, ASCII diagrams, code blocks) opts back
+ * out via its own `overflow-x-auto` wrapper -- the convention this repo already
+ * uses -- and those wrappers keep working because the rule only lowers the
+ * shrink floor, it never forces a width.
+ *
+ * Scoped to <=640px so desktop layout (where these tracks have room and
+ * intrinsic sizing is genuinely wanted) is untouched.
+ */
+@media (max-width: 640px) {
+  :where(.grid) > *,
+  :where(.flex) > * {
+    min-width: 0;
+  }
+
+  /* Long unbroken strings -- tokens, DNs, base64url, URLs -- are everywhere in
+     this app's subject matter and are the other half of the same problem. */
+  :where(h1, h2, h3, h4, h5, h6, p, span, li, td, th, label, a, button) {
+    overflow-wrap: break-word;
+  }
+}

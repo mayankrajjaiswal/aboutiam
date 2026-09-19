@@ -281,11 +281,11 @@ export default function ThreatModelingStudio() {
             </button>
 
             {/* Template Presets Selector */}
-            <div className="flex gap-2 items-center border-l border-border-subtle/30 pl-3.5 ml-2.5">
+            <div className="flex flex-wrap gap-2 items-center border-l border-border-subtle/30 pl-3.5 ml-2.5 min-w-0">
               <span className="text-[10px] font-black text-text-muted uppercase">Templates:</span>
               <select
                 onChange={(e) => loadPreset(e.target.value as 'spire_mesh' | 'iot_posture' | 'cicd_runner' | 'reset')}
-                className="p-1.5 rounded-lg bg-bg-sidebar border border-border-subtle text-xs font-bold text-text-primary focus:outline-none"
+                className="p-1.5 rounded-lg bg-bg-sidebar border border-border-subtle text-xs font-bold text-text-primary focus:outline-none min-w-0 max-w-full"
               >
                 <option value="reset">Default Architecture</option>
                 <option value="spire_mesh">Kubernetes SPIRE Workload Mesh</option>

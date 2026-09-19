@@ -89,7 +89,7 @@ export default function LegacyFederationLab() {
       sidebarContent={<TraceTerminal logs={logs} />}
     >
       <div className="space-y-6">
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button type="button" onClick={() => setTab('radius')} className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 ${tab === 'radius' ? 'bg-accent-glow border-accent-primary/40 text-accent-primary' : 'bg-bg-nested border-border-subtle text-text-secondary'}`}>
             <Radio className="w-3.5 h-3.5" /> RADIUS AAA
           </button>

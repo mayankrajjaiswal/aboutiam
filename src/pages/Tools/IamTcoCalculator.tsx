@@ -155,13 +155,13 @@ export default function IamTcoCalculator() {
           <Wallet className="w-4 h-4 text-accent-primary" /> 3-Year Cumulative Cost Curve
         </h4>
 
-        <div className="relative w-full h-[220px] flex items-end justify-around pt-6 px-4">
+        <div className="relative w-full h-[220px] flex items-end justify-around gap-2 pt-6 px-4 overflow-x-auto">
           <div className="absolute left-0 right-0 bottom-8 border-b border-border-subtle/50 border-dashed"></div>
           {result.years.map((y) => {
             const buildHeight = (y.buildCostCumulative / maxCumulative) * 160
             const buyHeight = (y.buyCostCumulative / maxCumulative) * 160
             return (
-              <div key={y.year} className="flex flex-col items-center gap-1 w-24" data-testid={`tco-year-${y.year}`}>
+              <div key={y.year} className="flex flex-col items-center gap-1 w-24 shrink-0" data-testid={`tco-year-${y.year}`}>
                 <div className="flex items-end gap-2 h-[160px]">
                   <div className="flex flex-col items-center gap-1">
                     <span className="text-[10px] font-bold text-text-primary">{formatCurrency(y.buildCostCumulative)}</span>

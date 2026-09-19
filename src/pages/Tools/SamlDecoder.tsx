@@ -63,7 +63,7 @@ export default function SamlDecoder() {
 
   return (
     <ToolPageShell tool={tool}>
-      <div className="inline-flex rounded-lg border border-border-subtle overflow-hidden">
+      <div className="inline-flex flex-wrap rounded-lg border border-border-subtle overflow-hidden max-w-full">
         {([
           { id: 'binding' as Tab, label: 'SAMLRequest/Response' },
           { id: 'metadata' as Tab, label: 'Metadata XML' },
@@ -85,7 +85,7 @@ export default function SamlDecoder() {
             <>
               <div className="flex justify-between items-center">
                 <span className="text-xs font-bold text-text-secondary uppercase tracking-wider">Base64 Value</span>
-                <div className="inline-flex rounded-lg border border-border-subtle overflow-hidden">
+                <div className="inline-flex flex-wrap rounded-lg border border-border-subtle overflow-hidden max-w-full">
                   {([
                     { id: 'post' as Binding, label: 'POST' },
                     { id: 'redirect' as Binding, label: 'Redirect' },

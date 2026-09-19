@@ -357,7 +357,7 @@ export default function SamlMetadataBuilder() {
         <div className="lg:col-span-7 space-y-6">
           <div className="p-6 rounded-2xl bg-bg-card border border-border-subtle shadow-sm flex flex-col min-h-[480px]">
             
-            <div className="flex items-center justify-between border-b border-border-subtle pb-3.5 mb-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle pb-3.5 mb-4">
               <div className="flex items-center gap-2">
                 <FileCode className="w-5 h-5 text-accent-primary" />
                 <div>
@@ -366,7 +366,7 @@ export default function SamlMetadataBuilder() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => copy(xmlOutput, 'saml-metadata')}

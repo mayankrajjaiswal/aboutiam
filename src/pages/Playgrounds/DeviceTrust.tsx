@@ -234,9 +234,9 @@ export default function DeviceTrust() {
 
         {/* MIDDLE COLUMN: Handshake Timeline (lg:col-span-5) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider">mTLS Attestation Pipeline</h3>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 disabled={evaluating}
                 onClick={handleSimulate}

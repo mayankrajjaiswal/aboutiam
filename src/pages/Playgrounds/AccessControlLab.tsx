@@ -75,9 +75,9 @@ export default function AccessControlLab() {
         </button>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-8 min-w-0">
         {/* Parameters Selectors */}
-        <div className="lg:col-span-1 p-6 rounded-xl bg-bg-card border border-border-subtle space-y-4 shadow-sm h-fit">
+        <div className="lg:col-span-1 min-w-0 p-6 rounded-xl bg-bg-card border border-border-subtle space-y-4 shadow-sm h-fit">
           <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
             <Cpu className="w-4 h-4 text-accent-primary" /> Attribute Forge
           </h4>

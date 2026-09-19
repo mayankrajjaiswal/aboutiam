@@ -421,22 +421,22 @@ export default function IdentityTimeline() {
           Want to get hands-on with the protocols this timeline only narrates? Try the <Link to="/playground/legacy-federation" className="text-accent-primary font-semibold hover:text-accent-hover">Legacy & Academic Federation Playground</Link> for RADIUS, TACACS+, and Shibboleth/eduGAIN.
         </p>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-x-auto max-w-full">
           <button
             onClick={() => setPageView('timeline')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'timeline' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'timeline' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
           >
             <History className="w-3.5 h-3.5" /> Timeline
           </button>
           <button
             onClick={() => setPageView('hall-of-fame')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'hall-of-fame' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'hall-of-fame' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
           >
             <Award className="w-3.5 h-3.5" /> Hall of Fame
           </button>
           <button
             onClick={() => setPageView('patents')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'patents' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'patents' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
           >
             <FileText className="w-3.5 h-3.5" /> Patent Timeline
           </button>

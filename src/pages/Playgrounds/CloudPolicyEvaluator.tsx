@@ -126,11 +126,11 @@ export default function CloudPolicyEvaluator() {
         
         {/* Top: Policy Editor Tabs */}
         <div className="shrink-0 space-y-3 bg-bg-card border border-border-subtle rounded-2xl p-5 shadow-sm">
-          <div className="flex justify-between items-center select-none">
+          <div className="flex flex-wrap justify-between items-center gap-2 select-none">
             <span className="text-[10px] uppercase font-bold text-text-muted tracking-wider block flex items-center gap-1.5">
               <BookOpen className="w-3.5 h-3.5 text-accent-primary animate-pulse" /> 1. View Security Policy Layers (Overlapping Scopes)
             </span>
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               {(['scp', 'resource', 'identity'] as const).map(tab => {
                 const isActive = activePolicyTab === tab
                 return (

@@ -189,7 +189,7 @@ export default function SopsSimulator() {
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* --- LEFT SIDE: CONFIG & INPUTS --- */}
-        <div className="p-5 rounded-xl bg-bg-card border border-border-subtle space-y-4 shadow-sm">
+        <div className="min-w-0 p-5 rounded-xl bg-bg-card border border-border-subtle space-y-4 shadow-sm">
           {activeMode === 'encrypt' ? (
             <>
               <div className="flex justify-between items-center">
@@ -329,7 +329,7 @@ export default function SopsSimulator() {
         </div>
 
         {/* --- RIGHT SIDE: RESULTS VIEWER --- */}
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           {activeMode === 'encrypt' ? (
             <div className="p-5 rounded-xl bg-bg-card border border-border-subtle space-y-3 shadow-sm h-full flex flex-col justify-between">
               <div className="space-y-3">

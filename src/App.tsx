@@ -227,6 +227,7 @@ const FidoFleetOps = lazy(() => import('./pages/Playgrounds/FidoFleetOps'))
 const AttestationPolicyLab = lazy(() => import('./pages/Playgrounds/AttestationPolicyLab'))
 const BusinessWalletStudio = lazy(() => import('./pages/Playgrounds/BusinessWalletStudio'))
 const CredentialIssuanceStudio = lazy(() => import('./pages/Playgrounds/CredentialIssuanceStudio'))
+const CryptoMigrationPlanner = lazy(() => import('./pages/Playgrounds/CryptoMigrationPlanner'))
 
 // Next-Gen IAM pillar
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
@@ -467,6 +468,7 @@ export default function App() {
               <Route path="/playground/attestation-policy" element={<AttestationPolicyLab />} />
               <Route path="/playground/business-wallet" element={<BusinessWalletStudio />} />
               <Route path="/playground/credential-issuance" element={<CredentialIssuanceStudio />} />
+              <Route path="/playground/crypto-migration" element={<CryptoMigrationPlanner />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

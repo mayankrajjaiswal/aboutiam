@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses, Siren, Share2, Gamepad2, Layers, Smartphone, Zap } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses, Siren, Share2, Gamepad2, Layers, Smartphone, Zap, AtomIcon } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 import TaskFilterRow from '../components/TaskFilterRow'
 import { PLAYGROUND_TASK_TAGS } from '../data/playgroundTaskTags'
@@ -698,6 +698,13 @@ export default function PlaygroundCatalog() {
       desc: "Play the issuer role: define a credential type, configure holder binding and validity window, issue to a simulated wallet, verify, then revoke — and see the real trade-off between long validity with status-list revocation and short validity with reissuance.",
       icon: KeySquare,
       link: "/playground/credential-issuance",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Crypto Migration Planner",
+      desc: "Sequence 10 crypto migration workstreams into a dependency-valid roadmap. You can't migrate what a component depends on after the component itself — reorder until every dependency comes first, prioritizing high harvest-now-decrypt-later exposure where the dependency graph allows.",
+      icon: AtomIcon,
+      link: "/playground/crypto-migration",
       badge: "Active (Next-Gen)",
     }
   ]

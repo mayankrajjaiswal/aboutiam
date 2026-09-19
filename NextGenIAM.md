@@ -207,7 +207,8 @@ Use these as the factual backbone for T1–T5. Fetch, read, then cite with `veri
 - W3C Web Authentication Level 3
 - NIST SP 800-63-4 (digital identity guidelines, AAL definitions)
 - CISA guidance on phishing-resistant MFA
-- FIDO Alliance Device Onboard (FDO); enterprise attestation & Authenticator Attestation GUID (AAGUID) documentation
+- FIDO Alliance Device Onboard (FDO) — **note:** FDO is an IoT device-provisioning/onboarding protocol, a distinct spec family from FIDO2/WebAuthn; do not present it as the mechanism behind enterprise attestation or AAGUID
+- FIDO2/WebAuthn enterprise attestation & Authenticator Attestation GUID (AAGUID) documentation (FIDO Alliance MDS, vendor AAGUID references) — the actual mechanism for authenticator make/model policy enforcement
 
 **Wallets & verifiable credentials (T4)**
 - eIDAS 2.0 (Regulation (EU) 2024/1183) and the EU Digital Identity Wallet Architecture & Reference Framework (ARF)
@@ -675,7 +676,7 @@ Full `IdentityStandard` shape (`id`, `title`, `fullname`, `rfcs`, `year`, `diffi
 | `rfc9396-rar` | Rich Authorization Requests | Fine-grained, purpose-bearing authorization — the natural fit for declared agent intent |
 | `ciba` | OIDC Client-Initiated Backchannel Auth | Human-in-the-loop approval for agent actions |
 | `agent-authz-emerging` | Emerging agent-authorization drafts | **Must** state draft status, body, and `verifiedDate`; expect churn |
-| `fido-fdo` | FIDO Device Onboard | Device provisioning at fleet scale |
+| `fido-fdo` | FIDO Device Onboard | IoT/edge device provisioning — a separate spec family from FIDO2/WebAuthn; keep this entry scoped to onboarding, not to enterprise attestation/AAGUID (that content belongs in the `webauthn`/`fido-certification` entries and in `fidoFormFactors.ts`) |
 | `eidas2-arf` | eIDAS 2.0 / EUDI Wallet ARF | Regulatory + architectural framework |
 | `openid4vci` | OpenID for Verifiable Credential Issuance | Issuer side (complements existing `openid4vc`) |
 | `pqc-fips203-205` | ML-KEM / ML-DSA / SLH-DSA | The PQC standards set |
@@ -1375,11 +1376,20 @@ Record every source you fetch. This is the evidence base for §2.4 and makes the
 
 | Theme | Source | URL | Fetched | Key finding used | Where used |
 |---|---|---|---|---|---|
-| T1 | *(fill in)* | | | | |
-| T2 | | | | | |
-| T3 | | | | | |
-| T4 | | | | | |
-| T5 | | | | | |
+| T1 | Anthropic — Introducing MCP | https://www.anthropic.com/news/model-context-protocol | 2026-09-19 | MCP announced Nov 2024 as open standard for AI-to-data/tool connections; donated to Agentic AI Foundation (Linux Foundation) Dec 2025 | `standardsData.ts` `mcp` entry |
+| T1 | Model Context Protocol — official spec | https://modelcontextprotocol.io/specification/2025-11-25 | 2026-09-19 | Latest spec revision 2025-11-25; major stateless-protocol revision finalized 2026-07-28 | `standardsData.ts` `mcp` entry |
+| T1 | IETF Datatracker — RFC 8693 | https://datatracker.ietf.org/doc/html/rfc8693 | 2026-09-19 | OAuth 2.0 Token Exchange, published Jan 2020, defines impersonation/delegation semantics via `act`/`may_act` claims | `standardsData.ts` (existing `rfc8693`), `agentRegistryModel.ts` iamEquivalent mapping |
+| T1 | IETF Datatracker — RFC 9396 | https://datatracker.ietf.org/doc/rfc9396/ | 2026-09-19 | Rich Authorization Requests, published May 2023, `authorization_details` parameter for fine-grained, purpose-bearing authorization | `standardsData.ts` `rfc9396-rar` entry |
+| T1 | OpenID Foundation — CIBA Core Final Spec | https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0-final.html | 2026-09-19 | CIBA is a Final Specification; decouples authentication device from consumption device; Poll/Ping/Push delivery modes | `standardsData.ts` `ciba` entry |
+| T2 | OWASP Gen AI Security Project — Top 10 for LLM Applications 2025 | https://genai.owasp.org/llm-top-10/ | 2026-09-19 | LLM01 Prompt Injection through LLM10 Unbounded Consumption; includes LLM06 Excessive Agency — direct mapping for `agentThreatCatalog.ts` `frameworkMapping` | `agentThreatCatalog.ts`, AI Security Fabric hub `threats` tab |
+| T3 | NIST — SP 800-63-4 Digital Identity Guidelines (final) | https://csrc.nist.gov/pubs/sp/800/63/4/final | 2026-09-19 | Final published 2025-07-31; AAL3 requires non-exportable private key + phishing resistance; AAL2 also expects phishing-resistant methods where practical | `standardsData.ts` (existing `nist80063`), Phishing-Resistant Auth hub `why` tab |
+| T3 | W3C — Web Authentication Level 3 Recommendation | https://www.w3.org/TR/webauthn-3/ | 2026-09-19 | WebAuthn L3 reached full W3C Recommendation status August 2026 | `standardsData.ts` (existing `webauthn`) |
+| T3 | FIDO Alliance — FIDO Device Onboard (FDO) spec | https://fidoalliance.org/specs/FDO/FIDO-Device-Onboard-PS-v1.1-20220419/FIDO-Device-Onboard-PS-v1.1-20220419.pdf | 2026-09-19 | **Correction to plan §2.5/§6.2:** FDO is an IoT device-provisioning protocol (EAT-based attestation via ECDSA/EPID) — a *distinct* spec from FIDO2/WebAuthn enterprise attestation and AAGUID. Do not conflate the two in content. | `standardsData.ts` `fido-fdo` entry (scoped correctly to IoT onboarding) |
+| T3 | FIDO Alliance / Yubico docs — AAGUID & Enterprise Attestation | https://support.yubico.com/hc/en-us/articles/360016648959-YubiKey-Hardware-FIDO2-AAGUIDs | 2026-09-19 | AAGUID identifies authenticator make/model (not the individual device); enterprise-attestation-capable devices carry a distinct AAGUID from non-EA devices | `fidoFormFactors.ts` `attestationSupport` field, Attestation Policy Lab (§7.2.7) |
+| T4 | EUR-Lex — Regulation (EU) 2024/1183 | https://eur-lex.europa.eu/eli/reg/2024/1183/oj/eng | 2026-09-19 | Adopted 11 Apr 2024, in force 20 May 2024, directly applicable (no transposition needed); all 27 member states must offer a compliant EUDI Wallet by Dec 2026; relying-party acceptance obligation for regulated private sectors from late 2027 | `complianceDeadlines.ts` new entries, Digital Wallets hub `regulation` tab |
+| T4 | OpenID Foundation — OpenID4VCI Final Specification announcement | https://openid.net/oidf-demonstrates-interoperability-of-new-digital-identity-issuance-standards/ | 2026-09-19 | OpenID4VCI approved as OIDF Final Specification Sept 2025; EU ARF names it as the required issuance protocol; 30+ jurisdictions deploying it | `standardsData.ts` `openid4vci` entry |
+| T5 | NIST — FIPS 203/204/205 finalized (CSRC news) | https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards | 2026-09-19 | Published/effective 2024-08-13/14: FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), FIPS 205 (SLH-DSA). FIPS 206 (FALCON-derived) in development | `standardsData.ts` `pqc-fips203-205` entry, `cryptoAgilityRoadmap.ts` |
+| T5 | Federal Register — FIPS 203/204/205 issuance notice | https://www.federalregister.gov/documents/2024/08/14/2024-17956/announcing-issuance-of-federal-information-processing-standards-fips-fips-203-module-lattice-based | 2026-09-19 | Formal notice confirms effective date 2024-08-14 and federal deprecation targets (2030 key establishment / 2031 digital signatures for federal civilian high-value systems); CNSA 2.0 (Sept 2022) mandates ML-KEM-1024 with 2030-2033 legacy timelines | `complianceDeadlines.ts` PQC entries, `cryptoAgilityRoadmap.ts` HNDL exposure fields |
 
 ---
 

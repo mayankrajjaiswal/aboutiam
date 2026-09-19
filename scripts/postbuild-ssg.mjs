@@ -212,6 +212,7 @@ const ROUTES = [
   { path: '/playground/ai-guardrails', title: 'AI Guardrail Policy Studio — Semantic Guardrails vs Classic Policy', description: 'Tune a semantic guardrail against a 20-request corpus of legitimate, drifting, and hostile agent requests, and watch false positives rise as false negatives fall — compared side-by-side against a deterministic ABAC policy.' },
   { path: '/playground/prompt-injection-escalation', title: 'Prompt Injection → Privilege Escalation Lab', description: 'Walk a 6-stage attack chain from a hostile instruction hidden in retrieved content to full account takeover, toggling identity and fabric controls to see exactly where — and whether — the chain breaks.' },
   { path: '/playground/agent-observability', title: 'Agent Behavior Observability Lab — Task Drift Detection', description: 'Watch an agent\'s actual actions stream in against its declared task, tune where on the 6-rung intervention ladder you step in, and see whether you stopped the damage in time or intervened too early.' },
+  { path: '/playground/fido-fleet-ops', title: 'FIDO Fleet Operations Simulator — Authenticator Fleet at Scale', description: 'Run a 5-round FIDO authenticator fleet across office, remote, shared-device, privileged, and contractor segments, allocating form factors and responding to events while tracking coverage, helpdesk load, cost, and satisfaction.' },
 ]
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

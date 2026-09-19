@@ -669,6 +669,14 @@ export default function PlaygroundCatalog() {
       icon: Eye,
       link: "/playground/agent-observability",
       badge: "Active (Next-Gen)",
+    },
+    {
+      title: "FIDO Fleet Operations Simulator",
+      desc: "Run a 5-round FIDO authenticator fleet across office, remote, shared-device, privileged, and contractor segments. Allocate form factors, respond to events, and track coverage, helpdesk load, cost, and satisfaction. No single form factor fits a whole organization.",
+      icon: Fingerprint,
+      link: "/playground/fido-fleet-ops",
+      badge: "Active (Next-Gen)",
+      enterpriseProducts: "Thales SafeNet Trusted Access, Yubico, Microsoft Entra ID"
     }
   ]
 

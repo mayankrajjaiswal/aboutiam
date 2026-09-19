@@ -223,6 +223,7 @@ const AdvancedOauthHackDefend = lazy(() => import('./pages/Playgrounds/AdvancedO
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
 const AgenticIdentityCenter = lazy(() => import('./pages/AgenticIdentityCenter'))
 const AiSecurityFabricCenter = lazy(() => import('./pages/AiSecurityFabricCenter'))
+const PhishingResistantAuthCenter = lazy(() => import('./pages/PhishingResistantAuthCenter'))
 
 function PageLoadingFallback() {
   return (
@@ -443,6 +444,7 @@ export default function App() {
               <Route path="/next-gen" element={<NextGenIamCenter />} />
               <Route path="/next-gen/agentic-identity" element={<AgenticIdentityCenter />} />
               <Route path="/next-gen/ai-security-fabric" element={<AiSecurityFabricCenter />} />
+              <Route path="/next-gen/phishing-resistant-auth" element={<PhishingResistantAuthCenter />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

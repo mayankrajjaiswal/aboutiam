@@ -204,6 +204,7 @@ const ROUTES = [
   { path: '/next-gen', title: 'Next-Gen IAM Center — Agentic Identity, Wallets & Post-Quantum', description: 'The five shifts reshaping identity: agentic identity governance, the AI security fabric, phishing-resistant FIDO fleets, digital wallets, and post-quantum crypto agility — with a maturity self-assessment and role-based learning paths.' },
   { path: '/next-gen/agentic-identity', title: 'Agentic Identity Center — Governing AI Agents as Principals', description: 'Give an AI agent a job description: identity, ownership, declared intent, and a lifecycle. The four-quadrant ecosystem model, design-time vs run-time governance, and a 9-lab hands-on path.' },
   { path: '/next-gen/ai-security-fabric', title: 'AI Security Fabric Center — The Runtime Control Plane for AI Agents', description: 'The Discover-Decide-Enforce-Observe loop, semantic guardrails vs classic policy, the intervention ladder, and a 12-entry OWASP-mapped agent threat catalogue.' },
+  { path: '/next-gen/phishing-resistant-auth', title: 'Phishing-Resistant Auth & FIDO Device Fleets', description: 'FIDO2/WebAuthn form-factor selection, the 8-stage fleet lifecycle (procure to recycle), enterprise attestation, helpdesk ROI economics, and crypto agility — operating passwordless auth at scale.' },
 ]
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

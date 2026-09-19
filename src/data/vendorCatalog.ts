@@ -25,6 +25,18 @@ export interface VendorDetails {
   targetIndustries?: string[]
 }
 
+/** Matches nextGenThemes.ts NextGenThemeId -- kept as plain strings here to avoid a
+ * circular import; validated against that type in vendorCatalog.test.ts. */
+export type NextGenTheme = 'agentic-identity' | 'ai-security-fabric' | 'phishing-resistant-auth' | 'digital-wallets' | 'crypto-agility'
+
+export interface NextGenThemeCapability {
+  theme: NextGenTheme
+  /** A specific, publicly-documented capability -- never a claim absent from public Thales material (NextGenIAM.md §2.6 item 6). */
+  capability: string
+  sourceLink: string
+  verifiedDate: string
+}
+
 export interface ThalesProduct {
   id: string
   name: string
@@ -36,6 +48,8 @@ export interface ThalesProduct {
   deploymentModels: string[]
   useCases: string[]
   troubleshooting: { issue: string; resolution: string }[]
+  /** Publicly-documented capability mapped to the Next-Gen IAM theme(s) it addresses, per NextGenIAM.md §2.6 item 3. Optional -- not every product has a next-gen angle. */
+  nextGenThemeCapabilities?: NextGenThemeCapability[]
 }
 
 export type VendorType = 
@@ -826,7 +840,15 @@ export const THALES_PRODUCTS: ThalesProduct[] = [
         issue: 'Adaptive MFA bypass (Policy failing to prompt)',
         resolution: 'Review the policy evaluation order. SafeNet Trusted Access executes rules sequentially; a broad wildcard rule at the top of the pile can inadvertently match and permit access, skipping downstream risk-based steps.'
       }
-    ]
+    ],
+    nextGenThemeCapabilities: [
+      {
+        theme: 'phishing-resistant-auth',
+        capability: 'SafeNet Trusted Access supports going fully passwordless using Thales FIDO2-certified security keys (e.g. SafeNet eToken FIDO, eToken Fusion NFC PIV) to secure web app access.',
+        sourceLink: 'https://cpl.thalesgroup.com/access-management/authenticators/fido-devices',
+        verifiedDate: '2026-09-19',
+      },
+    ],
   },
   {
     id: 'idcloud',
@@ -867,6 +889,107 @@ export const THALES_PRODUCTS: ThalesProduct[] = [
         issue: 'Document validation failures during OCR scans',
         resolution: 'Ensure document images are captured in high resolution with even lighting. Verify that the SDK has localized document libraries updated to support regional passport security features.'
       }
-    ]
+    ],
+    nextGenThemeCapabilities: [
+      {
+        theme: 'digital-wallets',
+        capability: 'Thales offers a Digital ID Wallet product (built on Thales Mobile Security Core) for storing, managing, and selectively sharing government-issued digital identity credentials, and a Trusted Cred Platform for multi-issuer credential issuance supporting ISO/IEC 18013-5, W3C Verifiable Credentials, and ICAO Digital Travel Credentials.',
+        sourceLink: 'https://www.thalesgroup.com/en/markets/digital-identity-and-security/government/identity/digital-identity-services/digital-id-wallet',
+        verifiedDate: '2026-09-19',
+      },
+    ],
+  },
+  {
+    id: 'luna_hsm',
+    name: 'Thales Luna Network HSM',
+    tagline: 'Hardware Security Modules with Native Post-Quantum Cryptography Support',
+    overview: 'Thales Luna Network HSMs generate, protect, and manage the cryptographic keys underpinning enterprise PKI, TLS, code signing, and database encryption. Luna HSM Firmware 7.9 introduced native, firmware-level support for NIST\'s finalized post-quantum algorithms, positioning Luna as a root-of-trust component in a crypto-agility migration rather than a point in the estate that itself needs replacing.',
+    architectureAscii: `
++-------------------------------------------------------------+
+|                THALES LUNA HSM ROOT OF TRUST                |
++-------------------------------------------------------------+
+
+           [ Enterprise PKI / TLS / Code-Signing Clients ]
+                              | (PKCS#11 / KMIP / Luna Client)
+                              v
+              +--------------------------------+
+              |     Luna Network HSM            |
+              |  - Classical: RSA, ECDSA, AES    |
+              |  - PQC: ML-KEM (FIPS 203)         |
+              |        ML-DSA (FIPS 204)          |
+              |        LMS-HSS                    |
+              +--------------------------------+
+`,
+    modules: [
+      { name: 'Classical Key Management', desc: 'FIPS 140-2/140-3 Level 3 validated generation, storage, and lifecycle management for RSA, ECDSA, and AES keys underpinning existing PKI and TLS infrastructure.' },
+      { name: 'Native Post-Quantum Algorithm Support', desc: 'Firmware-level (not an add-on module) support for ML-KEM and ML-DSA as of Luna HSM Firmware 7.9, plus LMS-HSS hash-based signatures, without requiring an external functionality module.' },
+      { name: 'PQC Key Wrapping & Attestation', desc: 'Quantum-resistant key wrapping/unwrapping for secure PQC key exchange with third-party systems, and attestation of PQC key integrity and origin.' }
+    ],
+    standards: ['FIPS 203 (ML-KEM)', 'FIPS 204 (ML-DSA)', 'FIPS 140-2/140-3', 'PKCS#11', 'KMIP'],
+    deploymentModels: ['On-Premises Network HSM Appliance', 'Cloud HSM (hosted)'],
+    useCases: [
+      'Root Certificate Authority key protection during a phased hybrid classical+PQC migration.',
+      'Code-signing and firmware-update signing requiring quantum-safe, multi-part signing support.',
+      'Federal and defense agencies planning migration off classical key-establishment/signature algorithms ahead of federal deprecation targets.'
+    ],
+    troubleshooting: [
+      {
+        issue: 'PQC key operations unavailable after firmware upgrade',
+        resolution: 'ML-KEM/ML-DSA support requires both Luna HSM Firmware 7.9.0+ AND Luna HSM Client 10.9.0+ -- confirm both the appliance firmware and every connecting client library are updated, not just one side.'
+      }
+    ],
+    nextGenThemeCapabilities: [
+      {
+        theme: 'crypto-agility',
+        capability: 'Luna HSM Firmware 7.9 added native, FIPS-validated firmware support for ML-KEM (FIPS 203) and ML-DSA (FIPS 204) with no external functionality module required, plus LMS-HSS hash-based signatures and PQC key wrapping/attestation.',
+        sourceLink: 'https://cpl.thalesgroup.com/blog/encryption/luna-hsm-pqc-quantum-safe-encryption',
+        verifiedDate: '2026-09-19',
+      },
+    ],
+  },
+  {
+    id: 'ai_security_fabric',
+    name: 'Thales AI Security Fabric',
+    tagline: 'AI Runtime Security for Agentic AI and LLM-Powered Applications',
+    overview: 'Thales AI Security Fabric provides runtime security for Agentic AI and LLM-powered applications, monitoring AI systems during operation rather than relying only on pre-deployment scanning. Its initial release ships two products: AI Application Security (monitors for prompt injection, jailbreaking, system-prompt leakage, and model denial-of-service) and AI RAG Security (scans and encrypts enterprise data before it is ingested into retrieval-augmented pipelines).',
+    architectureAscii: `
++-------------------------------------------------------------+
+|              THALES AI SECURITY FABRIC RUNTIME               |
++-------------------------------------------------------------+
+
+         [ Agentic AI / LLM-Powered Application ]
+                          |
+           +--------------+--------------+
+           v                             v
+  [ AI Application Security ]    [ AI RAG Security ]
+  - Prompt injection detection   - Encrypts data before
+  - Jailbreak/system-prompt        RAG ingestion
+    leakage monitoring           - Secures LLM <-> data
+  - Model DoS detection            source channel
+`,
+    modules: [
+      { name: 'AI Application Security', desc: 'Runs alongside LLM-powered applications monitoring for prompt injection, jailbreaking attempts, system-prompt leakage, model denial-of-service, sensitive-information leakage, and content-moderation failures, across cloud, on-premises, and hybrid environments.' },
+      { name: 'AI RAG Security', desc: 'Scans enterprise data before it is ingested into retrieval-augmented-generation pipelines, applying encryption and key management to structured and unstructured data and securing the communication channel between LLMs and external data sources.' }
+    ],
+    standards: ['OWASP Top 10 for LLM Applications'],
+    deploymentModels: ['Cloud', 'On-Premises', 'Hybrid'],
+    useCases: [
+      'Enterprises deploying customer-facing or internal LLM-powered assistants that need runtime (not just pre-deployment) monitoring for prompt injection and jailbreak attempts.',
+      'RAG pipelines ingesting sensitive structured/unstructured enterprise data that requires encryption and access control before it reaches the LLM.'
+    ],
+    troubleshooting: [
+      {
+        issue: 'Runtime monitoring flags an unusually high rate of false-positive prompt-injection alerts',
+        resolution: 'Runtime AI guardrails require tuning against real observed traffic, not a one-time default threshold -- review recent flagged traffic against actual outcomes and adjust sensitivity accordingly, the same way any semantic guardrail needs periodic retuning.'
+      }
+    ],
+    nextGenThemeCapabilities: [
+      {
+        theme: 'ai-security-fabric',
+        capability: 'Launched December 2025 with AI Application Security (prompt injection, jailbreak, system-prompt-leakage, model-DoS detection) and AI RAG Security (encrypting enterprise data before RAG ingestion) -- both explicitly designed around the OWASP Top 10 for LLM Applications. Thales has stated a 2026 roadmap including an MCP security gateway and end-to-end runtime access control.',
+        sourceLink: 'https://www.thalesgroup.com/en/news-centre/press-releases/thales-launches-ai-security-fabric-providing-ai-runtime-security-agentic',
+        verifiedDate: '2026-09-19',
+      },
+    ],
   }
 ]

@@ -215,6 +215,7 @@ export const ROUTE_META: RouteMeta[] = [
   { path: '/tools/mcp-manifest-auditor', title: 'MCP Manifest & Tool-Permission Auditor', description: 'Paste an MCP server tool manifest to flag identity-relevant risks — unbounded parameters, undistinguished destructive operations, missing scope declarations, credential-accepting parameters, and over-broad resource patterns — with a suggested least-privilege scope per tool.' },
   { path: '/tools/agent-governance-readiness', title: 'Agent Governance Readiness Assessor', description: 'A 26-question self-assessment across 8 agent-identity dimensions and 4 AI-control-plane functions, producing a banded maturity score, per-dimension breakdown, and a prioritized gap list with recommended next pages.' },
   { path: '/tools/passwordless-roi-calculator', title: 'Passwordless ROI & Helpdesk Cost Calculator', description: 'Model a 3-year cost comparison between password-based auth and a FIDO passwordless rollout, with a break-even point and sensitivity analysis — every default explicitly labeled as an illustrative assumption, not a vendor claim.' },
+  { path: '/tools/wallet-readiness-assessor', title: 'Wallet Readiness Assessor', description: 'Select your digital-wallet roles (verifier, issuer, holder), sector, and jurisdiction footprint for a role-specific readiness checklist, applicable standards profile, and relevant compliance deadlines.' },
 ]
 
 const DEFAULT_META: RouteMeta = {

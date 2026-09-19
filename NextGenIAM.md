@@ -1341,7 +1341,7 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P8.1–P8.3 `src/lib/tools/mcpManifest.ts` + tests → registry entry → page + route ritual (§7.3.1)
 - [x] P8.4–P8.6 Agent Governance Readiness: scoring lib + tests → registry → page + route (§7.3.2)
 - [x] P8.7–P8.9 `src/lib/tools/passwordlessRoi.ts` + tests → registry → page + route (§7.3.3) — sourced/labelled defaults
-- [ ] P8.10–P8.12 Wallet Readiness Assessor (§7.3.4)
+- [x] P8.10–P8.12 Wallet Readiness Assessor (§7.3.4)
 - [ ] P8.13–P8.15 Agent Identity Record Generator (§7.3.5)
 - [ ] P8.16–P8.18 Crypto Agility Inventory Builder (§7.3.6)
 - [ ] P8.19 Flip all 6 registry entries to `status: 'live'`; verify JSON-LD + FAQ render; mobile sweep

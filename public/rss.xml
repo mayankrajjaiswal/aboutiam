@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Sep 2026 15:24:52 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 19 Sep 2026 15:38:06 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -477,6 +477,14 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/passwordless-roi-calculator</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Model a 3-year cost comparison between continuing password-based authentication and rolling out FIDO passwordless devices — password-reset tickets, lockout time, and MFA-fatigue incidents versus device unit, fulfillment, and support costs.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Wallet Readiness Assessor]]></title>
+      <link>https://www.aboutiam.com/tools/wallet-readiness-assessor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/wallet-readiness-assessor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Select which digital-wallet roles (verifier, issuer, holder) your organization needs, your sector, and your jurisdiction footprint to get a role-specific readiness checklist, applicable standards profile, and relevant compliance deadlines.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

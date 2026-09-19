@@ -1089,6 +1089,25 @@ export const TOOLS: ToolMeta[] = [
       { q: 'What does the sensitivity view show?', a: 'The two inputs whose ±20% change most shifts your 3-year savings figure — useful for knowing which numbers are worth getting right before presenting a business case.' }
     ],
     relatedLinks: [{ label: 'Phishing-Resistant Auth Center →', href: '/next-gen/phishing-resistant-auth' }, { label: 'FIDO Fleet Operations Simulator →', href: '/playground/fido-fleet-ops' }]
+  },
+  {
+    slug: 'wallet-readiness-assessor',
+    taskTags: ['check-compliance'],
+    title: 'Wallet Readiness Assessor',
+    description: 'Select which digital-wallet roles (verifier, issuer, holder) your organization needs, your sector, and your jurisdiction footprint to get a role-specific readiness checklist, applicable standards profile, and relevant compliance deadlines.',
+    category: 'Supply Chain & Governance',
+    icon: BadgeCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['digital wallet readiness', 'eidas 2.0 checklist', 'verifiable credentials compliance', 'wallet acceptance obligation'],
+    analogy: 'Figuring out whether your business needs a card reader, a merchant account, or both before you can accept a new form of payment — verifying someone else\'s wallet, issuing your own credentials, and holding credentials yourself are three different jobs with three different checklists.',
+    expert: 'Takes your selected wallet roles (verifier / issuer / holder), sector, and jurisdiction footprint, then combines the matching role-specific engineering checklists, filters the applicable standards profile (OpenID4VCI, OpenID4VP, W3C VC/DID, eIDAS 2.0 ARF) to only what your roles need, and pulls the live, dated compliance deadlines from this site\'s own compliance-deadlines registry that are relevant to your jurisdiction — flagging whether an EU relying-party wallet-acceptance obligation likely applies to your sector.',
+    faqs: [
+      { q: 'Is this legal advice?', a: 'No — this is an educational starting point for planning, not legal or compliance advice. Always verify deadlines and obligations against the official source link and your own counsel before acting.' },
+      { q: 'What is the difference between the three roles?', a: 'A verifier accepts and checks wallet-presented credentials from others. An issuer creates and signs credentials that go into someone else\'s wallet. A holder operates or uses a wallet that stores and presents credentials. An organization can be any combination of the three.' },
+      { q: 'Where do the deadlines come from?', a: 'They are pulled live from this site\'s own compliance-deadlines registry, each with an official source link and a verification date — nothing here is invented for this tool specifically.' }
+    ],
+    relatedLinks: [{ label: 'Digital Wallets & VCs Center →', href: '/next-gen/digital-wallets' }, { label: 'Business Wallet Studio →', href: '/playground/business-wallet' }]
   }
 ]
 

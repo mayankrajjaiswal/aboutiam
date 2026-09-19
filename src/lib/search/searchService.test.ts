@@ -496,45 +496,16 @@ describe('getSearchIndex — Next-Gen IAM pillar registries', () => {
 })
 
 // NextGenIAM.md §11 invariant #1: every relatedLabs/relatedTools/route
-// reference in every Next-Gen IAM registry resolves to a real path in
-// ROUTE_META (or is one of the pillar's own not-yet-wired routes, tracked
-// explicitly below so this test fails loudly instead of silently passing
-// once those routes should have been wired in a later phase).
+// reference in every Next-Gen IAM registry resolves to a real, live path in
+// ROUTE_META. All 22 pillar routes shipped by the end of P8 (NextGenIAM.md
+// Appendix A), so this asserts directly against ROUTE_META with no
+// "planned but not yet wired" allowlist -- a stale cross-link is now a real
+// dead link, not a forward reference to a future phase.
 describe('Next-Gen IAM registries — cross-link resolution against ROUTE_META', () => {
-  // Routes this pillar's own registries reference that are planned but not
-  // yet wired into App.tsx/routeMeta.ts (P3/P6/P7/P8 per NextGenIAM.md).
-  // Remove an entry here the same commit its route is actually wired --
-  // leaving a stale entry here would silently mask a real dead link.
-  const PLANNED_NEXT_GEN_ROUTES = new Set([
-    '/next-gen',
-    '/next-gen/agentic-identity',
-    '/next-gen/ai-security-fabric',
-    '/next-gen/phishing-resistant-auth',
-    '/next-gen/digital-wallets',
-    '/next-gen/crypto-agility',
-    '/playground/agent-registry',
-    '/playground/delegation-chain',
-    '/playground/ai-guardrails',
-    '/playground/prompt-injection-escalation',
-    '/playground/agent-observability',
-    '/playground/fido-fleet-ops',
-    '/playground/attestation-policy',
-    '/playground/business-wallet',
-    '/playground/credential-issuance',
-    '/playground/crypto-migration',
-    '/tools/mcp-manifest-auditor',
-    '/tools/agent-governance-readiness',
-    '/tools/passwordless-roi-calculator',
-    '/tools/wallet-readiness-assessor',
-    '/tools/agent-identity-record',
-    '/tools/crypto-agility-inventory',
-  ])
-
   function assertResolvable(paths: string[], sourceLabel: string) {
     const liveRoutes = new Set(ROUTE_META.map((r) => r.path))
     for (const path of paths) {
-      const resolvable = liveRoutes.has(path) || PLANNED_NEXT_GEN_ROUTES.has(path)
-      expect(resolvable, `${sourceLabel}: "${path}" is neither a live route nor a tracked planned route`).toBe(true)
+      expect(liveRoutes.has(path), `${sourceLabel}: "${path}" is not a live route in ROUTE_META`).toBe(true)
     }
   }
 

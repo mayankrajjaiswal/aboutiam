@@ -1361,7 +1361,7 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P9.12 2 reference architectures (§7.4)
 - [x] P9.13 `vendorCatalog.ts` `THALES_PRODUCTS` theme capability mapping — publicly documented only (§2.6)
 - [x] P9.14 `tests/e2e/nextgen-pillar.spec.ts`; `npx playwright test` green (chromium — firefox/webkit browsers are not installed in this environment, a pre-existing infra limitation confirmed against an existing spec, not introduced here)
-- [ ] P9.15 Write the two new invariant tests from §11 (cross-link resolution; search-index coverage). The SSG↔routeMeta parity test **already exists** in `scripts/postbuild-ssg.test.ts` — just confirm it passes for all 22 new routes
+- [x] P9.15 Write the two new invariant tests from §11 (cross-link resolution; search-index coverage). The SSG↔routeMeta parity test **already exists** in `scripts/postbuild-ssg.test.ts` — just confirm it passes for all 22 new routes — both invariants were already written in P2.10; this step tightened the cross-link test by removing the now-obsolete `PLANNED_NEXT_GEN_ROUTES` allowlist (all 22 routes are live as of P8) and confirmed the SSG parity test passes for all 22
 - [ ] P9.16 Full `npm run build`; commit regenerated `public/` artifacts; `npm run audit:check` clean; final §2 confidentiality scan of the whole diff
 
 **Total: 109 explicit checkboxes.** P7 and P8 are written as grouped ranges (P7.1–P7.24, P8.1–P8.18); expand each group into its discrete 3–4 todos when you reach it, mirroring the P6 pattern. Fully expanded this is ~145 atomic steps.

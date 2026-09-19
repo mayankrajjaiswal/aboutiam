@@ -130,12 +130,12 @@ export default function OpaPlayground() {
 
         {/* MIDDLE COLUMN: Rego Policy Editor (lg:col-span-5) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="flex items-center justify-between gap-4">
-            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider flex items-center gap-1">
-              <FileCode className="w-5 h-5 text-accent-primary" /> Rego Policy Code (policy.rego)
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider flex items-center gap-1 min-w-0">
+              <FileCode className="w-5 h-5 text-accent-primary shrink-0" /> Rego Policy Code (policy.rego)
             </h3>
             
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 disabled={evaluating}
                 onClick={handleEvaluate}

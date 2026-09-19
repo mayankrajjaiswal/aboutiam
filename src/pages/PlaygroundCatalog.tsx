@@ -735,7 +735,7 @@ export default function PlaygroundCatalog() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {visiblePlaygrounds.map((pg, i) => (
-          <div key={i} className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover-cyber-glow flex flex-col justify-between">
+          <div key={i} className="group min-w-0 p-6 rounded-xl bg-bg-card border border-border-subtle hover-cyber-glow flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -752,10 +752,10 @@ export default function PlaygroundCatalog() {
                   <BookmarkButton item={{ id: `playground-${pg.link}`, title: pg.title, link: pg.link }} />
                 </div>
               </div>
-              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors wrap-break-word">
                 {pg.title}
               </h4>
-              <p className="text-sm text-text-secondary leading-relaxed">{pg.desc}</p>
+              <p className="text-sm text-text-secondary leading-relaxed wrap-break-word">{pg.desc}</p>
               
               {pg.enterpriseProducts && (
                 <div className="pt-3 border-t border-border-subtle border-dashed mt-3">

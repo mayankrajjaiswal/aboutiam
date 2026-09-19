@@ -622,7 +622,7 @@ export default function Home() {
               name="email"
               required
               placeholder="Enter your email"
-              className="flex-grow p-2.5 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary font-semibold"
+              className="flex-grow min-w-0 p-2.5 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary font-semibold"
             />
             <button
               type="submit"

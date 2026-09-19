@@ -108,7 +108,7 @@ export default function Header() {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(location.pathname, pageMeta.title)
 
   return (
-    <header className={`h-16 flex items-center justify-between px-6 bg-bg-card border-b border-border-subtle fixed top-0 right-0 left-0 z-30 transition-[left] duration-300 ${isDesktopSidebarCollapsed ? 'lg:left-20' : 'lg:left-64'}`}>
+    <header className={`h-16 flex items-center justify-between gap-2 px-3 sm:px-6 bg-bg-card border-b border-border-subtle fixed top-0 right-0 left-0 z-30 transition-[left] duration-300 ${isDesktopSidebarCollapsed ? 'lg:left-20' : 'lg:left-64'}`}>
       {breadcrumbJsonLd && (
         <script
           type="application/ld+json"
@@ -116,7 +116,7 @@ export default function Header() {
         />
       )}
       {/* Mobile Toggle & Breadcrumbs */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
         <button
           type="button"
           onClick={toggleMobileSidebar}
@@ -134,13 +134,13 @@ export default function Header() {
         >
           {isDesktopSidebarCollapsed ? <PanelLeftOpen className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
         </button>
-        <span className="text-sm font-bold text-text-primary tracking-wide">
+        <span className="text-sm font-bold text-text-primary tracking-wide truncate">
           {pageMeta.title}
         </span>
       </div>
 
       {/* Persistent Theme and Repo Controls */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
         {/* Search / Command Console button */}
         <button
           onClick={() => toggleSearch()}

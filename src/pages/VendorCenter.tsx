@@ -241,28 +241,28 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
         </div>
 
         {/* TOP LEVEL NAVIGATION TABS */}
-        <div className="flex bg-bg-base p-1.5 rounded-xl border border-border-subtle gap-1">
+        <div className="flex bg-bg-base p-1.5 rounded-xl border border-border-subtle gap-1 overflow-x-auto">
           <button
             onClick={() => setActiveSection('vendors')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'vendors' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeSection === 'vendors' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
           >
             🏢 Vendor Directory
           </button>
           <button
             onClick={() => setActiveSection('intelligence')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'intelligence' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeSection === 'intelligence' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
           >
             📰 Intelligence Hub
           </button>
           <button
             onClick={() => setActiveSection('events')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'events' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeSection === 'events' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
           >
             📅 Community Calendar
           </button>
           <button
             onClick={() => setActiveSection('social')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'social' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeSection === 'social' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
           >
             💬 Social Dashboard
           </button>

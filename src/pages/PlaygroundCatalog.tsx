@@ -640,6 +640,14 @@ export default function PlaygroundCatalog() {
       link: "/playground/agent-registry",
       badge: "Active (Next-Gen)",
       enterpriseProducts: "Thales OneWelcome, Microsoft Entra Agent ID, Okta"
+    },
+    {
+      title: "Delegation Chain Auditor",
+      desc: "Build a multi-hop on-behalf-of authority chain across the four agentic ecosystems, choose a delegation mechanism at each hop, and see whether authority narrows or widens, and who remains accountable for the final action.",
+      icon: ArrowLeftRight,
+      link: "/playground/delegation-chain",
+      badge: "Active (Next-Gen)",
+      enterpriseProducts: "Thales OneWelcome, Microsoft Entra Agent ID, Ping Identity"
     }
   ]
 

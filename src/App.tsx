@@ -219,6 +219,7 @@ const CloudPolicyAuditor = lazy(() => import('./pages/Tools/CloudPolicyAuditor')
 const SdJwtWalletSdk = lazy(() => import('./pages/Tools/SdJwtWalletSdk'))
 const AdvancedOauthHackDefend = lazy(() => import('./pages/Playgrounds/AdvancedOauthHackDefend'))
 const AgentRegistryStudio = lazy(() => import('./pages/Playgrounds/AgentRegistryStudio'))
+const DelegationChainAuditor = lazy(() => import('./pages/Playgrounds/DelegationChainAuditor'))
 
 // Next-Gen IAM pillar
 const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
@@ -451,6 +452,7 @@ export default function App() {
               <Route path="/next-gen/digital-wallets" element={<DigitalWalletsCenter />} />
               <Route path="/next-gen/crypto-agility" element={<CryptoAgilityCenter />} />
               <Route path="/playground/agent-registry" element={<AgentRegistryStudio />} />
+              <Route path="/playground/delegation-chain" element={<DelegationChainAuditor />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

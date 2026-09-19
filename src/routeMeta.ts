@@ -203,6 +203,7 @@ export const ROUTE_META: RouteMeta[] = [
   { path: '/next-gen/digital-wallets', title: 'Digital Wallets & Verifiable Credentials Center', description: 'The three wallet roles (issuer, holder, verifier), the under-served organizational business wallet, eIDAS 2.0 relying-party obligations, and 12 global wallet programmes compared.' },
   { path: '/next-gen/crypto-agility', title: 'Crypto Agility & Root of Trust Center', description: 'Post-quantum cryptography (NIST FIPS 203/204/205), hardware root of trust, and dependency-ordered migration planning — the substrate binding agentic identity, FIDO fleets, and digital wallets together.' },
   { path: '/playground/agent-registry', title: 'Agent Registry & Lifecycle Studio — Audit AI Agent Governance Gaps', description: 'Audit an AI agent identity record for missing owners, absent expiry, and over-broad authority, remediate each gap, then walk the agent through registration, approval, operation, and decommission.' },
+  { path: '/playground/delegation-chain', title: 'Delegation Chain Auditor — Multi-Hop Agent Authority Simulator', description: 'Build a multi-hop on-behalf-of chain across the four agentic ecosystems, choose a delegation mechanism at each hop, and see whether authority narrows or widens, and whether attribution survives to the final action.' },
 ]
 
 const DEFAULT_META: RouteMeta = {

@@ -18,8 +18,8 @@ describe('getTrackGraduationBadges', () => {
     expect(track3?.unlocked).toBe(false)
   })
 
-  it('returns exactly 6 track badges regardless of progress', () => {
-    expect(getTrackGraduationBadges({})).toHaveLength(6)
+  it('returns exactly 7 track badges regardless of progress', () => {
+    expect(getTrackGraduationBadges({})).toHaveLength(7)
   })
 
   it('treats an empty progress map as entirely locked', () => {

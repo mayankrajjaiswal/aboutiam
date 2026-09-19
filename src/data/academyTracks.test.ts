@@ -2,10 +2,16 @@ import { describe, it, expect } from 'vitest'
 import { ACADEMY_TRACKS } from './academyTracks'
 
 describe('ACADEMY_TRACKS', () => {
-  it('has 6 tracks and 36 total modules, matching the README/GEMINI count', () => {
-    expect(ACADEMY_TRACKS).toHaveLength(6)
+  it('has 7 tracks and 42 total modules, matching the README/GEMINI count', () => {
+    expect(ACADEMY_TRACKS).toHaveLength(7)
     const totalModules = ACADEMY_TRACKS.reduce((sum, t) => sum + t.modules.length, 0)
-    expect(totalModules).toBe(36)
+    expect(totalModules).toBe(42)
+  })
+
+  it('every track has exactly 6 modules, matching the global graduation progress bar ratio', () => {
+    for (const track of ACADEMY_TRACKS) {
+      expect(track.modules).toHaveLength(6)
+    }
   })
 
   it('every track and module has a unique, non-empty id', () => {

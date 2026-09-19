@@ -13,7 +13,8 @@ const TRACKS: { id: number; title: string }[] = [
   { id: 3, title: 'Modern Federation & APIs' },
   { id: 4, title: 'Customer IAM (CIAM)' },
   { id: 5, title: 'Enterprise Governance & Privilege' },
-  { id: 6, title: 'Zero Trust & Future Identity' }
+  { id: 6, title: 'Zero Trust & Future Identity' },
+  { id: 7, title: 'Next-Generation Identity' }
 ]
 
 const MODULES_PER_TRACK = 6

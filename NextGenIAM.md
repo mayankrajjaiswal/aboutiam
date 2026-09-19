@@ -1347,7 +1347,7 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P8.19 Flip all 6 registry entries to `status: 'live'`; verify JSON-LD + FAQ render; mobile sweep — all 6 tools were built with `status: 'live'` from the start; JSON-LD/FAQ rendering verified generically via `ToolPageShell` component tests; grep sweep for hardcoded pixel widths across all 6 tool pages found none
 
 ### P9 — Integration & Polish (16 todos)
-- [ ] P9.1 Academy track 7 with exactly 6 modules (§6.3) + `academyTracks.test.ts` green
+- [x] P9.1 Academy track 7 with exactly 6 modules (§6.3) + `academyTracks.test.ts` green — also updated `achievementRules.ts`/`.test.ts` (track-7 graduation badge), `Learn.tsx` (track-7 verification quiz), and the `GEMINI.md` track/module count reference
 - [ ] P9.2 Sidebar `nextGenItems` group + active-check wiring (§8.1)
 - [ ] P9.3 Home page Next-Gen strip (§8.2)
 - [ ] P9.4 Roadmap next-gen stage (§8.5)

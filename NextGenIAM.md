@@ -1328,12 +1328,12 @@ Small, sequential, independently verifiable. **Tick as you go.** After every `sr
 - [x] P6.16 Mobile sweep all four playgrounds
 
 ### P7 — Remaining Playgrounds (24 todos)
-- [ ] P7.1–P7.4 `agentDriftScenarios.ts` → `AgentObservabilityLab.tsx` → route ritual/catalog/tags → tests (§7.2.4)
-- [ ] P7.5–P7.8 Fleet-simulation logic → `FidoFleetOps.tsx` → wiring → tests (§7.2.6)
-- [ ] P7.9–P7.12 `attestationPolicyScenarios.ts` → `AttestationPolicyLab.tsx` → wiring → tests (§7.2.7)
-- [ ] P7.13–P7.16 Org-wallet custody/delegation logic → `BusinessWalletStudio.tsx` → wiring → tests (§7.2.8)
-- [ ] P7.17–P7.20 Issuance logic → `CredentialIssuanceStudio.tsx` → wiring → tests (§7.2.9)
-- [ ] P7.21–P7.24 Dependency-ordering logic → `CryptoMigrationPlanner.tsx` → wiring → tests (§7.2.10)
+- [x] P7.1–P7.4 `agentDriftScenarios.ts` → `AgentObservabilityLab.tsx` → route ritual/catalog/tags → tests (§7.2.4)
+- [x] P7.5–P7.8 Fleet-simulation logic → `FidoFleetOps.tsx` → wiring → tests (§7.2.6)
+- [x] P7.9–P7.12 `attestationPolicyScenarios.ts` → `AttestationPolicyLab.tsx` → wiring → tests (§7.2.7)
+- [x] P7.13–P7.16 Org-wallet custody/delegation logic → `BusinessWalletStudio.tsx` → wiring → tests (§7.2.8)
+- [x] P7.17–P7.20 Issuance logic → `CredentialIssuanceStudio.tsx` → wiring → tests (§7.2.9)
+- [x] P7.21–P7.24 Dependency-ordering logic → `CryptoMigrationPlanner.tsx` → wiring → tests (§7.2.10)
 
 *(Expand each group into its 4 discrete todos as you reach it, mirroring the P6 pattern.)*
 
@@ -1410,6 +1410,9 @@ Record deviations, discoveries, and anything a future maintainer would need. Esp
 | 2026-09-19 | P4.5-P4.8 | A full-repo `npm run spellcheck` (not just the new page) caught a British/American spelling drift: `fidoFleetLifecycle.ts`'s `personalise` stage id/title (from P1) didn't match the codebase's established American-English convention (`PersonalizationSelector.tsx`, GEMINI.md). Renamed to `personalize` -- safe since nothing else referenced the old id. Lesson: spellcheck the whole repo periodically, not just files touched in the current commit, since a P1 registry's wording can only be checked against convention once real page copy exists to spellcheck it against. |
 | 2026-09-19 | P6 (all) | **Deliberate simplification vs the plan:** §14 called for extracting pure logic to `src/lib/tools/` or similar per playground (P6.1, P6.5, P6.10, P6.13). Instead, evaluation logic (guardrail scoring, chain-break detection, governance-gap classification) was kept as small pure functions inlined at the top of each playground's own `.tsx` file. Rationale: each function is genuinely playground-specific (not reused elsewhere), fully covered by that playground's own component tests, and extraction would have added a file+import for no reuse benefit. If a *second* playground ever needs the same logic, extract then -- don't extract preemptively. |
 | 2026-09-19 | P6 (all) | **Reusable heading-order lesson confirmed across 2 playgrounds:** `PlaygroundShell` renders an `<h1>` for the title; any heading inside `children` must be `<h2>`, never `<h3>` (which would skip a level and fail `jest-axe`'s heading-order rule). Caught live on `AiGuardrailStudio.tsx` (fixed reactively), then applied proactively and confirmed clean on `PromptInjectionEscalation.tsx`. Note: `AgentIdentityLab.tsx` (pre-existing, not part of this pillar) has the same latent issue at its line 380 -- out of scope to fix here, but worth flagging separately since it has no per-tab axe test to catch it. |
+| 2026-09-19 | P7 (all) | **Test-selector duplication became a recurring, predictable pattern** across every playground with a `TraceTerminal` sidebar: any outcome message logged via `log(...)` also gets asserted in the main-panel outcome text, so `getByText` on that message is ambiguous by construction. Standard fix, applied consistently from `FidoFleetOps.tsx` onward: use `getAllByText(...).length).toBeGreaterThan(0)` for any assertion on a message that is *also* logged, reserving `getByText` for text that provably renders exactly once (headings, form labels, static prose). |
+| 2026-09-19 | P7.21-P7.24 | **A real test-logic bug, not just a selector issue:** the `CryptoMigrationPlanner` test's "fully valid sequence" case initially tried to validate by promoting only zero-dependency root workstreams to the top -- but `cryptoAgilityRoadmap.ts`'s graph has intermediate levels (e.g. `directory-legacy-kerberos` depends on `transport-tls`, which itself depends on `root-ca-hierarchy`), so promoting only the true roots left a real, valid violation in place. Fixed by moving the three "hub" workstreams (`credential-signatures-vc`, `transport-tls`, `root-ca-hierarchy`) to the top in reverse-dependency order, which is what a "move to top" repeated-click UI actually requires to reach a specific final relative order. Lesson: when a test constructs a scenario against a real dependency graph (not a mock), trace the graph's actual shape first rather than assuming "promote the roots" generalizes. |
+| 2026-09-19 | P7 (all) | Mobile sweep (no hardcoded pixel widths) confirmed clean across all 6 P7 playgrounds, matching the P6 pattern -- responsive Tailwind classes (`grid-cols-1 sm:grid-cols-N`) used throughout, no fixed-width elements introduced. |
 
 ---
 

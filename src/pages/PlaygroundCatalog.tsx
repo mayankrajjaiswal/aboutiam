@@ -692,6 +692,13 @@ export default function PlaygroundCatalog() {
       link: "/playground/business-wallet",
       badge: "Active (Next-Gen)",
       enterpriseProducts: "Thales OneWelcome, Microsoft Entra Verified ID"
+    },
+    {
+      title: "Credential Issuance Studio",
+      desc: "Play the issuer role: define a credential type, configure holder binding and validity window, issue to a simulated wallet, verify, then revoke — and see the real trade-off between long validity with status-list revocation and short validity with reissuance.",
+      icon: KeySquare,
+      link: "/playground/credential-issuance",
+      badge: "Active (Next-Gen)",
     }
   ]
 

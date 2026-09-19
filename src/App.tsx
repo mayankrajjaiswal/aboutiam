@@ -219,6 +219,9 @@ const CloudPolicyAuditor = lazy(() => import('./pages/Tools/CloudPolicyAuditor')
 const SdJwtWalletSdk = lazy(() => import('./pages/Tools/SdJwtWalletSdk'))
 const AdvancedOauthHackDefend = lazy(() => import('./pages/Playgrounds/AdvancedOauthHackDefend'))
 
+// Next-Gen IAM pillar
+const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
+
 function PageLoadingFallback() {
   return (
     <div className="flex items-center justify-center py-24">
@@ -434,6 +437,8 @@ export default function App() {
               <Route path="/tools/cloud-policy-auditor" element={<CloudPolicyAuditor />} />
               <Route path="/tools/sd-jwt-wallet-sdk" element={<SdJwtWalletSdk />} />
               <Route path="/playground/advanced-oauth-hack-defend" element={<AdvancedOauthHackDefend />} />
+
+              <Route path="/next-gen" element={<NextGenIamCenter />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

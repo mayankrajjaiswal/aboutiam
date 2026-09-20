@@ -70,12 +70,37 @@ describe('Next-Gen hub item deep links', () => {
     })
   }
 
-  it('ignores an unknown item id rather than highlighting nothing at all', async () => {
+  /**
+   * Two traps make this negative case easy to write wrongly, and it was written
+   * wrongly twice before landing:
+   *
+   * 1. The selector must be an attribute-substring match, not
+   *    `.ring-accent-primary`. The applied class is `ring-accent-primary/30`, and
+   *    an unescaped "/" is not part of a class name in a CSS selector -- so the
+   *    dot form matches nothing even when the ring IS present, making the
+   *    assertion pass for the wrong reason.
+   * 2. It must not be wrapped in `waitFor`. `waitFor` retries until its callback
+   *    passes, so "no ring exists" succeeds on the very first tick -- before the
+   *    hook's deferred `setTimeout` could ever have applied one. That is true of
+   *    a valid id too, so the test could not fail.
+   *
+   * Instead: positively await the tab content (proving the page settled), then
+   * assert the absence once, synchronously.
+   */
+  it('ignores an unknown item id instead of highlighting an arbitrary card', async () => {
     window.history.pushState({}, '', '/next-gen/ai-security-fabric?tab=threats&threat=not-a-real-threat')
     const { container } = renderWithProviders(<AiSecurityFabricCenter />)
+
+    // Wait for the deep-linked TAB to have actually rendered its cards, so the
+    // absence of a ring below is a real result rather than a not-yet-rendered one.
     await waitFor(() => {
-      expect(container.querySelectorAll('.ring-accent-primary')).toHaveLength(0)
+      expect(container.querySelectorAll('[id^="nextgen-threat-"]').length).toBeGreaterThan(0)
     })
+    // Give the hook's deferred timer more than its own delay to fire, if it were
+    // ever going to for an id this page should reject.
+    await new Promise((resolve) => setTimeout(resolve, 150))
+
+    expect(container.querySelectorAll('[class*="ring-accent-primary"]')).toHaveLength(0)
     expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled()
   })
 })

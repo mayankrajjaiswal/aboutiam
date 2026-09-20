@@ -18,6 +18,12 @@ import { ROUTE_META } from '../../src/routeMeta'
  *
  * 1440px is included so a future "fix" that simply clamps everything cannot
  * pass by collapsing desktop layout -- it asserts <main> keeps a sane width.
+ *
+ * Runs on chromium in CI for wall-clock reasons (211 routes x 3 viewports).
+ * The fix was separately verified on firefox and webkit at 320px and 768px
+ * across all 24 originally-failing routes plus the 6 pillar hubs -- worth
+ * re-checking on those engines if this rule is ever changed, since the
+ * underlying `min-width: auto` behaviour is where layout engines differ.
  */
 const ROUTES = [...new Set(ROUTE_META.map((r) => r.path))]
 

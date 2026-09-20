@@ -102,7 +102,7 @@ export const BUSINESS_WALLET_USE_CASES: BusinessWalletUseCase[] = [
     problemToday: 'Onboarding a new business customer for banking or payment services requires the bank to independently verify beneficial ownership, registration, and standing -- a slow, manual due-diligence process repeated by every institution the business deals with.',
     walletApproach: 'The business presents verifiable credentials (legal-entity, beneficial-ownership attestation) directly from its organizational wallet, letting the relying financial institution verify cryptographically rather than re-run manual checks from scratch.',
     credentialTypes: ['Beneficial-ownership attestation', 'Legal Entity Identifier (LEI)-linked credential'],
-    standardsProfile: ['openid4vp', 'vc-did'],
+    standardsProfile: ['openid4vc', 'vc-did'],
     governanceChallenges: ['The verifier must be confident the issuer of the beneficial-ownership attestation is itself trustworthy and current -- stale ownership data is a real compliance risk.'],
     businessValue: 'Reduces KYB onboarding time and duplicated due-diligence cost across every financial relationship a business maintains.',
     relatedLabs: ['/playground/business-wallet', '/playground/federated-vp'],

@@ -1157,5 +1157,108 @@ export const ARCHITECTURES: Architecture[] = [
         bestPractice: 'Require dual-operator sign-off for any change to a safety-critical setpoint.'
       }
     }
+  },
+
+  // ————————————————————————————————————————————————————————————————————————
+  // ADVANCED — NEXT-GEN IAM
+  // ————————————————————————————————————————————————————————————————————————
+  {
+    id: 'agentic_enterprise',
+    name: 'Agentic Enterprise Reference Architecture',
+    description: 'Models how an enterprise governs AI agents as first-class identities: a central agent registry issuing scoped credentials, a runtime AI control plane observing and intervening on agent behavior, and a tool gateway mediating every call an agent makes to an external system.',
+    difficulty: 'Advanced',
+    group: 'protocol',
+    defaultNode: 'agent_registry',
+    tags: ['agentic identity', 'ai agent governance', 'mcp', 'ai control plane', 'delegation', 'next-gen iam'],
+    nodes: {
+      agent_registry: {
+        title: 'Agent Identity Registry',
+        role: 'The system of record for every AI agent in the enterprise: owner, declared intent, permitted tools, and lifecycle state.',
+        analogy: 'HR\'s employee master record, but for AI agents — no agent gets a badge until it has an owner and a job description on file.',
+        spec: 'Stores the 8-field-group agent identity record (Identity, Ownership, Principal, Intent, Authority, Conditions, Provenance, Lifecycle) and issues short-lived, narrowly-scoped credentials via RFC 8693 Token Exchange rather than long-lived static API keys.',
+        threatModel: 'Threat: A "shadow" agent operating with standing credentials outside the registry. Mitigation: Run a periodic discovery sweep across API gateway and MCP tool-manifest logs, flagging any observed agent-like credential that has no matching registry record.',
+        bestPractice: 'Make the owner field mandatory and require an explicit transfer step when an owner leaves — never let ownership silently go stale.'
+      },
+      orchestrator_agent: {
+        title: 'Orchestrator Agent',
+        role: 'A broadly-scoped agent that receives a task, plans a sequence of steps, and delegates individual steps to narrower sub-agents.',
+        analogy: 'A project manager who breaks a large task into smaller assignments and hands each to the specialist actually equipped to do it — without handing every specialist a master key to the whole building.',
+        spec: 'Spawns sub-agents via RFC 8693 Token Exchange, minting each sub-agent a token scoped to only what its specific sub-task requires — never a copy of the orchestrator\'s own full authority.',
+        threatModel: 'Threat: Sub-agent privilege inheritance — a spawned sub-agent silently receives the parent\'s complete scope set instead of a minimal subset. Mitigation: Enforce monotonic scope narrowing at every delegation hop, verified at token-exchange time, not just by convention.',
+        bestPractice: 'Never spawn a sub-agent with a copy of the parent\'s token — always mint a fresh, narrower token scoped to the sub-task alone.'
+      },
+      ai_control_plane: {
+        title: 'AI Control Plane',
+        role: 'The runtime governance layer that discovers agent activity, evaluates each action against declared intent, enforces policy inline, and observes behavior for drift.',
+        analogy: 'A watchful manager who does not just hand out job descriptions and walk away — they check in, notice when work drifts from the brief, and step in before a small deviation becomes a real problem.',
+        spec: 'Implements the Discover → Decide → Enforce → Observe loop: a semantic guardrail evaluates each pending tool call against the agent\'s declared intent (catching what structured policy alone would miss), an inline enforcement point can block or modify actions in real time, and a drift detector compares observed behavior against the registry\'s declared-intent baseline.',
+        threatModel: 'Threat: Prompt-injection-driven escalation — hidden instructions in content the agent merely reads trick it into an unrequested high-privilege tool call. Mitigation: The semantic guardrail evaluates every tool call against the session\'s original declared intent, independent of what the agent\'s own reasoning "decided" to do.',
+        bestPractice: 'Tune guardrail strictness against real observed traffic, not a one-time default — the false-positive/false-negative trade-off shifts as agent behavior and attack patterns evolve.'
+      },
+      tool_gateway: {
+        title: 'Tool / MCP Gateway',
+        role: 'The single mediation point every agent tool call passes through on its way to an external system, whether that system is an internal API or an MCP server.',
+        analogy: 'A single reception desk that every visitor must check in at, rather than each visitor being free to wander directly into any office in the building.',
+        spec: 'Terminates every agent-to-tool call, validates the calling agent\'s token and scope against the tool\'s declared permission requirements, and logs the call for the observability layer — auditing MCP tool manifests for over-broad or undistinguished-destructive tool definitions before they are exposed at all.',
+        threatModel: 'Threat: An MCP tool manifest exposes an unscoped, destructive operation with no distinguishing annotation, and an agent calls it believing it to be safe. Mitigation: Audit every tool manifest for missing scope declarations and unannotated destructive operations before the tool is registered with the gateway.',
+        bestPractice: 'Treat every new MCP server integration as requiring a manifest audit before go-live, the same way a new API integration would require a security review.'
+      }
+    },
+    relatedResources: [
+      { title: 'Agentic Identity Center', path: '/next-gen/agentic-identity', type: 'references' },
+      { title: 'AI Security Fabric Center', path: '/next-gen/ai-security-fabric', type: 'references' },
+      { title: 'Agent Registry & Lifecycle Studio', path: '/playground/agent-registry', type: 'playground' },
+      { title: 'Delegation Chain Auditor', path: '/playground/delegation-chain', type: 'playground' },
+      { title: 'MCP Manifest & Tool-Permission Auditor', path: '/tools/mcp-manifest-auditor', type: 'tool' }
+    ]
+  },
+  {
+    id: 'wallet_relying_party',
+    name: 'Wallet-Enabled Relying Party Reference Architecture',
+    description: 'Models how an organization accepts digital-wallet-presented verifiable credentials: a verifier endpoint requesting presentations, a trust-registry lookup deciding which issuers are actually trusted, and the fallback path kept alive for users without a wallet yet.',
+    difficulty: 'Advanced',
+    group: 'protocol',
+    defaultNode: 'wallet_holder',
+    tags: ['digital wallet', 'verifiable credentials', 'openid4vp', 'eidas', 'relying party', 'next-gen iam'],
+    nodes: {
+      wallet_holder: {
+        title: 'Wallet Holder (Customer)',
+        role: 'The end user holding a digital wallet app containing verifiable credentials issued to them by one or more trusted issuers.',
+        analogy: 'A traveler carrying a physical passport in their pocket, choosing exactly which stamped pages to show a border officer rather than handing over the whole document.',
+        spec: 'The wallet app stores credentials (e.g. a Personal Identification Data credential in mdoc or SD-JWT VC format) and responds to an OpenID4VP presentation request by selectively disclosing only the requested claims.',
+        threatModel: 'Threat: A malicious verifier requests far more claims than its stated purpose requires ("over-asking"). Mitigation: Wallets should surface exactly which claims a presentation request is asking for before the holder consents, and holders should be able to decline over-broad requests.',
+        bestPractice: 'Never design a verifier integration that requests a full credential when a single selectively-disclosed claim (e.g. "over 18") would satisfy the actual business need.'
+      },
+      verifier_endpoint: {
+        title: 'Relying Party Verifier Endpoint',
+        role: 'The organization\'s system that requests a credential presentation from a wallet and cryptographically verifies what comes back.',
+        analogy: 'The bar\'s bouncer who scans an ID\'s barcode with a verified scanner rather than just eyeballing whether it looks real.',
+        spec: 'Implements OpenID4VP to issue a presentation request and validate the returned presentation\'s signature, freshness, and revocation status before passing verified claims to the core system.',
+        threatModel: 'Threat: A revoked or expired credential is presented and accepted as still valid because the verifier cached a prior verification result. Mitigation: Check live revocation status and credential freshness on every single presentation, never from a cache.',
+        bestPractice: 'Support at least one widely-adopted credential format (mdoc, SD-JWT VC) rather than inventing a bespoke verification pipeline per wallet vendor.'
+      },
+      trust_registry: {
+        title: 'Trust Registry Lookup',
+        role: 'The explicit, separate control that decides whether a given credential issuer is actually trusted, independent of whether its signature verifies correctly.',
+        analogy: 'Checking that a diploma\'s issuing university is actually accredited, not just that the diploma\'s seal looks authentic — a forger can fake a seal, but cannot fake accreditation status.',
+        spec: 'Maintains (or queries) a list of accredited credential issuers under a given trust framework (e.g. the eIDAS 2.0 Architecture and Reference Framework), consulted on every presentation before its claims are honored.',
+        threatModel: 'Threat: A cryptographically valid credential from an issuer the relying party never intended to trust is accepted at face value. Mitigation: Every presented credential is checked against the trust-registry lookup before being honored, regardless of whether its signature verifies.',
+        bestPractice: 'Treat the trust-registry check as a mandatory, auditable step in the verification pipeline — never conflate "signature verifies" with "issuer is trusted."'
+      },
+      legacy_kyc_fallback: {
+        title: 'Legacy Onboarding Fallback Path',
+        role: 'The pre-existing document-scan or manual identity-proofing flow, kept fully operational for users who do not yet hold a compatible wallet.',
+        analogy: 'Keeping the manual toll booth open next to the new electronic toll lane during a phased rollout, since not every driver has the new transponder yet.',
+        spec: 'Runs alongside the wallet-based path for the full multi-year transition window, since national wallet availability itself typically rolls out unevenly across jurisdictions and cannot be assumed to cover the full user base on any single date.',
+        threatModel: 'Threat: Forcing a hard cutover to wallet-only onboarding excludes the large share of users without a wallet yet, or creates business pressure to weaken the fallback path\'s own security to compensate. Mitigation: Keep the legacy path\'s security bar exactly as high as before, and drive wallet adoption through incentive rather than forced exclusion.',
+        bestPractice: 'Do not treat the fallback path as a temporary afterthought — budget for it to remain fully maintained for the entire multi-year transition window.'
+      }
+    },
+    relatedResources: [
+      { title: 'Digital Wallets & VCs Center', path: '/next-gen/digital-wallets', type: 'references' },
+      { title: 'Credential Issuance Studio', path: '/playground/credential-issuance', type: 'playground' },
+      { title: 'Business Wallet Studio', path: '/playground/business-wallet', type: 'playground' },
+      { title: 'Wallet Readiness Assessor', path: '/tools/wallet-readiness-assessor', type: 'tool' }
+    ]
   }
 ]

@@ -68,6 +68,15 @@ const ERAS: Era[] = [
   },
   {
     id: 6,
+    year: '2024-2026',
+    title: 'Agentic Identity & Post-Quantum Migration',
+    boundary: 'AI Agent Principals & Cryptographic Shelf-Life Boundaries',
+    layman: 'Two things converge at once. First, companies start giving AI assistants their own ID badges instead of borrowing a human\'s — with a named owner, a job description, and an expiry date. Second, everyone starts changing the locks on their vaults before quantum computers are good enough to pick the old ones.',
+    expert: 'The Model Context Protocol (Anthropic, Nov 2024) standardized how AI agents connect to external tools, accelerating the need for agent-specific identity (Microsoft Entra Agent ID reached general availability April 2026). In parallel, NIST finalized the first post-quantum cryptography standards -- FIPS 203 (ML-KEM), 204 (ML-DSA), 205 (SLH-DSA) -- in August 2024, and the EU\'s eIDAS 2.0 regulation (in force since May 2024) began mandating Digital Identity Wallets across member states.',
+    techBadge: 'MCP, Agent Identity, FIPS 203/204/205, eIDAS 2.0'
+  },
+  {
+    id: 7,
     year: '2030+',
     title: 'Continuous Ambient Trust & SSI',
     boundary: 'Zero-Session Post-Auth Boundaries',
@@ -412,22 +421,22 @@ export default function IdentityTimeline() {
           Want to get hands-on with the protocols this timeline only narrates? Try the <Link to="/playground/legacy-federation" className="text-accent-primary font-semibold hover:text-accent-hover">Legacy & Academic Federation Playground</Link> for RADIUS, TACACS+, and Shibboleth/eduGAIN.
         </p>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-x-auto max-w-full">
           <button
             onClick={() => setPageView('timeline')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'timeline' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'timeline' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
           >
             <History className="w-3.5 h-3.5" /> Timeline
           </button>
           <button
             onClick={() => setPageView('hall-of-fame')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'hall-of-fame' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'hall-of-fame' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
           >
             <Award className="w-3.5 h-3.5" /> Hall of Fame
           </button>
           <button
             onClick={() => setPageView('patents')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'patents' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'patents' ? 'bg-accent-glow text-accent-primary border border-accent-primary/20' : 'text-text-secondary hover:text-text-primary border border-transparent'}`}
           >
             <FileText className="w-3.5 h-3.5" /> Patent Timeline
           </button>

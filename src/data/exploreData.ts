@@ -1,7 +1,7 @@
 export interface ExploreProduct {
   id: string
   name: string
-  type: 'Open Source' | 'Enterprise SaaS' | 'Workforce SaaS' | 'CIAM' | 'Secrets Engine' | 'PAM & Access' | 'Directory Service'
+  type: 'Open Source' | 'Enterprise SaaS' | 'Workforce SaaS' | 'CIAM' | 'Secrets Engine' | 'PAM & Access' | 'Directory Service' | 'Agentic Identity Platform' | 'Wallet Infrastructure'
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
   license: string
   deployment: string
@@ -460,6 +460,51 @@ ipa-client-install \\
   --server=ipa.aboutiam.com \\
   --realm=ABOUTIAM.COM \\
   --mkhomedir`
+  },
+  {
+    id: 'entra-agent-id',
+    name: 'Microsoft Entra Agent ID',
+    type: 'Agentic Identity Platform',
+    difficulty: 'Advanced',
+    license: 'Enterprise Commercial',
+    deployment: 'Microsoft Azure Cloud Native SaaS (part of the Microsoft Entra / Agent 365 family)',
+    bestUse: 'Purpose-built identity and access platform for AI agents — creates a first-class agent identity (distinct from a user or service principal) with a named sponsor, Conditional Access, and ID Protection coverage. Reached general availability in April 2026.',
+    protocols: { oidc: true, saml: false, scim: false, fido2: false, ldap: false },
+    tags: ['agentic identity', 'ai agent governance', 'agent 365', 'non-human identity'],
+    integrationSnippet: `# Microsoft Graph — create an agent identity (beta endpoint)
+POST https://graph.microsoft.com/beta/servicePrincipals/Microsoft.Graph.AgentIdentity
+OData-Version: 4.0
+Content-Type: application/json
+Authorization: Bearer {token}
+
+{
+  "displayName": "refund-processing-subagent",
+  "agentIdentityBlueprintId": "{blueprint-app-id}",
+  "sponsors@odata.bind": [
+    "https://graph.microsoft.com/beta/users/{sponsor-user-id}"
+  ]
+}`
+  },
+  {
+    id: 'thales-digital-id-wallet',
+    name: 'Thales Digital ID Wallet',
+    type: 'Wallet Infrastructure',
+    difficulty: 'Advanced',
+    license: 'Enterprise Commercial',
+    deployment: 'Mobile app + Thales Trusted Cred Platform (issuance) / Thales Mobile Security Core (on-device key protection)',
+    bestUse: 'Government and relying-party wallet infrastructure for storing, managing, and selectively sharing digital identity credentials (PID, mobile driving licence, banking credentials) issued by multiple trusted issuers, built for eIDAS 2.0 / EUDI Wallet compliance.',
+    protocols: { oidc: false, saml: false, scim: false, fido2: false, ldap: false },
+    tags: ['eidas 2.0', 'eudi wallet', 'verifiable credentials', 'mobile driving licence'],
+    integrationSnippet: `# Illustrative OpenID4VCI credential offer a Thales Trusted Cred
+# Platform issuer might present to a wallet (see standardsData.ts
+# 'openid4vci' for the full OpenID Foundation specification)
+{
+  "credential_issuer": "https://issuer.example-govid.eu",
+  "credential_configuration_ids": ["eu.europa.ec.eudi.pid_mdoc"],
+  "grants": {
+    "authorization_code": { "issuer_state": "st_9f21a" }
+  }
+}`
   }
 ]
 

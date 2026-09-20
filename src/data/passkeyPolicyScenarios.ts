@@ -49,6 +49,26 @@ export const AUTHENTICATOR_DEVICES: AuthenticatorDevice[] = [
     attestationFormat: 'none',
     isHardwareBacked: false,
     description: 'A software-emulated virtual authenticator running in a developer terminal. Exportable, malleable, and insecure for high-risk enterprise roles.'
+  },
+  {
+    id: 'feitian_epass_fips',
+    name: 'Feitian ePass FIDO2 (FIPS)',
+    aaguid: '833b721a-ff5f-4d00-bb2e-bdda3ec01e29',
+    attachment: 'cross-platform',
+    hasResidentKey: true,
+    attestationFormat: 'packed', // hardware attestation
+    isHardwareBacked: true,
+    description: 'A second FIPS-validated hardware security key from a different vendor. Demonstrates that an enterprise AAGUID allow-list should hold multiple approved hardware AAGUIDs, not a single vendor.'
+  },
+  {
+    id: 'yubikey_5_non_fips',
+    name: 'YubiKey 5 Series (Non-FIPS, Consumer SKU)',
+    aaguid: 'ee882879-721c-4913-9775-3dfcce97072a',
+    attachment: 'cross-platform',
+    hasResidentKey: true,
+    attestationFormat: 'packed', // hardware attestation
+    isHardwareBacked: true,
+    description: 'A genuine hardware security key with valid packed attestation, but the consumer (non-FIPS) SKU that has never been through enterprise procurement. Hardware-backed and correctly attested, yet still not on the corporate AAGUID allow-list.'
   }
 ]
 

@@ -14,7 +14,7 @@ export interface Term {
   fullName: string
   analogy: string
   expert: string
-  category: 'Foundations' | 'Directories' | 'Protocols' | 'Governance' | 'Cryptography' | 'Zero Trust' | 'Decentralized' | 'Authorization' | 'Provisioning'
+  category: 'Foundations' | 'Directories' | 'Protocols' | 'Governance' | 'Cryptography' | 'Zero Trust' | 'Decentralized' | 'Authorization' | 'Provisioning' | 'Agentic Identity'
   toolUrl?: string
 }
 
@@ -98,7 +98,7 @@ export default function Encyclopedia() {
           </div>
 
           <div className="flex flex-wrap gap-1.5">
-            {['All', 'Foundations', 'Directories', 'Protocols', 'Authorization', 'Governance', 'Provisioning', 'Cryptography', 'Zero Trust', 'Decentralized'].map(cat => (
+            {['All', 'Foundations', 'Directories', 'Protocols', 'Authorization', 'Governance', 'Provisioning', 'Cryptography', 'Zero Trust', 'Decentralized', 'Agentic Identity'].map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}

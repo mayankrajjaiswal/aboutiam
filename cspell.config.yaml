@@ -18,6 +18,7 @@ words:
   - Algs
   - amara
   - ampw
+  - annualizes
   - Analyzability
   - apisec
   - apiserver
@@ -42,6 +43,7 @@ words:
   - authorization-grant-type
   - authtime
   - automount
+  - autopay
   - autotable
   - Axiomatics
   - backchannel
@@ -215,6 +217,7 @@ words:
   - EDUGAIN
   - edugain
   - eidas
+  - epass
   - enterprise-grade
   - ents
   - Eran
@@ -238,6 +241,7 @@ words:
   - fapi
   - Fapi
   - fedramp
+  - feitian
   - FERPA
   - FHIR
   - fhir
@@ -354,6 +358,7 @@ words:
   - ITDR
   - Jaccard
   - jaccard
+  - jailbreaking
   - jailbroken
   - jaiswal
   - Jamf
@@ -400,6 +405,7 @@ words:
   - kfpao
   - kid
   - kinit
+  - kmip
   - Kostenstelle
   - Kqqw
   - Kratos
@@ -497,6 +503,7 @@ words:
   - nciphertext
   - NERUZH
   - netlify
+  - networkidle
   - Netlogon
   - NETLOGON
   - neuman
@@ -660,6 +667,7 @@ words:
   - RPID
   - RSAC
   - rubygems
+  - ruggedized
   - rulebook
   - runas
   - runinstances
@@ -821,6 +829,7 @@ words:
   - unparseable
   - Unredacted
   - unredacted
+  - unrequested
   - unreviewed
   - unrevocable
   - unrotated
@@ -842,6 +851,7 @@ words:
   - vermillion
   - Vertrieb
   - Vggv
+  - Vienot
   - viewbox
   - viewports
   - visual-first
@@ -860,6 +870,7 @@ words:
   - WCDB
   - webapi
   - webauthn
+  - WCAG
   - webauthn's
   - webkit
   - webllm
@@ -913,3 +924,98 @@ words:
   - ZTNA
   - ztna
   - zustand
+  - agentic
+  - Agentic
+  - AGENTIC
+  - AAGUID
+  - Aaguid
+  - aaguid
+  - aaguids
+  - FDO
+  - FIDO2
+  - onboarding
+  - CIBA
+  - Ciba
+  - ciba
+  - GNAP
+  - Gnap
+  - RAR
+  - HNDL
+  - hndl
+  - eIDAS
+  - EIDAS
+  - EUDI
+  - Eudi
+  - eudi
+  - VCI
+  - VCs
+  - vcs
+  - mDL
+  - mDLs
+  - MLKEM
+  - MLDSA
+  - SLHDSA
+  - vcei
+  - VCEI
+  - OpenID4VCI
+  - OpenID4VP
+  - guardrails
+  - Guardrails
+  - unguardrailed
+  - deprovision
+  - deprovisioning
+  - reprovision
+  - revocable
+  - unrevoked
+  - subagent
+  - subagents
+  - Subagent
+  - Subagents
+  - orchestrator
+  - orchestrators
+  - Orchestrator
+  - CNSA
+  - HSMs
+  - deprecations
+  - licences
+  - checkability
+  - SECP
+  - EPID
+  - QEAA
+  - QEAAs
+  - Licence
+  - harmonised
+  - nextgen
+  - Syncable
+  - syncable
+  - itsme
+  - Singpass
+  - Corppass
+  - MitID
+  - DigiLocker
+  - Aadhaar
+  - bankid
+  - TDIF
+  - nemid
+  - mynumber
+  - multistate
+  - govbr
+  - overgoverned
+  - Downscope
+  - downscoping
+  - baselining
+  - CMDB
+  - workstream
+  - Workstream
+  - workstreams
+  - Workstreams
+  - WORKSTREAMS
+  - reissuance
+  - extractability
+  - keyholders
+  - zeroizing
+  - formfactor
+  - usecase
+  - anonymization
+  - Anand
+  - apikey

@@ -1280,5 +1280,399 @@ response_type=code&client_id=tpp-123&redirect_uri=https://tpp.example/cb
       { title: 'FAPI 2.0 / Open Banking Security Profile Lab', path: '/playground/fapi2', type: 'playground' },
       { title: 'OAuth Request Builder', path: '/tools/oauth-builder', type: 'tool' }
     ]
+  },
+  {
+    id: 'mcp',
+    title: 'MCP',
+    fullname: 'Model Context Protocol',
+    rfcs: ['Not an IETF RFC — an open protocol specification'],
+    year: '2024 (announced) / evolving',
+    difficulty: 'Intermediate',
+    category: 'Authorization',
+    summary: 'MCP is an open protocol standardizing how AI applications (MCP clients) connect to external data sources and tools (MCP servers) — the "universal adapter" that lets an agent reach a tool without a bespoke integration per pairing.',
+    problem: 'Every AI application that wanted to reach external data or tools needed a custom, one-off integration per data source — an N×M integration problem that made agent tool access both slow to build and hard to govern consistently.',
+    whyExists: 'To give AI applications and the tools/data they need a common protocol boundary, so identity and authorization controls can be applied consistently at that boundary rather than reinvented per integration.',
+    flowchart: `
++-------------------------------------------------------------+
+|                   MCP CLIENT <-> SERVER FLOW                 |
++-------------------------------------------------------------+
+
+  [ AI Application / Agent ]           [ MCP Server ]
+      (MCP Client)                    (exposes tools/data)
+             |                                 |
+             |--1. Discover available tools -->|
+             |<-2. Tool manifest (schemas) -----|
+             |                                 |
+             |--3. Invoke tool call w/ args --->|
+             |<-4. Tool result -----------------|
+             |                                 |
+      [ Agent reasons over result, continues task ]
+`,
+    messageFormat: `// MCP tool invocation (illustrative JSON-RPC-style shape)
+{
+  "method": "tools/call",
+  "params": {
+    "name": "search_customer_records",
+    "arguments": { "query": "order #4471" }
+  }
+}`,
+    vulnerabilities: [
+      'Tool poisoning — a malicious or compromised MCP server\'s tool description misleads the connecting agent into leaking data or misusing a tool.',
+      'Unbounded tool parameters or ambiguous descriptions that invite an agent to call a tool in an unintended, over-broad way.',
+      'No built-in least-privilege model — authorization over which tools an agent may call must be layered on separately.'
+    ],
+    bestPractices: [
+      'Maintain an allow-list of vetted MCP servers; treat any unregistered server as untrusted by default.',
+      'Audit tool manifests for unbounded parameters and vague descriptions before allow-listing (see the MCP Manifest Auditor tool).',
+      'Scope which tools an agent may call at the identity layer, not just at the MCP server\'s own discretion.'
+    ],
+    vendorSupport: [
+      'Anthropic: original publisher of the MCP specification (November 2024); protocol now stewarded via the Agentic AI Foundation (Linux Foundation).',
+      'Broad early ecosystem adoption across AI coding assistants and agent frameworks integrating MCP servers for tool/data access.'
+    ],
+    relatedResources: [
+      { title: 'MCP Server Playground', path: '/playground/mcp-server', type: 'playground' },
+      { title: 'MCP Manifest & Tool-Permission Auditor', path: '/tools/mcp-manifest-auditor', type: 'tool' }
+    ]
+  },
+  {
+    id: 'rfc9396-rar',
+    title: 'RFC 9396',
+    fullname: 'OAuth 2.0 Rich Authorization Requests (RAR)',
+    rfcs: ['RFC 9396'],
+    year: '2023',
+    difficulty: 'Advanced',
+    category: 'Authorization',
+    summary: 'RAR introduces the `authorization_details` parameter, letting an OAuth request carry fine-grained, structured, purpose-bearing authorization data instead of a flat list of scope strings — the natural fit for declaring exactly what an AI agent is being authorized to do.',
+    problem: 'Traditional OAuth scopes are coarse strings ("read", "write") with no room to express the specific purpose, amount, or constraints of a requested authorization — insufficient for scenarios like "transfer up to $500 to this specific account" or "act on this specific claim only."',
+    whyExists: 'To let a client express fine-grained, structured authorization requirements directly in the authorization request, giving both the authorization server and the resource server richer, purpose-bound information to evaluate and enforce.',
+    flowchart: `
++-------------------------------------------------------------+
+|             RFC 9396 RICH AUTHORIZATION REQUEST               |
++-------------------------------------------------------------+
+
+  [ Client / Agent ]                  [ Authorization Server ]
+             |                                     |
+             |--1. POST /authorize                 |
+             |   authorization_details=[{           |
+             |     "type": "payment_initiation",     |
+             |     "actions": ["initiate"],           |
+             |     "amount": {"max": 500}       ---->|
+             |   }]                                 |
+             |                                     |
+             |<-2. User consents to the SPECIFIC     |
+             |     structured request, not a         |
+             |     generic scope string --------------|
+`,
+    messageFormat: `// RFC 9396 authorization_details (illustrative)
+{
+  "authorization_details": [
+    {
+      "type": "agent_task_authorization",
+      "actions": ["refund:request"],
+      "locations": ["https://api.example.com/refunds"],
+      "datatypes": ["order-metadata"],
+      "identifier": "refund-subagent-7f3a"
+    }
+  ]
+}`,
+    vulnerabilities: [
+      'An attacker using the authorization server\'s consent screen to reveal encrypted authorization_details by injecting request data crafted on a device they control.',
+      'Over-sharing authorization_details with clients/resource servers beyond a strict need-to-know basis.'
+    ],
+    bestPractices: [
+      'Show the user only the specific fields of authorization_details relevant to their consent decision, not the full raw structure.',
+      'Share authorization_details with downstream resource servers on a need-to-know basis per local policy, not broadcast wholesale.',
+      'Use RAR to encode an AI agent\'s declared intent directly into the token request, giving the resource server a structured basis for enforcement.'
+    ],
+    vendorSupport: [
+      'Authlete: documented RAR support in its OAuth/OIDC server implementation.',
+      'Emerging support across FAPI 2.0-aligned and financial-grade authorization servers.'
+    ],
+    relatedResources: [
+      { title: 'Agent Identity Record Generator', path: '/tools/agent-identity-record', type: 'tool' },
+      { title: 'Agent Registry & Lifecycle Studio', path: '/playground/agent-registry', type: 'playground' }
+    ]
+  },
+  {
+    id: 'ciba',
+    title: 'CIBA',
+    fullname: 'OpenID Connect Client-Initiated Backchannel Authentication',
+    rfcs: ['OpenID Connect CIBA Core 1.0 (OpenID Foundation Final Specification)'],
+    year: '2021',
+    difficulty: 'Advanced',
+    category: 'Authorization',
+    summary: 'CIBA lets a relying party initiate an authentication request without redirecting the user\'s browser, decoupling the "consumption device" (where the request originates) from the "authentication device" (where the user actually approves it) — the standards fit for keeping a human genuinely in the loop on an agent\'s action.',
+    problem: 'An AI agent acting on a user\'s behalf, or a service initiating a transaction the user isn\'t actively browsing to approve, has no standard OIDC flow to request that approval without a browser redirect the user may not be present for.',
+    whyExists: 'To support authentication flows where the device requesting access and the device the user approves on are different (or the user isn\'t actively at a browser), common in financial services (PSD2 Strong Customer Authentication) and equally applicable to agent-initiated actions needing a genuine human approval step.',
+    flowchart: `
++-------------------------------------------------------------+
+|                    CIBA BACKCHANNEL FLOW                      |
++-------------------------------------------------------------+
+
+ [ Consumption Device ]        [ OpenID Provider ]   [ Auth Device ]
+ (e.g. an agent's request)            |               (user's phone)
+             |                        |                     |
+             |--1. POST /bc-authorize |                     |
+             |   login_hint=user  --->|                     |
+             |                        |--2. Push approval -->|
+             |                        |                     |
+             |                        |<-3. User approves ---|
+             |<-4. Poll/Ping/Push:    |                     |
+             |     token delivered ---|                     |
+`,
+    messageFormat: `// CIBA backchannel authentication request (illustrative)
+POST /bc-authorize HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=refund-orchestrator-agent
+&scope=openid refund:approve
+&login_hint=user_12345
+&binding_message=Approve refund of $450 to order #4471`,
+    vulnerabilities: [
+      'Consent/approval fatigue — a user rubber-stamping backchannel approval requests without reading them, especially if an agent generates many.',
+      'Insufficient binding_message detail letting a user approve a request without understanding exactly what they\'re authorizing.'
+    ],
+    bestPractices: [
+      'Always populate binding_message with specific, human-readable detail about exactly what is being approved.',
+      'Rate-limit backchannel authentication requests per agent to prevent approval-fatigue attacks.',
+      'Use CIBA specifically for the human-approval trigger step in an agent\'s declared-intent record, not as a blanket substitute for scoped authorization.'
+    ],
+    vendorSupport: [
+      'Curity, Auth0, SecureAuth, Keycloak (community extensions): documented CIBA flow support.',
+      'Financial-services identity providers in PSD2-regulated markets commonly implement CIBA for Strong Customer Authentication.'
+    ],
+    relatedResources: [
+      { title: 'Agentic Identity Center', path: '/next-gen/agentic-identity', type: 'references' },
+      { title: 'Delegation Chain Auditor', path: '/playground/delegation-chain', type: 'playground' }
+    ]
+  },
+  {
+    id: 'agent-authz-emerging',
+    title: 'Emerging Agent Authorization Drafts',
+    fullname: 'Emerging IETF / OpenID Foundation Drafts for AI Agent Authorization',
+    rfcs: ['Multiple active IETF and OpenID Foundation drafts — not yet finalized standards'],
+    year: '2025-2026 (drafts, evolving)',
+    difficulty: 'Advanced',
+    category: 'Authorization',
+    summary: 'Several IETF and OpenID Foundation working groups are actively drafting standards specifically for AI agent authorization — extending OAuth/OIDC delegation concepts (token exchange, RAR, CIBA) to explicitly cover autonomous agent principals, multi-hop delegation chains, and agent-specific consent models.',
+    problem: 'Existing OAuth/OIDC delegation primitives (RFC 8693, RFC 9396, CIBA) were designed before agentic AI existed and can be composed to approximate agent authorization, but no single finalized standard yet addresses agent-specific concerns like sub-agent spawning, declared-intent representation, or agent-to-agent trust natively.',
+    whyExists: 'To close the gap between what existing delegation standards can approximate and what agent-specific authorization scenarios actually need, as the industry converges on patterns through real deployment experience.',
+    flowchart: `
++-------------------------------------------------------------+
+|          STATUS: ACTIVE DRAFT -- NOT YET FINALIZED            |
++-------------------------------------------------------------+
+  This entry intentionally has no finalized message flow to
+  document. Track the IETF OAuth Working Group and OpenID
+  Foundation AI-related working group charters directly for
+  the current state of these drafts before relying on any
+  specific mechanism described in early draft text.
+`,
+    messageFormat: `// No stable wire format yet -- drafts remain in flux.
+// Do not build production authorization logic against a
+// specific pre-final draft's message shape.`,
+    vulnerabilities: [
+      'Treating an early, non-final draft as a stable target for production authorization logic — draft mechanisms can and do change before finalization.',
+      'Vendor-specific "agent authorization" implementations diverging in incompatible ways while the standard is still unsettled.'
+    ],
+    bestPractices: [
+      'Compose today\'s finalized primitives (RFC 8693 token exchange, RFC 9396 RAR, CIBA) to approximate agent authorization needs rather than waiting for a not-yet-final draft.',
+      'Track IETF and OpenID Foundation working group activity directly, and revisit this entry\'s status before citing it as settled.',
+      'Design for swappable authorization logic so adopting the eventual finalized standard doesn\'t require an architectural rewrite.'
+    ],
+    vendorSupport: [
+      'No finalized cross-vendor standard exists yet as of this entry\'s verification date — treat any vendor claim of "standard agent authorization support" as proprietary until a finalized spec exists to conform to.'
+    ],
+    relatedResources: [
+      { title: 'Agentic Identity Center', path: '/next-gen/agentic-identity', type: 'references' }
+    ]
+  },
+  {
+    id: 'fido-fdo',
+    title: 'FIDO Device Onboard (FDO)',
+    fullname: 'FIDO Device Onboard',
+    rfcs: ['FIDO Alliance FDO Specification (not an IETF RFC)'],
+    year: '2021 (v1.0) / 2022 (v1.1)',
+    difficulty: 'Advanced',
+    category: 'Emerging Identity',
+    summary: 'FDO is a FIDO Alliance specification for automated, secure IoT/edge device onboarding (provisioning secrets and configuration so a device can connect to its platform) — a distinct spec family from FIDO2/WebAuthn user authentication, despite sharing the FIDO Alliance name.',
+    problem: 'Onboarding IoT and edge devices at scale traditionally required manual configuration or shared default credentials, creating both a scaling bottleneck and a persistent security weakness (unchanged default credentials) across large device fleets.',
+    whyExists: 'To standardize automated, cryptographically-attested device onboarding so a device can prove its manufacturer/model and be securely provisioned without manual intervention or shared secrets — solving a fleet-scale provisioning problem, not a user-authentication one.',
+    flowchart: `
++-------------------------------------------------------------+
+|                  FDO DEVICE ONBOARDING FLOW                   |
++-------------------------------------------------------------+
+
+  [ IoT Device ]      [ Rendezvous Server ]      [ Owner / Platform ]
+        |                     |                          |
+        |--1. Contact w/ EAT->|                           |
+        |   (attestation)     |--2. Redirect to owner --->|
+        |                     |                           |
+        |<-3. Owner establishes secure session, --------- |
+        |     transfers ownership & config credentials    |
+`,
+    messageFormat: `// FDO uses a signed Entity Attestation Token (EAT) for
+// device attestation -- not a WebAuthn/CTAP2 message. This
+// is a deliberately distinct wire format from FIDO2/WebAuthn.
+{
+  "attestation": "EAT",
+  "mechanisms": ["ECDSA (SECP256R1/SECP384R1)", "Intel EPID"]
+}`,
+    vulnerabilities: [
+      'Confusing FDO device-onboarding attestation with FIDO2/WebAuthn user-authentication attestation — they are separate specifications solving different problems and should not be conflated in architecture or documentation.',
+      'Rendezvous server compromise potentially misdirecting device ownership transfer if not properly secured.'
+    ],
+    bestPractices: [
+      'Keep FDO (IoT device provisioning) and FIDO2/WebAuthn (user authentication, enterprise attestation, AAGUID) clearly separated in any architecture or content — do not present one as explaining the other.',
+      'Validate device attestation (EAT) against expected manufacturer/model before completing an onboarding handoff.'
+    ],
+    vendorSupport: [
+      'FIDO Alliance: publishes and maintains the FDO specification.',
+      'IoT platform vendors (various) implementing FDO-compliant onboarding for edge device fleets.'
+    ],
+    relatedResources: [
+      { title: 'FIDO2 & WebAuthn Playground', path: '/playground/fido2', type: 'playground' }
+    ]
+  },
+  {
+    id: 'eidas2-arf',
+    title: 'eIDAS 2.0 / EUDI Wallet ARF',
+    fullname: 'European Digital Identity Regulation & the EU Digital Identity Wallet Architecture and Reference Framework',
+    rfcs: ['Regulation (EU) 2024/1183 (amending Regulation (EU) No 910/2014)'],
+    year: '2024',
+    difficulty: 'Intermediate',
+    category: 'Emerging Identity',
+    summary: 'Regulation (EU) 2024/1183 (eIDAS 2.0) establishes the legal framework for the European Digital Identity Wallet, with the Architecture and Reference Framework (ARF) defining its technical profile (OpenID4VCI/VP, ISO mdoc) — requiring every member state to offer a compliant wallet and, later, regulated relying parties to accept it.',
+    problem: 'Pre-2024 EU digital identification schemes were inconsistent across member states, often limited to online public services only, and did not interoperate cross-border — a citizen\'s national eID rarely worked cleanly outside their own country.',
+    whyExists: 'To establish a legally-mandated, interoperable, cross-border digital identity wallet available to every EU citizen, resident, and business, directly applicable across all member states without national transposition.',
+    flowchart: `
++-------------------------------------------------------------+
+|              EUDI WALLET CREDENTIAL PRESENTATION               |
++-------------------------------------------------------------+
+
+ [ EUDI Wallet (holder) ]     [ Relying Party ]     [ Trusted List ]
+             |                       |                     |
+             |<--1. Present request--|                     |
+             |--2. Present PID/QEAA->|                     |
+             |                       |--3. Verify issuer -->|
+             |                       |<-4. Issuer trusted---|
+`,
+    messageFormat: `// EUDI Wallet credential presentation uses OpenID4VP --
+// see the openid4vc entry for the underlying wire format.
+// This entry covers the regulatory/architectural layer above it.`,
+    vulnerabilities: [
+      'Relying on national-scheme-specific extensions that aren\'t part of the harmonized ARF profile, undermining cross-border interoperability.',
+      'Treating the relying-party acceptance obligation as optional before its actual legal effective date for a given sector.'
+    ],
+    bestPractices: [
+      'Track official Commission implementing acts and the published ARF version directly rather than relying on secondary summaries for compliance-critical dates.',
+      'Design relying-party wallet acceptance against the ARF\'s named standards (OpenID4VCI/VP, ISO mdoc) rather than a single national pilot\'s specific implementation choices.'
+    ],
+    vendorSupport: [
+      'All 27 EU member states are obligated to offer a compliant wallet under the Regulation.',
+      'Multiple national pilot wallets in progressive rollout as of this entry\'s verification date.'
+    ],
+    relatedResources: [
+      { title: 'Digital Wallets & Verifiable Credentials Center', path: '/next-gen/digital-wallets', type: 'references' },
+      { title: 'Wallet Readiness Assessor', path: '/tools/wallet-readiness-assessor', type: 'tool' }
+    ]
+  },
+  {
+    id: 'openid4vci',
+    title: 'OpenID4VCI',
+    fullname: 'OpenID for Verifiable Credential Issuance',
+    rfcs: ['OpenID4VCI 1.0 (OpenID Foundation Final Specification)'],
+    year: '2025',
+    difficulty: 'Advanced',
+    category: 'Emerging Identity',
+    summary: 'OpenID4VCI defines an OAuth-protected API for a Credential Issuer to issue verifiable credentials (W3C VC, SD-JWT VC, ISO mdoc, and others) to a holder\'s wallet — the issuer-side complement to OpenID4VP\'s verifier-side presentation flow.',
+    problem: 'Before a common issuance standard, each digital wallet ecosystem needed a bespoke integration with every credential issuer it wanted to support, fragmenting the wallet ecosystem along issuer-specific lines.',
+    whyExists: 'To standardize how a Credential Issuer exposes a Credential Endpoint and how a wallet (acting as an OAuth 2.0 client) requests and receives credentials from it, regardless of the underlying credential format.',
+    flowchart: `
++-------------------------------------------------------------+
+|                 OPENID4VCI ISSUANCE FLOW                       |
++-------------------------------------------------------------+
+
+  [ Wallet (holder) ]          [ Credential Issuer ]
+             |                          |
+             |--1. Authorize (OAuth) -->|
+             |<-2. Access token ---------|
+             |--3. POST /credential ---->|
+             |     (proof of key)        |
+             |<-4. Issued credential -----|
+`,
+    messageFormat: `// OpenID4VCI credential request (illustrative)
+POST /credential HTTP/1.1
+Authorization: Bearer <access_token>
+
+{
+  "format": "vc+sd-jwt",
+  "credential_definition": { "type": ["TradeLicenceCredential"] },
+  "proof": { "proof_type": "jwt", "jwt": "eyJhbGci..." }
+}`,
+    vulnerabilities: [
+      'Weak or absent holder-binding proof, letting an issued credential be presented by an entity other than the one it was issued to.',
+      'Issuer key compromise undermining every credential it has ever issued -- the reason issuer signing keys warrant root-of-trust-grade protection.'
+    ],
+    bestPractices: [
+      'Require strong holder-binding proof (e.g. key-bound proof-of-possession) at issuance, not just at presentation.',
+      'Protect issuer signing keys with hardware-backed key storage, given the blast radius of a compromised issuer key.',
+      'Plan credential validity windows and revocation (status-list) handling together at design time, not as an afterthought.'
+    ],
+    vendorSupport: [
+      'OpenID Foundation: approved OpenID4VCI 1.0 as a Final Specification (September 2025) after interoperability testing across multiple issuers and wallet providers.',
+      '30+ jurisdictions reported deploying OpenID4VCI for digital identity credential issuance as of this entry\'s verification date.'
+    ],
+    relatedResources: [
+      { title: 'Credential Issuance Studio', path: '/playground/credential-issuance', type: 'playground' },
+      { title: 'OpenID4VC Wallet Studio', path: '/playground/openid4vc-wallet', type: 'playground' }
+    ]
+  },
+  {
+    id: 'pqc-fips203-205',
+    title: 'NIST FIPS 203/204/205',
+    fullname: 'Post-Quantum Cryptography Standards (ML-KEM, ML-DSA, SLH-DSA)',
+    rfcs: ['FIPS 203', 'FIPS 204', 'FIPS 205'],
+    year: '2024',
+    difficulty: 'Advanced',
+    category: 'Cryptography',
+    summary: 'NIST\'s first three finalized post-quantum cryptography standards: FIPS 203 (ML-KEM, key encapsulation), FIPS 204 (ML-DSA, digital signatures), and FIPS 205 (SLH-DSA, a conservative hash-based signature alternative) — published and effective August 2024.',
+    problem: 'Widely-deployed public-key cryptography (RSA, ECDSA, ECDH) is vulnerable to a sufficiently powerful quantum computer via Shor\'s algorithm, and data encrypted today can already be harvested for future decryption once such a computer exists.',
+    whyExists: 'To provide standardized, vetted quantum-resistant alternatives for key establishment and digital signatures, following an eight-year public standardization process, giving organizations concrete algorithms to migrate to ahead of the threat materializing.',
+    flowchart: `
++-------------------------------------------------------------+
+|         PQC STANDARDS -- WHAT EACH ONE REPLACES                |
++-------------------------------------------------------------+
+
+  FIPS 203 (ML-KEM)      replaces  RSA/ECDH key exchange
+  FIPS 204 (ML-DSA)      replaces  RSA/ECDSA signatures (primary)
+  FIPS 205 (SLH-DSA)     replaces  RSA/ECDSA signatures (conservative
+                                    alternative, different math
+                                    foundation than ML-DSA)
+`,
+    messageFormat: `// PQC algorithms are used within existing wire formats
+// (TLS, JOSE/JWS, X.509) once those formats add algorithm
+// identifiers for ML-KEM/ML-DSA/SLH-DSA -- there is no new
+// standalone PQC "message format" of its own.`,
+    vulnerabilities: [
+      'Harvest-now-decrypt-later — data encrypted with classical algorithms today is already exposed to a future quantum-capable adversary who stored it.',
+      'Migrating signatures without migrating the issuing CA/root first, breaking the chain of trust the migration was meant to strengthen.',
+      'Naive migration ignoring the larger key/signature sizes of PQC algorithms, which can break systems with hardcoded size assumptions.'
+    ],
+    bestPractices: [
+      'Prioritize migration by harvest-now-decrypt-later exposure — long-lived data and long-validity credentials first.',
+      'Use hybrid classical+PQC modes during transition to hedge against either algorithm family being weakened.',
+      'Sequence migration dependency-first: root of trust and CA hierarchy before what they sign (see cryptoAgilityRoadmap.ts).'
+    ],
+    vendorSupport: [
+      'NIST: published all three as final Federal Information Processing Standards, effective 2024-08-14.',
+      'CNSA 2.0 (NSA, Sept 2022): mandates ML-KEM-1024 for national security systems on a phased timeline through 2030-2033.',
+      'FIDO Alliance: added ML-DSA algorithm support (ML-DSA-44/65/87) to WebAuthn/FIDO server requirements.'
+    ],
+    relatedResources: [
+      { title: 'Post-Quantum Handshake Lab', path: '/playground/pqc-handshake', type: 'playground' },
+      { title: 'PQC Readiness Auditor', path: '/tools/pqc-readiness-auditor', type: 'tool' },
+      { title: 'Crypto Migration Planner', path: '/playground/crypto-migration', type: 'playground' }
+    ]
   }
 ]

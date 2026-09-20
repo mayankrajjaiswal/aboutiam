@@ -2,7 +2,7 @@
 // entry here automatically renders as a card on CaseStudyCenter.tsx AND becomes searchable/
 // deep-linkable (?study=<id>) via searchService.ts. Add a new case study by appending one object
 // below; nothing else needs to be edited to make it searchable (see GEMINI.md §4R).
-export type CaseStudyCategory = 'Big Technology' | 'Financial Services' | 'Government' | 'Healthcare' | 'Retail' | 'Education'
+export type CaseStudyCategory = 'Big Technology' | 'Financial Services' | 'Government' | 'Healthcare' | 'Retail' | 'Education' | 'Next-Gen IAM'
 
 export interface CaseStudy {
   id: string
@@ -32,7 +32,7 @@ export interface CaseStudy {
 
 // Derived, deduplicated list of categories actually in use by CASE_STUDIES — avoids the
 // filter-button UI drifting out of sync with a hand-typed duplicate array.
-export const CASE_STUDY_CATEGORIES: CaseStudyCategory[] = ['Big Technology', 'Financial Services', 'Government', 'Healthcare', 'Retail', 'Education']
+export const CASE_STUDY_CATEGORIES: CaseStudyCategory[] = ['Big Technology', 'Financial Services', 'Government', 'Healthcare', 'Retail', 'Education', 'Next-Gen IAM']
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
@@ -945,6 +945,236 @@ export const CASE_STUDIES: CaseStudy[] = [
       { title: 'Token Exchange (RFC 8693) Lab', path: '/playground/token-exchange', type: 'playground' },
       { title: 'SAML Metadata Builder Tool', path: '/tools/saml-metadata-builder', type: 'tool' },
       { title: 'Open Policy Agent (OPA) & Rego Playground', path: '/playground/opa', type: 'playground' }
+    ]
+  },
+  {
+    id: 'agent_governance_rollout',
+    title: 'Rolling Out Agent Identity Governance for Internal AI Assistants',
+    company: 'A Global Software & Cloud Platform Company (anonymized archetype)',
+    logo: '🤖',
+    category: 'Next-Gen IAM',
+    difficulty: 'Advanced',
+    summary: 'Deconstruct an enterprise\'s rollout of an agent identity registry and runtime governance for dozens of internal AI assistants that had accumulated standing, ungoverned access to production systems.',
+    problem: 'Internal support, DevOps, and analytics teams had independently deployed dozens of AI agents over 18 months, each granted broad standing credentials "to get things working" — with no central inventory, no accountable owner per agent, and no way to answer "what can our AI agents actually do right now?"',
+    requirements: [
+      'A central agent identity registry capturing owner, declared intent, and permitted tools for every existing and future agent.',
+      'Retroactive discovery of shadow agents already running with standing credentials outside the registry.',
+      'A runtime control plane that can detect and intervene when an agent\'s behavior drifts from its declared intent.'
+    ],
+    challenges: [
+      'Several production-critical agents had no identifiable human owner after 18 months of team reorganizations.',
+      'Retrofitting scoped credentials onto agents already wired into production without breaking their existing workflows.',
+      'Convincing engineering teams that narrowing an agent\'s access was worth the short-term friction of re-scoping working integrations.'
+    ],
+    architecture: `
++-------------------------------------------------------------+
+|              AGENT IDENTITY GOVERNANCE ROLLOUT               |
++-------------------------------------------------------------+
+
+        [ Discovery Sweep: MCP/API Gateway Logs ]
+                          |
+                          v
+            [ Agent Identity Registry ]
+        (owner, intent, tools, expiry per agent)
+                          |
+             +------------+------------+
+             v                         v
+   [ AI Control Plane ]        [ Access Broker / STS ]
+   (discover/decide/enforce/       (issues scoped,
+        observe loop)               short-lived tokens)
+`,
+    authModel: 'Each agent instance is issued its own short-lived, narrowly-scoped credential via RFC 8693 Token Exchange rather than a long-lived static API key; the registry ties every credential back to a specific agent identity record.',
+    authzModel: 'Tool-level scopes are derived directly from each agent\'s declared intent field in its registry record; a semantic guardrail in the AI control plane evaluates each tool call against that declared intent before allowing it through.',
+    lifecycle: 'New agents must be registered with an owner, declared intent, and expiry before receiving any credential; a quarterly re-certification review is enforced automatically, and owner-departure events trigger immediate credential review.',
+    federation: 'Not a cross-organization federation problem — the challenge is internal: normalizing dozens of independently-built agents (spanning several different frameworks) onto one common identity and credentialing model.',
+    sequence: `
+   Agent Owner        Identity Registry        AI Control Plane        Target API
+       |                     |                        |                     |
+       |-- Register Agent -->|                        |                     |
+       |                     |-- Issue Scoped Cred --->|                     |
+       |                     |                        |-- Evaluate Intent ->|
+       |                     |                        |<--- Allow/Block ----|
+`,
+    threatModel: [
+      { risk: 'Shadow agents running with standing credentials outside the registry', mitigation: 'A discovery sweep across API gateway and MCP tool-manifest logs cross-references every observed agent-like credential against the registry, flagging anything unregistered.' },
+      { risk: 'Retrofitted agent silently loses required access mid-migration, causing an outage', mitigation: 'Scoped credentials were rolled out in shadow/audit mode first — logging what would have been blocked without actually blocking it — before flipping to enforcement per agent.' }
+    ],
+    lessons: [
+      'The single highest-value first step was discovery, not enforcement — you cannot govern what you have not inventoried.',
+      'Framing re-scoping as reducing blast radius (not distrust of the team) made engineering teams far more willing to cooperate.',
+      'A shadow/audit-mode rollout before hard enforcement caught several legitimate access patterns the original registry entry had missed.'
+    ],
+    mistakes: [
+      'Initially tried to enforce scoped credentials on every agent simultaneously, causing a wave of support tickets from agents that needed access the registry entry hadn\'t captured.',
+      'Left "owner" as an optional field early on, which meant a third of agents had no accountable owner by the time governance actually mattered.'
+    ],
+    bestPractices: [
+      'Make the owner field mandatory and non-transferable-by-default at registration time — require an explicit transfer step when an owner leaves, rather than letting it silently go stale.',
+      'Roll out enforcement in shadow/audit mode per agent before switching to blocking mode, so unexpected legitimate access patterns surface safely first.'
+    ],
+    interviewQuestions: [
+      { q: 'Why start an agent governance program with discovery rather than jumping straight to enforcement?', a: 'You cannot meaningfully govern access you don\'t know exists. Enforcing scoped credentials on a partial inventory just pushes ungoverned agents further into the shadows; a discovery sweep across gateway/tool-manifest logs first establishes the actual current-state blast radius, which is also what makes the case for the program\'s budget and priority.' }
+    ],
+    rfcs: ['RFC 8693 (Token Exchange)', 'RFC 9396 (Rich Authorization Requests)'],
+    relatedResources: [
+      { title: 'Agentic Identity Center', path: '/next-gen/agentic-identity', type: 'references' },
+      { title: 'Agent Registry & Lifecycle Studio', path: '/playground/agent-registry', type: 'playground' },
+      { title: 'Agent Governance Readiness Assessor', path: '/tools/agent-governance-readiness', type: 'tool' }
+    ]
+  },
+  {
+    id: 'fido_fleet_migration',
+    title: 'Migrating a 40,000-Employee Workforce to Passwordless FIDO2 at Fleet Scale',
+    company: 'A Multinational Manufacturing & Logistics Enterprise (anonymized archetype)',
+    logo: '🔑',
+    category: 'Next-Gen IAM',
+    difficulty: 'Advanced',
+    summary: 'Deconstruct a multi-year rollout of hardware FIDO2 security keys and platform passkeys to a 40,000-person global workforce, spanning office staff, warehouse floor workers with shared terminals, and field technicians with no reliable connectivity.',
+    problem: 'Recurring MFA-fatigue-driven account compromises and a mounting helpdesk password-reset bill pushed the organization toward FIDO2, but the workforce\'s device diversity (shared warehouse terminals, offline field tablets, standard office laptops) meant no single form factor could cover everyone.',
+    requirements: [
+      'Segment the workforce by form-factor fit rather than mandating one device type organization-wide.',
+      'A device-fulfillment and support pipeline that could provision, replace, and revoke hardware keys at fleet scale.',
+      'Enterprise attestation to guarantee only approved hardware key models could register, given the deployment\'s security-sensitive facilities.'
+    ],
+    challenges: [
+      'Shared warehouse terminals meant per-user platform passkeys (bound to one device) were unworkable — those workers needed portable hardware keys instead.',
+      'Field technicians in low-connectivity areas needed a registration flow that didn\'t depend on a live network round-trip at enrollment time.',
+      'Replacing a lost or damaged hardware key for a worker on a remote site without a multi-week shipping delay.'
+    ],
+    architecture: `
++-------------------------------------------------------------+
+|            FIDO2 FLEET ROLLOUT BY WORKER SEGMENT             |
++-------------------------------------------------------------+
+
+  [ Office Staff ]         [ Warehouse Floor ]        [ Field Techs ]
+        |                          |                          |
+        v                          v                          v
+ Platform Passkey         Portable USB/NFC Key       Ruggedized USB Key
+ (device-bound)          (shared-terminal safe)      (offline enrollment)
+        |                          |                          |
+        +--------------+-----------+--------------+-----------+
+                       v
+          [ Enterprise Attestation Policy Gate ]
+                       |
+                       v
+              [ Identity Provider / RP ]
+`,
+    authModel: 'Three form factors mapped to three worker segments: platform passkeys for office staff on personal/assigned laptops, portable hardware security keys for warehouse floor staff sharing terminals, and ruggedized hardware keys for field technicians, all validated against an enterprise AAGUID allow-list at registration.',
+    authzModel: 'Standard workforce SSO authorization is unchanged; the migration only replaces the authentication factor. Step-up authentication for high-risk actions (payroll changes, admin console access) requires a fresh FIDO2 ceremony, not a cached session.',
+    lifecycle: 'Device fulfillment is tied to the HR joiner event (new hires receive a pre-provisioned key on day one); loss/damage triggers immediate revocation of the old credential and expedited replacement shipping tied to the worker\'s site; leaver events trigger automatic key revocation and physical key return tracking.',
+    federation: 'No cross-organization federation involved — this is an internal workforce authentication migration, coordinated with the existing SSO/IdP layer rather than replacing it.',
+    sequence: `
+   New Hire            Fulfillment Pipeline          Identity Provider
+      |                        |                              |
+      |<-- Pre-provisioned ----|                              |
+      |         Key            |                              |
+      |----- Register Key -------------------------------->  |
+      |                        |         Validate AAGUID ---> |
+      |<------------------------------ Enrollment Confirmed --|
+`,
+    threatModel: [
+      { risk: 'A non-approved consumer-grade security key registers and bypasses procurement/compliance controls', mitigation: 'Enterprise attestation policy validates the AAGUID of every registering device against an explicit allow-list of approved hardware models before permitting enrollment.' },
+      { risk: 'A lost hardware key at a remote field site leaves a worker locked out for weeks awaiting replacement shipping', mitigation: 'A temporary, time-boxed break-glass fallback (phone-call verification plus a short-lived recovery code) bridges the gap until the replacement physical key arrives, with mandatory re-verification once it does.' }
+    ],
+    lessons: [
+      'No single FIDO2 form factor fits an entire diverse workforce — segmenting by actual working conditions (shared terminals, offline sites, standard desks) up front avoided multiple failed rollout attempts.',
+      'Device fulfillment and support logistics, not the cryptography, turned out to be the actual long pole in the project timeline.',
+      'Tying key issuance directly to the HR joiner/leaver pipeline eliminated the largest source of stale, ungoverned credentials.'
+    ],
+    mistakes: [
+      'The initial pilot mandated platform passkeys fleet-wide, which immediately failed for warehouse floor staff sharing terminals across shifts.',
+      'Underestimated replacement shipping lead time to remote field sites, which produced a wave of helpdesk escalations during the early rollout weeks.'
+    ],
+    bestPractices: [
+      'Map form factors to actual working conditions before choosing a single default — treat the FIDO Form Factor decision as segment-specific, not organization-wide.',
+      'Build the break-glass fallback process and its own audit trail before rollout day, not reactively after the first lost-key incident.'
+    ],
+    interviewQuestions: [
+      { q: 'Why did platform passkeys fail for the warehouse floor segment specifically?', a: 'Platform passkeys are bound to a single device\'s secure enclave. Warehouse floor staff worked shifts on shared terminals, so a device-bound passkey registered by one worker would not be usable by the next shift\'s worker on the same terminal — the wrong form factor for a shared-hardware environment. Portable USB/NFC hardware keys, carried by the individual worker rather than bound to the terminal, matched the actual working pattern.' }
+    ],
+    rfcs: ['W3C WebAuthn Level 3', 'FIDO2 CTAP2'],
+    relatedResources: [
+      { title: 'Phishing-Resistant Auth Center', path: '/next-gen/phishing-resistant-auth', type: 'references' },
+      { title: 'FIDO Fleet Operations Simulator', path: '/playground/fido-fleet-ops', type: 'playground' },
+      { title: 'Passwordless ROI & Helpdesk Cost Calculator', path: '/tools/passwordless-roi-calculator', type: 'tool' }
+    ]
+  },
+  {
+    id: 'wallet_acceptance_readiness',
+    title: 'Preparing a Regulated Relying Party for EU Digital Identity Wallet Acceptance',
+    company: 'A Pan-European Retail Bank (anonymized archetype)',
+    logo: '💳',
+    category: 'Next-Gen IAM',
+    difficulty: 'Advanced',
+    summary: 'Deconstruct a retail bank\'s multi-year readiness program to accept the EU Digital Identity Wallet as a customer onboarding and authentication credential ahead of its eIDAS 2.0 relying-party acceptance obligation.',
+    problem: 'As a regulated financial institution operating across several EU member states, the bank faced a fixed regulatory deadline to accept EU Digital Identity Wallet credentials — but its existing KYC and authentication stack had no concept of a wallet-presented, selectively-disclosed verifiable credential.',
+    requirements: [
+      'Implement OpenID4VP to request and verify wallet-presented credentials for customer onboarding (KYC) and step-up authentication.',
+      'Build a trust-registry lookup so the bank only accepts credentials from wallet issuers it actually trusts, not any cryptographically valid credential.',
+      'Maintain a fallback onboarding path for the large share of customers not yet holding a wallet during the phased national rollout.'
+    ],
+    challenges: [
+      'Member states rolled out their national wallet availability on different timelines, so the bank had to support a partial, uneven rollout rather than a single go-live date.',
+      'Existing KYC vendor integrations assumed document-scan-based identity proofing, not a pre-verified wallet credential presentation.',
+      'Legal and compliance teams needed to interpret an evolving regulatory framework (the Architecture and Reference Framework) whose implementing details were still being finalized during the build.'
+    ],
+    architecture: `
++-------------------------------------------------------------+
+|          WALLET-ACCEPTANCE-READY RELYING PARTY FLOW          |
++-------------------------------------------------------------+
+
+        [ Customer's EU Digital Identity Wallet ]
+                          |  (OpenID4VP presentation)
+                          v
+              [ Bank Verifier Endpoint ]
+                          |
+              +-----------+-----------+
+              v                       v
+   [ Trust Registry Lookup ]   [ Credential Verification ]
+   (is this issuer trusted?)   (signature, revocation, freshness)
+              |                       |
+              +-----------+-----------+
+                          v
+              [ Core Banking KYC / AuthN System ]
+`,
+    authModel: 'For onboarding, the wallet presents a verified Personal Identification Data (PID) credential in place of a manual document scan; for step-up authentication on high-risk actions, a lighter attribute presentation (e.g. age or account-holder attestation) is requested instead of re-running full KYC.',
+    authzModel: 'Unchanged from the existing core banking authorization model — the wallet integration replaces how identity is proofed and authenticated, not how account permissions are subsequently granted.',
+    lifecycle: 'Wallet-based onboarding runs alongside the legacy document-scan KYC path for the full multi-year transition window; the bank did not force a hard cutover, since national wallet availability itself was still phasing in across member states.',
+    federation: 'The trust relationship is with each national wallet-issuing authority (or its designated trust framework), verified via a trust-registry lookup rather than a bilateral integration per country.',
+    sequence: `
+    Customer Wallet         Bank Verifier          Trust Registry
+        |                        |                        |
+        |--- Present Credential->|                        |
+        |                        |--- Check Issuer ------>|
+        |                        |<--- Issuer Trusted -----|
+        |                        |--- Verify Signature --->|
+        |<---- Onboarding OK ----|      (local)            |
+`,
+    threatModel: [
+      { risk: 'A cryptographically valid credential from an issuer the bank never intended to trust is accepted', mitigation: 'Every presented credential is checked against a trust-registry lookup of accredited issuers before being honored, independent of whether its signature verifies correctly.' },
+      { risk: 'A revoked or expired credential is presented and accepted as still valid', mitigation: 'The verifier checks live revocation status and credential freshness on every presentation rather than caching a prior verification result.' }
+    ],
+    lessons: [
+      'Treat the trust-registry lookup as a first-class control, not an afterthought — cryptographic validity and trustworthiness are two separate questions.',
+      'A phased, dual-path rollout (wallet alongside legacy KYC) was necessary given the national rollout was itself phased and uneven across member states.',
+      'Early, close coordination with legal/compliance paid off given how much of the regulatory framework\'s implementing detail was still being finalized during the build.'
+    ],
+    mistakes: [
+      'Initial design assumed a single EU-wide go-live date and had to be reworked once it became clear national wallet availability would roll out unevenly by member state.',
+      'Underestimated how much of the existing KYC vendor integration assumed a document-scan flow, requiring more rework than a simple "add a new credential type" change.'
+    ],
+    bestPractices: [
+      'Build the trust-registry check as an explicit, auditable step in the verification pipeline, separate from and in addition to standard cryptographic signature verification.',
+      'Keep the legacy onboarding path fully operational throughout the transition rather than betting the program on wallet adoption timelines outside the bank\'s control.'
+    ],
+    interviewQuestions: [
+      { q: 'Why is a trust-registry lookup necessary if the wallet credential\'s signature already verifies correctly?', a: 'Signature verification only proves a credential was signed by whoever holds a particular private key — it says nothing about whether the bank actually trusts that specific issuer. A trust-registry lookup is the separate, explicit control that confirms the issuer is accredited within the framework the bank has agreed to honor, closing the gap between "cryptographically valid" and "actually trustworthy."' }
+    ],
+    rfcs: ['OpenID4VP', 'OpenID4VCI', 'eIDAS 2.0 / Regulation (EU) 2024/1183'],
+    relatedResources: [
+      { title: 'Digital Wallets & VCs Center', path: '/next-gen/digital-wallets', type: 'references' },
+      { title: 'Business Wallet Studio', path: '/playground/business-wallet', type: 'playground' },
+      { title: 'Wallet Readiness Assessor', path: '/tools/wallet-readiness-assessor', type: 'tool' }
     ]
   }
 ]

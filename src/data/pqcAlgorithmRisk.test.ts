@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { PQC_ALGORITHM_RISK_TABLE, findPqcAlgorithmRisk, type MigrationPriority } from './pqcAlgorithmRisk'
+import { PQC_ALGORITHM_RISK_TABLE, findPqcAlgorithmRisk, type MigrationPriority, type AffectedTheme } from './pqcAlgorithmRisk'
+import { NEXT_GEN_THEMES, type NextGenThemeId } from './nextGenThemes'
 
 const VALID_PRIORITIES: MigrationPriority[] = ['Critical', 'High', 'Medium', 'Info']
 
@@ -39,6 +40,23 @@ describe('pqcAlgorithmRisk data table', () => {
         expect(seen.has(key)).toBe(false)
         seen.set(key, entry.algorithm)
       }
+    }
+  })
+
+  it('every entry has at least one affected theme, and every id resolves to a real NextGenTheme', () => {
+    const realThemeIds = new Set<NextGenThemeId>(NEXT_GEN_THEMES.map((t) => t.id))
+    for (const entry of PQC_ALGORITHM_RISK_TABLE) {
+      expect(entry.affectedThemes.length).toBeGreaterThan(0)
+      for (const themeId of entry.affectedThemes) {
+        expect(realThemeIds.has(themeId as unknown as NextGenThemeId)).toBe(true)
+      }
+    }
+  })
+
+  it('every entry lists crypto-agility as an affected theme', () => {
+    for (const entry of PQC_ALGORITHM_RISK_TABLE) {
+      const themes: AffectedTheme[] = entry.affectedThemes
+      expect(themes).toContain('crypto-agility')
     }
   })
 })

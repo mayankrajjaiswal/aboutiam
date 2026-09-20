@@ -16,9 +16,14 @@
   --color-accent-hover: #1d4ed8;      /* blue-700 */
   --color-accent-glow: rgba(37, 99, 235, 0.08);
   
-  --color-status-success: #059669;   /* green-600 */
-  --color-status-warning: #d97706;   /* amber-600 */
-  --color-status-danger: #dc2626;    /* red-600 */
+  /* One step darker than the -600 shades these used to be: at -600, small text
+     (this app uses these at 10-12px in badges and inline labels) only reached
+     3.44:1 success / 2.91:1 warning / 4.41:1 danger against the light surfaces,
+     all below the 4.5:1 AA floor. The -700 shades clear it on every light
+     surface including the warm reading-mode backgrounds. */
+  --color-status-success: #047857;   /* green-700  (min 4.95:1 on light) */
+  --color-status-warning: #b45309;   /* amber-700  (min 4.53:1 on light) */
+  --color-status-danger: #b91c1c;    /* red-700    (min 5.84:1 on light) */
   --color-status-info: #0284c7;      /* sky-600 */
 }
 
@@ -30,7 +35,13 @@
   --color-bg-nested: #151b2e;        /* slate-800 nested block background */
   --color-text-primary: #f8fafc;     /* slate-50 */
   --color-text-secondary: #94a3b8;   /* slate-400 */
-  --color-text-muted: #64748b;       /* slate-500 */
+  --color-text-muted: #748699;       /* lightened from slate-500 #64748b for WCAG AA:
+                                        this token is used at 10-12px throughout, which
+                                        needs 4.5:1, but slate-500 only reached 3.59:1 on
+                                        bg-nested. #748699 clears 4.5:1 on all four dark
+                                        surfaces (4.57 nested / 4.98 card / 5.21 sidebar /
+                                        5.29 base) while staying clearly distinct from
+                                        text-secondary (1.46:1 between them). */
   --color-border-subtle: #1e293b;    /* slate-800 */
   
   --color-accent-primary: #3b82f6;    /* blue-500 */
@@ -44,14 +55,45 @@
   --color-status-info: #38bdf8;      /* sky-400 */
 }
 
-/* Colorblind-Safe Palette (F2) — Okabe-Ito colorblind-safe set, swapped in via
-   usePreferenceStore's colorblindSafePalette toggle (adds/removes this class on
-   <html>). Blue/vermillion/yellow remain distinguishable under deuteranopia and
-   protanopia, unlike the default green/amber/red status tokens above. */
+/* Colorblind-Safe Palette (F2) — swapped in via usePreferenceStore's
+   colorblindSafePalette toggle (adds/removes this class on <html>). Built on the
+   Okabe-Ito set, with danger moved to crimson/magenta so that warning and danger
+   stay distinguishable under deuteranopia and protanopia -- which the default
+   green/amber/red tokens above genuinely are not (they measure dE 3.6 apart when
+   simulated, i.e. the same color). Enforced by tests/integration/themeContrast.test.ts. */
 .colorblind-safe {
-  --color-status-success: #0072b2;   /* blue */
-  --color-status-warning: #e69f00;   /* amber-orange */
-  --color-status-danger: #d55e00;    /* vermillion */
+  /* Light theme. Two separate defects were fixed here.
+     1. CONTRAST. The palette used one set of values for both themes, so this
+        accessibility feature had WORSE contrast than the default it replaces --
+        its orange read at 2.03:1 and vermillion at 3.49:1 on light surfaces.
+     2. SEPARABILITY -- the actual point of the feature. The set was
+        blue/orange/vermillion, and orange vs vermillion differ almost only in
+        HUE along the red-green axis, which is precisely what a deuteranopic or
+        protanopic viewer cannot see. Simulating both deficiencies (Vienot
+        matrices, CIE76 dE in Lab) put warning-vs-danger at dE 14.3 and 11.1 --
+        effectively the same color, so "warning" and "danger" were
+        indistinguishable in the palette that exists to distinguish them.
+     Danger is therefore crimson rather than vermillion: crimson keeps a blue
+     component that red-green viewers still perceive, which is the same
+     technique IBM's colorblind-safe sequence uses. Measured warning-vs-danger
+     separation is now dE 40.1 (deuteranopia) / 31.8 (protanopia), up from
+     14.3 / 11.1, while every token still clears 4.5:1 on all light surfaces
+     including the warm reading-mode backgrounds. */
+  --color-status-success: #0072b2;   /* Okabe-Ito blue  (min 4.63:1 contrast) */
+  --color-status-warning: #7d5600;   /* dark amber      (min 4.63:1 contrast) */
+  --color-status-danger: #dc0037;    /* crimson         (min 4.63:1 contrast) */
+}
+
+/* Dark theme needs the opposite contrast adjustment -- the same values that are
+   too light on white are too dark on navy (blue was 3.30:1, vermillion 4.42:1) --
+   plus the same magenta substitution for danger, for the same reason as above.
+   Success and warning stay the canonical Okabe-Ito sky-blue and orange, so the
+   palette remains true to the set it is named for. Measured warning-vs-danger
+   separation: dE 37.8 (deuteranopia) / 45.7 (protanopia), up from 5.7 / 2.5. */
+.dark.colorblind-safe {
+  --color-status-success: #56b4e9;   /* Okabe-Ito sky blue (min 7.41:1 contrast) */
+  --color-status-warning: #e69f00;   /* Okabe-Ito orange   (min 7.41:1 contrast) */
+  --color-status-danger: #f98bc0;    /* light magenta      (min 7.41:1 contrast) */
 }
 
 /* Reading Mode (F2) — spacing-adjusted, warm-background profile per British
@@ -217,4 +259,38 @@ body, header, aside, main, div, button, input, select, textarea, h1, h2, h3, h4,
 /* Ensure smooth touch inertial scroll across all elements */
 * {
   -webkit-overflow-scrolling: touch;
+}
+
+/*
+ * Narrow-viewport overflow guard (<=640px).
+ *
+ * A CSS grid/flex item defaults to `min-width: auto`, meaning it refuses to
+ * shrink below the intrinsic width of its content. On a 320px phone that makes
+ * a single long word, a wide button row, or a fixed-width child silently push
+ * its whole track wider than the viewport -- producing a horizontally scrolling
+ * page. This was measured across the site: 24 routes scrolled sideways at
+ * 320px, every one of them tracing back to this default rather than to any
+ * single component's markup.
+ *
+ * Patching every grid child by hand does not scale and regresses the moment
+ * someone adds a new card, so the floor is set once here. Anything that
+ * genuinely must stay wide (data tables, ASCII diagrams, code blocks) opts back
+ * out via its own `overflow-x-auto` wrapper -- the convention this repo already
+ * uses -- and those wrappers keep working because the rule only lowers the
+ * shrink floor, it never forces a width.
+ *
+ * Scoped to <=640px so desktop layout (where these tracks have room and
+ * intrinsic sizing is genuinely wanted) is untouched.
+ */
+@media (max-width: 640px) {
+  :where(.grid) > *,
+  :where(.flex) > * {
+    min-width: 0;
+  }
+
+  /* Long unbroken strings -- tokens, DNs, base64url, URLs -- are everywhere in
+     this app's subject matter and are the other half of the same problem. */
+  :where(h1, h2, h3, h4, h5, h6, p, span, li, td, th, label, a, button) {
+    overflow-wrap: break-word;
+  }
 }

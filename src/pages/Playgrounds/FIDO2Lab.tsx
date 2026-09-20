@@ -204,9 +204,9 @@ Device security chip (TPM / Secure Enclave) generates a brand new asymmetric key
         </Link>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-8 min-w-0">
         {/* Stepper controls */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="lg:col-span-1 space-y-6 min-w-0">
           <div className="p-6 rounded-xl bg-bg-card border border-border-subtle space-y-4 shadow-sm">
             <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
               <Cpu className="w-4 h-4 text-accent-primary" /> Key Emulator Controller

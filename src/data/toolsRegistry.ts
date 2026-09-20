@@ -1032,6 +1032,120 @@ export const TOOLS: ToolMeta[] = [
       { q: 'What is the role of salt in SD-JWT claims?', a: 'Each claim is paired with a cryptographically secure random salt before hashing. This prevents dictionary attacks—without salts, a verifier could guess small claims (like "gender: Male") by precomputing standard hashes.' },
       { q: 'How does a verifier trust that the claims belong to me?', a: 'SD-JWT uses Holder Binding. The presenter includes a Key Binding JWT (KB-JWT) signed with their private key, proving possession of the key associated with the credential\'s `cnf` claim.' }
     ]
+  },
+  {
+    slug: 'mcp-manifest-auditor',
+    taskTags: ['check-compliance', 'validate-policy'],
+    title: 'MCP Manifest & Tool-Permission Auditor',
+    description: 'Paste an MCP (Model Context Protocol) server tool manifest to flag identity-relevant risks — unbounded parameters, undistinguished destructive operations, missing scope declarations, credential-accepting parameters, and over-broad resource patterns.',
+    category: 'Supply Chain & Governance',
+    icon: ScanSearch,
+    phase: 3,
+    status: 'live',
+    keywords: ['mcp manifest auditor', 'model context protocol security', 'ai agent tool permissions', 'mcp server audit'],
+    analogy: 'Reviewing a new employee\'s proposed job description before they start — does "delete_account" clearly say it\'s destructive? Does the form asking for a password field make sense on a job application? A bad manifest is a bad job description for an AI agent\'s tools.',
+    expert: 'Parses an MCP tool-definition manifest (a single tool object, a bare array, or a `{ tools: [...] }` wrapper) and evaluates each tool for identity-relevant risk: destructive/write operations lacking explicit annotation, absent scope declarations needed for authorization checks, parameters that look like raw credentials, unbounded string parameters with no length/pattern constraint, ambiguous or missing descriptions, and wildcard resource patterns. Outputs a severity-ranked report and a suggested least-privilege scope per tool.',
+    faqs: [
+      { q: 'Does this tool connect to any MCP server?', a: 'No — paste a manifest JSON directly. Everything is parsed and analyzed locally in your browser; nothing is sent anywhere.' },
+      { q: 'What manifest shapes are supported?', a: 'A single tool-definition object, a bare array of tool definitions, or an object with a top-level `tools` array — the common shapes MCP servers expose.' },
+      { q: 'Why does a missing scope declaration matter?', a: 'Without a declared scope, an identity/authorization layer has no structured way to check whether the calling agent is actually permitted to use that specific tool — it becomes an all-or-nothing trust decision.' }
+    ],
+    relatedLinks: [{ label: 'AI Security Fabric Center →', href: '/next-gen/ai-security-fabric' }, { label: 'MCP Server Playground →', href: '/playground/mcp-server' }]
+  },
+  {
+    slug: 'agent-governance-readiness',
+    taskTags: ['check-compliance'],
+    title: 'Agent Governance Readiness Assessor',
+    description: 'A 26-question self-assessment across the 8 agent-identity dimensions and 4 AI-control-plane functions, producing a banded maturity score, per-dimension breakdown, and a prioritized gap list with recommended next pages.',
+    category: 'Supply Chain & Governance',
+    icon: ClipboardCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['agent governance assessment', 'ai agent maturity model', 'agentic identity readiness', 'ai governance checklist'],
+    analogy: 'A building inspection checklist for AI agents — instead of checking smoke detectors and fire exits, you\'re checking whether every agent has an owner, a job description, and someone watching what it actually does.',
+    expert: 'Scores 26 questions on a 0-3 maturity scale across the identity-record field groups (Identity, Ownership, Principal, Intent, Authority, Conditions, Provenance, Lifecycle) and the AI control-plane functions (Discover, Decide, Enforce, Observe), producing an overall percentage score, a maturity band (Unmanaged/Inventoried/Governed/Adaptive matching the Next-Gen IAM Center\'s own ladder), a per-dimension breakdown, and gaps sorted lowest-maturity-first with a recommended page per gap.',
+    faqs: [
+      { q: 'Is my assessment data sent anywhere?', a: 'No — every answer is scored entirely in your browser. Nothing is transmitted or stored server-side.' },
+      { q: 'What do the maturity bands mean?', a: 'They match the same 4-level ladder used throughout the Next-Gen IAM Center: Unmanaged, Inventoried, Governed, and Adaptive — so your score maps directly onto that pillar\'s guidance.' },
+      { q: 'Can I export my results?', a: 'Yes — download a plain-text report with your overall score, per-dimension breakdown, and the full prioritized gap list.' }
+    ],
+    relatedLinks: [{ label: 'Agentic Identity Center →', href: '/next-gen/agentic-identity' }, { label: 'Agent Registry & Lifecycle Studio →', href: '/playground/agent-registry' }]
+  },
+  {
+    slug: 'passwordless-roi-calculator',
+    taskTags: ['check-compliance'],
+    title: 'Passwordless ROI & Helpdesk Cost Calculator',
+    description: 'Model a 3-year cost comparison between continuing password-based authentication and rolling out FIDO passwordless devices — password-reset tickets, lockout time, and MFA-fatigue incidents versus device unit, fulfillment, and support costs.',
+    category: 'Program & Vendor Management',
+    icon: Presentation,
+    phase: 3,
+    status: 'live',
+    keywords: ['passwordless roi calculator', 'helpdesk cost savings', 'fido tco', 'passkey business case'],
+    analogy: 'Comparing the ongoing cost of constantly replacing broken padlocks and calling a locksmith versus a one-time investment in a keyless entry system — the calculator shows you exactly where the two cost lines cross.',
+    expert: 'A planning model, not a vendor performance claim: annualizes password-related helpdesk cost (reset tickets, lockout downtime, MFA-fatigue incident remediation) against a device rollout\'s one-time and recurring costs (unit price, fulfillment, support, refresh cycle), then computes a 3-year cumulative comparison, break-even point, and a sensitivity view showing which two inputs most influence the result.',
+    faqs: [
+      { q: 'Are the default numbers real industry benchmarks?', a: 'No. Every default is explicitly labeled an illustrative assumption in the tool itself — replace every one of them with your own organization\'s actual ticket volume, cost-per-ticket, and device pricing before relying on the output for a real budget decision.' },
+      { q: 'Does this tool send my inputs anywhere?', a: 'No — the entire calculation runs locally in your browser.' },
+      { q: 'What does the sensitivity view show?', a: 'The two inputs whose ±20% change most shifts your 3-year savings figure — useful for knowing which numbers are worth getting right before presenting a business case.' }
+    ],
+    relatedLinks: [{ label: 'Phishing-Resistant Auth Center →', href: '/next-gen/phishing-resistant-auth' }, { label: 'FIDO Fleet Operations Simulator →', href: '/playground/fido-fleet-ops' }]
+  },
+  {
+    slug: 'wallet-readiness-assessor',
+    taskTags: ['check-compliance'],
+    title: 'Wallet Readiness Assessor',
+    description: 'Select which digital-wallet roles (verifier, issuer, holder) your organization needs, your sector, and your jurisdiction footprint to get a role-specific readiness checklist, applicable standards profile, and relevant compliance deadlines.',
+    category: 'Supply Chain & Governance',
+    icon: BadgeCheck,
+    phase: 3,
+    status: 'live',
+    keywords: ['digital wallet readiness', 'eidas 2.0 checklist', 'verifiable credentials compliance', 'wallet acceptance obligation'],
+    analogy: 'Figuring out whether your business needs a card reader, a merchant account, or both before you can accept a new form of payment — verifying someone else\'s wallet, issuing your own credentials, and holding credentials yourself are three different jobs with three different checklists.',
+    expert: 'Takes your selected wallet roles (verifier / issuer / holder), sector, and jurisdiction footprint, then combines the matching role-specific engineering checklists, filters the applicable standards profile (OpenID4VCI, OpenID4VP, W3C VC/DID, eIDAS 2.0 ARF) to only what your roles need, and pulls the live, dated compliance deadlines from this site\'s own compliance-deadlines registry that are relevant to your jurisdiction — flagging whether an EU relying-party wallet-acceptance obligation likely applies to your sector.',
+    faqs: [
+      { q: 'Is this legal advice?', a: 'No — this is an educational starting point for planning, not legal or compliance advice. Always verify deadlines and obligations against the official source link and your own counsel before acting.' },
+      { q: 'What is the difference between the three roles?', a: 'A verifier accepts and checks wallet-presented credentials from others. An issuer creates and signs credentials that go into someone else\'s wallet. A holder operates or uses a wallet that stores and presents credentials. An organization can be any combination of the three.' },
+      { q: 'Where do the deadlines come from?', a: 'They are pulled live from this site\'s own compliance-deadlines registry, each with an official source link and a verification date — nothing here is invented for this tool specifically.' }
+    ],
+    relatedLinks: [{ label: 'Digital Wallets & VCs Center →', href: '/next-gen/digital-wallets' }, { label: 'Business Wallet Studio →', href: '/playground/business-wallet' }]
+  },
+  {
+    slug: 'agent-identity-record',
+    taskTags: ['generate'],
+    title: 'Agent Identity Record Generator',
+    description: 'Fill in the 25 fields across the 8 agent-identity groups (Identity, Ownership, Principal, Intent, Authority, Conditions, Provenance, Lifecycle) to generate a portable JSON/YAML agent identity record plus a human-readable job description — with completeness and over-broad-authority warnings.',
+    category: 'Supply Chain & Governance',
+    icon: FileJson2,
+    phase: 3,
+    status: 'live',
+    keywords: ['agent identity record', 'ai agent job description generator', 'agent registry schema', 'agentic identity artifact'],
+    analogy: 'Writing a real job description before you hire someone — name, manager, what they\'re authorized to do, what they\'re explicitly not authorized to do, and when their contract is reviewed. This generator produces that same document for an AI agent, in a format you can actually store and enforce.',
+    expert: 'Guided form over the same 25-field, 8-group agent identity record schema used throughout the Agentic Identity pillar (`agentRegistryModel.ts`). Emits the record as grouped JSON or YAML, plus a human-readable job-description document, and validates it: flags every unmet required field, a missing owner (critical), a missing expiry (high), over-broad permitted-tools or permitted-scopes grants (wildcard/"all"/full-access patterns), and absent human-approval or revocation triggers.',
+    faqs: [
+      { q: 'Is this data sent anywhere?', a: 'No — everything is generated and validated entirely in your browser.' },
+      { q: 'Where does the 25-field schema come from?', a: 'It is the same schema taught in the Agentic Identity Center\'s "An Agent Needs a Job Description" section and used by the Agent Registry & Lifecycle Studio playground — each field is mapped to a familiar IAM concept.' },
+      { q: 'What do the warnings mean?', a: 'They flag the same governance defects the Agent Registry Studio teaches: no accountable owner, no expiry forcing re-certification, and authority grants broad enough to defeat least-privilege.' }
+    ],
+    relatedLinks: [{ label: 'Agentic Identity Center →', href: '/next-gen/agentic-identity' }, { label: 'Agent Registry & Lifecycle Studio →', href: '/playground/agent-registry' }]
+  },
+  {
+    slug: 'crypto-agility-inventory',
+    taskTags: ['check-compliance', 'generate'],
+    title: 'Crypto Agility Inventory Builder',
+    description: 'Record the cryptographic dependencies across your own identity estate — algorithm, key length, rotation capability, HNDL exposure, and migration difficulty per component — and get a prioritized migration backlog with CSV/JSON export.',
+    category: 'Supply Chain & Governance',
+    icon: PackageSearch,
+    phase: 3,
+    status: 'live',
+    keywords: ['crypto agility inventory', 'pqc migration backlog', 'harvest now decrypt later inventory', 'cryptographic bill of materials'],
+    analogy: 'A home energy audit that walks room by room, rating each appliance by how much it costs to replace and how urgently it needs replacing — except the rooms are your identity systems and the appliances are the cryptographic algorithms inside them.',
+    expert: 'Add one entry per cryptographic dependency in your own estate (component, algorithm, key length, rotation capability, harvest-now-decrypt-later exposure, migration difficulty), and the tool computes a priority score weighted toward HNDL exposure and rotation risk, producing a sorted migration backlog exportable as CSV or JSON. This is your own estate\'s inventory, distinct from the reference industry-wide dependency graph modeled in the Crypto Migration Planner playground.',
+    faqs: [
+      { q: 'Is my inventory data sent anywhere?', a: 'No — everything is entered, scored, and exported entirely in your browser. Nothing is transmitted or stored server-side.' },
+      { q: 'How is the priority score calculated?', a: 'It weights harvest-now-decrypt-later exposure most heavily (that risk accrues silently today even before quantum computers arrive), then rotation risk (non-rotatable dependencies are more urgent), then raw migration difficulty.' },
+      { q: 'Can I feed this into the Crypto Migration Planner?', a: 'The two tools model different things — this one is your own estate\'s inventory, while the planner walks the industry-wide dependency-ordering exercise — but the same HNDL-exposure and difficulty concepts carry over between them.' }
+    ],
+    relatedLinks: [{ label: 'Crypto Agility & PQC Center →', href: '/next-gen/crypto-agility' }, { label: 'Crypto Migration Planner →', href: '/playground/crypto-migration' }]
   }
 ]
 

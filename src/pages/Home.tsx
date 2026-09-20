@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart, CheckCircle2, Lock } from 'lucide-react'
+import { BookOpen, ShieldAlert, Award, Compass, ArrowRight, ShieldCheck, Cpu, Terminal, Users, Layers, GraduationCap, Wrench, Network, Building, ScanSearch, History, CalendarDays, FileBarChart, CheckCircle2, Lock, Sparkles } from 'lucide-react'
+import { NEXT_GEN_THEMES } from '../data/nextGenThemes'
 import GoogleDriveSync from '../components/GoogleDriveSync'
 import StudyPackDownload from '../components/StudyPackDownload'
 import DailyPuzzleWidget from '../components/DailyPuzzleWidget'
@@ -163,7 +164,7 @@ export default function Home() {
                 IAM Academy
               </h4>
               <p className="text-sm text-text-secondary leading-relaxed">
-                6 progressive tracks and 36 learning modules starting from LDAP and Kerberos to modern Passkeys and continuous adaptive zero trust.
+                7 progressive tracks and 42 learning modules starting from LDAP and Kerberos to modern Passkeys, AI agent governance, and continuous adaptive zero trust.
               </p>
             </div>
             <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
@@ -275,6 +276,44 @@ export default function Home() {
               Open Hub <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </div>
           </Link>
+        </div>
+      </section>
+
+      {/* Next-Gen IAM Strip */}
+      <section className="space-y-8 pt-6">
+        <div className="text-center max-w-2xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-primary uppercase tracking-wider bg-accent-glow px-2.5 py-1 rounded-full border border-accent-primary/10">
+            <Sparkles className="w-3.5 h-3.5" /> New Pillar
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight text-text-primary">Next-Gen IAM</h2>
+          <p className="text-text-secondary">
+            Where identity is heading: AI agents as a new principal type, runtime governance for autonomous systems, phishing-resistant credential fleets, wallet-based verifiable credentials, and the crypto-agility discipline underneath all of it.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          {NEXT_GEN_THEMES.map((theme) => (
+            <Link
+              key={theme.id}
+              to={theme.route}
+              className="group p-6 rounded-xl bg-bg-card border border-border-subtle shadow-sm hover-cyber-glow flex flex-col justify-between"
+            >
+              <div className="space-y-4">
+                <div className="w-10 h-12 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
+                  <theme.icon className="w-5 h-5" />
+                </div>
+                <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                  {theme.title}
+                </h4>
+                <p className="text-sm text-text-secondary leading-relaxed">
+                  {theme.thesis}
+                </p>
+              </div>
+              <div className="flex items-center gap-1 text-xs font-semibold text-accent-primary pt-4 group">
+                Explore <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -583,7 +622,7 @@ export default function Home() {
               name="email"
               required
               placeholder="Enter your email"
-              className="flex-grow p-2.5 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary font-semibold"
+              className="flex-grow min-w-0 p-2.5 border border-border-subtle rounded-lg bg-bg-sidebar text-xs text-text-primary outline-none focus:border-accent-primary font-semibold"
             />
             <button
               type="submit"

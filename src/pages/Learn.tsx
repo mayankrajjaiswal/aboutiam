@@ -91,6 +91,17 @@ const ACADEMY_QUIZZES: Record<string, AcademyQuiz> = {
     ],
     correct: 1,
     explanation: "An SVID is a cryptographically verifiable, short-lived identity document (formatted as an X.509 certificate or JWT) issued dynamically to running workloads, allowing software robots to attest identity securely without static secrets."
+  },
+  'track-7': {
+    q: "An AI agent needs to act on behalf of a specific user across several delegated hops. Which mechanism formalizes preserving that full chain of authority back to the original principal?",
+    options: [
+      "Storing the user's original password inside the agent's configuration.",
+      "RFC 8693 token exchange with `act`/`may_act` claims carrying the delegation chain.",
+      "Issuing the agent a long-lived API key with no expiry.",
+      "Granting the agent a wildcard scope covering every possible action."
+    ],
+    correct: 1,
+    explanation: "RFC 8693 (OAuth 2.0 Token Exchange) defines `act`/`may_act` claims specifically to preserve a verifiable chain of delegated authority across multiple hops, so a verifier can always trace an agent's action back to the human or system that originally authorized it."
   }
 }
 

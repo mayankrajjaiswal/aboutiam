@@ -5,6 +5,10 @@
 
 export type MigrationPriority = 'Critical' | 'High' | 'Medium' | 'Info'
 
+/** Matches nextGenThemes.ts NextGenThemeId -- kept as plain strings here to avoid a
+ * circular import; validated against that type in pqcAlgorithmRisk.test.ts. */
+export type AffectedTheme = 'agentic-identity' | 'ai-security-fabric' | 'phishing-resistant-auth' | 'digital-wallets' | 'crypto-agility'
+
 export interface PqcAlgorithmRisk {
   /** Canonical display name shown in reports. */
   algorithm: string
@@ -15,6 +19,8 @@ export interface PqcAlgorithmRisk {
   recommendedHybrid: string
   migrationPriority: MigrationPriority
   citation: string
+  /** Which Next-Gen IAM themes this algorithm's migration risk directly affects. */
+  affectedThemes: AffectedTheme[]
 }
 
 export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
@@ -26,6 +32,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'RSA + ML-KEM-768 hybrid key exchange for TLS; migrate signatures to ML-DSA-65.',
     migrationPriority: 'Critical',
     citation: 'NIST IR 8547 (transition to PQC); FIPS 203/204 (ML-KEM/ML-DSA)',
+    affectedThemes: ['crypto-agility', 'agentic-identity', 'digital-wallets'],
   },
   {
     algorithm: 'ECDSA',
@@ -35,6 +42,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'X25519 + ML-KEM-768 hybrid key exchange; migrate signatures to ML-DSA-44/65.',
     migrationPriority: 'Critical',
     citation: 'NIST IR 8547 (transition to PQC); FIPS 203/204 (ML-KEM/ML-DSA)',
+    affectedThemes: ['crypto-agility', 'phishing-resistant-auth', 'digital-wallets'],
   },
   {
     algorithm: 'EdDSA (Ed25519 / Ed448)',
@@ -44,6 +52,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'Hybrid Ed25519 + ML-DSA-44 dual signatures during the transition period.',
     migrationPriority: 'High',
     citation: 'FIPS 204 (ML-DSA); IETF draft-ietf-tls-hybrid-design',
+    affectedThemes: ['crypto-agility', 'phishing-resistant-auth', 'digital-wallets'],
   },
   {
     algorithm: 'DH / DSA (finite-field)',
@@ -53,6 +62,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'Migrate key exchange to ML-KEM-768; migrate signatures to ML-DSA-65.',
     migrationPriority: 'Critical',
     citation: 'NIST IR 8547 (transition to PQC)',
+    affectedThemes: ['crypto-agility'],
   },
   {
     algorithm: 'AES-128',
@@ -62,6 +72,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'Upgrade to AES-256 for any data requiring long-term ("harvest now, decrypt later") confidentiality.',
     migrationPriority: 'Medium',
     citation: 'NIST IR 8547; NSA CNSA 2.0 suite (mandates AES-256)',
+    affectedThemes: ['crypto-agility', 'ai-security-fabric'],
   },
   {
     algorithm: 'AES-256',
@@ -71,6 +82,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'Already quantum-resistant -- no migration needed.',
     migrationPriority: 'Info',
     citation: 'NSA CNSA 2.0 suite',
+    affectedThemes: ['crypto-agility'],
   },
   {
     algorithm: 'ML-KEM (512/768/1024)',
@@ -80,6 +92,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'Already PQC -- no action needed.',
     migrationPriority: 'Info',
     citation: 'FIPS 203 (ML-KEM), finalized August 2024',
+    affectedThemes: ['crypto-agility', 'agentic-identity', 'ai-security-fabric'],
   },
   {
     algorithm: 'ML-DSA (44/65/87)',
@@ -89,6 +102,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'Already PQC -- no action needed.',
     migrationPriority: 'Info',
     citation: 'FIPS 204 (ML-DSA), finalized August 2024',
+    affectedThemes: ['crypto-agility', 'digital-wallets', 'phishing-resistant-auth'],
   },
   {
     algorithm: 'SLH-DSA (SPHINCS+)',
@@ -98,6 +112,7 @@ export const PQC_ALGORITHM_RISK_TABLE: PqcAlgorithmRisk[] = [
     recommendedHybrid: 'Already PQC -- no action needed (larger signatures than ML-DSA; use as a conservative backup algorithm).',
     migrationPriority: 'Info',
     citation: 'FIPS 205 (SLH-DSA), finalized August 2024',
+    affectedThemes: ['crypto-agility'],
   },
 ]
 

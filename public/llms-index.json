@@ -264,6 +264,96 @@
     ]
   },
   {
+    "id": "standard-mcp",
+    "title": "MCP",
+    "desc": "MCP is an open protocol standardizing how AI applications (MCP clients) connect to external data sources and tools (MCP servers) — the \"universal adapter\" that lets an agent reach a tool without a bespoke integration per pairing.",
+    "type": "Standard",
+    "keywords": [
+      "authorization",
+      "tool poisoning — a malicious or compromised mcp server's tool description misleads the connecting agent into leaking data or misusing a tool.",
+      "unbounded tool parameters or ambiguous descriptions that invite an agent to call a tool in an unintended, over-broad way.",
+      "no built-in least-privilege model — authorization over which tools an agent may call must be layered on separately."
+    ]
+  },
+  {
+    "id": "standard-rfc9396-rar",
+    "title": "RFC 9396",
+    "desc": "RAR introduces the `authorization_details` parameter, letting an OAuth request carry fine-grained, structured, purpose-bearing authorization data instead of a flat list of scope strings — the natural fit for declaring exactly what an AI agent is being authorized to do.",
+    "type": "Standard",
+    "keywords": [
+      "authorization",
+      "an attacker using the authorization server's consent screen to reveal encrypted authorization_details by injecting request data crafted on a device they control.",
+      "over-sharing authorization_details with clients/resource servers beyond a strict need-to-know basis."
+    ]
+  },
+  {
+    "id": "standard-ciba",
+    "title": "CIBA",
+    "desc": "CIBA lets a relying party initiate an authentication request without redirecting the user's browser, decoupling the \"consumption device\" (where the request originates) from the \"authentication device\" (where the user actually approves it) — the standards fit for keeping a human genuinely in the loop on an agent's action.",
+    "type": "Standard",
+    "keywords": [
+      "authorization",
+      "consent/approval fatigue — a user rubber-stamping backchannel approval requests without reading them, especially if an agent generates many.",
+      "insufficient binding_message detail letting a user approve a request without understanding exactly what they're authorizing."
+    ]
+  },
+  {
+    "id": "standard-agent-authz-emerging",
+    "title": "Emerging Agent Authorization Drafts",
+    "desc": "Several IETF and OpenID Foundation working groups are actively drafting standards specifically for AI agent authorization — extending OAuth/OIDC delegation concepts (token exchange, RAR, CIBA) to explicitly cover autonomous agent principals, multi-hop delegation chains, and agent-specific consent models.",
+    "type": "Standard",
+    "keywords": [
+      "authorization",
+      "treating an early, non-final draft as a stable target for production authorization logic — draft mechanisms can and do change before finalization.",
+      "vendor-specific \"agent authorization\" implementations diverging in incompatible ways while the standard is still unsettled."
+    ]
+  },
+  {
+    "id": "standard-fido-fdo",
+    "title": "FIDO Device Onboard (FDO)",
+    "desc": "FDO is a FIDO Alliance specification for automated, secure IoT/edge device onboarding (provisioning secrets and configuration so a device can connect to its platform) — a distinct spec family from FIDO2/WebAuthn user authentication, despite sharing the FIDO Alliance name.",
+    "type": "Standard",
+    "keywords": [
+      "emerging identity",
+      "confusing fdo device-onboarding attestation with fido2/webauthn user-authentication attestation — they are separate specifications solving different problems and should not be conflated in architecture or documentation.",
+      "rendezvous server compromise potentially misdirecting device ownership transfer if not properly secured."
+    ]
+  },
+  {
+    "id": "standard-eidas2-arf",
+    "title": "eIDAS 2.0 / EUDI Wallet ARF",
+    "desc": "Regulation (EU) 2024/1183 (eIDAS 2.0) establishes the legal framework for the European Digital Identity Wallet, with the Architecture and Reference Framework (ARF) defining its technical profile (OpenID4VCI/VP, ISO mdoc) — requiring every member state to offer a compliant wallet and, later, regulated relying parties to accept it.",
+    "type": "Standard",
+    "keywords": [
+      "emerging identity",
+      "relying on national-scheme-specific extensions that aren't part of the harmonized arf profile, undermining cross-border interoperability.",
+      "treating the relying-party acceptance obligation as optional before its actual legal effective date for a given sector."
+    ]
+  },
+  {
+    "id": "standard-openid4vci",
+    "title": "OpenID4VCI",
+    "desc": "OpenID4VCI defines an OAuth-protected API for a Credential Issuer to issue verifiable credentials (W3C VC, SD-JWT VC, ISO mdoc, and others) to a holder's wallet — the issuer-side complement to OpenID4VP's verifier-side presentation flow.",
+    "type": "Standard",
+    "keywords": [
+      "emerging identity",
+      "weak or absent holder-binding proof, letting an issued credential be presented by an entity other than the one it was issued to.",
+      "issuer key compromise undermining every credential it has ever issued -- the reason issuer signing keys warrant root-of-trust-grade protection."
+    ]
+  },
+  {
+    "id": "standard-pqc-fips203-205",
+    "title": "NIST FIPS 203/204/205",
+    "desc": "NIST's first three finalized post-quantum cryptography standards: FIPS 203 (ML-KEM, key encapsulation), FIPS 204 (ML-DSA, digital signatures), and FIPS 205 (SLH-DSA, a conservative hash-based signature alternative) — published and effective August 2024.",
+    "type": "Standard",
+    "keywords": [
+      "cryptography",
+      "harvest-now-decrypt-later — data encrypted with classical algorithms today is already exposed to a future quantum-capable adversary who stored it.",
+      "migrating signatures without migrating the issuing ca/root first, breaking the chain of trust the migration was meant to strengthen.",
+      "naive migration ignoring the larger key/signature sizes of pqc algorithms, which can break systems with hardcoded size assumptions."
+    ]
+  },
+  {
     "id": "term-aaa",
     "title": "AAA",
     "desc": "The master security system of an apartment building: 1. Authentication checks your key at the front door. 2. Authorization checks if your key card unlocks the gym. 3. Accounting logs the exact time you entered and left the gym.",
@@ -1899,6 +1989,231 @@
     "type": "GlossaryTerm",
     "keywords": [
       "foundations"
+    ]
+  },
+  {
+    "id": "term-agentic_ai",
+    "title": "Agentic AI",
+    "desc": "The difference between a vending machine (you press one button, it does one thing) and hiring an assistant who plans a multi-step errand, makes decisions along the way, and reports back when done.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-ai_agent_identity",
+    "title": "AI Agent Identity",
+    "desc": "A new employee's badge, but for a piece of software: it says who the agent is, who it works for, and what it's cleared to do.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-agent_registry",
+    "title": "Agent Registry",
+    "desc": "An HR system, but for agents — before anyone can start work, there's a record of who they are, who manages them, and what they're hired to do.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-declared_intent",
+    "title": "Declared Intent",
+    "desc": "A written job description that says exactly what a new hire is meant to be doing this week — so a manager glancing at their calendar can immediately tell if something looks off.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-agent_owner",
+    "title": "Agent Owner",
+    "desc": "The name on a company car's maintenance file — someone specific is accountable for it, even though many people might drive it.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-on_behalf_of",
+    "title": "On-Behalf-Of",
+    "desc": "A lawyer signing a contract \"for and on behalf of\" their client — the signature is the lawyer's, but the authority and consequence belong to the client who authorized it.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-mcp",
+    "title": "MCP",
+    "desc": "A universal power adapter for AI: instead of every AI application needing a custom-built plug for every data source, MCP gives them all one common socket.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-tool_calling_authorization",
+    "title": "Tool-Calling Authorization",
+    "desc": "Giving a new intern the keys to the supply closet they need, not a master key to the whole building \"just in case.\"",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-task_drift",
+    "title": "Task Drift",
+    "desc": "A delivery driver who was dispatched to drop off one package but starts making unscheduled stops along the way — the destination on paper no longer matches where they're actually going.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-prompt_injection",
+    "title": "Prompt Injection",
+    "desc": "A forged memo slipped into a manager's inbox that looks like it came from the CEO — an employee following it in good faith is still following an attacker's instructions.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-semantic_guardrail",
+    "title": "Semantic Guardrail",
+    "desc": "A human security guard who reads the actual content of a note someone's carrying, versus a turnstile that only checks whether a badge was scanned — one judges meaning, the other only checks a formal attribute.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-ai_firewall",
+    "title": "AI Firewall",
+    "desc": "A network firewall, but inspecting an agent's prompts, tool calls, and outputs instead of network packets.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-ai_control_plane",
+    "title": "AI Control Plane",
+    "desc": "A building's security operations center: cameras (discovery), a rulebook (decide), guards who act on alerts (enforce), and a log of everything that happened (observe) — all feeding back into each other.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-shadow_ai",
+    "title": "Shadow AI",
+    "desc": "An employee quietly installing their own file-sharing app because the official one is slow — except here it's an unregistered AI agent nobody in security knows exists.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-enterprise_attestation",
+    "title": "Enterprise Attestation",
+    "desc": "A company-issued ID badge that not only proves who you are but also proves it was manufactured by an approved badge vendor, not printed at a corner copy shop.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-aaguid",
+    "title": "AAGUID",
+    "desc": "A model number stamped on a car, not a VIN — it tells you the make and model, not which individual car it is.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-phishing_resistant_mfa",
+    "title": "Phishing-Resistant MFA",
+    "desc": "A lock that only opens for the one specific key cut for it, versus a lock that opens for any key someone convincingly claims is the right one.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-authenticator_lifecycle",
+    "title": "Authenticator Lifecycle",
+    "desc": "The full life of a company laptop, not just the day it's handed over: ordering, configuring, shipping, onboarding, fixing when it breaks, refreshing on schedule, and safely wiping it when retired.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-business_wallet",
+    "title": "Business Wallet",
+    "desc": "A company's official document folder, but cryptographically verifiable and instantly presentable — instead of a filing cabinet of certificates someone has to fax over.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-credential_issuer",
+    "title": "Credential Issuer",
+    "desc": "A university's registrar office: the entity whose stamp makes a diploma actually mean something to anyone who later checks it.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-relying_party_obligation",
+    "title": "Relying Party Obligation",
+    "desc": "A shop that used to accept cash only being legally required to also accept a new national payment card once it becomes standard enough.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-status_list_revocation",
+    "title": "Status List Revocation",
+    "desc": "A hotel checking a shared, frequently-updated list of cancelled reservation numbers rather than calling every guest individually to ask if their booking is still valid.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-crypto_agility",
+    "title": "Crypto Agility",
+    "desc": "Knowing exactly which locks in a building use which keys, and in what order they can be swapped, so a full rekeying project doesn't turn into a scramble.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-harvest_now_decrypt_later",
+    "title": "Harvest-Now-Decrypt-Later",
+    "desc": "An adversary photographing a locked filing cabinet today, confident that a future master key will eventually let them read every page inside.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
+    ]
+  },
+  {
+    "id": "term-hardware_root_of_trust",
+    "title": "Hardware Root of Trust",
+    "desc": "A country's single master engraving die that stamps every passport blank — if that one die is ever compromised, every passport it ever produced is suspect.",
+    "type": "GlossaryTerm",
+    "keywords": [
+      "agentic identity"
     ]
   },
   {

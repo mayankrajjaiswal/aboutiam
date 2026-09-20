@@ -5,7 +5,7 @@
     <link>https://www.aboutiam.com</link>
     <description>Latest browser-native identity security simulators, vulnerability post-mortems, and standard CVE analysis.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Sep 2026 10:06:08 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 20 Sep 2026 07:05:17 GMT</lastBuildDate>
     <atom:link href="https://www.aboutiam.com/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title><![CDATA[New Security Tool: OAuth 2.0 Authorization URL Parser & Risk Analyzer]]></title>
@@ -453,6 +453,54 @@
       <guid isPermaLink="true">https://www.aboutiam.com/tools/sd-jwt-wallet-sdk</guid>
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[Deeply explore the developer-level cryptographic mechanics of SD-JWT Selective Disclosures. Generate random salt parameters, hash claims client-side, and verify disclosures against the issuer-signed JWT envelope.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: MCP Manifest & Tool-Permission Auditor]]></title>
+      <link>https://www.aboutiam.com/tools/mcp-manifest-auditor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/mcp-manifest-auditor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Paste an MCP (Model Context Protocol) server tool manifest to flag identity-relevant risks — unbounded parameters, undistinguished destructive operations, missing scope declarations, credential-accepting parameters, and over-broad resource patterns.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Agent Governance Readiness Assessor]]></title>
+      <link>https://www.aboutiam.com/tools/agent-governance-readiness</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/agent-governance-readiness</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[A 26-question self-assessment across the 8 agent-identity dimensions and 4 AI-control-plane functions, producing a banded maturity score, per-dimension breakdown, and a prioritized gap list with recommended next pages.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Passwordless ROI & Helpdesk Cost Calculator]]></title>
+      <link>https://www.aboutiam.com/tools/passwordless-roi-calculator</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/passwordless-roi-calculator</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Model a 3-year cost comparison between continuing password-based authentication and rolling out FIDO passwordless devices — password-reset tickets, lockout time, and MFA-fatigue incidents versus device unit, fulfillment, and support costs.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Wallet Readiness Assessor]]></title>
+      <link>https://www.aboutiam.com/tools/wallet-readiness-assessor</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/wallet-readiness-assessor</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Select which digital-wallet roles (verifier, issuer, holder) your organization needs, your sector, and your jurisdiction footprint to get a role-specific readiness checklist, applicable standards profile, and relevant compliance deadlines.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Agent Identity Record Generator]]></title>
+      <link>https://www.aboutiam.com/tools/agent-identity-record</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/agent-identity-record</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Fill in the 25 fields across the 8 agent-identity groups (Identity, Ownership, Principal, Intent, Authority, Conditions, Provenance, Lifecycle) to generate a portable JSON/YAML agent identity record plus a human-readable job description — with completeness and over-broad-authority warnings.]]></description>
+      <category>Security Tool</category>
+    </item>
+    <item>
+      <title><![CDATA[New Security Tool: Crypto Agility Inventory Builder]]></title>
+      <link>https://www.aboutiam.com/tools/crypto-agility-inventory</link>
+      <guid isPermaLink="true">https://www.aboutiam.com/tools/crypto-agility-inventory</guid>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[Record the cryptographic dependencies across your own identity estate — algorithm, key length, rotation capability, HNDL exposure, and migration difficulty per component — and get a prioritized migration backlog with CSV/JSON export.]]></description>
       <category>Security Tool</category>
     </item>
     <item>

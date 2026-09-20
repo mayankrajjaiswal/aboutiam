@@ -218,6 +218,30 @@ const PkiCaWorkbench = lazy(() => import('./pages/Tools/PkiCaWorkbench'))
 const CloudPolicyAuditor = lazy(() => import('./pages/Tools/CloudPolicyAuditor'))
 const SdJwtWalletSdk = lazy(() => import('./pages/Tools/SdJwtWalletSdk'))
 const AdvancedOauthHackDefend = lazy(() => import('./pages/Playgrounds/AdvancedOauthHackDefend'))
+const AgentRegistryStudio = lazy(() => import('./pages/Playgrounds/AgentRegistryStudio'))
+const DelegationChainAuditor = lazy(() => import('./pages/Playgrounds/DelegationChainAuditor'))
+const AiGuardrailStudio = lazy(() => import('./pages/Playgrounds/AiGuardrailStudio'))
+const PromptInjectionEscalation = lazy(() => import('./pages/Playgrounds/PromptInjectionEscalation'))
+const AgentObservabilityLab = lazy(() => import('./pages/Playgrounds/AgentObservabilityLab'))
+const FidoFleetOps = lazy(() => import('./pages/Playgrounds/FidoFleetOps'))
+const AttestationPolicyLab = lazy(() => import('./pages/Playgrounds/AttestationPolicyLab'))
+const BusinessWalletStudio = lazy(() => import('./pages/Playgrounds/BusinessWalletStudio'))
+const CredentialIssuanceStudio = lazy(() => import('./pages/Playgrounds/CredentialIssuanceStudio'))
+const CryptoMigrationPlanner = lazy(() => import('./pages/Playgrounds/CryptoMigrationPlanner'))
+const McpManifestAuditor = lazy(() => import('./pages/Tools/McpManifestAuditor'))
+const AgentGovernanceReadiness = lazy(() => import('./pages/Tools/AgentGovernanceReadiness'))
+const PasswordlessRoiCalculator = lazy(() => import('./pages/Tools/PasswordlessRoiCalculator'))
+const WalletReadinessAssessor = lazy(() => import('./pages/Tools/WalletReadinessAssessor'))
+const AgentIdentityRecordGenerator = lazy(() => import('./pages/Tools/AgentIdentityRecordGenerator'))
+const CryptoAgilityInventoryBuilder = lazy(() => import('./pages/Tools/CryptoAgilityInventoryBuilder'))
+
+// Next-Gen IAM pillar
+const NextGenIamCenter = lazy(() => import('./pages/NextGenIamCenter'))
+const AgenticIdentityCenter = lazy(() => import('./pages/AgenticIdentityCenter'))
+const AiSecurityFabricCenter = lazy(() => import('./pages/AiSecurityFabricCenter'))
+const PhishingResistantAuthCenter = lazy(() => import('./pages/PhishingResistantAuthCenter'))
+const DigitalWalletsCenter = lazy(() => import('./pages/DigitalWalletsCenter'))
+const CryptoAgilityCenter = lazy(() => import('./pages/CryptoAgilityCenter'))
 
 function PageLoadingFallback() {
   return (
@@ -434,6 +458,29 @@ export default function App() {
               <Route path="/tools/cloud-policy-auditor" element={<CloudPolicyAuditor />} />
               <Route path="/tools/sd-jwt-wallet-sdk" element={<SdJwtWalletSdk />} />
               <Route path="/playground/advanced-oauth-hack-defend" element={<AdvancedOauthHackDefend />} />
+
+              <Route path="/next-gen" element={<NextGenIamCenter />} />
+              <Route path="/next-gen/agentic-identity" element={<AgenticIdentityCenter />} />
+              <Route path="/next-gen/ai-security-fabric" element={<AiSecurityFabricCenter />} />
+              <Route path="/next-gen/phishing-resistant-auth" element={<PhishingResistantAuthCenter />} />
+              <Route path="/next-gen/digital-wallets" element={<DigitalWalletsCenter />} />
+              <Route path="/next-gen/crypto-agility" element={<CryptoAgilityCenter />} />
+              <Route path="/playground/agent-registry" element={<AgentRegistryStudio />} />
+              <Route path="/playground/delegation-chain" element={<DelegationChainAuditor />} />
+              <Route path="/playground/ai-guardrails" element={<AiGuardrailStudio />} />
+              <Route path="/playground/prompt-injection-escalation" element={<PromptInjectionEscalation />} />
+              <Route path="/playground/agent-observability" element={<AgentObservabilityLab />} />
+              <Route path="/playground/fido-fleet-ops" element={<FidoFleetOps />} />
+              <Route path="/playground/attestation-policy" element={<AttestationPolicyLab />} />
+              <Route path="/playground/business-wallet" element={<BusinessWalletStudio />} />
+              <Route path="/playground/credential-issuance" element={<CredentialIssuanceStudio />} />
+              <Route path="/playground/crypto-migration" element={<CryptoMigrationPlanner />} />
+              <Route path="/tools/mcp-manifest-auditor" element={<McpManifestAuditor />} />
+              <Route path="/tools/agent-governance-readiness" element={<AgentGovernanceReadiness />} />
+              <Route path="/tools/passwordless-roi-calculator" element={<PasswordlessRoiCalculator />} />
+              <Route path="/tools/wallet-readiness-assessor" element={<WalletReadinessAssessor />} />
+              <Route path="/tools/agent-identity-record" element={<AgentIdentityRecordGenerator />} />
+              <Route path="/tools/crypto-agility-inventory" element={<CryptoAgilityInventoryBuilder />} />
 
               <Route path="/assess" element={<Assess />} />
               <Route path="/command-center" element={<CommandCenter />} />

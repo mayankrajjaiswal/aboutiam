@@ -128,9 +128,9 @@ export default function LDAPTreeSimulator() {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-8 min-w-0">
         {/* Controls Column */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="lg:col-span-1 space-y-6 min-w-0">
           <div className="p-6 rounded-xl bg-bg-card border border-border-subtle space-y-5 h-fit shadow-sm">
             <h4 className="font-bold text-text-primary text-sm flex items-center gap-2 pb-3 border-b border-border-subtle">
               <Search className="w-4 h-4 text-accent-primary" /> Filter Configurator

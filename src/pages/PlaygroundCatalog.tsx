@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses, Siren, Share2, Gamepad2, Layers, Smartphone, Zap } from 'lucide-react'
+import { Cpu, Key, Play, Fingerprint, Lock, Shield, Server, RefreshCw, Bot, Wallet, Activity, Network, Terminal, Sparkles, Sliders, KeySquare, Eye, Laptop, Scale, Radio, BadgeCheck, Mail, ShieldAlert, UserPlus, ClipboardCheck, Gauge, Vault, Cloud, ScanSearch, ClipboardList, GitBranch, ArrowLeftRight, Waypoints, ScanFace, Landmark, Glasses, Siren, Share2, Gamepad2, Layers, Smartphone, Zap, AtomIcon } from 'lucide-react'
 import BookmarkButton from '../components/BookmarkButton'
 import TaskFilterRow from '../components/TaskFilterRow'
 import { PLAYGROUND_TASK_TAGS } from '../data/playgroundTaskTags'
@@ -632,6 +632,80 @@ export default function PlaygroundCatalog() {
       icon: Sliders,
       link: "/playground/advanced-oauth-hack-defend",
       badge: "Active (Advanced)",
+    },
+    {
+      title: "Agent Registry & Lifecycle Studio",
+      desc: "Audit an AI agent's identity record for governance gaps — a missing owner, no expiry, over-broad authority — fix each one, then walk the agent through its full lifecycle from registration to decommission.",
+      icon: ClipboardList,
+      link: "/playground/agent-registry",
+      badge: "Active (Next-Gen)",
+      enterpriseProducts: "Thales OneWelcome, Microsoft Entra Agent ID, Okta"
+    },
+    {
+      title: "Delegation Chain Auditor",
+      desc: "Build a multi-hop on-behalf-of authority chain across the four agentic ecosystems, choose a delegation mechanism at each hop, and see whether authority narrows or widens, and who remains accountable for the final action.",
+      icon: ArrowLeftRight,
+      link: "/playground/delegation-chain",
+      badge: "Active (Next-Gen)",
+      enterpriseProducts: "Thales OneWelcome, Microsoft Entra Agent ID, Ping Identity"
+    },
+    {
+      title: "AI Guardrail Policy Studio",
+      desc: "Tune a semantic guardrail's strictness against a 20-request corpus of legitimate, drifting, and hostile agent requests, and watch false positives climb as false negatives fall — compared live against a deterministic ABAC policy.",
+      icon: Scale,
+      link: "/playground/ai-guardrails",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Prompt Injection → Privilege Escalation Lab",
+      desc: "Walk a 6-stage attack chain from a hostile instruction hidden in retrieved content to full account takeover. Toggle identity and fabric controls at any stage and see exactly where — and whether — the chain breaks.",
+      icon: ShieldAlert,
+      link: "/playground/prompt-injection-escalation",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Agent Behavior Observability Lab",
+      desc: "Watch an agent's actual actions stream in against its declared task, tune where on the 6-rung intervention ladder you step in, and see whether you stopped the damage in time — or intervened so early you'd have blocked a legitimate run too.",
+      icon: Eye,
+      link: "/playground/agent-observability",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "FIDO Fleet Operations Simulator",
+      desc: "Run a 5-round FIDO authenticator fleet across office, remote, shared-device, privileged, and contractor segments. Allocate form factors, respond to events, and track coverage, helpdesk load, cost, and satisfaction. No single form factor fits a whole organization.",
+      icon: Fingerprint,
+      link: "/playground/fido-fleet-ops",
+      badge: "Active (Next-Gen)",
+      enterpriseProducts: "Thales SafeNet Trusted Access, Yubico, Microsoft Entra ID"
+    },
+    {
+      title: "AAGUID & Attestation Policy Lab",
+      desc: "Author an enterprise authenticator policy — certification level, attestation conveyance, resident-key and user-verification requirements — and run it against 8 simulated registration attempts to see whether it correctly accepts strong devices and rejects weak or stale ones.",
+      icon: BadgeCheck,
+      link: "/playground/attestation-policy",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Business Wallet Studio",
+      desc: "Set up an organizational wallet: choose a custody model, receive a credential, delegate presentation authority to employees, and present it to a verifier. Inject a departed employee, a mid-transaction revocation, and a threshold violation to test governance.",
+      icon: Landmark,
+      link: "/playground/business-wallet",
+      badge: "Active (Next-Gen)",
+      enterpriseProducts: "Thales OneWelcome, Microsoft Entra Verified ID"
+    },
+    {
+      title: "Credential Issuance Studio",
+      desc: "Play the issuer role: define a credential type, configure holder binding and validity window, issue to a simulated wallet, verify, then revoke — and see the real trade-off between long validity with status-list revocation and short validity with reissuance.",
+      icon: KeySquare,
+      link: "/playground/credential-issuance",
+      badge: "Active (Next-Gen)",
+    },
+    {
+      title: "Crypto Migration Planner",
+      desc: "Sequence 10 crypto migration workstreams into a dependency-valid roadmap. You can't migrate what a component depends on after the component itself — reorder until every dependency comes first, prioritizing high harvest-now-decrypt-later exposure where the dependency graph allows.",
+      icon: AtomIcon,
+      link: "/playground/crypto-migration",
+      badge: "Active (Next-Gen)",
     }
   ]
 
@@ -661,7 +735,7 @@ export default function PlaygroundCatalog() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {visiblePlaygrounds.map((pg, i) => (
-          <div key={i} className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover-cyber-glow flex flex-col justify-between">
+          <div key={i} className="group min-w-0 p-6 rounded-xl bg-bg-card border border-border-subtle hover-cyber-glow flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -678,10 +752,10 @@ export default function PlaygroundCatalog() {
                   <BookmarkButton item={{ id: `playground-${pg.link}`, title: pg.title, link: pg.link }} />
                 </div>
               </div>
-              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+              <h4 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors wrap-break-word">
                 {pg.title}
               </h4>
-              <p className="text-sm text-text-secondary leading-relaxed">{pg.desc}</p>
+              <p className="text-sm text-text-secondary leading-relaxed wrap-break-word">{pg.desc}</p>
               
               {pg.enterpriseProducts && (
                 <div className="pt-3 border-t border-border-subtle border-dashed mt-3">

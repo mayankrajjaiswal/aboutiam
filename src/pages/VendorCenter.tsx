@@ -18,7 +18,15 @@ import {
 import type { IngestionStep } from '../data/identityIntelligence'
 
 type SectionType = 'vendors' | 'intelligence' | 'events' | 'social'
-type ThalesTabType = 'overview' | 'onewelcome' | 'sta' | 'idcloud' | 'interview'
+type ThalesTabType = 'overview' | 'onewelcome' | 'sta' | 'idcloud' | 'luna_hsm' | 'ai_security_fabric' | 'interview'
+
+const THALES_PRODUCT_TAB_LABELS: Record<string, string> = {
+  onewelcome: '🪐 OneWelcome Platform',
+  sta: '🔒 SafeNet STA MFA',
+  idcloud: '☁️ IdCloud Portal',
+  luna_hsm: '🔐 Luna HSM (PQC)',
+  ai_security_fabric: '🤖 AI Security Fabric',
+}
 
 function buildVendorJsonLd() {
   return {
@@ -233,28 +241,28 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
         </div>
 
         {/* TOP LEVEL NAVIGATION TABS */}
-        <div className="flex bg-bg-base p-1.5 rounded-xl border border-border-subtle gap-1">
+        <div className="flex bg-bg-base p-1.5 rounded-xl border border-border-subtle gap-1 overflow-x-auto">
           <button
             onClick={() => setActiveSection('vendors')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'vendors' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeSection === 'vendors' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
           >
             🏢 Vendor Directory
           </button>
           <button
             onClick={() => setActiveSection('intelligence')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'intelligence' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeSection === 'intelligence' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
           >
             📰 Intelligence Hub
           </button>
           <button
             onClick={() => setActiveSection('events')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'events' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeSection === 'events' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
           >
             📅 Community Calendar
           </button>
           <button
             onClick={() => setActiveSection('social')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${activeSection === 'social' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeSection === 'social' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
           >
             💬 Social Dashboard
           </button>
@@ -488,24 +496,15 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
                     >
                       📖 Company Overview
                     </button>
-                    <button
-                      onClick={() => setThalesTab('onewelcome')}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === 'onewelcome' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
-                    >
-                      🪐 OneWelcome Platform
-                    </button>
-                    <button
-                      onClick={() => setThalesTab('sta')}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === 'sta' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
-                    >
-                      🔒 SafeNet STA MFA
-                    </button>
-                    <button
-                      onClick={() => setThalesTab('idcloud')}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === 'idcloud' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
-                    >
-                      ☁️ IdCloud Portal
-                    </button>
+                    {THALES_PRODUCTS.map(prod => (
+                      <button
+                        key={prod.id}
+                        onClick={() => setThalesTab(prod.id as ThalesTabType)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === prod.id ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+                      >
+                        {THALES_PRODUCT_TAB_LABELS[prod.id] ?? prod.name}
+                      </button>
+                    ))}
                     <button
                       onClick={() => setThalesTab('interview')}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${thalesTab === 'interview' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
@@ -562,8 +561,8 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
                   </div>
                 )}
 
-                {/* Subtab products: OneWelcome, STA, IdCloud */}
-                {(thalesTab === 'onewelcome' || thalesTab === 'sta' || thalesTab === 'idcloud') && (
+                {/* Subtab products: any registered THALES_PRODUCTS entry */}
+                {THALES_PRODUCTS.some(p => p.id === thalesTab) && (
                   (() => {
                     const prod = THALES_PRODUCTS.find(p => p.id === thalesTab)!
                     return (
@@ -623,6 +622,22 @@ Instead of hardcoding complex redirects and KYC validation routines, developers 
                               <p className="text-[11px] text-text-secondary leading-normal">{prod.useCases.join(', ')}</p>
                             </div>
                           </div>
+
+                          {/* Next-Gen IAM theme capabilities, publicly documented only */}
+                          {prod.nextGenThemeCapabilities && prod.nextGenThemeCapabilities.length > 0 && (
+                            <div className="pt-4 border-t border-border-subtle space-y-2">
+                              <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                <Sparkles className="w-3.5 h-3.5 text-accent-primary" /> Next-Gen IAM Capabilities
+                              </span>
+                              {prod.nextGenThemeCapabilities.map(cap => (
+                                <div key={cap.theme} className="p-3.5 bg-bg-nested/30 border border-border-subtle rounded-xl text-xs space-y-1">
+                                  <span className="text-[9px] font-black uppercase text-accent-primary bg-accent-glow px-1.5 py-0.5 rounded">{cap.theme}</span>
+                                  <p className="text-[11px] text-text-secondary leading-normal">{cap.capability}</p>
+                                  <a href={cap.sourceLink} target="_blank" rel="noreferrer" className="text-[10px] text-accent-primary hover:underline inline-block">Source (verified {cap.verifiedDate}) →</a>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
 
                         {/* Troubleshooting Guides */}

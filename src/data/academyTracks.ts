@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react'
 import {
-  Compass, Server, Key, Users, Lock, Fingerprint
+  Compass, Server, Key, Users, Lock, Fingerprint, Bot
 } from 'lucide-react'
 
 export interface SubModule {
@@ -317,6 +317,56 @@ export const ACADEMY_TRACKS: Track[] = [
           desc: 'Issuing cryptographically verifiable, dynamic identities to non-human software workloads across multi-cloud clusters.',
           analogy: 'Like assigning a unique, self-destructing digital barcode to every software robot running in AWS or Google Cloud, so they can securely talk to each other without sharing secrets.',
           expertTakeaway: 'SPIFFE standardizes short-lived X.509 SVID credentials issued dynamically based on Kubernetes or OS platform state.'
+        }
+      ]
+    },
+    {
+      id: 'track-7',
+      title: '7. Next-Generation Identity',
+      desc: 'AI agents as a new class of identity, runtime governance for autonomous systems, phishing-resistant credential wallets, and the crypto-agility discipline needed to survive the post-quantum transition.',
+      icon: Bot,
+      modules: [
+        {
+          id: 'm7.1',
+          title: 'Why Agents Change Identity',
+          desc: 'AI agents break the assumptions IAM was built on: a stable session, a human behind every action, and requests that arrive one at a time from a known set of applications.',
+          analogy: 'Traditional IAM is built to badge in employees at a front desk one at a time. An AI agent is more like a temp staffing agency that can spin up dozens of workers on demand, each needing their own badge, desk, and manager — the front-desk model was never designed for that.',
+          expertTakeaway: 'Agents introduce a new principal type distinct from both human users and traditional service accounts: they act with delegated authority, make autonomous multi-step decisions, and can spawn sub-agents — none of which classic RBAC/session models anticipate.'
+        },
+        {
+          id: 'm7.2',
+          title: 'Giving an Agent a Job Description',
+          desc: 'A portable agent identity record — owner, declared intent, permitted tools, conditions, and lifecycle — turns "the agent did something" into something you can actually govern.',
+          analogy: 'Just like a new hire needs a job description spelling out their manager, their responsibilities, and what they are explicitly not authorized to do, an AI agent needs the same artifact before it is trusted with real access.',
+          expertTakeaway: 'The agent identity record schema maps directly onto familiar IAM concepts: agent_id to a subject identifier, declared intent to an authorization request purpose, and lifecycle fields to joiner-mover-leaver processes for a non-human identity.'
+        },
+        {
+          id: 'm7.3',
+          title: 'Delegation and On-Behalf-Of Chains',
+          desc: 'When an agent acts for a user, or a sub-agent acts for a parent agent, the chain of "who is really asking" must be preserved end-to-end, not collapsed into a single opaque credential.',
+          analogy: 'A power of attorney lets one person act for another, but a good one names exactly what they can do and for how long — and if that person delegates further, the paper trail should show every link back to the original grant.',
+          expertTakeaway: 'RFC 8693 token exchange and its `act`/`may_act` claims formalize delegation chains; combined with RAR (RFC 9396) declared-intent scoping and CIBA out-of-band approval, they let a verifier reconstruct the full chain of authority behind any agent action.'
+        },
+        {
+          id: 'm7.4',
+          title: 'Runtime Governance for AI',
+          desc: 'Design-time identity records are necessary but not sufficient — a control plane that discovers, decides, enforces, and observes agent behavior in real time is what catches what a static record cannot.',
+          analogy: 'A job description tells a new employee what they are hired to do, but a good manager still checks in, notices when work drifts from the job description, and steps in before a small deviation becomes a real problem.',
+          expertTakeaway: 'The Discover-Decide-Enforce-Observe loop pairs structured policy evaluation with semantic guardrails that assess intent, inline enforcement (an "AI firewall") that can block or modify actions, and drift detection that compares observed behavior against declared intent.'
+        },
+        {
+          id: 'm7.5',
+          title: 'Wallets and Verifiable Credentials',
+          desc: 'Digital wallets introduce three distinct roles — issuer, holder, and verifier — each with its own protocol surface, and increasingly its own regulatory acceptance obligation.',
+          analogy: 'A driving licence works the same way: the DMV issues it, you hold it, and a bar checks it — three different jobs, and a bar that only knows how to check paper licences will reject your valid digital one if it never learned that format.',
+          expertTakeaway: 'OpenID4VCI covers issuance, OpenID4VP covers presentation, and the underlying credential formats (mdoc, SD-JWT VC, W3C VC) determine which wallets and verifiers can interoperate — the EU\'s eIDAS 2.0 is moving several sectors from "may accept" to "must accept" on a fixed timeline.'
+        },
+        {
+          id: 'm7.6',
+          title: 'Crypto Agility as a Discipline',
+          desc: 'The cryptographic dependencies underneath every identity system — root CAs, token signing, transport, hardware authenticators — form a dependency graph that has to migrate in a specific order, not all at once.',
+          analogy: 'You cannot re-key the top-floor locks in a building before re-keying the master key that opens them — the same ordering constraint applies to migrating a root CA before anything it has signed can meaningfully follow.',
+          expertTakeaway: 'NIST finalized FIPS 203 (ML-KEM), 204 (ML-DSA), and 205 (SLH-DSA) in August 2024; federal guidance targets 2030/2031 for deprecating classical key-establishment and signature algorithms respectively, but "harvest now, decrypt later" risk to long-lived secrets accrues today, before any of those deadlines arrive.'
         }
       ]
     }

@@ -566,7 +566,7 @@ export default function IdentityLabs() {
 
               {/* FILTERS PANEL */}
               <div className="flex flex-wrap gap-2">
-                <div className="flex items-center gap-1.5 bg-bg-nested/60 border border-border-subtle/60 p-1 rounded-lg">
+                <div className="flex flex-wrap items-center gap-1.5 bg-bg-nested/60 border border-border-subtle/60 p-1 rounded-lg max-w-full">
                   <span className="text-[10px] text-text-muted font-bold px-1.5 uppercase">Difficulty:</span>
                   {['All', 'Beginner', 'Intermediate', 'Advanced', 'Expert'].map(diff => (
                     <button
@@ -579,7 +579,7 @@ export default function IdentityLabs() {
                   ))}
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-bg-nested/60 border border-border-subtle/60 p-1 rounded-lg">
+                <div className="flex flex-wrap items-center gap-1.5 bg-bg-nested/60 border border-border-subtle/60 p-1 rounded-lg max-w-full">
                   <span className="text-[10px] text-text-muted font-bold px-1.5 uppercase">Domain:</span>
                   {['All', 'OAuth / OIDC', 'JWT / Cryptography', 'SAML / SSO', 'SCIM / Provisioning'].map(cat => (
                     <button

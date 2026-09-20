@@ -229,7 +229,7 @@ rules:
             <select
               value={schemaType}
               onChange={e => handleSchemaChange(e.target.value)}
-              className="bg-bg-sidebar border border-border-subtle rounded-lg px-2.5 py-1 text-xs font-bold text-text-primary focus:outline-none"
+              className="bg-bg-sidebar border border-border-subtle rounded-lg px-2.5 py-1 text-xs font-bold text-text-primary focus:outline-none min-w-0 max-w-full"
             >
               <option value="AWS">AWS IAM JSON Policy</option>
               <option value="GCP">GCP IAM JSON Binding</option>

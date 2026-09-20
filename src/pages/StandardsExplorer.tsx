@@ -120,22 +120,22 @@ export default function StandardsExplorer() {
             <ArrowLeft className="w-4 h-4" /> Back to Standards Inventory
           </button>
         ) : (
-          <div className="flex bg-bg-nested p-1.5 rounded-xl border border-border-subtle gap-1 shrink-0">
+          <div className="flex bg-bg-nested p-1.5 rounded-xl border border-border-subtle gap-1 shrink-0 overflow-x-auto max-w-full">
             <button
               onClick={() => setPageView('standards')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'standards' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'standards' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
             >
               <BookOpen className="w-3.5 h-3.5" /> Standards
             </button>
             <button
               onClick={() => setPageView('deadlines')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'deadlines' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'deadlines' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
             >
               <CalendarClock className="w-3.5 h-3.5" /> Compliance Deadlines
             </button>
             <button
               onClick={() => setPageView('wallet-adoption')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 ${pageView === 'wallet-adoption' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 shrink-0 whitespace-nowrap ${pageView === 'wallet-adoption' ? 'bg-bg-card text-accent-primary shadow-sm border border-border-subtle' : 'text-text-secondary hover:text-text-primary'}`}
             >
               <Smartphone className="w-3.5 h-3.5" /> Wallet/mDL Adoption
             </button>

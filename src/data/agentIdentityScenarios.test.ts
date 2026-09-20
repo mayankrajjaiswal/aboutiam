@@ -22,4 +22,11 @@ describe('Agent Identity Scenarios', () => {
       }
     }
   })
+
+  it('includes one scenario per agentic-ecosystem quadrant (enterprise, workforce, partners, consumers)', () => {
+    const ids = ['internal_ticket_triage_agent', 'workforce_contract_review_agent', 'partner_claims_intake_agent', 'consumer_lost_property_agent']
+    for (const id of ids) {
+      expect(AGENT_IDENTITY_SCENARIOS.some((s) => s.id === id)).toBe(true)
+    }
+  })
 })

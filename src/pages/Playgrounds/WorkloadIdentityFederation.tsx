@@ -174,7 +174,7 @@ export default function WorkloadIdentityFederation() {
               <select
                 value={selectedScenarioId}
                 onChange={e => setSelectedScenarioId(e.target.value)}
-                className="p-1.5 rounded bg-bg-sidebar border border-border-subtle text-xs text-text-primary outline-none font-bold"
+                className="p-1.5 rounded bg-bg-sidebar border border-border-subtle text-xs text-text-primary outline-none font-bold min-w-0 max-w-full"
               >
                 <option value="github_to_aws">GitHub Actions deploying to AWS</option>
                 <option value="gitlab_to_gcp">GitLab CI/CD deploying to Google Cloud</option>

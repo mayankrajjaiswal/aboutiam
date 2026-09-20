@@ -40,4 +40,13 @@ describe('cheatSheetsData', () => {
       expect(new Set(checkIds).size, `duplicate check id within sheet "${s.id}"`).toBe(checkIds.length)
     })
   })
+
+  it('includes the 3 Next-Gen IAM cheat sheets', () => {
+    const ids = ['agent_identity_record', 'delegation_chain_patterns', 'crypto_agility_checklist']
+    for (const id of ids) {
+      const sheet = CHEAT_SHEETS.find((s) => s.id === id)
+      expect(sheet).toBeTruthy()
+      expect(sheet?.category).toBe('Identity Infrastructure & Governance')
+    }
+  })
 })

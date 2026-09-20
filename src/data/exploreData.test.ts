@@ -20,3 +20,23 @@ describe('EXPLORE_PRODUCTS contributionGuide', () => {
     }
   })
 })
+
+describe('Next-Gen IAM landscape entries', () => {
+  it('includes an Agentic Identity Platform entry', () => {
+    const product = EXPLORE_PRODUCTS.find((p) => p.id === 'entra-agent-id')
+    expect(product).toBeTruthy()
+    expect(product?.type).toBe('Agentic Identity Platform')
+  })
+
+  it('includes a Wallet Infrastructure entry', () => {
+    const product = EXPLORE_PRODUCTS.find((p) => p.id === 'thales-digital-id-wallet')
+    expect(product).toBeTruthy()
+    expect(product?.type).toBe('Wallet Infrastructure')
+  })
+
+  it('every product has a non-empty integrationSnippet', () => {
+    for (const product of EXPLORE_PRODUCTS) {
+      expect(product.integrationSnippet.length).toBeGreaterThan(0)
+    }
+  })
+})

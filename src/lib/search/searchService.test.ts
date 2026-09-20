@@ -11,6 +11,15 @@ import { BULLETINS, BULLETIN_CATEGORIES } from '../../data/bulletinsData'
 import { BREACHES, BREACH_CATEGORIES } from '../../data/breachesData'
 import { CHEAT_SHEETS, SHEET_CATEGORIES } from '../../data/cheatSheetsData'
 import { COMPARISONS, LEARNING_TRACKS, INTERVIEW_QUESTIONS } from '../../data/aiKnowledgeGraph'
+import { NEXT_GEN_THEMES } from '../../data/nextGenThemes'
+import { AGENTIC_QUADRANTS } from '../../data/agenticEcosystemQuadrants'
+import { AGENT_THREAT_CATALOG } from '../../data/agentThreatCatalog'
+import { FIDO_FORM_FACTORS } from '../../data/fidoFormFactors'
+import { BUSINESS_WALLET_USE_CASES } from '../../data/businessWalletUseCases'
+import { WALLET_PROGRAMMES } from '../../data/walletProgrammes'
+import { CRYPTO_MIGRATION_WORKSTREAMS } from '../../data/cryptoAgilityRoadmap'
+import { HSM_ROOT_OF_TRUST_CONCEPTS } from '../../data/hsmRootOfTrust'
+import { ROUTE_META } from '../../routeMeta'
 
 describe('getSearchIndex deep-link entries', () => {
   it('indexes all living standards with ?standard= deep links', () => {
@@ -404,5 +413,115 @@ describe('getSearchIndex deep-link entries', () => {
       expect(match, `expected next-gen simulator "${id}" to be searchable`).toBeTruthy()
       expect((match as unknown as { link: string }).link).toBe(`/playground/${id}`)
     })
+  })
+})
+
+// NextGenIAM.md §11 invariant #2: every entry in each of the 8 Next-Gen IAM
+// registries indexed by searchService.ts is actually searchable by id — the
+// same loop-over-all-entries pattern used above for standards/architectures,
+// applied to the pillar's own data sources.
+describe('getSearchIndex — Next-Gen IAM pillar registries', () => {
+  it('indexes every theme in nextGenThemes.ts by id', () => {
+    const index = getSearchIndex()
+    NEXT_GEN_THEMES.forEach((t) => {
+      const results = index.search(t.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `nextgen-theme-${t.id}`)
+      expect(match, `expected theme "${t.title}" (${t.id}) to be searchable`).toBeTruthy()
+      expect((match as unknown as { link: string }).link).toBe(t.route)
+    })
+  })
+
+  it('indexes every quadrant in agenticEcosystemQuadrants.ts by id', () => {
+    const index = getSearchIndex()
+    AGENTIC_QUADRANTS.forEach((q) => {
+      const results = index.search(q.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `nextgen-quadrant-${q.id}`)
+      expect(match, `expected quadrant "${q.title}" (${q.id}) to be searchable`).toBeTruthy()
+    })
+  })
+
+  it('indexes every threat in agentThreatCatalog.ts by id', () => {
+    const index = getSearchIndex()
+    AGENT_THREAT_CATALOG.forEach((t) => {
+      const results = index.search(t.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `nextgen-threat-${t.id}`)
+      expect(match, `expected threat "${t.title}" (${t.id}) to be searchable`).toBeTruthy()
+    })
+  })
+
+  it('indexes every form factor in fidoFormFactors.ts by id', () => {
+    const index = getSearchIndex()
+    FIDO_FORM_FACTORS.forEach((f) => {
+      const results = index.search(f.name, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `nextgen-formfactor-${f.id}`)
+      expect(match, `expected form factor "${f.name}" (${f.id}) to be searchable`).toBeTruthy()
+    })
+  })
+
+  it('indexes every use case in businessWalletUseCases.ts by id', () => {
+    const index = getSearchIndex()
+    BUSINESS_WALLET_USE_CASES.forEach((u) => {
+      const results = index.search(u.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `nextgen-wallet-usecase-${u.id}`)
+      expect(match, `expected use case "${u.title}" (${u.id}) to be searchable`).toBeTruthy()
+    })
+  })
+
+  it('indexes every programme in walletProgrammes.ts by id', () => {
+    const index = getSearchIndex()
+    WALLET_PROGRAMMES.forEach((p) => {
+      const results = index.search(p.name, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `nextgen-wallet-programme-${p.id}`)
+      expect(match, `expected programme "${p.name}" (${p.id}) to be searchable`).toBeTruthy()
+    })
+  })
+
+  it('indexes every workstream in cryptoAgilityRoadmap.ts by id', () => {
+    const index = getSearchIndex()
+    CRYPTO_MIGRATION_WORKSTREAMS.forEach((w) => {
+      const results = index.search(w.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `nextgen-crypto-workstream-${w.id}`)
+      expect(match, `expected workstream "${w.title}" (${w.id}) to be searchable`).toBeTruthy()
+    })
+  })
+
+  it('indexes every concept in hsmRootOfTrust.ts by id', () => {
+    const index = getSearchIndex()
+    HSM_ROOT_OF_TRUST_CONCEPTS.forEach((c) => {
+      const results = index.search(c.title, { prefix: true, fuzzy: 0.2 })
+      const match = results.find((r) => r.id === `nextgen-rot-${c.id}`)
+      expect(match, `expected concept "${c.title}" (${c.id}) to be searchable`).toBeTruthy()
+    })
+  })
+})
+
+// NextGenIAM.md §11 invariant #1: every relatedLabs/relatedTools/route
+// reference in every Next-Gen IAM registry resolves to a real, live path in
+// ROUTE_META. All 22 pillar routes shipped by the end of P8 (NextGenIAM.md
+// Appendix A), so this asserts directly against ROUTE_META with no
+// "planned but not yet wired" allowlist -- a stale cross-link is now a real
+// dead link, not a forward reference to a future phase.
+describe('Next-Gen IAM registries — cross-link resolution against ROUTE_META', () => {
+  function assertResolvable(paths: string[], sourceLabel: string) {
+    const liveRoutes = new Set(ROUTE_META.map((r) => r.path))
+    for (const path of paths) {
+      expect(liveRoutes.has(path), `${sourceLabel}: "${path}" is not a live route in ROUTE_META`).toBe(true)
+    }
+  }
+
+  it('every nextGenThemes.ts relatedLabs/relatedTools path resolves', () => {
+    NEXT_GEN_THEMES.forEach((t) => assertResolvable([...t.relatedLabs, ...t.relatedTools], `theme ${t.id}`))
+  })
+
+  it('every agenticEcosystemQuadrants.ts relatedLabs path resolves', () => {
+    AGENTIC_QUADRANTS.forEach((q) => assertResolvable(q.relatedLabs, `quadrant ${q.id}`))
+  })
+
+  it('every agentThreatCatalog.ts relatedLabs path resolves', () => {
+    AGENT_THREAT_CATALOG.forEach((t) => assertResolvable(t.relatedLabs, `threat ${t.id}`))
+  })
+
+  it('every businessWalletUseCases.ts relatedLabs path resolves', () => {
+    BUSINESS_WALLET_USE_CASES.forEach((u) => assertResolvable(u.relatedLabs, `use case ${u.id}`))
   })
 })

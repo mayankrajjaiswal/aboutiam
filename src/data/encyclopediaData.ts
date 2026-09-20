@@ -1475,5 +1475,205 @@ export const ENCYCLOPEDIA_TERMS: Term[] = [
       category: 'Foundations',
       analogy: 'A hotel kiosk that lets a guest who forgot their room number reprint their own keycard after verifying a few personal details, without ever needing to wake up the night manager.',
       expert: 'A capability allowing users to reset a forgotten password themselves after passing an identity-verification challenge (MFA, security questions, email/SMS verification), reducing helpdesk password-reset ticket volume, one of the highest-cost categories of IT support tickets.'
+    },
+    {
+      id: 'agentic_ai',
+      term: 'Agentic AI',
+      fullName: 'Agentic Artificial Intelligence',
+      category: 'Agentic Identity',
+      analogy: 'The difference between a vending machine (you press one button, it does one thing) and hiring an assistant who plans a multi-step errand, makes decisions along the way, and reports back when done.',
+      expert: 'An AI system that autonomously plans and executes multi-step tasks, invoking tools and making decisions with limited direct human supervision, as opposed to a single-turn request/response model — the shift that makes classical human-only identity models insufficient.'
+    },
+    {
+      id: 'ai_agent_identity',
+      term: 'AI Agent Identity',
+      fullName: 'AI Agent Identity',
+      category: 'Agentic Identity',
+      analogy: 'A new employee\'s badge, but for a piece of software: it says who the agent is, who it works for, and what it\'s cleared to do.',
+      expert: 'A first-class identity record for an autonomous agent instance — encompassing a stable identifier, a human owner, a declared intent, scoped authority, and a lifecycle — extending classical subject modeling (accounts, service principals, workload identities) to a principal type that can act, and spawn further agents, without direct human input at each step.'
+    },
+    {
+      id: 'agent_registry',
+      term: 'Agent Registry',
+      fullName: 'Agent Registry',
+      category: 'Agentic Identity',
+      analogy: 'An HR system, but for agents — before anyone can start work, there\'s a record of who they are, who manages them, and what they\'re hired to do.',
+      expert: 'A canonical, queryable inventory of every AI agent instance operating in an organization, each with a stable identifier — the precondition for issuing scoped authority, running drift detection, or answering "what agents do we actually have running right now."'
+    },
+    {
+      id: 'declared_intent',
+      term: 'Declared Intent',
+      fullName: 'Declared Agent Intent',
+      category: 'Agentic Identity',
+      analogy: 'A written job description that says exactly what a new hire is meant to be doing this week — so a manager glancing at their calendar can immediately tell if something looks off.',
+      expert: 'A written purpose statement and explicit in-scope/out-of-scope task list attached to an agent\'s identity record, giving downstream drift-detection systems a concrete baseline to compare observed behavior against — without it, "is this agent still doing what it\'s supposed to" has no answer.'
+    },
+    {
+      id: 'agent_owner',
+      term: 'Agent Owner',
+      fullName: 'Agent Owner',
+      category: 'Agentic Identity',
+      analogy: 'The name on a company car\'s maintenance file — someone specific is accountable for it, even though many people might drive it.',
+      expert: 'The named, accountable human recorded against an AI agent\'s identity record, distinct from whoever happens to invoke it on a given day — accountability that must survive personnel changes via a defined transfer process, not silently lapse when an owner leaves.'
+    },
+    {
+      id: 'on_behalf_of',
+      term: 'On-Behalf-Of',
+      fullName: 'On-Behalf-Of (OBO) Delegation',
+      category: 'Agentic Identity',
+      analogy: 'A lawyer signing a contract "for and on behalf of" their client — the signature is the lawyer\'s, but the authority and consequence belong to the client who authorized it.',
+      expert: 'A delegation pattern where an agent or service acts using a principal\'s authority rather than its own, typically implemented via OAuth 2.0 Token Exchange (RFC 8693) `act`/`may_act` claims that preserve the full chain from original principal through every intermediate delegate.'
+    },
+    {
+      id: 'mcp',
+      term: 'MCP',
+      fullName: 'Model Context Protocol',
+      category: 'Agentic Identity',
+      analogy: 'A universal power adapter for AI: instead of every AI application needing a custom-built plug for every data source, MCP gives them all one common socket.',
+      expert: 'An open protocol (announced by Anthropic, November 2024; now stewarded via the Agentic AI Foundation under the Linux Foundation) standardizing how AI applications connect to external data sources and tools through MCP servers and MCP clients — from an identity standpoint, each exposed tool is a scope-worthy capability that needs the same least-privilege discipline as any API.'
+    },
+    {
+      id: 'tool_calling_authorization',
+      term: 'Tool-Calling Authorization',
+      fullName: 'Tool-Calling Authorization',
+      category: 'Agentic Identity',
+      analogy: 'Giving a new intern the keys to the supply closet they need, not a master key to the whole building "just in case."',
+      expert: 'The discipline of scoping exactly which external tools/APIs an agent may invoke and under what conditions, enforced at the identity layer (permitted-tools field) rather than left to the model\'s own judgment about what it should or shouldn\'t call.'
+    },
+    {
+      id: 'task_drift',
+      term: 'Task Drift',
+      fullName: 'Agent Task Drift',
+      category: 'Agentic Identity',
+      analogy: 'A delivery driver who was dispatched to drop off one package but starts making unscheduled stops along the way — the destination on paper no longer matches where they\'re actually going.',
+      expert: 'A divergence between an agent\'s declared intent and its observed actions, detected by comparing the two continuously rather than trusting a single point-in-time authorization to hold for the task\'s entire duration — the central signal an AI Security Fabric is built to catch.'
+    },
+    {
+      id: 'prompt_injection',
+      term: 'Prompt Injection',
+      fullName: 'Prompt Injection',
+      category: 'Agentic Identity',
+      analogy: 'A forged memo slipped into a manager\'s inbox that looks like it came from the CEO — an employee following it in good faith is still following an attacker\'s instructions.',
+      expert: 'An attack where hostile instructions embedded in content an LLM-based agent processes (a document, a web page, a tool response) are interpreted as legitimate commands, potentially subverting the agent\'s original declared intent — ranked LLM01 in the OWASP Top 10 for LLM Applications (2025).'
+    },
+    {
+      id: 'semantic_guardrail',
+      term: 'Semantic Guardrail',
+      fullName: 'Semantic Guardrail',
+      category: 'Agentic Identity',
+      analogy: 'A human security guard who reads the actual content of a note someone\'s carrying, versus a turnstile that only checks whether a badge was scanned — one judges meaning, the other only checks a formal attribute.',
+      expert: 'A runtime control that evaluates the meaning and intent of natural-language or tool-call content, complementing (not replacing) structured ABAC/RBAC-style policy — necessarily probabilistic, so it trades off false positives against false negatives rather than producing a deterministic allow/deny.'
+    },
+    {
+      id: 'ai_firewall',
+      term: 'AI Firewall',
+      fullName: 'AI Firewall',
+      category: 'Agentic Identity',
+      analogy: 'A network firewall, but inspecting an agent\'s prompts, tool calls, and outputs instead of network packets.',
+      expert: 'A runtime enforcement point applying semantic guardrails and egress data-loss-prevention rules to agent traffic — the Enforce stage of an AI control plane\'s Discover-Decide-Enforce-Observe loop, analogous to a Policy Enforcement Point (PEP) in a classical PEP/PDP architecture.'
+    },
+    {
+      id: 'ai_control_plane',
+      term: 'AI Control Plane',
+      fullName: 'AI Control Plane (AI Security Fabric)',
+      category: 'Agentic Identity',
+      analogy: 'A building\'s security operations center: cameras (discovery), a rulebook (decide), guards who act on alerts (enforce), and a log of everything that happened (observe) — all feeding back into each other.',
+      expert: 'A runtime governance layer operating a continuous Discover -> Decide -> Enforce -> Observe loop over agentic workloads, complementing design-time agent identity (who is this agent, what may it do) with run-time behavioral enforcement (what is it actually doing, should we intervene).'
+    },
+    {
+      id: 'shadow_ai',
+      term: 'Shadow AI',
+      fullName: 'Shadow AI',
+      category: 'Agentic Identity',
+      analogy: 'An employee quietly installing their own file-sharing app because the official one is slow — except here it\'s an unregistered AI agent nobody in security knows exists.',
+      expert: 'AI agents, model integrations, or MCP tool connections deployed and used within an organization without going through formal registration or governance — the reason discovery has to be continuous rather than a one-time inventory exercise.'
+    },
+    {
+      id: 'enterprise_attestation',
+      term: 'Enterprise Attestation',
+      fullName: 'FIDO2 Enterprise Attestation',
+      category: 'Agentic Identity',
+      analogy: 'A company-issued ID badge that not only proves who you are but also proves it was manufactured by an approved badge vendor, not printed at a corner copy shop.',
+      expert: 'A WebAuthn/FIDO2 attestation mode where a per-authenticator unique attestation is returned to the relying party (rather than a batch/anonymized one), letting an enterprise verify the specific make and model of an authenticator against policy before trusting it — devices supporting enterprise attestation carry a distinct AAGUID from non-enterprise-capable models.'
+    },
+    {
+      id: 'aaguid',
+      term: 'AAGUID',
+      fullName: 'Authenticator Attestation GUID',
+      category: 'Agentic Identity',
+      analogy: 'A model number stamped on a car, not a VIN — it tells you the make and model, not which individual car it is.',
+      expert: 'A FIDO2/WebAuthn identifier returned by an authenticator during attestation that identifies its make and model (not the individual device), used by a relying party to look up metadata in the FIDO Metadata Service (MDS) and enforce policy over which authenticator models are acceptable.'
+    },
+    {
+      id: 'phishing_resistant_mfa',
+      term: 'Phishing-Resistant MFA',
+      fullName: 'Phishing-Resistant Multi-Factor Authentication',
+      category: 'Agentic Identity',
+      analogy: 'A lock that only opens for the one specific key cut for it, versus a lock that opens for any key someone convincingly claims is the right one.',
+      expert: 'An authentication method that establishes an authenticated protected channel and cryptographically binds the authenticator output to a specific channel/origin, defeating verifier-impersonation (phishing) attacks — per NIST SP 800-63-4 (final, 2025-07-31), passwords do not qualify, and AAL3 requires it; AAL2 expects it wherever practical.'
+    },
+    {
+      id: 'authenticator_lifecycle',
+      term: 'Authenticator Lifecycle',
+      fullName: 'FIDO Authenticator Fleet Lifecycle',
+      category: 'Agentic Identity',
+      analogy: 'The full life of a company laptop, not just the day it\'s handed over: ordering, configuring, shipping, onboarding, fixing when it breaks, refreshing on schedule, and safely wiping it when retired.',
+      expert: 'The end-to-end operational management of a fleet of FIDO authenticators — procure, personalize, fulfil, enrol, support/break-fix, refresh, revoke, and recycle — distinct from and much broader than the WebAuthn registration/assertion protocol itself, which only covers the enrol stage.'
+    },
+    {
+      id: 'business_wallet',
+      term: 'Business Wallet',
+      fullName: 'Organizational (Business) Digital Wallet',
+      category: 'Agentic Identity',
+      analogy: 'A company\'s official document folder, but cryptographically verifiable and instantly presentable — instead of a filing cabinet of certificates someone has to fax over.',
+      expert: 'A digital wallet operated by an organization rather than an individual, holding and presenting verifiable credentials about the organization itself (legal registration, licences) or delegating scoped presentation authority to specific employees — an under-served pattern compared to the much more common personal/consumer wallet.'
+    },
+    {
+      id: 'credential_issuer',
+      term: 'Credential Issuer',
+      fullName: 'Verifiable Credential Issuer',
+      category: 'Agentic Identity',
+      analogy: 'A university\'s registrar office: the entity whose stamp makes a diploma actually mean something to anyone who later checks it.',
+      expert: 'In OpenID4VCI, the entity that issues verifiable credentials, acting as an OAuth 2.0 Resource Server (and often also an Authorization Server) exposing a Credential Endpoint — bearing distinct trust, key-management, and revocation obligations from the holder or verifier roles in the same credential lifecycle.'
+    },
+    {
+      id: 'relying_party_obligation',
+      term: 'Relying Party Obligation',
+      fullName: 'Wallet Relying-Party Acceptance Obligation',
+      category: 'Agentic Identity',
+      analogy: 'A shop that used to accept cash only being legally required to also accept a new national payment card once it becomes standard enough.',
+      expert: 'A regulatory requirement compelling certain relying parties to accept a specified digital wallet credential — under Regulation (EU) 2024/1183 (eIDAS 2.0), regulated private-sector services (banking, healthcare, telecoms, large platforms) must accept the EUDI Wallet from late 2027, turning wallet support from optional into a compliance deadline.'
+    },
+    {
+      id: 'status_list_revocation',
+      term: 'Status List Revocation',
+      fullName: 'Credential Status List Revocation',
+      category: 'Agentic Identity',
+      analogy: 'A hotel checking a shared, frequently-updated list of cancelled reservation numbers rather than calling every guest individually to ask if their booking is still valid.',
+      expert: 'A revocation mechanism where a verifier checks a credential\'s current status against a compact, frequently-republished list (rather than contacting the issuer per verification), balancing real-time revocation checkability against the privacy cost of correlatable verifier lookups — a core design trade-off in OpenID4VC-based wallet ecosystems.'
+    },
+    {
+      id: 'crypto_agility',
+      term: 'Crypto Agility',
+      fullName: 'Cryptographic Agility',
+      category: 'Agentic Identity',
+      analogy: 'Knowing exactly which locks in a building use which keys, and in what order they can be swapped, so a full rekeying project doesn\'t turn into a scramble.',
+      expert: 'The operational discipline of inventorying, prioritizing, migrating, and verifying cryptographic algorithms across an identity estate without re-architecting the systems that depend on them — the precondition for a PQC migration to be a planned exercise rather than an emergency response to an algorithm being broken.'
+    },
+    {
+      id: 'harvest_now_decrypt_later',
+      term: 'Harvest-Now-Decrypt-Later',
+      fullName: 'Harvest-Now-Decrypt-Later (HNDL)',
+      category: 'Agentic Identity',
+      analogy: 'An adversary photographing a locked filing cabinet today, confident that a future master key will eventually let them read every page inside.',
+      expert: 'A threat model in which an adversary captures and stores encrypted data today with the expectation of decrypting it once cryptographically-relevant quantum computers become available — the primary reason long-lived data (e.g. credential signatures, archived TLS traffic) carries urgency for post-quantum migration even before such a computer exists.'
+    },
+    {
+      id: 'hardware_root_of_trust',
+      term: 'Hardware Root of Trust',
+      fullName: 'Hardware Root of Trust',
+      category: 'Agentic Identity',
+      analogy: 'A country\'s single master engraving die that stamps every passport blank — if that one die is ever compromised, every passport it ever produced is suspect.',
+      expert: 'A cryptographic foundation anchored in tamper-resistant hardware (typically an HSM validated to FIPS 140-3) whose non-extractable key material every dependent system — CA hierarchies, token signing, authenticator attestation, credential signatures — ultimately traces its trustworthiness back to.'
     }
 ]

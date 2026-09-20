@@ -203,6 +203,78 @@ This file contains the complete, dense technical knowledge base of AboutIAM for 
 - **Why It Exists:** Open Banking and Open Finance regulations (UK Open Banking, Australia's CDR, Brazil's Open Finance) needed one interoperable, opinionated security profile that every bank and TPP (Third-Party Provider) could implement identically, rather than each regulator inventing its own OAuth hardening rules.
 - **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=fapi2
 
+### Standard: MCP (Model Context Protocol) {#standard-mcp}
+- **Year:** 2024 (announced) / evolving | **Difficulty:** Intermediate | **Category:** Authorization
+- **Vulnerabilities:** Tool poisoning — a malicious or compromised MCP server's tool description misleads the connecting agent into leaking data or misusing a tool., Unbounded tool parameters or ambiguous descriptions that invite an agent to call a tool in an unintended, over-broad way., No built-in least-privilege model — authorization over which tools an agent may call must be layered on separately.
+- **Best Practices:** Maintain an allow-list of vetted MCP servers; treat any unregistered server as untrusted by default., Audit tool manifests for unbounded parameters and vague descriptions before allow-listing (see the MCP Manifest Auditor tool)., Scope which tools an agent may call at the identity layer, not just at the MCP server's own discretion.
+- **Summary:** MCP is an open protocol standardizing how AI applications (MCP clients) connect to external data sources and tools (MCP servers) — the "universal adapter" that lets an agent reach a tool without a bespoke integration per pairing.
+- **Problem Solved:** Every AI application that wanted to reach external data or tools needed a custom, one-off integration per data source — an N×M integration problem that made agent tool access both slow to build and hard to govern consistently.
+- **Why It Exists:** To give AI applications and the tools/data they need a common protocol boundary, so identity and authorization controls can be applied consistently at that boundary rather than reinvented per integration.
+- **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=mcp
+
+### Standard: RFC 9396 (OAuth 2.0 Rich Authorization Requests (RAR)) {#standard-rfc9396-rar}
+- **Year:** 2023 | **Difficulty:** Advanced | **Category:** Authorization
+- **Vulnerabilities:** An attacker using the authorization server's consent screen to reveal encrypted authorization_details by injecting request data crafted on a device they control., Over-sharing authorization_details with clients/resource servers beyond a strict need-to-know basis.
+- **Best Practices:** Show the user only the specific fields of authorization_details relevant to their consent decision, not the full raw structure., Share authorization_details with downstream resource servers on a need-to-know basis per local policy, not broadcast wholesale., Use RAR to encode an AI agent's declared intent directly into the token request, giving the resource server a structured basis for enforcement.
+- **Summary:** RAR introduces the `authorization_details` parameter, letting an OAuth request carry fine-grained, structured, purpose-bearing authorization data instead of a flat list of scope strings — the natural fit for declaring exactly what an AI agent is being authorized to do.
+- **Problem Solved:** Traditional OAuth scopes are coarse strings ("read", "write") with no room to express the specific purpose, amount, or constraints of a requested authorization — insufficient for scenarios like "transfer up to $500 to this specific account" or "act on this specific claim only."
+- **Why It Exists:** To let a client express fine-grained, structured authorization requirements directly in the authorization request, giving both the authorization server and the resource server richer, purpose-bound information to evaluate and enforce.
+- **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=rfc9396-rar
+
+### Standard: CIBA (OpenID Connect Client-Initiated Backchannel Authentication) {#standard-ciba}
+- **Year:** 2021 | **Difficulty:** Advanced | **Category:** Authorization
+- **Vulnerabilities:** Consent/approval fatigue — a user rubber-stamping backchannel approval requests without reading them, especially if an agent generates many., Insufficient binding_message detail letting a user approve a request without understanding exactly what they're authorizing.
+- **Best Practices:** Always populate binding_message with specific, human-readable detail about exactly what is being approved., Rate-limit backchannel authentication requests per agent to prevent approval-fatigue attacks., Use CIBA specifically for the human-approval trigger step in an agent's declared-intent record, not as a blanket substitute for scoped authorization.
+- **Summary:** CIBA lets a relying party initiate an authentication request without redirecting the user's browser, decoupling the "consumption device" (where the request originates) from the "authentication device" (where the user actually approves it) — the standards fit for keeping a human genuinely in the loop on an agent's action.
+- **Problem Solved:** An AI agent acting on a user's behalf, or a service initiating a transaction the user isn't actively browsing to approve, has no standard OIDC flow to request that approval without a browser redirect the user may not be present for.
+- **Why It Exists:** To support authentication flows where the device requesting access and the device the user approves on are different (or the user isn't actively at a browser), common in financial services (PSD2 Strong Customer Authentication) and equally applicable to agent-initiated actions needing a genuine human approval step.
+- **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=ciba
+
+### Standard: Emerging Agent Authorization Drafts (Emerging IETF / OpenID Foundation Drafts for AI Agent Authorization) {#standard-agent-authz-emerging}
+- **Year:** 2025-2026 (drafts, evolving) | **Difficulty:** Advanced | **Category:** Authorization
+- **Vulnerabilities:** Treating an early, non-final draft as a stable target for production authorization logic — draft mechanisms can and do change before finalization., Vendor-specific "agent authorization" implementations diverging in incompatible ways while the standard is still unsettled.
+- **Best Practices:** Compose today's finalized primitives (RFC 8693 token exchange, RFC 9396 RAR, CIBA) to approximate agent authorization needs rather than waiting for a not-yet-final draft., Track IETF and OpenID Foundation working group activity directly, and revisit this entry's status before citing it as settled., Design for swappable authorization logic so adopting the eventual finalized standard doesn't require an architectural rewrite.
+- **Summary:** Several IETF and OpenID Foundation working groups are actively drafting standards specifically for AI agent authorization — extending OAuth/OIDC delegation concepts (token exchange, RAR, CIBA) to explicitly cover autonomous agent principals, multi-hop delegation chains, and agent-specific consent models.
+- **Problem Solved:** Existing OAuth/OIDC delegation primitives (RFC 8693, RFC 9396, CIBA) were designed before agentic AI existed and can be composed to approximate agent authorization, but no single finalized standard yet addresses agent-specific concerns like sub-agent spawning, declared-intent representation, or agent-to-agent trust natively.
+- **Why It Exists:** To close the gap between what existing delegation standards can approximate and what agent-specific authorization scenarios actually need, as the industry converges on patterns through real deployment experience.
+- **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=agent-authz-emerging
+
+### Standard: FIDO Device Onboard (FDO) (FIDO Device Onboard) {#standard-fido-fdo}
+- **Year:** 2021 (v1.0) / 2022 (v1.1) | **Difficulty:** Advanced | **Category:** Emerging Identity
+- **Vulnerabilities:** Confusing FDO device-onboarding attestation with FIDO2/WebAuthn user-authentication attestation — they are separate specifications solving different problems and should not be conflated in architecture or documentation., Rendezvous server compromise potentially misdirecting device ownership transfer if not properly secured.
+- **Best Practices:** Keep FDO (IoT device provisioning) and FIDO2/WebAuthn (user authentication, enterprise attestation, AAGUID) clearly separated in any architecture or content — do not present one as explaining the other., Validate device attestation (EAT) against expected manufacturer/model before completing an onboarding handoff.
+- **Summary:** FDO is a FIDO Alliance specification for automated, secure IoT/edge device onboarding (provisioning secrets and configuration so a device can connect to its platform) — a distinct spec family from FIDO2/WebAuthn user authentication, despite sharing the FIDO Alliance name.
+- **Problem Solved:** Onboarding IoT and edge devices at scale traditionally required manual configuration or shared default credentials, creating both a scaling bottleneck and a persistent security weakness (unchanged default credentials) across large device fleets.
+- **Why It Exists:** To standardize automated, cryptographically-attested device onboarding so a device can prove its manufacturer/model and be securely provisioned without manual intervention or shared secrets — solving a fleet-scale provisioning problem, not a user-authentication one.
+- **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=fido-fdo
+
+### Standard: eIDAS 2.0 / EUDI Wallet ARF (European Digital Identity Regulation & the EU Digital Identity Wallet Architecture and Reference Framework) {#standard-eidas2-arf}
+- **Year:** 2024 | **Difficulty:** Intermediate | **Category:** Emerging Identity
+- **Vulnerabilities:** Relying on national-scheme-specific extensions that aren't part of the harmonized ARF profile, undermining cross-border interoperability., Treating the relying-party acceptance obligation as optional before its actual legal effective date for a given sector.
+- **Best Practices:** Track official Commission implementing acts and the published ARF version directly rather than relying on secondary summaries for compliance-critical dates., Design relying-party wallet acceptance against the ARF's named standards (OpenID4VCI/VP, ISO mdoc) rather than a single national pilot's specific implementation choices.
+- **Summary:** Regulation (EU) 2024/1183 (eIDAS 2.0) establishes the legal framework for the European Digital Identity Wallet, with the Architecture and Reference Framework (ARF) defining its technical profile (OpenID4VCI/VP, ISO mdoc) — requiring every member state to offer a compliant wallet and, later, regulated relying parties to accept it.
+- **Problem Solved:** Pre-2024 EU digital identification schemes were inconsistent across member states, often limited to online public services only, and did not interoperate cross-border — a citizen's national eID rarely worked cleanly outside their own country.
+- **Why It Exists:** To establish a legally-mandated, interoperable, cross-border digital identity wallet available to every EU citizen, resident, and business, directly applicable across all member states without national transposition.
+- **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=eidas2-arf
+
+### Standard: OpenID4VCI (OpenID for Verifiable Credential Issuance) {#standard-openid4vci}
+- **Year:** 2025 | **Difficulty:** Advanced | **Category:** Emerging Identity
+- **Vulnerabilities:** Weak or absent holder-binding proof, letting an issued credential be presented by an entity other than the one it was issued to., Issuer key compromise undermining every credential it has ever issued -- the reason issuer signing keys warrant root-of-trust-grade protection.
+- **Best Practices:** Require strong holder-binding proof (e.g. key-bound proof-of-possession) at issuance, not just at presentation., Protect issuer signing keys with hardware-backed key storage, given the blast radius of a compromised issuer key., Plan credential validity windows and revocation (status-list) handling together at design time, not as an afterthought.
+- **Summary:** OpenID4VCI defines an OAuth-protected API for a Credential Issuer to issue verifiable credentials (W3C VC, SD-JWT VC, ISO mdoc, and others) to a holder's wallet — the issuer-side complement to OpenID4VP's verifier-side presentation flow.
+- **Problem Solved:** Before a common issuance standard, each digital wallet ecosystem needed a bespoke integration with every credential issuer it wanted to support, fragmenting the wallet ecosystem along issuer-specific lines.
+- **Why It Exists:** To standardize how a Credential Issuer exposes a Credential Endpoint and how a wallet (acting as an OAuth 2.0 client) requests and receives credentials from it, regardless of the underlying credential format.
+- **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=openid4vci
+
+### Standard: NIST FIPS 203/204/205 (Post-Quantum Cryptography Standards (ML-KEM, ML-DSA, SLH-DSA)) {#standard-pqc-fips203-205}
+- **Year:** 2024 | **Difficulty:** Advanced | **Category:** Cryptography
+- **Vulnerabilities:** Harvest-now-decrypt-later — data encrypted with classical algorithms today is already exposed to a future quantum-capable adversary who stored it., Migrating signatures without migrating the issuing CA/root first, breaking the chain of trust the migration was meant to strengthen., Naive migration ignoring the larger key/signature sizes of PQC algorithms, which can break systems with hardcoded size assumptions.
+- **Best Practices:** Prioritize migration by harvest-now-decrypt-later exposure — long-lived data and long-validity credentials first., Use hybrid classical+PQC modes during transition to hedge against either algorithm family being weakened., Sequence migration dependency-first: root of trust and CA hierarchy before what they sign (see cryptoAgilityRoadmap.ts).
+- **Summary:** NIST's first three finalized post-quantum cryptography standards: FIPS 203 (ML-KEM, key encapsulation), FIPS 204 (ML-DSA, digital signatures), and FIPS 205 (SLH-DSA, a conservative hash-based signature alternative) — published and effective August 2024.
+- **Problem Solved:** Widely-deployed public-key cryptography (RSA, ECDSA, ECDH) is vulnerable to a sufficiently powerful quantum computer via Shor's algorithm, and data encrypted today can already be harvested for future decryption once such a computer exists.
+- **Why It Exists:** To provide standardized, vetted quantum-resistant alternatives for key establishment and digital signatures, following an eight-year public standardization process, giving organizations concrete algorithms to migrate to ahead of the threat materializing.
+- **View Live Standard Details:** https://www.aboutiam.com/standards/?standard=pqc-fips203-205
+
 ## Master A-Z Glossary & Acronyms
 *Read the live glossary at:* https://www.aboutiam.com/encyclopedia/
 
@@ -1297,6 +1369,156 @@ This file contains the complete, dense technical knowledge base of AboutIAM for 
 - **Analogy:** A hotel kiosk that lets a guest who forgot their room number reprint their own keycard after verifying a few personal details, without ever needing to wake up the night manager.
 - **Expert Spec:** A capability allowing users to reset a forgotten password themselves after passing an identity-verification challenge (MFA, security questions, email/SMS verification), reducing helpdesk password-reset ticket volume, one of the highest-cost categories of IT support tickets.
 - **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=sspr
+
+### Term: Agentic AI (Agentic Artificial Intelligence) {#term-agentic_ai}
+- **Category:** Agentic Identity
+- **Analogy:** The difference between a vending machine (you press one button, it does one thing) and hiring an assistant who plans a multi-step errand, makes decisions along the way, and reports back when done.
+- **Expert Spec:** An AI system that autonomously plans and executes multi-step tasks, invoking tools and making decisions with limited direct human supervision, as opposed to a single-turn request/response model — the shift that makes classical human-only identity models insufficient.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=agentic_ai
+
+### Term: AI Agent Identity (AI Agent Identity) {#term-ai_agent_identity}
+- **Category:** Agentic Identity
+- **Analogy:** A new employee's badge, but for a piece of software: it says who the agent is, who it works for, and what it's cleared to do.
+- **Expert Spec:** A first-class identity record for an autonomous agent instance — encompassing a stable identifier, a human owner, a declared intent, scoped authority, and a lifecycle — extending classical subject modeling (accounts, service principals, workload identities) to a principal type that can act, and spawn further agents, without direct human input at each step.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=ai_agent_identity
+
+### Term: Agent Registry (Agent Registry) {#term-agent_registry}
+- **Category:** Agentic Identity
+- **Analogy:** An HR system, but for agents — before anyone can start work, there's a record of who they are, who manages them, and what they're hired to do.
+- **Expert Spec:** A canonical, queryable inventory of every AI agent instance operating in an organization, each with a stable identifier — the precondition for issuing scoped authority, running drift detection, or answering "what agents do we actually have running right now."
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=agent_registry
+
+### Term: Declared Intent (Declared Agent Intent) {#term-declared_intent}
+- **Category:** Agentic Identity
+- **Analogy:** A written job description that says exactly what a new hire is meant to be doing this week — so a manager glancing at their calendar can immediately tell if something looks off.
+- **Expert Spec:** A written purpose statement and explicit in-scope/out-of-scope task list attached to an agent's identity record, giving downstream drift-detection systems a concrete baseline to compare observed behavior against — without it, "is this agent still doing what it's supposed to" has no answer.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=declared_intent
+
+### Term: Agent Owner (Agent Owner) {#term-agent_owner}
+- **Category:** Agentic Identity
+- **Analogy:** The name on a company car's maintenance file — someone specific is accountable for it, even though many people might drive it.
+- **Expert Spec:** The named, accountable human recorded against an AI agent's identity record, distinct from whoever happens to invoke it on a given day — accountability that must survive personnel changes via a defined transfer process, not silently lapse when an owner leaves.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=agent_owner
+
+### Term: On-Behalf-Of (On-Behalf-Of (OBO) Delegation) {#term-on_behalf_of}
+- **Category:** Agentic Identity
+- **Analogy:** A lawyer signing a contract "for and on behalf of" their client — the signature is the lawyer's, but the authority and consequence belong to the client who authorized it.
+- **Expert Spec:** A delegation pattern where an agent or service acts using a principal's authority rather than its own, typically implemented via OAuth 2.0 Token Exchange (RFC 8693) `act`/`may_act` claims that preserve the full chain from original principal through every intermediate delegate.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=on_behalf_of
+
+### Term: MCP (Model Context Protocol) {#term-mcp}
+- **Category:** Agentic Identity
+- **Analogy:** A universal power adapter for AI: instead of every AI application needing a custom-built plug for every data source, MCP gives them all one common socket.
+- **Expert Spec:** An open protocol (announced by Anthropic, November 2024; now stewarded via the Agentic AI Foundation under the Linux Foundation) standardizing how AI applications connect to external data sources and tools through MCP servers and MCP clients — from an identity standpoint, each exposed tool is a scope-worthy capability that needs the same least-privilege discipline as any API.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=mcp
+
+### Term: Tool-Calling Authorization (Tool-Calling Authorization) {#term-tool_calling_authorization}
+- **Category:** Agentic Identity
+- **Analogy:** Giving a new intern the keys to the supply closet they need, not a master key to the whole building "just in case."
+- **Expert Spec:** The discipline of scoping exactly which external tools/APIs an agent may invoke and under what conditions, enforced at the identity layer (permitted-tools field) rather than left to the model's own judgment about what it should or shouldn't call.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=tool_calling_authorization
+
+### Term: Task Drift (Agent Task Drift) {#term-task_drift}
+- **Category:** Agentic Identity
+- **Analogy:** A delivery driver who was dispatched to drop off one package but starts making unscheduled stops along the way — the destination on paper no longer matches where they're actually going.
+- **Expert Spec:** A divergence between an agent's declared intent and its observed actions, detected by comparing the two continuously rather than trusting a single point-in-time authorization to hold for the task's entire duration — the central signal an AI Security Fabric is built to catch.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=task_drift
+
+### Term: Prompt Injection (Prompt Injection) {#term-prompt_injection}
+- **Category:** Agentic Identity
+- **Analogy:** A forged memo slipped into a manager's inbox that looks like it came from the CEO — an employee following it in good faith is still following an attacker's instructions.
+- **Expert Spec:** An attack where hostile instructions embedded in content an LLM-based agent processes (a document, a web page, a tool response) are interpreted as legitimate commands, potentially subverting the agent's original declared intent — ranked LLM01 in the OWASP Top 10 for LLM Applications (2025).
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=prompt_injection
+
+### Term: Semantic Guardrail (Semantic Guardrail) {#term-semantic_guardrail}
+- **Category:** Agentic Identity
+- **Analogy:** A human security guard who reads the actual content of a note someone's carrying, versus a turnstile that only checks whether a badge was scanned — one judges meaning, the other only checks a formal attribute.
+- **Expert Spec:** A runtime control that evaluates the meaning and intent of natural-language or tool-call content, complementing (not replacing) structured ABAC/RBAC-style policy — necessarily probabilistic, so it trades off false positives against false negatives rather than producing a deterministic allow/deny.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=semantic_guardrail
+
+### Term: AI Firewall (AI Firewall) {#term-ai_firewall}
+- **Category:** Agentic Identity
+- **Analogy:** A network firewall, but inspecting an agent's prompts, tool calls, and outputs instead of network packets.
+- **Expert Spec:** A runtime enforcement point applying semantic guardrails and egress data-loss-prevention rules to agent traffic — the Enforce stage of an AI control plane's Discover-Decide-Enforce-Observe loop, analogous to a Policy Enforcement Point (PEP) in a classical PEP/PDP architecture.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=ai_firewall
+
+### Term: AI Control Plane (AI Control Plane (AI Security Fabric)) {#term-ai_control_plane}
+- **Category:** Agentic Identity
+- **Analogy:** A building's security operations center: cameras (discovery), a rulebook (decide), guards who act on alerts (enforce), and a log of everything that happened (observe) — all feeding back into each other.
+- **Expert Spec:** A runtime governance layer operating a continuous Discover -> Decide -> Enforce -> Observe loop over agentic workloads, complementing design-time agent identity (who is this agent, what may it do) with run-time behavioral enforcement (what is it actually doing, should we intervene).
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=ai_control_plane
+
+### Term: Shadow AI (Shadow AI) {#term-shadow_ai}
+- **Category:** Agentic Identity
+- **Analogy:** An employee quietly installing their own file-sharing app because the official one is slow — except here it's an unregistered AI agent nobody in security knows exists.
+- **Expert Spec:** AI agents, model integrations, or MCP tool connections deployed and used within an organization without going through formal registration or governance — the reason discovery has to be continuous rather than a one-time inventory exercise.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=shadow_ai
+
+### Term: Enterprise Attestation (FIDO2 Enterprise Attestation) {#term-enterprise_attestation}
+- **Category:** Agentic Identity
+- **Analogy:** A company-issued ID badge that not only proves who you are but also proves it was manufactured by an approved badge vendor, not printed at a corner copy shop.
+- **Expert Spec:** A WebAuthn/FIDO2 attestation mode where a per-authenticator unique attestation is returned to the relying party (rather than a batch/anonymized one), letting an enterprise verify the specific make and model of an authenticator against policy before trusting it — devices supporting enterprise attestation carry a distinct AAGUID from non-enterprise-capable models.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=enterprise_attestation
+
+### Term: AAGUID (Authenticator Attestation GUID) {#term-aaguid}
+- **Category:** Agentic Identity
+- **Analogy:** A model number stamped on a car, not a VIN — it tells you the make and model, not which individual car it is.
+- **Expert Spec:** A FIDO2/WebAuthn identifier returned by an authenticator during attestation that identifies its make and model (not the individual device), used by a relying party to look up metadata in the FIDO Metadata Service (MDS) and enforce policy over which authenticator models are acceptable.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=aaguid
+
+### Term: Phishing-Resistant MFA (Phishing-Resistant Multi-Factor Authentication) {#term-phishing_resistant_mfa}
+- **Category:** Agentic Identity
+- **Analogy:** A lock that only opens for the one specific key cut for it, versus a lock that opens for any key someone convincingly claims is the right one.
+- **Expert Spec:** An authentication method that establishes an authenticated protected channel and cryptographically binds the authenticator output to a specific channel/origin, defeating verifier-impersonation (phishing) attacks — per NIST SP 800-63-4 (final, 2025-07-31), passwords do not qualify, and AAL3 requires it; AAL2 expects it wherever practical.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=phishing_resistant_mfa
+
+### Term: Authenticator Lifecycle (FIDO Authenticator Fleet Lifecycle) {#term-authenticator_lifecycle}
+- **Category:** Agentic Identity
+- **Analogy:** The full life of a company laptop, not just the day it's handed over: ordering, configuring, shipping, onboarding, fixing when it breaks, refreshing on schedule, and safely wiping it when retired.
+- **Expert Spec:** The end-to-end operational management of a fleet of FIDO authenticators — procure, personalize, fulfil, enrol, support/break-fix, refresh, revoke, and recycle — distinct from and much broader than the WebAuthn registration/assertion protocol itself, which only covers the enrol stage.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=authenticator_lifecycle
+
+### Term: Business Wallet (Organizational (Business) Digital Wallet) {#term-business_wallet}
+- **Category:** Agentic Identity
+- **Analogy:** A company's official document folder, but cryptographically verifiable and instantly presentable — instead of a filing cabinet of certificates someone has to fax over.
+- **Expert Spec:** A digital wallet operated by an organization rather than an individual, holding and presenting verifiable credentials about the organization itself (legal registration, licences) or delegating scoped presentation authority to specific employees — an under-served pattern compared to the much more common personal/consumer wallet.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=business_wallet
+
+### Term: Credential Issuer (Verifiable Credential Issuer) {#term-credential_issuer}
+- **Category:** Agentic Identity
+- **Analogy:** A university's registrar office: the entity whose stamp makes a diploma actually mean something to anyone who later checks it.
+- **Expert Spec:** In OpenID4VCI, the entity that issues verifiable credentials, acting as an OAuth 2.0 Resource Server (and often also an Authorization Server) exposing a Credential Endpoint — bearing distinct trust, key-management, and revocation obligations from the holder or verifier roles in the same credential lifecycle.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=credential_issuer
+
+### Term: Relying Party Obligation (Wallet Relying-Party Acceptance Obligation) {#term-relying_party_obligation}
+- **Category:** Agentic Identity
+- **Analogy:** A shop that used to accept cash only being legally required to also accept a new national payment card once it becomes standard enough.
+- **Expert Spec:** A regulatory requirement compelling certain relying parties to accept a specified digital wallet credential — under Regulation (EU) 2024/1183 (eIDAS 2.0), regulated private-sector services (banking, healthcare, telecoms, large platforms) must accept the EUDI Wallet from late 2027, turning wallet support from optional into a compliance deadline.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=relying_party_obligation
+
+### Term: Status List Revocation (Credential Status List Revocation) {#term-status_list_revocation}
+- **Category:** Agentic Identity
+- **Analogy:** A hotel checking a shared, frequently-updated list of cancelled reservation numbers rather than calling every guest individually to ask if their booking is still valid.
+- **Expert Spec:** A revocation mechanism where a verifier checks a credential's current status against a compact, frequently-republished list (rather than contacting the issuer per verification), balancing real-time revocation checkability against the privacy cost of correlatable verifier lookups — a core design trade-off in OpenID4VC-based wallet ecosystems.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=status_list_revocation
+
+### Term: Crypto Agility (Cryptographic Agility) {#term-crypto_agility}
+- **Category:** Agentic Identity
+- **Analogy:** Knowing exactly which locks in a building use which keys, and in what order they can be swapped, so a full rekeying project doesn't turn into a scramble.
+- **Expert Spec:** The operational discipline of inventorying, prioritizing, migrating, and verifying cryptographic algorithms across an identity estate without re-architecting the systems that depend on them — the precondition for a PQC migration to be a planned exercise rather than an emergency response to an algorithm being broken.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=crypto_agility
+
+### Term: Harvest-Now-Decrypt-Later (Harvest-Now-Decrypt-Later (HNDL)) {#term-harvest_now_decrypt_later}
+- **Category:** Agentic Identity
+- **Analogy:** An adversary photographing a locked filing cabinet today, confident that a future master key will eventually let them read every page inside.
+- **Expert Spec:** A threat model in which an adversary captures and stores encrypted data today with the expectation of decrypting it once cryptographically-relevant quantum computers become available — the primary reason long-lived data (e.g. credential signatures, archived TLS traffic) carries urgency for post-quantum migration even before such a computer exists.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=harvest_now_decrypt_later
+
+### Term: Hardware Root of Trust (Hardware Root of Trust) {#term-hardware_root_of_trust}
+- **Category:** Agentic Identity
+- **Analogy:** A country's single master engraving die that stamps every passport blank — if that one die is ever compromised, every passport it ever produced is suspect.
+- **Expert Spec:** A cryptographic foundation anchored in tamper-resistant hardware (typically an HSM validated to FIPS 140-3) whose non-extractable key material every dependent system — CA hierarchies, token signing, authenticator attestation, credential signatures — ultimately traces its trustworthiness back to.
+- **View Live Term Details:** https://www.aboutiam.com/encyclopedia/?term=hardware_root_of_trust
 
 ## Incident Bulletins & Playbooks
 *Read the live incident playbooks at:* https://www.aboutiam.com/bulletins/
@@ -2828,6 +3050,158 @@ spec:
 - **Architectural Best Practices:** Normalize every inbound partner credential (SAML or OIDC) to one internal token format immediately at the broker, never downstream.; Encode jurisdiction and partner-org identity as explicit claims validated at every hop, not just at initial authentication.
 - **View Live Case Study Details:** https://www.aboutiam.com/case-studies/?study=crossborder_b2b_federation
 
+### Case Study: A Global Software & Cloud Platform Company (anonymized archetype) — Rolling Out Agent Identity Governance for Internal AI Assistants {#case-study-agent_governance_rollout}
+- **Category:** Next-Gen IAM | **Difficulty:** Advanced
+- **Summary:** Deconstruct an enterprise's rollout of an agent identity registry and runtime governance for dozens of internal AI assistants that had accumulated standing, ungoverned access to production systems.
+- **Core Security Problem:** Internal support, DevOps, and analytics teams had independently deployed dozens of AI agents over 18 months, each granted broad standing credentials "to get things working" — with no central inventory, no accountable owner per agent, and no way to answer "what can our AI agents actually do right now?"
+- **Requirements:** A central agent identity registry capturing owner, declared intent, and permitted tools for every existing and future agent.; Retroactive discovery of shadow agents already running with standing credentials outside the registry.; A runtime control plane that can detect and intervene when an agent's behavior drifts from its declared intent.
+- **Key Implementation Challenges:** Several production-critical agents had no identifiable human owner after 18 months of team reorganizations.; Retrofitting scoped credentials onto agents already wired into production without breaking their existing workflows.; Convincing engineering teams that narrowing an agent's access was worth the short-term friction of re-scoping working integrations.
+- **Authentication Model:** Each agent instance is issued its own short-lived, narrowly-scoped credential via RFC 8693 Token Exchange rather than a long-lived static API key; the registry ties every credential back to a specific agent identity record.
+- **Authorization Model:** Tool-level scopes are derived directly from each agent's declared intent field in its registry record; a semantic guardrail in the AI control plane evaluates each tool call against that declared intent before allowing it through.
+- **Lifecycle Management:** New agents must be registered with an owner, declared intent, and expiry before receiving any credential; a quarterly re-certification review is enforced automatically, and owner-departure events trigger immediate credential review.
+- **Federation Strategy:** Not a cross-organization federation problem — the challenge is internal: normalizing dozens of independently-built agents (spanning several different frameworks) onto one common identity and credentialing model.
+- **Architecture Flow:**
+```text
+
++-------------------------------------------------------------+
+|              AGENT IDENTITY GOVERNANCE ROLLOUT               |
++-------------------------------------------------------------+
+
+        [ Discovery Sweep: MCP/API Gateway Logs ]
+                          |
+                          v
+            [ Agent Identity Registry ]
+        (owner, intent, tools, expiry per agent)
+                          |
+             +------------+------------+
+             v                         v
+   [ AI Control Plane ]        [ Access Broker / STS ]
+   (discover/decide/enforce/       (issues scoped,
+        observe loop)               short-lived tokens)
+
+```
+- **Sequence Flow Diagram:**
+```text
+
+   Agent Owner        Identity Registry        AI Control Plane        Target API
+       |                     |                        |                     |
+       |-- Register Agent -->|                        |                     |
+       |                     |-- Issue Scoped Cred --->|                     |
+       |                     |                        |-- Evaluate Intent ->|
+       |                     |                        |<--- Allow/Block ----|
+
+```
+- **STRIDE Threat Modeling Matrix:**
+  - **Risk:** Shadow agents running with standing credentials outside the registry -> **Mitigation:** A discovery sweep across API gateway and MCP tool-manifest logs cross-references every observed agent-like credential against the registry, flagging anything unregistered.
+  - **Risk:** Retrofitted agent silently loses required access mid-migration, causing an outage -> **Mitigation:** Scoped credentials were rolled out in shadow/audit mode first — logging what would have been blocked without actually blocking it — before flipping to enforcement per agent.
+- **Remediation Lessons Learned:** The single highest-value first step was discovery, not enforcement — you cannot govern what you have not inventoried.; Framing re-scoping as reducing blast radius (not distrust of the team) made engineering teams far more willing to cooperate.; A shadow/audit-mode rollout before hard enforcement caught several legitimate access patterns the original registry entry had missed.
+- **Common Implementation Mistakes:** Initially tried to enforce scoped credentials on every agent simultaneously, causing a wave of support tickets from agents that needed access the registry entry hadn't captured.; Left "owner" as an optional field early on, which meant a third of agents had no accountable owner by the time governance actually mattered.
+- **Architectural Best Practices:** Make the owner field mandatory and non-transferable-by-default at registration time — require an explicit transfer step when an owner leaves, rather than letting it silently go stale.; Roll out enforcement in shadow/audit mode per agent before switching to blocking mode, so unexpected legitimate access patterns surface safely first.
+- **View Live Case Study Details:** https://www.aboutiam.com/case-studies/?study=agent_governance_rollout
+
+### Case Study: A Multinational Manufacturing & Logistics Enterprise (anonymized archetype) — Migrating a 40,000-Employee Workforce to Passwordless FIDO2 at Fleet Scale {#case-study-fido_fleet_migration}
+- **Category:** Next-Gen IAM | **Difficulty:** Advanced
+- **Summary:** Deconstruct a multi-year rollout of hardware FIDO2 security keys and platform passkeys to a 40,000-person global workforce, spanning office staff, warehouse floor workers with shared terminals, and field technicians with no reliable connectivity.
+- **Core Security Problem:** Recurring MFA-fatigue-driven account compromises and a mounting helpdesk password-reset bill pushed the organization toward FIDO2, but the workforce's device diversity (shared warehouse terminals, offline field tablets, standard office laptops) meant no single form factor could cover everyone.
+- **Requirements:** Segment the workforce by form-factor fit rather than mandating one device type organization-wide.; A device-fulfillment and support pipeline that could provision, replace, and revoke hardware keys at fleet scale.; Enterprise attestation to guarantee only approved hardware key models could register, given the deployment's security-sensitive facilities.
+- **Key Implementation Challenges:** Shared warehouse terminals meant per-user platform passkeys (bound to one device) were unworkable — those workers needed portable hardware keys instead.; Field technicians in low-connectivity areas needed a registration flow that didn't depend on a live network round-trip at enrollment time.; Replacing a lost or damaged hardware key for a worker on a remote site without a multi-week shipping delay.
+- **Authentication Model:** Three form factors mapped to three worker segments: platform passkeys for office staff on personal/assigned laptops, portable hardware security keys for warehouse floor staff sharing terminals, and ruggedized hardware keys for field technicians, all validated against an enterprise AAGUID allow-list at registration.
+- **Authorization Model:** Standard workforce SSO authorization is unchanged; the migration only replaces the authentication factor. Step-up authentication for high-risk actions (payroll changes, admin console access) requires a fresh FIDO2 ceremony, not a cached session.
+- **Lifecycle Management:** Device fulfillment is tied to the HR joiner event (new hires receive a pre-provisioned key on day one); loss/damage triggers immediate revocation of the old credential and expedited replacement shipping tied to the worker's site; leaver events trigger automatic key revocation and physical key return tracking.
+- **Federation Strategy:** No cross-organization federation involved — this is an internal workforce authentication migration, coordinated with the existing SSO/IdP layer rather than replacing it.
+- **Architecture Flow:**
+```text
+
++-------------------------------------------------------------+
+|            FIDO2 FLEET ROLLOUT BY WORKER SEGMENT             |
++-------------------------------------------------------------+
+
+  [ Office Staff ]         [ Warehouse Floor ]        [ Field Techs ]
+        |                          |                          |
+        v                          v                          v
+ Platform Passkey         Portable USB/NFC Key       Ruggedized USB Key
+ (device-bound)          (shared-terminal safe)      (offline enrollment)
+        |                          |                          |
+        +--------------+-----------+--------------+-----------+
+                       v
+          [ Enterprise Attestation Policy Gate ]
+                       |
+                       v
+              [ Identity Provider / RP ]
+
+```
+- **Sequence Flow Diagram:**
+```text
+
+   New Hire            Fulfillment Pipeline          Identity Provider
+      |                        |                              |
+      |<-- Pre-provisioned ----|                              |
+      |         Key            |                              |
+      |----- Register Key -------------------------------->  |
+      |                        |         Validate AAGUID ---> |
+      |<------------------------------ Enrollment Confirmed --|
+
+```
+- **STRIDE Threat Modeling Matrix:**
+  - **Risk:** A non-approved consumer-grade security key registers and bypasses procurement/compliance controls -> **Mitigation:** Enterprise attestation policy validates the AAGUID of every registering device against an explicit allow-list of approved hardware models before permitting enrollment.
+  - **Risk:** A lost hardware key at a remote field site leaves a worker locked out for weeks awaiting replacement shipping -> **Mitigation:** A temporary, time-boxed break-glass fallback (phone-call verification plus a short-lived recovery code) bridges the gap until the replacement physical key arrives, with mandatory re-verification once it does.
+- **Remediation Lessons Learned:** No single FIDO2 form factor fits an entire diverse workforce — segmenting by actual working conditions (shared terminals, offline sites, standard desks) up front avoided multiple failed rollout attempts.; Device fulfillment and support logistics, not the cryptography, turned out to be the actual long pole in the project timeline.; Tying key issuance directly to the HR joiner/leaver pipeline eliminated the largest source of stale, ungoverned credentials.
+- **Common Implementation Mistakes:** The initial pilot mandated platform passkeys fleet-wide, which immediately failed for warehouse floor staff sharing terminals across shifts.; Underestimated replacement shipping lead time to remote field sites, which produced a wave of helpdesk escalations during the early rollout weeks.
+- **Architectural Best Practices:** Map form factors to actual working conditions before choosing a single default — treat the FIDO Form Factor decision as segment-specific, not organization-wide.; Build the break-glass fallback process and its own audit trail before rollout day, not reactively after the first lost-key incident.
+- **View Live Case Study Details:** https://www.aboutiam.com/case-studies/?study=fido_fleet_migration
+
+### Case Study: A Pan-European Retail Bank (anonymized archetype) — Preparing a Regulated Relying Party for EU Digital Identity Wallet Acceptance {#case-study-wallet_acceptance_readiness}
+- **Category:** Next-Gen IAM | **Difficulty:** Advanced
+- **Summary:** Deconstruct a retail bank's multi-year readiness program to accept the EU Digital Identity Wallet as a customer onboarding and authentication credential ahead of its eIDAS 2.0 relying-party acceptance obligation.
+- **Core Security Problem:** As a regulated financial institution operating across several EU member states, the bank faced a fixed regulatory deadline to accept EU Digital Identity Wallet credentials — but its existing KYC and authentication stack had no concept of a wallet-presented, selectively-disclosed verifiable credential.
+- **Requirements:** Implement OpenID4VP to request and verify wallet-presented credentials for customer onboarding (KYC) and step-up authentication.; Build a trust-registry lookup so the bank only accepts credentials from wallet issuers it actually trusts, not any cryptographically valid credential.; Maintain a fallback onboarding path for the large share of customers not yet holding a wallet during the phased national rollout.
+- **Key Implementation Challenges:** Member states rolled out their national wallet availability on different timelines, so the bank had to support a partial, uneven rollout rather than a single go-live date.; Existing KYC vendor integrations assumed document-scan-based identity proofing, not a pre-verified wallet credential presentation.; Legal and compliance teams needed to interpret an evolving regulatory framework (the Architecture and Reference Framework) whose implementing details were still being finalized during the build.
+- **Authentication Model:** For onboarding, the wallet presents a verified Personal Identification Data (PID) credential in place of a manual document scan; for step-up authentication on high-risk actions, a lighter attribute presentation (e.g. age or account-holder attestation) is requested instead of re-running full KYC.
+- **Authorization Model:** Unchanged from the existing core banking authorization model — the wallet integration replaces how identity is proofed and authenticated, not how account permissions are subsequently granted.
+- **Lifecycle Management:** Wallet-based onboarding runs alongside the legacy document-scan KYC path for the full multi-year transition window; the bank did not force a hard cutover, since national wallet availability itself was still phasing in across member states.
+- **Federation Strategy:** The trust relationship is with each national wallet-issuing authority (or its designated trust framework), verified via a trust-registry lookup rather than a bilateral integration per country.
+- **Architecture Flow:**
+```text
+
++-------------------------------------------------------------+
+|          WALLET-ACCEPTANCE-READY RELYING PARTY FLOW          |
++-------------------------------------------------------------+
+
+        [ Customer's EU Digital Identity Wallet ]
+                          |  (OpenID4VP presentation)
+                          v
+              [ Bank Verifier Endpoint ]
+                          |
+              +-----------+-----------+
+              v                       v
+   [ Trust Registry Lookup ]   [ Credential Verification ]
+   (is this issuer trusted?)   (signature, revocation, freshness)
+              |                       |
+              +-----------+-----------+
+                          v
+              [ Core Banking KYC / AuthN System ]
+
+```
+- **Sequence Flow Diagram:**
+```text
+
+    Customer Wallet         Bank Verifier          Trust Registry
+        |                        |                        |
+        |--- Present Credential->|                        |
+        |                        |--- Check Issuer ------>|
+        |                        |<--- Issuer Trusted -----|
+        |                        |--- Verify Signature --->|
+        |<---- Onboarding OK ----|      (local)            |
+
+```
+- **STRIDE Threat Modeling Matrix:**
+  - **Risk:** A cryptographically valid credential from an issuer the bank never intended to trust is accepted -> **Mitigation:** Every presented credential is checked against a trust-registry lookup of accredited issuers before being honored, independent of whether its signature verifies correctly.
+  - **Risk:** A revoked or expired credential is presented and accepted as still valid -> **Mitigation:** The verifier checks live revocation status and credential freshness on every presentation rather than caching a prior verification result.
+- **Remediation Lessons Learned:** Treat the trust-registry lookup as a first-class control, not an afterthought — cryptographic validity and trustworthiness are two separate questions.; A phased, dual-path rollout (wallet alongside legacy KYC) was necessary given the national rollout was itself phased and uneven across member states.; Early, close coordination with legal/compliance paid off given how much of the regulatory framework's implementing detail was still being finalized during the build.
+- **Common Implementation Mistakes:** Initial design assumed a single EU-wide go-live date and had to be reworked once it became clear national wallet availability would roll out unevenly by member state.; Underestimated how much of the existing KYC vendor integration assumed a document-scan flow, requiring more rework than a simple "add a new credential type" change.
+- **Architectural Best Practices:** Build the trust-registry check as an explicit, auditable step in the verification pipeline, separate from and in addition to standard cryptographic signature verification.; Keep the legacy onboarding path fully operational throughout the transition rather than betting the program on wallet adoption timelines outside the bank's control.
+- **View Live Case Study Details:** https://www.aboutiam.com/case-studies/?study=wallet_acceptance_readiness
+
 ## Certifications Study Blueprints
 *Read the live certifications study hub at:* https://www.aboutiam.com/certifications/
 
@@ -4047,3 +4421,48 @@ ipa-client-install \
   --mkhomedir
 ```
 - **View Live Product Profile Details:** https://www.aboutiam.com/explore/?product=freeipa
+
+### Product Profile: Microsoft Entra Agent ID {#product-entra-agent-id}
+- **Product Type:** Agentic Identity Platform | **Difficulty Level:** Advanced | **License:** Enterprise Commercial
+- **Standard Deployment Formats:** Microsoft Azure Cloud Native SaaS (part of the Microsoft Entra / Agent 365 family)
+- **Optimal System Use Cases:** Purpose-built identity and access platform for AI agents — creates a first-class agent identity (distinct from a user or service principal) with a named sponsor, Conditional Access, and ID Protection coverage. Reached general availability in April 2026.
+- **Supported Identity Standards:** OIDC: Yes | SAML: No | SCIM: No | FIDO2: No | LDAP: No
+- **Search Keywords:** agentic identity, ai agent governance, agent 365, non-human identity
+- **Sample Integration Code Block:**
+```text
+# Microsoft Graph — create an agent identity (beta endpoint)
+POST https://graph.microsoft.com/beta/servicePrincipals/Microsoft.Graph.AgentIdentity
+OData-Version: 4.0
+Content-Type: application/json
+Authorization: Bearer {token}
+
+{
+  "displayName": "refund-processing-subagent",
+  "agentIdentityBlueprintId": "{blueprint-app-id}",
+  "sponsors@odata.bind": [
+    "https://graph.microsoft.com/beta/users/{sponsor-user-id}"
+  ]
+}
+```
+- **View Live Product Profile Details:** https://www.aboutiam.com/explore/?product=entra-agent-id
+
+### Product Profile: Thales Digital ID Wallet {#product-thales-digital-id-wallet}
+- **Product Type:** Wallet Infrastructure | **Difficulty Level:** Advanced | **License:** Enterprise Commercial
+- **Standard Deployment Formats:** Mobile app + Thales Trusted Cred Platform (issuance) / Thales Mobile Security Core (on-device key protection)
+- **Optimal System Use Cases:** Government and relying-party wallet infrastructure for storing, managing, and selectively sharing digital identity credentials (PID, mobile driving licence, banking credentials) issued by multiple trusted issuers, built for eIDAS 2.0 / EUDI Wallet compliance.
+- **Supported Identity Standards:** OIDC: No | SAML: No | SCIM: No | FIDO2: No | LDAP: No
+- **Search Keywords:** eidas 2.0, eudi wallet, verifiable credentials, mobile driving licence
+- **Sample Integration Code Block:**
+```text
+# Illustrative OpenID4VCI credential offer a Thales Trusted Cred
+# Platform issuer might present to a wallet (see standardsData.ts
+# 'openid4vci' for the full OpenID Foundation specification)
+{
+  "credential_issuer": "https://issuer.example-govid.eu",
+  "credential_configuration_ids": ["eu.europa.ec.eudi.pid_mdoc"],
+  "grants": {
+    "authorization_code": { "issuer_state": "st_9f21a" }
+  }
+}
+```
+- **View Live Product Profile Details:** https://www.aboutiam.com/explore/?product=thales-digital-id-wallet

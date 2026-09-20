@@ -13,7 +13,8 @@ const TRACKS: { id: number; title: string }[] = [
   { id: 3, title: 'Modern Federation & APIs' },
   { id: 4, title: 'Customer IAM (CIAM)' },
   { id: 5, title: 'Enterprise Governance & Privilege' },
-  { id: 6, title: 'Zero Trust & Future Identity' }
+  { id: 6, title: 'Zero Trust & Future Identity' },
+  { id: 7, title: 'Next-Generation Identity' }
 ]
 
 const MODULES_PER_TRACK = 6
@@ -54,4 +55,54 @@ export function getPlaygroundMilestoneBadges(labsCompletedCount: number): RuleBa
     category: 'Milestone',
     unlocked: labsCompletedCount >= milestone.count
   }))
+}
+
+/** `usePlayground` moduleIds for the 4 flagship + 6 remaining Next-Gen IAM agentic-identity/AI-fabric playgrounds. */
+const AGENTIC_LAB_MODULE_IDS = [
+  'agent_registry_studio',
+  'delegation_chain_auditor',
+  'ai_guardrail_studio',
+  'prompt_injection_escalation',
+  'agent_observability_lab',
+]
+
+const FIDO_FLEET_MODULE_ID = 'fido_fleet_ops'
+const CRYPTO_MIGRATION_MODULE_ID = 'crypto_migration_planner'
+
+/**
+ * Three Next-Gen IAM pillar badges (NextGenIAM.md §8.7): "Agent Governor" (every
+ * agentic-identity/AI-fabric lab), "Fleet Commander" (the FIDO fleet simulator),
+ * and "Crypto Agile" (a dependency-valid crypto migration plan -- `finishPlayground`
+ * on that lab only fires once the plan is actually valid, so completion alone is
+ * the correct signal here, unlike a lab where any completion counts).
+ */
+export function getNextGenAchievementBadges(completedLabModuleIds: string[]): RuleBadge[] {
+  const completed = new Set(completedLabModuleIds)
+
+  return [
+    {
+      id: 'badge-agent-governor',
+      title: 'Agent Governor',
+      desc: 'Complete every agentic-identity and AI Security Fabric playground: Agent Registry Studio, Delegation Chain Auditor, AI Guardrail Studio, Prompt Injection Escalation, and Agent Observability Lab.',
+      requirement: 'Finish all 5 agentic-identity/AI-fabric playgrounds',
+      category: 'Milestone',
+      unlocked: AGENTIC_LAB_MODULE_IDS.every((id) => completed.has(id)),
+    },
+    {
+      id: 'badge-fleet-commander',
+      title: 'Fleet Commander',
+      desc: 'Complete the FIDO Fleet Operations Simulator, provisioning and supporting a passkey device fleet across its full lifecycle.',
+      requirement: 'Finish the FIDO Fleet Operations Simulator',
+      category: 'Milestone',
+      unlocked: completed.has(FIDO_FLEET_MODULE_ID),
+    },
+    {
+      id: 'badge-crypto-agile',
+      title: 'Crypto Agile',
+      desc: 'Produce a dependency-valid cryptographic migration plan in the Crypto Migration Planner, correctly sequencing dependent workstreams before what relies on them.',
+      requirement: 'Complete the Crypto Migration Planner with a valid migration order',
+      category: 'Milestone',
+      unlocked: completed.has(CRYPTO_MIGRATION_MODULE_ID),
+    },
+  ]
 }

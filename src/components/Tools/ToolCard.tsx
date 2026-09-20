@@ -8,7 +8,7 @@ export default function ToolCard({ tool }: { tool: ToolMeta }) {
   const shortTitle = tool.title.split(' — ')[0].split(' (')[0]
 
   return (
-    <div className="group p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 hover:shadow-md transition-all flex flex-col justify-between">
+    <div className="group min-w-0 p-6 rounded-xl bg-bg-card border border-border-subtle hover:border-accent-primary/30 hover:shadow-md transition-all flex flex-col justify-between">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="w-10 h-10 rounded-lg bg-accent-glow text-accent-primary flex items-center justify-center border border-accent-primary/10">
@@ -22,10 +22,10 @@ export default function ToolCard({ tool }: { tool: ToolMeta }) {
             {isLive ? 'Live' : 'Coming Soon'}
           </span>
         </div>
-        <h4 className="text-base font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+        <h4 className="text-base font-bold text-text-primary group-hover:text-accent-primary transition-colors wrap-break-word">
           {shortTitle}
         </h4>
-        <p className="text-sm text-text-secondary leading-relaxed">{tool.description}</p>
+        <p className="text-sm text-text-secondary leading-relaxed wrap-break-word">{tool.description}</p>
       </div>
       <div className="pt-6 border-t border-border-subtle/50 mt-6">
         {isLive ? (
